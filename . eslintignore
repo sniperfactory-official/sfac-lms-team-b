@@ -1,0 +1,9 @@
+# 프로젝트 루트 디렉토리
+node_modules/
+build/
+dist/
+
+# 특정 파일 또는 디렉토리
+public/
+coverage/
+*.log
