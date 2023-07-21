@@ -1,7 +1,12 @@
-import React from "react";
+import Feedback from "../components/Feedback";
 
 const Detail = () => {
-  return <div>Detail</div>;
+  return (
+    <div>
+      Detail
+      <Feedback />
+    </div>
+  );
 };
 
 export default Detail;
