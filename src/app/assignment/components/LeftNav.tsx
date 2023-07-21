@@ -1,10 +1,10 @@
 import React from "react";
-import CreateAssiment from "./CreateAssiment";
+import CreateAssignment from "./CreateAssignment";
 
 const LeftNav = () => {
   return (
     <div>
-      <CreateAssiment />
+      <CreateAssignment />
     </div>
   );
 };
