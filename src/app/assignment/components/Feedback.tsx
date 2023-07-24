@@ -3,7 +3,7 @@
 const Feedback = () => {
   return (
     <div className="flex items-center justify-center">
-      <div className="max-w-[775px] w-4/5 rounded-[10px] border border-grayscale-10 shadow-4dp bg-grayscale-0">
+      <div className="max-w-[775px] w-4/5 rounded-[10px] border border-grayscale-10 shadow-4dp bg-grayscale-0 max-h-[768px] ">
         <div className="p-[34px] ">
           {/* modal-header */}
           <div className="flex justify-between mb-[26px]">
@@ -36,7 +36,47 @@ const Feedback = () => {
             </h6>
           </div>
           {/* feedback */}
-          <ul className="space-y-[13px] mb-[18px]">
+          <ul className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll ">
+            <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
+              <div className="flex mb-[18px] items-center">
+                <img
+                  className="w-[42px] rounded-full border-grayscale-10 border mr-[13px]"
+                  src=""
+                  alt="img"
+                />
+                <h4 className="font-[700]">
+                  {"이름"}
+                  <span className="text-grayscale-20 font-[400]">
+                    {" "}
+                    &middot; {"수강생"}
+                  </span>
+                </h4>
+              </div>
+              <p className="text-[12px]">{"본문"}</p>
+              <h6 className="text-[12px] text-end text-grayscale-40">
+                {"3일전"}
+              </h6>
+            </li>
+            <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
+              <div className="flex mb-[18px] items-center">
+                <img
+                  className="w-[42px] rounded-full border-grayscale-10 border mr-[13px]"
+                  src=""
+                  alt="img"
+                />
+                <h4 className="font-[700]">
+                  {"이름"}
+                  <span className="text-grayscale-20 font-[400]">
+                    {" "}
+                    &middot; {"수강생"}
+                  </span>
+                </h4>
+              </div>
+              <p className="text-[12px]">{"본문"}</p>
+              <h6 className="text-[12px] text-end text-grayscale-40">
+                {"3일전"}
+              </h6>
+            </li>
             <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
               <div className="flex mb-[18px] items-center">
                 <img
