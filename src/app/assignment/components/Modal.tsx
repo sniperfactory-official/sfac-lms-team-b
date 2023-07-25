@@ -2,7 +2,7 @@ type OwnProps = {
   title: string;
   isOpen: boolean;
   onClose: () => void;
-  children: any; // any 괜찮은지 체크 필요
+  children: any; // any 괜찮은지 체크 필요.
 };
 
 const Modal: React.FC<OwnProps> = ({ title, isOpen, onClose, children }) => {
