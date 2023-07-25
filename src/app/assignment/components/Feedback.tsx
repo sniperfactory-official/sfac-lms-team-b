@@ -92,67 +92,6 @@ const Feedback = () => {
                 </li>
               );
             })}
-
-            {/* <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
-              <div className="flex mb-[18px] items-center">
-                <img
-                  className="w-[42px] rounded-full border-grayscale-10 border mr-[13px]"
-                  src=""
-                  alt="img"
-                />
-                <h4 className="font-[700]">
-                  {"이름"}
-                  <span className="text-grayscale-20 font-[400]">
-                    {" "}
-                    &middot; {"수강생"}
-                  </span>
-                </h4>
-              </div>
-              <p className="text-[12px]">{"본문"}</p>
-              <h6 className="text-[12px] text-end text-grayscale-40">
-                {"3일전"}
-              </h6>
-            </li>
-            <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
-              <div className="flex mb-[18px] items-center">
-                <img
-                  className="w-[42px] rounded-full border-grayscale-10 border mr-[13px]"
-                  src=""
-                  alt="img"
-                />
-                <h4 className="font-[700]">
-                  {"이름"}
-                  <span className="text-grayscale-20 font-[400]">
-                    {" "}
-                    &middot; {"수강생"}
-                  </span>
-                </h4>
-              </div>
-              <p className="text-[12px]">{"본문"}</p>
-              <h6 className="text-[12px] text-end text-grayscale-40">
-                {"3일전"}
-              </h6>
-            </li>
-            <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
-              <div className="flex mb-[18px] items-center">
-                <img
-                  className="w-[42px] rounded-full border-grayscale-10 border mr-[13px]"
-                  src=""
-                  alt="img"
-                />
-                <h4 className="font-[700]">
-                  {"이름"}
-                  <span className="text-grayscale-20 font-[400]">
-                    {" "}
-                    &middot; {"수강생"}
-                  </span>
-                </h4>
-              </div>
-              <p className="text-[12px]">{"본문"}</p>
-              <h6 className="text-[12px] text-end text-grayscale-40">
-                {"3일전"}
-              </h6>
-            </li> */}
           </ul>
           {/* feedback_upload */}
           <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
