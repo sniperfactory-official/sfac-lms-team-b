@@ -1,13 +1,12 @@
 "use client";
 
-import React from "react";
 import ProfileImage from "./ProfileImage";
 
 const TeacherViewCard = () => {
   return (
     <>
-      <div className="flex justify-between content-center px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]">
-        <div className="flex justify-start content-center gap-[14px] grow">
+      <div className="flex justify-between items-start px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]">
+        <div className="flex justify-start items-start gap-[14px]">
           <ProfileImage />
           <div>
             <div className="mb-[5px]">
@@ -18,17 +17,12 @@ const TeacherViewCard = () => {
                 수강생
               </span>
             </div>
-            <a
-              className="text-grayscale-40 text-[14px] font-[400]"
-              target="_blank"
-              rel="noreferrer"
-              href="https://github.com/sniperfactory-official/sfac-lms-team-b/blob/develop/src/app/globals.css"
-            >
+            <p className="text-grayscale-40 text-[14px] font-[400] line-clamp-1">
               https://github.com/sniperfactory-official/sfac-lms-team-b/blob/develop/src/app/globals.css
-            </a>
+            </p>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-end shrink">
+        <div className="flex flex-col justify-center items-end basis-[80px] shrink-0">
           <svg
             width="19"
             height="19"

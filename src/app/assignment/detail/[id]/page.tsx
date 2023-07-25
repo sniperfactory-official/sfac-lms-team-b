@@ -7,7 +7,7 @@ const Detail = () => {
   return (
     <div className="py-[36px] px-[20px]">
       <div className="px-[20px] py-[29px]">
-        <div className="flex justify-start content-center gap-[16px] mb-[31px]">
+        <div className="flex justify-start items-center gap-[16px] mb-[31px]">
           <ProfileImage />
           <div>
             <p className="text-[16px] font-[700] text-grayscale-100">

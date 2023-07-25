@@ -12,8 +12,8 @@ const StudentViewCard: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-between content-center px-[21px] py-[24px] border rounded-[10px]">
-        <div className="flex justify-start content-center gap-[14px]">
+      <div className="flex justify-between items-center px-[21px] py-[24px] border rounded-[10px]">
+        <div className="flex justify-start items-center gap-[14px]">
           <ProfileImage />
           <div>
             <div className="mb-[5px]">
@@ -29,7 +29,7 @@ const StudentViewCard: React.FC = () => {
             </span>
           </div>
         </div>
-        <div className="flex justify-end content-center gap-[14px]">
+        <div className="flex justify-end items-center gap-[14px]">
           <button
             type="button"
             className="border"
@@ -58,7 +58,11 @@ const StudentViewCard: React.FC = () => {
           setIsLinkOpen(false);
         }}
       >
-        <SubmitAssignmentWithLink />
+        <SubmitAssignmentWithLink
+          onClose={() => {
+            setIsLinkOpen(false);
+          }}
+        />
       </Modal>
 
       {/* 과제: 파일 제출 */}
@@ -69,7 +73,11 @@ const StudentViewCard: React.FC = () => {
           setIsFileOpen(false);
         }}
       >
-        <SubmitAssignmentWithFile />
+        <SubmitAssignmentWithFile
+          onClose={() => {
+            setIsFileOpen(false);
+          }}
+        />
       </Modal>
     </>
   );
