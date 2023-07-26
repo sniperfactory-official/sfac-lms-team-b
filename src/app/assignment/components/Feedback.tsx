@@ -33,11 +33,10 @@ const user = [
 ];
 
 const Feedback = () => {
-  // const { data, isLoading, error } = useGetAssignment(`yjQmFY45VoZduNQ4Twxy
-  // `);
-  // console.log(data);
-  // console.log(isLoading);
-  // console.log(error);
+  const { data, isLoading, error } = useGetAssignment(`yjQmFY45VoZduNQ4Twxy`);
+  console.log(data);
+  console.log(isLoading);
+  console.log(error);
 
   return (
     <div className="flex items-center justify-center">
