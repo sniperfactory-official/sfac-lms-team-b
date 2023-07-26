@@ -1,93 +1,85 @@
-import { Timestamp, DocumentReference } from "firebase/firestore";
 export interface User {
   id: string;
   email: string;
   username: string;
-  role: "수강생" | "관리자";
+  role: string;
   profileImage: string;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 export interface Post {
   id: string;
   parentId: string;
-  category: "필독" | "안내사항" | "질문있어요" | "자유게시판" | "익명피드백";
-  user?: User;
-  userId: DocumentReference;
+  category: string;
+  userId: string;
   title: string;
   content: string;
   postImages: string[];
   tags: string[];
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 export interface Course {
   id: string;
   title: string;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 export interface Lecture {
   id: string;
-  user?: User;
-  userId: DocumentReference;
-  course?: Course;
-  courseId: DocumentReference;
+  userId: string;
+  courseId: string;
   title: string;
-  isPrivate: boolean;
-  startDate: Timestamp;
-  endDate: Timestamp;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-  lectureType: "노트" | "비디오" | "링크";
+  private: boolean;
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+  updatedAt?: Date;
+  lectureType: string;
   lectureContent: LectureContent;
 }
 
 export interface Progress {
   id: string;
-  user?: User;
-  userId: DocumentReference;
-  isCompleted: boolean;
+  userId: string;
+  complete: boolean;
   playTimes: playTime[];
-  lectureId: DocumentReference;
+  lectureId: string;
 }
 
 export interface Assignment {
   id: string;
-  user?: User;
-  userId: DocumentReference;
+  userId: string;
+  assignmentNumber: number;
   title: string;
   content: string;
-  level: "상" | "중" | "하";
+  level: string;
   images: string[];
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-  startDate: Timestamp;
-  endDate: Timestamp;
+  tags: string[];
+  createdAt: Date;
+  updatedAt?: Date;
+  startDate: Date;
+  endDate: Date;
   readStudents: string[];
 }
 
 export interface SubmittedAssignment {
   id: string;
-  assignment?: Assignment;
-  assignmentId: DocumentReference;
-  user?: User;
-  userId: DocumentReference;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-  isRead: boolean;
+  assignmentId: string;
+  userId: string;
+  createdAt: Date;
+  updatedAt?: Date;
+  byRead: boolean;
   feedbacks: Feedback[];
 }
 
 export interface Attachment {
   id: string;
-  user?: User;
-  userId: DocumentReference;
-  submittedAssignment?: SubmittedAssignment;
-  submittedAssignmentId: DocumentReference;
+  userId: string;
+  submittedAssignmentId: string;
   links: string[];
   attachmentFiles: AttachmentFile[];
 }
@@ -95,24 +87,21 @@ export interface Attachment {
 export interface Feedback {
   id: string;
   parentId: string;
-  user?: User;
-  userId: DocumentReference;
+  userId: string;
   content: string;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 export interface LectureComment {
   id: string;
-  lecture?: Lecture;
-  lectureId: DocumentReference;
-  parentId: string;
-  user?: User;
-  userId: DocumentReference;
+  lectureId: string;
+  parentId?: string;
+  userId: string;
   content: string;
   timestamp: string;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: Date;
+  updatedAt?: Date;
 }
 
 export interface LectureContent {
