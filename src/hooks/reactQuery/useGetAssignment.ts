@@ -20,9 +20,9 @@ const getAssignments = async (
     return assignment;
   }
   const assignmentsDocs = await getDocs(collection(db, "assignments"));
-  const assignments = assignmentsDocs?.docs.map((doc: DocumentData) =>
-    doc.data(),
-  );
+  const assignments = assignmentsDocs?.docs.map((doc: DocumentData) => {
+    return { id: doc.id, ...doc.data() };
+  });
 
   return assignments;
 };
