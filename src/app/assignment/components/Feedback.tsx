@@ -12,7 +12,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { useEffect } from "react";
-import { useAssignment } from "@/hooks/reactQuery/useGetAssignment";
+import { useGetAssignment } from "@/hooks/reactQuery/useGetAssignment";
 import { useCreateAssignment } from "@/hooks/reactQuery/useCreateAssignment";
 
 const user = [
@@ -33,6 +33,12 @@ const user = [
 ];
 
 const Feedback = () => {
+  // const { data, isLoading, error } = useGetAssignment(`yjQmFY45VoZduNQ4Twxy
+  // `);
+  // console.log(data);
+  // console.log(isLoading);
+  // console.log(error);
+
   return (
     <div className="flex items-center justify-center">
       <div className="max-w-[775px] w-4/5 rounded-[10px] border border-grayscale-10 shadow-4dp bg-grayscale-0 max-h-[768px] ">
