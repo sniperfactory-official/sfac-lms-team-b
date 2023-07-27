@@ -24,9 +24,9 @@ const useClassroomModal = () => {
     (state: RootState) => state.classroomModal.replyCommentModalOpen,
   );
 
-  const handleModalMove = (closeModalName: string) => {
+  const handleModalMove = (openModalName: string, closeModalName: string) => {
     dispatch(
-      setModalVisibility({ modalName: "lectureTypeModalOpen", visible: true }),
+      setModalVisibility({ modalName: openModalName, visible: true }),
     );
     dispatch(setModalVisibility({ modalName: closeModalName, visible: false }));
   };
