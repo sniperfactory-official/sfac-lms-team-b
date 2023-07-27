@@ -5,7 +5,7 @@ import React, { FC } from "react";
 import LectureHeader from "@/components/lecture/LectureHeader";
 import TypeOfLecture from "@/components/lecture/typesOf/TypeOfLecture";
 import LectureComment from "@/components/lecture/LectureComment";
-import LectureFooter from "@/components/lecture/LectureNavigation";
+import LectureNavigation from "@/components/lecture/LectureNavigation";
 import useGetLectureInfo from "@/hooks/lecture/useGetLectureInfo";
 
 interface lectureIdProps {
@@ -24,8 +24,11 @@ const LectureHome: FC<lectureIdProps> = ({ lectureId }) => {
         <LectureHeader />
         <div className="mainContainer flex w-full h-screen">
           <div className="Container flex flex-col w-3/4">
-            <TypeOfLecture type={data.lectureType} content={data.lectureContent} />
-            <LectureFooter />
+            <TypeOfLecture
+              type={data.lectureType}
+              content={data.lectureContent}
+            />
+            <LectureNavigation />
           </div>
           <LectureComment />
         </div>
