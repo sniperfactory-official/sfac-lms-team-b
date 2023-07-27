@@ -1,5 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { FC } from "react";
+import { User } from "@/types/firebase.Types";
 import timestampToDate from "@/utils/timestampToDate";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,12 +9,14 @@ interface LectureHeaderProps {
   title: string;
   startDate: Timestamp;
   endDate: Timestamp;
+  user: User;
 }
 
 const LectureHeader: FC<LectureHeaderProps> = ({
   title,
   startDate,
   endDate,
+  user,
 }) => {
   const startDay = timestampToDate(startDate);
   const endDay = timestampToDate(endDate);
@@ -41,8 +44,12 @@ const LectureHeader: FC<LectureHeaderProps> = ({
         <div className="flex items-center mt-2">
           <div className="w-7 h-7 bg-white border border-gray-300 rounded-full flex-shrink-0"></div>
           <div className="flex items-center ml-2">
-            <span className=" text-sm font-semibold text-blue-500 ">이름</span>
-            <span className="text-sm ml-1 text-gray-500">&#183; 역할</span>
+            <span className=" text-sm font-semibold text-blue-500 ">
+              {user.username}
+            </span>
+            <span className="text-sm ml-1 text-gray-500">
+              &#183; {user.role}
+            </span>
           </div>
         </div>
       </div>
