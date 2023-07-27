@@ -25,9 +25,7 @@ const useClassroomModal = () => {
   );
 
   const handleModalMove = (openModalName: string, closeModalName: string) => {
-    dispatch(
-      setModalVisibility({ modalName: openModalName, visible: true }),
-    );
+    dispatch(setModalVisibility({ modalName: openModalName, visible: true }));
     dispatch(setModalVisibility({ modalName: closeModalName, visible: false }));
   };
 
