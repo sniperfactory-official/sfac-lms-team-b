@@ -21,7 +21,7 @@ const LectureHome: FC<lectureIdProps> = ({ lectureId }) => {
   } else if (!isFetching && data !== undefined && data.user) {
     return (
       <main className="lectuerContainer flex flex-col w-full h-full">
-        <LectureHeader />
+        <LectureHeader title={data.title} startDate={data.startDate} endDate={data.endDate}  />
         <div className="mainContainer flex w-full h-screen">
           <div className="Container flex flex-col w-3/4">
             <TypeOfLecture
