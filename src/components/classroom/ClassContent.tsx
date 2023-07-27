@@ -1,8 +1,8 @@
 import ContentCard from "./ContentCard";
 import { MOCK_DATA } from "./MOCK_DATA";
 import { IContent } from "./MOCK_DATA";
-import MakeLectureModal from "../classroomModal/lectureMake/MakeLectureModal";
-import AddLinkModal from "../classroomModal/lectureMake/AddLinkModal";
+import MakeLectureModal from "../classroomModal/createLecture/MakeLectureModal";
+import AddLinkModal from "../classroomModal/createLecture/AddLinkModal";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
