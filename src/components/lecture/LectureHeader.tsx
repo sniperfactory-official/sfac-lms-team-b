@@ -18,9 +18,7 @@ const LectureHeader = () => {
       <div className="w-11/12 h-full flex flex-col justify-center">
         <div className="flex flex-col mb-1">
           <h1 className="text-xl font-semibold mb-1.5">강의제목</h1>
-          <span className="text-gray-700 text-xs">
-            [수강기간]
-          </span>
+          <span className="text-gray-700 text-xs">[수강기간]</span>
         </div>
         <div className="flex items-center mt-2">
           <div className="w-7 h-7 bg-white border border-gray-300 rounded-full flex-shrink-0"></div>

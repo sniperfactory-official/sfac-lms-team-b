@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
+import classroomModalReducer from "./slice/classroomModalSlice";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    classroomModal: classroomModalReducer,
+  },
   devTools: process.env.NODE_ENV !== "production",
 });
 
