@@ -2,7 +2,7 @@ type OwnProps = {
   title: string;
   isOpen: boolean;
   onClose: () => void;
-  children: any; // any 괜찮은지 체크 필요
+  children: any; // any 괜찮은지 체크 필요.
 };
 
 const Modal: React.FC<OwnProps> = ({ title, isOpen, onClose, children }) => {
@@ -16,7 +16,7 @@ const Modal: React.FC<OwnProps> = ({ title, isOpen, onClose, children }) => {
         className="w-full h-full bg-black absolute opacity-30"
         onClick={onClose}
       />
-      <div className="modal relative z-1 bg-white p-[33px] rounded-[10px] max-w-[775px] w-11/12">
+      <div className="modal relative z-1 bg-white p-[33px] rounded-[10px] max-w-[775px] w-11/12 shadow-24dp">
         <div className="flex justify-between items-center mb-[20px]">
           <h2 className="text-[20px] font-[700] text-grayscale-100">{title}</h2>
           <button type="button" onClick={onClose}>
