@@ -1,21 +1,106 @@
+import PageToast from "@/components/PageToast";
+import { useState } from "react";
+
 type OwnProps = {
   onClose: () => void;
 };
 
 const SubmitAssignmentWithLink: React.FC<OwnProps> = ({ onClose }) => {
+  const [inputValues, setInputValues] = useState<string[]>([""]);
+  const [toastMsg, setToastMsg] = useState<string>("");
+  const [isAccept, setIsAccept] = useState<boolean>(false);
+
+  const handleInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    setInputValues(prevValues => {
+      const newValues = [...prevValues];
+      newValues[index] = event.target.value;
+      return newValues;
+    });
+  };
+
+  const isValidUrl = (url: string): boolean => {
+    // 정규식을 사용한 URL 유효성 체크
+    const urlPattern =
+      /^(https?:\/\/)?([^\s.]+\.\S{2,}|localhost)(\/[^\s]*)?$/i;
+    return urlPattern.test(url);
+  };
+
+  const handleAddInput = () => {
+    // input 요소 추가
+    setInputValues(prevValues => [...prevValues, ""]);
+  };
+
+  const handleDeleteInput = (index: number) => {
+    if (inputValues.length === 1) {
+      // 인풋이 1개일 때는 삭제 안 되게 처리
+      return;
+    }
+    setInputValues(prevValues => prevValues.filter((value, i) => i !== index));
+  };
+
+  const handleSubmit = () => {
+    for (let value of inputValues) {
+      if (isValidUrl(value) || value === "") {
+        // console.log(value);
+      } else {
+        setToastMsg("유효한 URL이 아닙니다. 다시 시도해주세요.");
+        setIsAccept(false);
+        return;
+      }
+    }
+    // FIXME: hook 완성되면 firebase로 처리/빈 문자열 제거해서 전송
+    let filterValue: string[] = inputValues.filter(url => url !== "");
+    if (filterValue.length > 0) {
+      // 여기서 firebase 처리
+      console.log("filterValue", filterValue);
+    } else {
+      setToastMsg("1개 이상의 URL을 입력해주세요.");
+      setIsAccept(false);
+    }
+  };
+
+  const closeToast = () => {
+    setToastMsg("");
+  };
+
   return (
     <>
       <div>
-        <input
-          className="border border-grayscale-20 text-grayscale-20 w-full rounded-[10px] h-[42px] px-[15px]"
-          type="text"
-          placeholder="https://"
-        />
+        {inputValues.map((value, index) => {
+          return (
+            <div className="relative mb-[10px]" key={index}>
+              <input
+                value={value}
+                onChange={event => {
+                  handleInputChange(event, index);
+                }}
+                className="border border-grayscale-20 text-grayscale-20 w-full rounded-[10px] h-[42px] pl-[15px] pr-[50px]"
+                type="text"
+                placeholder="https://"
+              />
+              <button
+                className="absolute top-1/2 right-[22px] transform -translate-y-1/2 text-[12px] text-grayscale-100 font-[400]"
+                type="button"
+                onClick={() => {
+                  handleDeleteInput(index);
+                }}
+              >
+                삭제
+              </button>
+            </div>
+          );
+        })}
       </div>
-      <div className="mt-[10px]">
+      <div>
         <button
           className="border border-grayscale-20 w-full rounded-[10px] h-[42px] px-[15px] flex justify-start items-center gap-[5px] text-grayscale-20"
           type="button"
+          onClick={() => {
+            handleAddInput();
+          }}
         >
           <svg
             width="25"
@@ -40,13 +125,30 @@ const SubmitAssignmentWithLink: React.FC<OwnProps> = ({ onClose }) => {
           <span>링크 추가하기</span>
         </button>
       </div>
-      <div className="flex justify-end items-center gap-[12px] mt-[20px]">
-        <button className="border" type="button" onClick={onClose}>
-          취소
-        </button>
-        <button className="border" type="button">
-          업로드
-        </button>
+      <div className="flex justify-between items-center mt-[20px]">
+        <div>
+          {toastMsg && (
+            <PageToast
+              toastMsg={toastMsg}
+              isAccept={isAccept}
+              onClose={closeToast}
+            />
+          )}
+        </div>
+        <div className="flex justify-end items-center gap-[12px]">
+          <button className="border" type="button" onClick={onClose}>
+            취소
+          </button>
+          <button
+            className="border"
+            type="button"
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
+            업로드
+          </button>
+        </div>
       </div>
     </>
   );

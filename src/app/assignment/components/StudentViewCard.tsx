@@ -29,25 +29,37 @@ const StudentViewCard: React.FC = () => {
             </span>
           </div>
         </div>
-        <div className="flex justify-end items-center gap-[14px]">
-          <button
-            type="button"
-            className="border"
-            onClick={() => {
-              setIsFileOpen(true);
-            }}
-          >
-            파일 첨부
-          </button>
-          <button
-            type="button"
-            className="border"
-            onClick={() => {
-              setIsLinkOpen(true);
-            }}
-          >
-            링크
-          </button>
+        <div>
+          {/* 제출 전 */}
+          <div className="flex justify-end items-center gap-[14px]">
+            <button
+              type="button"
+              className="border"
+              onClick={() => {
+                setIsFileOpen(true);
+              }}
+            >
+              파일 첨부
+            </button>
+            <button
+              type="button"
+              className="border"
+              onClick={() => {
+                setIsLinkOpen(true);
+              }}
+            >
+              링크
+            </button>
+          </div>
+          {/* END 제출 전 */}
+
+          {/* 제출 후 */}
+          <div>
+            <button type="button" className="border">
+              확인하기
+            </button>
+          </div>
+          {/* END 제출 후 */}
         </div>
       </div>
       {/* 과제: 링크 제출 */}
