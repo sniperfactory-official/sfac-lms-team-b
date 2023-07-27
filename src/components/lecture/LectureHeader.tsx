@@ -9,8 +9,8 @@ const LectureHeader = () => {
           <Image
             src="/images/arrow-left.svg"
             alt="뒤로가기"
-            width={16}
-            height={16}
+            width={15}
+            height={15}
             className="cursor-pointer float-right"
           />
         </Link>
