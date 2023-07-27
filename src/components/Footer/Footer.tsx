@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import fb from "/public/images/fb.png";
-import ln from "/public/images/ln.png";
-import yt from "/public/images/yt.png";
+import facebookLogo from "/public/images/facebookLogo.svg";
+import instagramLogo from "/public/images/instagramLogo.svg";
+import youtubeLogo from "/public/images/youtubeLogo.svg";
 
 export default function Footer() {
   return (
@@ -21,38 +21,29 @@ export default function Footer() {
       </ul>
       <div className="grid grid-cols-3 ml-20">
         <div>
-          <Link
-            className="px-1 "
-            style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}
-            href=""
-          >
+          <Link className="px-1 underline underline-offset-[3px]" href="">
             개인정보 처리방침
           </Link>
           <span className="w-1">|</span>
         </div>
         <div>
-          <Link
-            className="px-1 "
-            style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}
-            href=""
-          >
+          <Link className="px-1 underline underline-offset-[3px]" href="">
             서비스 이용약관
           </Link>
           <span className="w-1">|</span>
         </div>
 
         <Link
-          className="px-1  h-5 -ml-4 "
-          style={{ textDecoration: "underline", textUnderlineOffset: "3px" }}
+          className="px-1 h-5 -ml-4 underline underline-offset-[3px]"
           href=""
         >
           환불규정
         </Link>
       </div>
       <div className="grid grid-cols-3 gap-8 mt-8">
-        <Image className="cursor-pointer" src={fb} alt="페이스북" />
-        <Image className="cursor-pointer" src={ln} alt="링크드인" />
-        <Image className="cursor-pointer" src={yt} alt="유튜브" />
+        <Image className="cursor-pointer" src={facebookLogo} alt="페이스북" />
+        <Image className="cursor-pointer" src={instagramLogo} alt="링크드인" />
+        <Image className="cursor-pointer" src={youtubeLogo} alt="유튜브" />
       </div>
     </footer>
   );

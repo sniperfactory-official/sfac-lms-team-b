@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import logoImg from "/public/images/logo.png";
+import login from "/public/images/login.svg";
 import LoginForm from "@/components/LoginForm/LoginForm";
 import { auth } from "@/utils/firebase";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+export default function Auth() {
   const router = useRouter();
   useEffect(() => {
     auth.onAuthStateChanged(user => {
@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <div className="h-screen flex flex-col justify-center items-center gap-y-12">
-      <Image src={logoImg} alt="logo" priority={true} />
+      <Image src={login} alt="logo" priority={true} />
       <LoginForm />
     </div>
   );

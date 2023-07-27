@@ -2,72 +2,104 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import avatar from "/public/images/avatar.png";
-import logo from "/public/images/logo.png";
+import avatar from "/public/images/avatar.svg";
+import logo from "/public/images/logo.svg";
 import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
-import { db } from "@/utils/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import React from "react";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
-import { asyncLogoutFetch } from "@/redux/userSlice";
+import { useLogoutMutation } from "@/hooks/reactQuery/logout/useLogoutQuery";
+import { update } from "@/redux/userSlice";
+import fetchUserInfo from "@/hooks/reactQuery/navbar/useGetUserQuery";
+import useGetLectureInfoQuery from "@/hooks/reactQuery/navbar/useGetLectureQuery";
 
 export default function Navbar() {
   const router = useRouter();
   const userId = useAppSelector(state => state.userId.uid);
   const dispatch = useAppDispatch();
+  const { mutateAsync } = useLogoutMutation();
+
+  const onLogout = async () => {
+    try {
+      await mutateAsync();
+      dispatch(update(""));
+      setTimeout(() => purge(), 200);
+    } catch {
+      alert("로그아웃 실패했습니다. 다시 시도해주세요");
+    }
+  };
+
+  const {
+    data: userData,
+    isLoading: userLoading,
+    isError: userError,
+    error: userFetchError,
+  } = fetchUserInfo(userId);
+
+  const {
+    data: lectureData,
+    isLoading: lectureLoading,
+    isError: lectureError,
+    error: lectureFetchError,
+  } = useGetLectureInfoQuery("FWj3XW7DwytoAOgoefUd");
+
+  const getTime = (time: Date) => {
+    const today = new Date();
+
+    return Math.floor((today.getTime() - time.getTime()) / 1000 / 60 / 60 / 24);
+  };
+
+  const day = !lectureLoading && getTime(lectureData?.startDate.toDate());
 
   const purge = async () => {
     await persistor.purge();
-    router.push("/login");
+    router.push("/");
   };
-  const [userInfo, setUserInfo] = useState<{
-    [key: string]: string | undefined;
-  }>();
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchData = async (userId: string) => {
-      try {
-        const userRef = doc(db, "users", userId);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          setUserInfo(userSnap.data());
-          setLoading(false);
-          return userSnap.data();
-        }
-        return null;
-      } catch (error) {
-        setLoading(false);
-        console.log(error);
-      }
-    };
-
-    fetchData(userId);
-  }, []);
-
-  if (loading) {
+  if (userLoading && lectureLoading) {
     return <LoadingSpinner />;
   }
+
+  if (userError && lectureError) {
+    return (
+      <span>
+        Error: {((userFetchError || lectureFetchError) as Error).message}
+      </span>
+    );
+  }
+
   return (
     <div>
       <div className="flex justify-center bg-blue-50 h-20 items-center">
         <div className="flex justify-between w-3/4">
           <div className="flex">
             <div className="">
-              <Image src={avatar} alt="" className="w-10 h-10 mr-2" />
+              <Image
+                src={avatar}
+                alt="스나이퍼 팩토리 아바타"
+                width={40}
+                height={40}
+                className="mr-2"
+              />
             </div>
             <div className="flex items-center">
               <p>
                 안녕하세요
-                <span className="font-bold">{userInfo?.username}님</span>, 강의
-                <span className="font-bold">10일째</span>입니다.
+                <span className="font-bold ml-1">{userData?.username}님</span>,
+                강의
+                <span className="font-bold ml-1">{day}일째</span>입니다.
               </p>
             </div>
           </div>
           <div className="flex justify-center items-center">
-            <Image src={logo} alt="" className="w-14 h-8 mr-2" />
+            <Image
+              src={logo}
+              alt="스나이퍼 팩토리 로고"
+              width={56}
+              height={32}
+              className="mr-2"
+            />
             <p>
               <span className="mr-1 text-blue-600 font-bold text-xl">
                 FLUTTER
@@ -82,9 +114,8 @@ export default function Navbar() {
             <div className="flex">
               <button
                 className="ml-2"
-                onClick={async () => {
-                  dispatch(asyncLogoutFetch());
-                  setTimeout(() => purge(), 200);
+                onClick={() => {
+                  onLogout();
                 }}
               >
                 로그아웃
