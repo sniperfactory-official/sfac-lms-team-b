@@ -37,7 +37,7 @@ const AddLinkModal: React.FC = () => {
         name="inputContent"
         id="inputContent"
         placeholder="http://..."
-        className="justify-center text-[16px] w-[707px] h-[42px] flex-shrink-0 border-[1px] border-gray-300 bg-white rounded-md pl-[14px]"
+        className="justify-center text-[16px] w-[707px] h-[42px] flex-shrink-0 border-[1px] border-grayscale-10 bg-grayscale-0 rounded-md pl-[14px]"
         value={inputContent}
         onChange={handleInputContent}
       />
