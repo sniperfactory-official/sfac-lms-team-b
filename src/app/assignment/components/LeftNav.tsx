@@ -1,6 +1,12 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import CreateAssignments from "./CreateAssignments";
+import Modal from "./Modal";
 
 const LeftNav = () => {
+  const [isLinkOpen, setIsLinkOpen] = useState(false);
+
   return (
     <div className="float-left mr-[30px]">
       <div className="w-[245px] p-[13px] rounded-xl bg-[#f5f8ff] ">
@@ -26,7 +32,12 @@ const LeftNav = () => {
         </li>
       </div>
       <div className="flex justify-center items-center w-[246px] h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
-        <a href="#">
+        <a
+          href="#"
+          onClick={() => {
+            setIsLinkOpen(true);
+          }}
+        >
           <img
             className="inline align-middle"
             src="https://interactive-examples.mdn.mozilla.net/media/examples/star2.png"
@@ -35,6 +46,15 @@ const LeftNav = () => {
           과제 만들기
         </a>
       </div>
+      <Modal
+        title="과제만들기"
+        isOpen={isLinkOpen}
+        onClose={() => {
+          setIsLinkOpen(false);
+        }}
+      >
+        <CreateAssignments />
+      </Modal>
       <div className="flex justify-center items-center w-[246px] h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
         <a href="#">
           <img
