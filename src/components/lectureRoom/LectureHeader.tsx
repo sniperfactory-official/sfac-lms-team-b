@@ -1,6 +1,6 @@
 import { Timestamp } from "firebase/firestore";
 import { FC } from "react";
-import { User } from "@/types/firebase.Types";
+import { User } from "@/types/firebase.types";
 import timestampToDate from "@/utils/timestampToDate";
 import Image from "next/image";
 import Link from "next/link";

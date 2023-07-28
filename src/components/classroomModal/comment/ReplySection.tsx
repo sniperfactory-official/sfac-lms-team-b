@@ -36,7 +36,7 @@ const ReplySection: FC<ReplySectionProps> = ({ commentId }) => {
         <ul>
           {replies.map((reply, index) => (
             <li key={index} className="mt-2">
-              <Comment comment={reply} showFullComment={true} />
+              <Comment comment={reply} showFullComment={true} isReply={true} />
             </li>
           ))}
         </ul>

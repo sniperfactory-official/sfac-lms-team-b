@@ -30,7 +30,10 @@ const CommentForm: FC = () => {
           <div className="flex m-auto ml-2 justify-end w-40 pt-1">
             <button
               type="submit"
-              className="w-4/5 h-7 text-sm bg-blue-500 text-white rounded-md float-right"
+              disabled={!comment}
+              className={`w-4/5 h-7 text-sm rounded-md float-right ${
+                comment ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-400"
+              }`}
             >
               업로드
             </button>
