@@ -8,11 +8,11 @@ import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import { ICourseField } from "@/hooks/queries/useGetCourseList";
 import { Lecture } from "@/types/firebase.Types";
-        
+
 interface IProps {
   currentCourse: ICourseField;
 }
- 
+
 const ClassContent = ({ currentCourse }: IProps) => {
   const dispatch = useDispatch();
   const {
