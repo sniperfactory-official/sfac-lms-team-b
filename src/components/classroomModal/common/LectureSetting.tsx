@@ -4,14 +4,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
 const LectureSetting: React.FC = ({}) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(null);
-  const onChange = (dates: any) => {
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  };
-  const [isChecked, setIsChecked] = useState(false);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
+  const [startDate, endDate] = dateRange;
+
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const handleToggle = () => {
     setIsChecked(prev => !prev);
@@ -23,9 +22,12 @@ const LectureSetting: React.FC = ({}) => {
           수강 기간
         </span>
         <DatePicker
+          placeholderText="Pick a date"
           locale={ko}
           selected={startDate}
-          onChange={onChange}
+          onChange={(update: [Date | null, Date | null]) => {
+            setDateRange(update);
+          }}
           startDate={startDate}
           endDate={endDate}
           selectsRange
@@ -37,15 +39,8 @@ const LectureSetting: React.FC = ({}) => {
         <span className="text-black font-inter text-base font-semibold tracking-tighter leading-normal">
           강의 공개
         </span>
-        <label
-          style={{
-            display: "block",
-            width: "51px",
-            height: "26px",
-            position: "relative",
-          }}
-        >
-          <input type="checkbox" className="hidden" />
+        <label htmlFor="toggle" className="relative block w-[51px] h-[26px]">
+          <input type="checkbox" id="toggle" name="toggle" className="hidden" />
           <div
             style={{
               position: "absolute",
@@ -60,6 +55,7 @@ const LectureSetting: React.FC = ({}) => {
             onClick={handleToggle}
           ></div>
           <div
+            className="absolute top-50%"
             style={{
               position: "absolute",
               top: "50%",
