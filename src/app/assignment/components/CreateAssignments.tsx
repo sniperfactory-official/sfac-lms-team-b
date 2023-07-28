@@ -2,19 +2,8 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Timestamp } from "firebase/firestore";
 import Image from "next/image";
+import { Assignment } from "@/types/firebase.types";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
-
-export interface AssignmentValues {
-  title: string;
-  content: string;
-  level: "상" | "중" | "하";
-  images: string[];
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
-  startDate: Timestamp;
-  endDate: Timestamp;
-  readStudents: string[];
-}
 
 export default function CreateAssignment() {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
@@ -23,13 +12,11 @@ export default function CreateAssignment() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AssignmentValues>();
+  } = useForm<Assignment>();
 
-  const onSubmit: SubmitHandler<AssignmentValues> = data => {
+  const onSubmit: SubmitHandler<Assignment> = data => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
     data.images = imageFiles.map(file => URL.createObjectURL(file));
-    console.log(data);
-    // setIsFormSubmitted(true);
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +30,12 @@ export default function CreateAssignment() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <span className="text-base font-medium mr-[20px]">과제 난이도</span>
+        <label
+          htmlFor="level-select"
+          className="text-base font-medium mr-[20px]"
+        >
+          과제 난이도
+        </label>
         <select
           {...register("level", { required: true })}
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
@@ -118,7 +110,12 @@ export default function CreateAssignment() {
       </div>
 
       <div className="mx-auto flex items-center justify-between">
-        <span className="font-bold text-base mr-[12px]">제출 기간</span>
+        <label
+          htmlFor="submit-period"
+          className="font-bold text-base mr-[12px]"
+        >
+          제출 기간
+        </label>
         <input
           type="date"
           className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
