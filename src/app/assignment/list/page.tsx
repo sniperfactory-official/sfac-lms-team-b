@@ -1,14 +1,7 @@
 "use client";
 
-import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
 //.0726 : 기본 레이아웃 설정
 const List = () => {
-  const { data, isLoading, error } =
-    useGetSubmittedAssignments(`yjQmFY45VoZduNQ4Twxy`);
-  console.log(data);
-  console.log(isLoading);
-  console.log(error);
-
   return (
     <div>
       <div className="wrap float-left w-[775px] h-[87px] flex-shrink-0 border-radius-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center px-[24px]">

@@ -21,7 +21,7 @@ const getSubmittedAssignments = async (
   const userRef = doc(db, "users", "userId");
   const userSnapshot = await getDoc(userRef);
 
-  if ("수강생") {
+  if ("수강생일때 조건문 넣기") {
     const submittedAssignmentsQuery = query(
       collection(db, "submittedAssignments"),
       where("assignmentId", "==", assignmentSnapshot.ref),
