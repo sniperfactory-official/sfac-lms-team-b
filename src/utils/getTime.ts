@@ -15,4 +15,5 @@ export const getTime = (time: Date) => {
   if (days < 365) return `${Math.floor(days)}일 전`;
 
   return `${Math.floor(years)}년 전`;
+
 };
