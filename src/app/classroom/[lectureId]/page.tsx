@@ -7,14 +7,14 @@ import TypeOfLecture from "@/components/lectureRoom/typesOf/TypeOfLecture";
 import LectureComment from "@/components/lectureRoom/LectureComment";
 import LectureNavigation from "@/components/lectureRoom/LectureNavigation";
 import useGetLectureInfo from "@/hooks/lecture/useGetLectureInfo";
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname, useSearchParams } from "next/navigation";
 
 interface lectureIdProps {
   lectureId: string;
 }
 
 const LectureHome = ({ params }: { params: { lectureId: string } }) => {
-  const {lectureId} = params;
+  const { lectureId } = params;
   const { data, isLoading, error, isFetching } = useGetLectureInfo(lectureId);
 
   if (isFetching) {
