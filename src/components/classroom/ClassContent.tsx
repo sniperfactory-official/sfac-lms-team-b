@@ -1,11 +1,14 @@
+import { useDispatch } from "react-redux";
 import ContentCard from "./ContentCard";
 import { MOCK_DATA } from "./MOCK_DATA";
 import { IContent } from "./MOCK_DATA";
 import MakeLectureModal from "../classroomModal/createLecture/MakeLectureModal";
+import AddNoteModal from "../classroomModal/createLecture/AddNoteModal";
 import AddLinkModal from "../classroomModal/createLecture/AddLinkModal";
+import AddVideoFileModal from "../classroomModal/createLecture/AddVideoFileModal";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
+
 const ClassContent = () => {
   const dispatch = useDispatch();
   const {
@@ -13,8 +16,6 @@ const ClassContent = () => {
     noteModalOpen,
     linkModalOpen,
     videoFileModalOpen,
-    commentModalOpen,
-    replyCommentModalOpen,
   } = useClassroomModal();
 
   const handleModalOpen = () => {
@@ -22,6 +23,7 @@ const ClassContent = () => {
       setModalVisibility({ modalName: "lectureTypeModalOpen", visible: true }),
     );
   };
+  
   return (
     <div className="w-4/5 h-100 pt-[100px] ml-[50px]">
       <div className="flex justify-between w-100">
@@ -40,7 +42,9 @@ const ClassContent = () => {
         <ContentCard key={e.TITLE} props={e} />
       ))}
       {lectureTypeModalOpen && <MakeLectureModal />}
+      {noteModalOpen && <AddNoteModal />}
       {linkModalOpen && <AddLinkModal />}
+      {videoFileModalOpen && <AddVideoFileModal />}
     </div>
   );
 };
