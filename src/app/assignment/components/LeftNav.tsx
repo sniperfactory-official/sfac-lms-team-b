@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import CreateAssignment from "./CreateAssignment";
+import CreateAssignments from "./CreateAssignments";
 import Modal from "./Modal";
 
 const LeftNav = () => {
@@ -53,7 +53,7 @@ const LeftNav = () => {
           setIsLinkOpen(false);
         }}
       >
-        <CreateAssignment />
+        <CreateAssignments />
       </Modal>
       <div className="flex justify-center items-center w-[246px] h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
         <a href="#">
