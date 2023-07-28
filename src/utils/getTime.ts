@@ -1,23 +1,19 @@
 export const getTime = (time: Date) => {
   const today = new Date();
-
-  const betweenTime = Math.floor(
-    (today.getTime() - time.getTime()) / 1000 / 60,
+  const timeDifferenceInSeconds = Math.floor(
+    (today.getTime() - time.getTime()) / 1000,
   );
-  if (betweenTime < 1) return "방금 전";
-  if (betweenTime < 60) {
-    return `${betweenTime}분 전`;
-  }
 
-  const betweenTimeHour = Math.floor(betweenTime / 60);
-  if (betweenTimeHour < 24) {
-    return `${betweenTimeHour}시간 전`;
-  }
+  const minutes = timeDifferenceInSeconds / 60;
+  const hours = minutes / 60;
+  const days = hours / 24;
+  const years = days / 365;
 
-  const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-  if (betweenTimeDay < 365) {
-    return `${betweenTimeDay}일 전`;
-  }
+  if (minutes < 1) return "방금 전";
+  if (minutes < 60) return `${Math.floor(minutes)}분 전`;
+  if (hours < 24) return `${Math.floor(hours)}시간 전`;
+  if (days < 365) return `${Math.floor(days)}일 전`;
 
-  return `${Math.floor(betweenTimeDay / 365)}년 전`;
+  return `${Math.floor(years)}년 전`;
+
 };
