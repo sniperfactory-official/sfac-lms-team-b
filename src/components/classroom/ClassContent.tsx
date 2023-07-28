@@ -1,5 +1,4 @@
 import { useDispatch } from "react-redux";
-import ContentCard from "./ContentCard";
 import ContentCard from "./main/ContentCard";
 import MakeLectureModal from "../classroomModal/createLecture/MakeLectureModal";
 import AddNoteModal from "../classroomModal/createLecture/AddNoteModal";

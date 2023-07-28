@@ -4,8 +4,7 @@ import { DocumentData } from "firebase/firestore";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import Layout from "../common/Layout";
-import useClassroomModal from "@/hooks/useClassroomModal";
-
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useGetLectureReplies from "@/hooks/lecture/useGetLectureReplies";
 import useGetLectureReply from "@/hooks/lecture/useGetLectureReply";
 

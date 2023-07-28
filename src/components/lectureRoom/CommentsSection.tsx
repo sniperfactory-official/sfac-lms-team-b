@@ -2,11 +2,9 @@ import React, { FC } from "react";
 import CommentForm from "../classroomModal/comment/CommentForm";
 import Comment from "../classroomModal/comment/Comment";
 import Layout from "../classroomModal/common/Layout";
-import useClassroomModal from "@/hooks/useClassroomModal";
-
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { DocumentData } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 
 interface CommentsSectionProps {
   comments: DocumentData[] | undefined;
