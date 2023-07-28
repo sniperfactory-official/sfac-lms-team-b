@@ -29,7 +29,7 @@ const ClassContent = ({ currentCourse }: IProps) => {
   };
 
   return (
-    <div className="w-4/5 h-100 pt-[100px] ml-[50px]">
+    <div className="w-4/5 h-100 pt-[50px] ml-[50px]">
       <div className="flex justify-between w-100">
         <div className="flex flex-col w-[150px] mb-[20px]">
           <div className="text-lg font-bold">
