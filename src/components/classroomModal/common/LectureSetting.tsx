@@ -17,7 +17,7 @@ const LectureSetting: React.FC = ({}) => {
     setIsChecked(prev => !prev);
   };
   return (
-    <div className="flex relative pt-[20px] pb-[29px]  gap-[69px]">
+    <div className="flex relative gap-[69px]">
       <div className="flex gap-[12px] items-center ">
         <span className="text-black font-inter text-base font-semibold tracking-tighter leading-normal">
           수강 기간
