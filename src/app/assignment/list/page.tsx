@@ -1,5 +1,6 @@
 import React from "react";
 import ListContent from "../components/ListContent";
+"use client";
 
 //.0726 : 기본 레이아웃 설정
 const List = () => {
