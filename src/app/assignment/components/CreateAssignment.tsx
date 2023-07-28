@@ -1,114 +1,85 @@
-"use client";
-
-import { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { Timestamp } from "firebase/firestore";
 import Image from "next/image";
+import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
 
-const CreateAssignment = () => {
-  const [selectedOption, setSelectedOption] = useState("");
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+export interface AssignmentValues {
+  title: string;
+  content: string;
+  level: "상" | "중" | "하";
+  images: string[];
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+  startDate: Timestamp;
+  endDate: Timestamp;
+  readStudents: string[];
+}
 
-  const handleSelectDropdown = (event: ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
-    setSelectedOption(event.target.value);
+export default function CreateAssignment() {
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AssignmentValues>();
+
+  const onSubmit: SubmitHandler<AssignmentValues> = data => {
+    // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
+    data.images = imageFiles.map(file => URL.createObjectURL(file));
+    console.log(data);
+    // setIsFormSubmitted(true);
   };
 
-  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
-    setTitle(event.target.value);
-  };
-  const handleContentChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    console.log(event.target.value);
-    setContent(event.target.value);
-  };
-
-  const showImageAlert = () => {
-    alert("이미지는 최대 다섯 개까지 선택할 수 있습니다.");
-  };
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
-      if (selectedFiles.length + files.length > 5) {
-        showImageAlert();
-      } else {
-        setSelectedFiles(prevFiles => [...prevFiles, ...Array.from(files)]);
-      }
+      const fileList = Array.from(files);
+      setImageFiles(prevFiles => [...prevFiles, ...fileList]);
     }
   };
 
-  const handleStartdateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(new Date(event.target.value));
-
-    const selectedDate = new Date(event.target.value);
-    setStartDate(new Date(event.target.value));
-    if (selectedDate < new Date()) {
-      alert("시작 날짜는 현재 날짜보다 이전일 수 없습니다.");
-    } else if (selectedDate > endDate) {
-      alert("시작 날짜는 종료 날짜보다 빠를 수 없습니다.");
-    }
-  };
-
-  const handleEnddateChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(new Date(event.target.value));
-
-    const selectedDate = new Date(event.target.value);
-    setEndDate(new Date(event.target.value));
-    if (selectedDate < new Date()) {
-      alert("종료 날짜는 현재 날짜보다 이전일 수 없습니다.");
-    } else if (selectedDate < startDate) {
-      alert("종료 날짜는 시작 날짜보다 늦을 수 없습니다.");
-    }
-  };
-
-  const handleButtonClick = () => {
-    if (!selectedOption || !title || !content || !startDate || !endDate) {
-      alert("필수 입력 항목들을 모두 입력해주세요.");
-      return;
-    }
-    console.log(selectedOption);
-    console.log(title);
-    console.log(selectedFiles);
-  };
   return (
-    <>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <span className="text-base font-medium mr-[19px]">과제난이도</span>
+        <span className="text-base font-medium mr-[20px]">과제 난이도</span>
         <select
-          value={selectedOption}
-          onChange={handleSelectDropdown}
-          className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px]"
+          {...register("level", { required: true })}
+          className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
         >
-          <option className="text-grayscale-40">난이도를 선택해주세요.</option>
-          <option>초</option>
-          <option>중</option>
-          <option>고</option>
+          <option className="text-grayscale-40">난이도를 선택해주세요</option>
+          <option value="상">상</option>
+          <option value="중">중</option>
+          <option value="하">하</option>
         </select>
       </div>
+
       <input
         className="w-full focus:outline-none text-xl text-grayscale-40 mb-[13px]"
+        placeholder="제목을 입력해주세요"
         type="text"
-        placeholder="제목을 입력하세요."
-        onChange={handleTitleChange}
-      ></input>
+        {...register("title", { required: true })}
+      />
       <div className="w-full h-[350px] border rounded-xl p-[20px] mb-[26px]">
         <textarea
           className="w-full h-[240px] focus:outline-none resize-none"
-          onChange={handleContentChange}
-          placeholder="내용을 입력하세요."
-        ></textarea>
+          placeholder="내용을 입력해주세요"
+          {...register("content", { required: true })}
+        />
         <div className="flex items-center">
           <label
-            htmlFor="fileInput"
+            htmlFor="picture"
             className="w-[60px] h-[60px] bg-grayscale-10 cursor-pointer flex items-center justify-center rounded-[10px] ml-[8px]"
           >
             <input
-              id="fileInput"
+              {...register("images", { required: true })}
+              id="picture"
               type="file"
               className="hidden"
+              accept="image/*"
               onChange={handleFileChange}
+              multiple
             />
             <svg
               width="28"
@@ -124,10 +95,10 @@ const CreateAssignment = () => {
             </svg>
           </label>
           <div className="flex">
-            {selectedFiles.map((file, index) => (
+            {imageFiles.map((file, index) => (
               <div
                 key={index}
-                className="mr-[8px] ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+                className="ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
               >
                 {file ? (
                   <Image
@@ -145,31 +116,26 @@ const CreateAssignment = () => {
           </div>
         </div>
       </div>
+
       <div className="mx-auto flex items-center justify-between">
         <span className="font-bold text-base mr-[12px]">제출 기간</span>
         <input
           type="date"
-          value={startDate.toISOString().split("T")[0]}
-          onChange={handleStartdateChange}
           className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-        ></input>
-        <span> ~ </span>
+          {...register("startDate", { required: true })}
+        />
         <input
           type="date"
-          value={endDate.toISOString().split("T")[0]}
-          onChange={handleEnddateChange}
           className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-        ></input>
+          {...register("endDate", { required: true })}
+        />
         <button
           type="submit"
           className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
-          onClick={handleButtonClick}
         >
           업로드
         </button>
       </div>
-    </>
+    </form>
   );
-};
-
-export default CreateAssignment;
+}
