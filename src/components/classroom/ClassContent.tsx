@@ -1,9 +1,11 @@
-
+import { useDispatch } from "react-redux";
+import ContentCard from "./ContentCard";
 import ContentCard from "./main/ContentCard";
 import MakeLectureModal from "../classroomModal/createLecture/MakeLectureModal";
+import AddNoteModal from "../classroomModal/createLecture/AddNoteModal";
 import AddLinkModal from "../classroomModal/createLecture/AddLinkModal";
+import AddVideoFileModal from "../classroomModal/createLecture/AddVideoFileModal";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import { ICourseField } from "@/hooks/queries/useGetCourseList";
 import { Lecture } from "@/types/firebase.Types";
@@ -19,8 +21,6 @@ const ClassContent = ({ currentCourse }: IProps) => {
     noteModalOpen,
     linkModalOpen,
     videoFileModalOpen,
-    commentModalOpen,
-    replyCommentModalOpen,
   } = useClassroomModal();
 
   const handleModalOpen = () => {
@@ -51,7 +51,9 @@ const ClassContent = ({ currentCourse }: IProps) => {
         <ContentCard key={lecture.title} lecture={lecture} />
       ))}
       {lectureTypeModalOpen && <MakeLectureModal />}
+      {noteModalOpen && <AddNoteModal />}
       {linkModalOpen && <AddLinkModal />}
+      {videoFileModalOpen && <AddVideoFileModal />}
     </div>
   );
 };
