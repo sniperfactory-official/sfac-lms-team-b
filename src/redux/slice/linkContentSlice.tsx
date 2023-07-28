@@ -13,9 +13,7 @@ const contentSlice = createSlice({
     setInputContent: (state, action) => {
       state.inputContent = action.payload;
     },
-    resetInputContent: state => {
-      state.inputContent = "";
-    },
+    resetInputContent: () => initialState,
   },
 });
 
