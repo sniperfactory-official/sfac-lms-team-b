@@ -1,6 +1,8 @@
 export const getTime = (time: Date) => {
   const today = new Date();
-  const timeDifferenceInSeconds = Math.floor((today.getTime() - time.getTime()) / 1000);
+  const timeDifferenceInSeconds = Math.floor(
+    (today.getTime() - time.getTime()) / 1000,
+  );
 
   const minutes = timeDifferenceInSeconds / 60;
   const hours = minutes / 60;
