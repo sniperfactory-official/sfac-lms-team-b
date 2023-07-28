@@ -1,15 +1,11 @@
 import React, { FC, useState, ChangeEvent, FormEvent } from "react";
 
-interface CommentFormProps {
-  handleComment: (comment: string) => void;
-}
-
-const CommentForm: FC<CommentFormProps> = ({ handleComment }) => {
+const CommentForm: FC = () => {
   const [comment, setComment] = useState("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleComment(comment);
+    // handleComment(comment);
     setComment("");
   };
 

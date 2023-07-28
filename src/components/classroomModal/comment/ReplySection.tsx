@@ -1,57 +1,47 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
+
+import { DocumentData } from "firebase/firestore";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import Layout from "../common/Layout";
 import useClassroomModal from "@/hooks/useClassroomModal";
 
-interface Comment {
-  text: string;
-  replies: string[];
-}
+import useGetLectureReplies from "@/hooks/lecture/useGetLectureReplies";
+import useGetLectureReply from "@/hooks/lecture/useGetLectureReply";
 
 interface ReplySectionProps {
-  role: string;
-  activeComment: Comment | null;
-  handleReply: (reply: string) => void;
+  commentId: string;
 }
 
-const ReplySection: FC<ReplySectionProps> = ({
-  role,
-  activeComment,
-  handleReply,
-}) => {
+const ReplySection: FC<ReplySectionProps> = ({ commentId }) => {
   const { replyCommentModalOpen } = useClassroomModal();
+  const [comment, setComment] = useState<DocumentData | null>(null);
+  const [replies, setReplies] = useState<DocumentData[]>([]);
+
+  useEffect(() => {
+    const fetchCommentAndReplies = async () => {
+      const commentResult = await useGetLectureReply(commentId);
+      const repliesResult = await useGetLectureReplies(commentId);
+      setComment(commentResult);
+      setReplies(repliesResult);
+    };
+
+    fetchCommentAndReplies();
+  }, [commentId]);
 
   return (
-    activeComment &&
     replyCommentModalOpen && (
       <Layout>
         <h2 className="text-2xl font-bold">상세보기</h2>
-        <Comment
-          admin={role}
-          username="예시"
-          role="수강생"
-          comment={activeComment.text}
-          showFullComment={true}
-        />
+        {comment && <Comment comment={comment} showFullComment={true} />}
         <ul>
-          {activeComment.replies.map((reply, index) => (
+          {replies.map((reply, index) => (
             <li key={index} className="mt-2">
-              <Comment
-                admin={role}
-                username="예시"
-                role="수강생"
-                comment={reply}
-                showFullComment={true}
-              />
+              <Comment comment={reply} showFullComment={true} />
             </li>
           ))}
         </ul>
-        <CommentForm
-          handleComment={reply => {
-            handleReply(reply);
-          }}
-        />
+        <CommentForm />
       </Layout>
     )
   );

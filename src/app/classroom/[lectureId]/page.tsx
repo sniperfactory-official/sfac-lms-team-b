@@ -1,11 +1,11 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, use } from "react";
 
-import LectureHeader from "@/components/lecture/LectureHeader";
-import TypeOfLecture from "@/components/lecture/typesOf/TypeOfLecture";
-import LectureComment from "@/components/lecture/LectureComment";
-import LectureNavigation from "@/components/lecture/LectureNavigation";
+import LectureHeader from "@/components/lectureRoom/LectureHeader";
+import TypeOfLecture from "@/components/lectureRoom/typesOf/TypeOfLecture";
+import LectureComment from "@/components/lectureRoom/LectureComment";
+import LectureNavigation from "@/components/lectureRoom/LectureNavigation";
 import useGetLectureInfo from "@/hooks/lecture/useGetLectureInfo";
 
 interface lectureIdProps {
@@ -35,7 +35,7 @@ const LectureHome: FC<lectureIdProps> = ({ lectureId }) => {
             />
             <LectureNavigation />
           </div>
-          <LectureComment />
+          <LectureComment lectureId={lectureId} />
         </div>
       </main>
     );
