@@ -4,10 +4,13 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
 
 const LectureSetting: React.FC = ({}) => {
-  const [dateRange, setDateRange] = useState([null, null]);
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    null,
+    null,
+  ]);
   const [startDate, endDate] = dateRange;
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   const handleToggle = () => {
     setIsChecked(prev => !prev);
@@ -22,7 +25,7 @@ const LectureSetting: React.FC = ({}) => {
           placeholderText="Pick a date"
           locale={ko}
           selected={startDate}
-          onChange={(update: any) => {
+          onChange={(update: [Date | null, Date | null]) => {
             setDateRange(update);
           }}
           startDate={startDate}
