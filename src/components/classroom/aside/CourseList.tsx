@@ -1,7 +1,7 @@
 import React from "react";
 import { ICourseField } from "@/hooks/queries/useGetCourseList";
 import Element from "./Element";
-import { Lecture } from "@/types/firebase.Types";
+import { Lecture } from "@/types/firebase.types";
 
 interface IProps {
   courseList: ICourseField[];

@@ -7,7 +7,7 @@ import AddVideoFileModal from "../classroomModal/createLecture/AddVideoFileModal
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import { ICourseField } from "@/hooks/queries/useGetCourseList";
-import { Lecture } from "@/types/firebase.Types";
+import { Lecture } from "@/types/firebase.types";
 
 interface IProps {
   currentCourse: ICourseField;

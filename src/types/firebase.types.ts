@@ -32,7 +32,7 @@ export interface Course {
 }
 
 export interface Lecture {
-  Id: string;
+  id: string;
   user?: User;
   userId: DocumentReference;
   course?: Course;

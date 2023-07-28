@@ -1,4 +1,4 @@
-import type { Course, Lecture } from "@/types/firebase.Types";
+import type { Course, Lecture } from "@/types/firebase.types";
 import { db } from "@/utils/firebase";
 import { useQuery } from "@tanstack/react-query";
 import { collection, query, where, getDocs } from "firebase/firestore";

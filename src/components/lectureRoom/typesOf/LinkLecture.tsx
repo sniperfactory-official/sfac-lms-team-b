@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import type { LectureContent } from "@/types/firebase.Types";
+import type { LectureContent } from "@/types/firebase.types";
 
 interface LinkLectureProps {
   content: LectureContent;

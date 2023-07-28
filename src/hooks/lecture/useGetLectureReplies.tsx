@@ -1,4 +1,4 @@
-import { User } from "@/types/firebase.Types";
+import { User } from "@/types/firebase.types";
 import { db } from "@/utils/firebase";
 import {
   collection,

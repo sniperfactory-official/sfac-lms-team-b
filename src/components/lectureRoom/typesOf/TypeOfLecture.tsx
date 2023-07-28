@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import VideoLecture from "./VideoLecture";
 import NoteLecture from "./NoteLecture";
 import LinkLecture from "./LinkLecture";
-import type { LectureContent } from "@/types/firebase.Types";
+import type { LectureContent } from "@/types/firebase.types";
 
 interface TypeOfLectureProps {
   type: string;

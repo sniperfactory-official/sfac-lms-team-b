@@ -1,4 +1,4 @@
-import { Lecture } from "@/types/firebase.Types";
+import { Lecture } from "@/types/firebase.types";
 import { useRouter } from "next/navigation";
 
 const ContentCard = ({ lecture }: { lecture: Lecture }) => {
