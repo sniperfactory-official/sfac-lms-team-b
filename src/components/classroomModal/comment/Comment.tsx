@@ -26,7 +26,7 @@ const Comment: React.FC<CommentProps> = ({
       : content;
 
   const time = getTime(new Date(timestampToDate(createdAt)));
-  
+
   const handleCommentClick = () => {
     if (onCommentClick) {
       onCommentClick(id);

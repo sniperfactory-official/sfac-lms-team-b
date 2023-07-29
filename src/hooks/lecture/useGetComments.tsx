@@ -1,7 +1,15 @@
 import { User } from "@/types/firebase.types";
 import { db } from "@/utils/firebase";
 import { useQuery } from "@tanstack/react-query";
-import { DocumentData, collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
+import {
+  DocumentData,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 /**
  * @param {string} lectureId
@@ -9,7 +17,11 @@ import { DocumentData, collection, doc, getDoc, getDocs, query, where } from "fi
  * @param {string} commentId
  * @returns {Promise<DocumentData[]>}
  */
-const fetchComments = async (lectureId?: string, parentId?: string, commentId?: string): Promise<DocumentData[]> => {
+const fetchComments = async (
+  lectureId?: string,
+  parentId?: string,
+  commentId?: string,
+): Promise<DocumentData[]> => {
   if (lectureId) {
     const commentsQuery = query(
       collection(db, "lectureComments"),
@@ -18,14 +30,14 @@ const fetchComments = async (lectureId?: string, parentId?: string, commentId?: 
     const querySnapshot = await getDocs(commentsQuery);
 
     const comments: DocumentData[] = await Promise.all(
-      querySnapshot.docs.map(async (doc) => {
+      querySnapshot.docs.map(async doc => {
         const docData = doc.data();
         const commentId = doc.id;
         const userSnap = await getDoc(docData.userId);
         const user = userSnap.data() as User;
 
         return { id: commentId, ...docData, user };
-      })
+      }),
     );
 
     return comments;
@@ -37,14 +49,14 @@ const fetchComments = async (lectureId?: string, parentId?: string, commentId?: 
     const querySnapshot = await getDocs(commentsQuery);
 
     const comments: DocumentData[] = await Promise.all(
-      querySnapshot.docs.map(async (doc) => {
+      querySnapshot.docs.map(async doc => {
         const docData = doc.data();
         const commentId = doc.id;
         const userSnap = await getDoc(docData.userId);
         const user = userSnap.data() as User;
 
         return { id: commentId, ...docData, user };
-      })
+      }),
     );
 
     return comments;
@@ -72,7 +84,11 @@ const fetchComments = async (lectureId?: string, parentId?: string, commentId?: 
  * @param {string} commentId
  * @returns {Object}
  */
-const useGetComments = (lectureId?: string, parentId?: string, commentId?: string) => {
+const useGetComments = (
+  lectureId?: string,
+  parentId?: string,
+  commentId?: string,
+) => {
   return useQuery(
     ["comments", lectureId, parentId, commentId],
     () => fetchComments(lectureId, parentId, commentId),
