@@ -1,11 +1,11 @@
 import { closeModal } from "@/redux/slice/classroomModalSlice";
-import { resetInputContent } from "@/redux/slice/linkContentSlice";
+import { resetInput } from "@/redux/slice/lectureInfoSlice";
 import { useDispatch } from "react-redux";
 const ModalSubmitButton: React.FC = () => {
   const dispatch = useDispatch();
   const lectureUpload = () => {
     dispatch(closeModal());
-    dispatch(resetInputContent());
+    dispatch(resetInput());
   };
   return (
     <button

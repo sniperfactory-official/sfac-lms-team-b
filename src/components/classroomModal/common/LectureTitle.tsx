@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setInputTitle } from "@/redux/slice/lectureTitleSlice";
+import { setLectureTitle } from "@/redux/slice/lectureInfoSlice";
 
 const LectureTitle: React.FC = () => {
-  const lectureTitle = useSelector((state: any) => state.title.lectureTitle);
-
+  const lectureTitle = useSelector(
+    (state: any) => state.lectureInfo.lectureTitle,
+  );
   const dispatch = useDispatch();
 
   const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setInputTitle(e.target.value));
+    dispatch(setLectureTitle(e.target.value));
   };
 
   return (

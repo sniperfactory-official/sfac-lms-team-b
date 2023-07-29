@@ -1,28 +1,34 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../common/Layout";
+import ModalHeader from "../common/ModalHeader";
 import Image from "next/image";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import ModalHeader from "../common/ModalHeader";
+import { setSelectedModal, resetInput } from "@/redux/slice/lectureInfoSlice";
 
 const MakeLectureModal: React.FC = ({}) => {
-  const isSelectModal = (modal: string) => {
-    setSelectedModal(modal);
-  };
-  const [selectedModal, setSelectedModal] = useState<string | null>(null);
   const { handleModalMove } = useClassroomModal();
+  const dispatch = useDispatch();
+  const selectedModal = useSelector(
+    (state: any) => state.lectureInfo.selectedModal,
+  );
+
+  const isSelectModal = (modal: string) => {
+    if (selectedModal === modal) {
+    } else {
+      dispatch(resetInput());
+      dispatch(setSelectedModal(modal));
+    }
+  };
 
   const onNextButtonClick = () => {
     if (selectedModal === "note") {
-      // 노트 모달 선택 시 처리할 로직
       handleModalMove("noteModalOpen", "lectureTypeModalOpen");
     } else if (selectedModal === "video") {
-      // 영상 모달 선택 시 처리할 로직
       handleModalMove("videoFileModalOpen", "lectureTypeModalOpen");
     } else if (selectedModal === "link") {
       handleModalMove("linkModalOpen", "lectureTypeModalOpen");
     }
   };
-
   return (
     <Layout>
       <div className="flex flex-col gap-[26px]">
