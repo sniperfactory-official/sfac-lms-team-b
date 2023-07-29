@@ -4,7 +4,6 @@ import Comment from "../classroomModal/comment/Comment";
 import Layout from "../classroomModal/common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { DocumentData } from "firebase/firestore";
-import { useDispatch } from "react-redux";
 
 interface CommentsSectionProps {
   comments: DocumentData[] | undefined;
@@ -15,15 +14,14 @@ const CommentsSection: FC<CommentsSectionProps> = ({
   comments = [],
   onCommentClick,
 }) => {
-  const dispatch = useDispatch();
   const { commentModalOpen } = useClassroomModal();
 
   return (
     <ul>
       {comments
         .filter(comment => !comment.parentId)
-        .map((comment, index) => (
-          <li key={index} className="cursor-pointer rounded-md m-3">
+        .map(comment => (
+          <li key={comment.id} className="cursor-pointer rounded-md m-3">
             <Comment comment={comment} onCommentClick={onCommentClick} />
           </li>
         ))}
