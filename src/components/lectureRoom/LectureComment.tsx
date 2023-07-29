@@ -1,10 +1,12 @@
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setModalVisibility, setLectureId } from "@/redux/slice/classroomModalSlice";
+import {
+  setModalVisibility,
+  setLectureId,
+} from "@/redux/slice/classroomModalSlice";
 import ReplySection from "@/components/classroomModal/comment/ReplySection";
 import CommentsSection from "@/components/lectureRoom/CommentsSection";
 import useGetComments from "@/hooks/lecture/useGetComments";
-
 
 interface LectureCommentProps {
   lectureId: string;
