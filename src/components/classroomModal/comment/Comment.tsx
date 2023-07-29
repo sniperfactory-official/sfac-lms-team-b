@@ -17,7 +17,7 @@ const Comment: React.FC<CommentProps> = ({
   isReply = false,
   onCommentClick,
 }) => {
-  const { content, createdAt, updatedAt, lectureCommentId, parentId } = comment;
+  const { id, content, createdAt, updatedAt, parentId } = comment;
   const { username, role, userId } = comment.user;
 
   const displayedComment =
@@ -29,7 +29,7 @@ const Comment: React.FC<CommentProps> = ({
 
   const handleCommentClick = () => {
     if (onCommentClick) {
-      onCommentClick(lectureCommentId);
+      onCommentClick(id);
     }
   };
   return (

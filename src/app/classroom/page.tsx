@@ -19,8 +19,8 @@ const Classroom = () => {
     return <div>isLoading</div>;
 
   return (
-    <div className="w-screen h-screen flex justify-center">
-      <section className="w-4/5 h-screen flex">
+    <div className="w-screen flex justify-center">
+      <section className="w-4/5 flex mb-[20px]">
         <Aside courseList={courseList!} setCurrentCourse={setCurrentCourse} />
         <ClassContent currentCourse={currentCourse!} />
       </section>

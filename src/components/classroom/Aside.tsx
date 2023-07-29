@@ -13,7 +13,7 @@ const Aside = ({ courseList, setCurrentCourse }: IProps) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
 
   return (
-    <aside className="w-1/5 h-100 flex items-center flex-col mr-[20px] pt-[100px]">
+    <aside className="w-1/5 h-100 flex items-center flex-col mr-[20px] pt-[50px]">
       <CourseList
         courseList={courseList}
         isEditMode={isEditMode}
