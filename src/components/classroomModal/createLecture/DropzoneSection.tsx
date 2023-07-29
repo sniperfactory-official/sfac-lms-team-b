@@ -1,13 +1,7 @@
 import useVideoFileDrop from "@/hooks/lecture/useVideoFileDrop";
 
-interface DropzoneSectionProps {
-  setVideoFile: React.Dispatch<React.SetStateAction<File | null>>;
-}
-
-const DropzoneSection: React.FC<DropzoneSectionProps> = ({ setVideoFile }) => {
-  const { getRootProps, getInputProps, isDragActive } = useVideoFileDrop({
-    setVideoFile: setVideoFile,
-  });
+const DropzoneSection: React.FC = () => {
+  const { getRootProps, getInputProps, isDragActive } = useVideoFileDrop();
 
   return (
     <div
