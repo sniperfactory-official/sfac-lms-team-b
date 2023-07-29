@@ -3,7 +3,7 @@
 import React from "react";
 import ListContent from "../components/ListContent";
 
-const List = ()=>{
+const List = () => {
   return (
     <div>
       <ListContent />
