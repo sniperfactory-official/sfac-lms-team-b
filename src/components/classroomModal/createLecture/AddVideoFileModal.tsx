@@ -27,28 +27,30 @@ const AddVideoFileModal: React.FC = () => {
         </button>
       </ModalHeader>
       <LectureTitle />
-      {videoFile && (
-        <div className="flex gap-3 items-center">
-          <Image
-            src={"/images/file-icon.svg"}
-            alt={"파일 아이콘"}
-            width={0}
-            height={0}
-            className="w-9 h-auto"
-          />
-          <span className="font-bold text-base text-primary-80">
-            {videoFile?.name}
-          </span>
-          <button
-            type="button"
-            className="ml-auto text-xs text-grayscale-100 hover:font-bold"
-            onClick={handleRemoveVideoFile}
-          >
-            삭제
-          </button>
-        </div>
-      )}
-      <DropzoneSection setVideoFile={setVideoFile} />
+      <div className="flex flex-col gap-5 h-72">
+        {videoFile?.type.includes("video") && (
+          <div className="flex gap-3 items-center">
+            <Image
+              src={"/images/file-icon.svg"}
+              alt={"파일 아이콘"}
+              width={0}
+              height={0}
+              className="w-9 h-auto"
+            />
+            <span className="font-bold text-base text-primary-80">
+              {videoFile?.name}
+            </span>
+            <button
+              type="button"
+              className="ml-auto text-xs text-grayscale-100 hover:font-bold"
+              onClick={handleRemoveVideoFile}
+            >
+              삭제
+            </button>
+          </div>
+        )}
+        <DropzoneSection setVideoFile={setVideoFile} />
+      </div>
       <ModalFooter />
     </Layout>
   );

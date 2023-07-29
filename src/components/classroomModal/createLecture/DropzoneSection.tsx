@@ -5,16 +5,20 @@ interface DropzoneSectionProps {
 }
 
 const DropzoneSection: React.FC<DropzoneSectionProps> = ({ setVideoFile }) => {
-  const { getRootProps, isDragActive, videoFileURL, handleDrop } =
-    useVideoFileDrop({
-      setVideoFile: setVideoFile,
-    });
+  const { getRootProps, getInputProps, isDragActive } = useVideoFileDrop({
+    setVideoFile: setVideoFile,
+  });
 
   return (
     <div
       {...getRootProps()}
-      className="h-72 border border-dashed border-grayscale-20 gap-[10px] rounded-[10px] flex flex-col justify-center items-center"
-      onClick={() => {}}
+      className="flex-1 gap-[10px] border-[10px] border-solid border-transparent rounded-[10px] flex flex-col justify-center items-center"
+      style={{
+        borderImageSource: "url('/images/dropzone-border.svg')",
+        borderImageSlice: "100",
+        borderImageRepeat: "repeat",
+        borderImageWidth: "10",
+      }}
     >
       <p className="text-grayscale-30 text-xl font-bold">
         {isDragActive
@@ -28,15 +32,7 @@ const DropzoneSection: React.FC<DropzoneSectionProps> = ({ setVideoFile }) => {
       >
         컴퓨터에서 파일 선택
       </label>
-      <input
-        type="file"
-        name="videoFile"
-        id="videoFile"
-        key={videoFileURL}
-        className="hidden"
-        accept="video/*"
-        onChange={e => handleDrop(e.target.files || [])}
-      />
+      <input {...getInputProps()} id="videoFile" />
     </div>
   );
 };
