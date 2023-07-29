@@ -1,13 +1,13 @@
 "use client";
 
-import ProfileImage from "./ProfileImage";
+import AssignmentProfileImage from "./AssignmentProfileImage";
 
-const TeacherViewCard = () => {
+const AssignmentTeacherViewCard = () => {
   return (
     <>
       <div className="flex justify-between items-start px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]">
         <div className="flex justify-start items-start gap-[14px]">
-          <ProfileImage />
+          <AssignmentProfileImage />
           <div>
             <div className="mb-[5px]">
               <span className="mr-[15px] text-grayscale-100 text-[16px] font-[700]">
@@ -46,4 +46,4 @@ const TeacherViewCard = () => {
   );
 };
 
-export default TeacherViewCard;
+export default AssignmentTeacherViewCard;

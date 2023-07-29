@@ -5,7 +5,12 @@ type OwnProps = {
   children: any; // any 괜찮은지 체크 필요.
 };
 
-const Modal: React.FC<OwnProps> = ({ title, isOpen, onClose, children }) => {
+const AssignmentModal: React.FC<OwnProps> = ({
+  title,
+  isOpen,
+  onClose,
+  children,
+}) => {
   return (
     <div
       className={`fixed w-screen h-screen z-50 left-0 top-0 flex justify-center items-center transition-opacity duration-300 ${
@@ -50,4 +55,4 @@ const Modal: React.FC<OwnProps> = ({ title, isOpen, onClose, children }) => {
   );
 };
 
-export default Modal;
+export default AssignmentModal;

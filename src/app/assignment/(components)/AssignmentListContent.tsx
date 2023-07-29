@@ -15,7 +15,7 @@ const USER_INFO = {
   username: "김지은",
 };
 
-const ListContent = () => {
+const AssignmentListContent = () => {
   const assignmentData = useGetAssignment("");
   let htmlContent;
 
@@ -36,14 +36,14 @@ const ListContent = () => {
         </div>
         {USER_INFO.role === "관리자" ? (
           <Link
-            href={"/assignment/detail/" + assign.assignmentNumber}
+            href={"/assignment/" + assign.assignmentNumber}
             className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 border-none"
           >
             확인하기
           </Link>
         ) : (
           <Link
-            href={"/assignment/detail/" + assign.assignmentNumber}
+            href={"/assignment/" + assign.assignmentNumber}
             className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 border-none"
           >
             제출하기
@@ -56,4 +56,4 @@ const ListContent = () => {
   return <div>{htmlContent}</div>;
 };
 
-export default ListContent;
+export default AssignmentListContent;

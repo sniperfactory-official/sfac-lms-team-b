@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import LeftNav from "./components/LeftNav";
+import AssignmentLeftNav from "./(components)/AssignmentLeftNav";
 
 interface Props {
   children: ReactNode;
@@ -8,7 +8,7 @@ interface Props {
 const layout = ({ children }: Props) => {
   return (
     <div>
-      <LeftNav />
+      <AssignmentLeftNav />
       {children}
     </div>
   );

@@ -5,7 +5,7 @@ type OwnProps = {
   onClose: () => void;
 };
 
-const SubmitAssignmentWithLink: React.FC<OwnProps> = ({ onClose }) => {
+const AssignmentSubmitWithLink: React.FC<OwnProps> = ({ onClose }) => {
   const [inputValues, setInputValues] = useState<string[]>([""]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
@@ -154,4 +154,4 @@ const SubmitAssignmentWithLink: React.FC<OwnProps> = ({ onClose }) => {
   );
 };
 
-export default SubmitAssignmentWithLink;
+export default AssignmentSubmitWithLink;

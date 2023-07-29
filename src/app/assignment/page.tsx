@@ -1,12 +1,14 @@
-import Feedback from "./(components)/Feedback";
-import React from "react";
+"use client";
 
-const AssignmentPage = () => {
+import React from "react";
+import AssignmentListContent from "./(components)/AssignmentListContent";
+
+const List = () => {
   return (
     <div>
-      <Feedback />
+      <AssignmentListContent />
     </div>
   );
 };
 
-export default AssignmentPage;
+export default List;

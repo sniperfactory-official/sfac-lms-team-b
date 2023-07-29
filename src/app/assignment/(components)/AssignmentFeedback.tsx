@@ -32,7 +32,7 @@ const user = [
   },
 ];
 
-const Feedback = () => {
+const AssignmentFeedback = () => {
   // const { data, isLoading, error } = useGetAssignment();
   // console.log(data);
   // console.log(isLoading);
@@ -129,4 +129,4 @@ const Feedback = () => {
   );
 };
 
-export default Feedback;
+export default AssignmentFeedback;

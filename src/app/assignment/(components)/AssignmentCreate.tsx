@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
 
-export default function CreateAssignment() {
+export default function AssignmentCreate() {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
 
   const {

@@ -9,7 +9,7 @@ interface AssignmentNumberAdded extends Assignment {
   assignmentNumber: number;
 }
 
-const LeftNavContent = () => {
+const AssignmentLeftNavContent = () => {
   const assignmentData = useGetAssignment("");
 
   if (assignmentData.isLoading === false) {
@@ -19,7 +19,7 @@ const LeftNavContent = () => {
         key={assign.assignmentNumber}
         className="list-none w-[245px] p-[10px]"
       >
-        <Link href={"/assignment/detail/" + assign.assignmentNumber}>
+        <Link href={"/assignment/" + assign.assignmentNumber}>
           {assign.title}
         </Link>
       </li>
@@ -29,4 +29,4 @@ const LeftNavContent = () => {
   }
 };
 
-export default LeftNavContent;
+export default AssignmentLeftNavContent;

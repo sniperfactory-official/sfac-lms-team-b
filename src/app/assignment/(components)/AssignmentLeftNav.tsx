@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import CreateAssignments from "./CreateAssignments";
-import Modal from "./Modal";
+import AssignmentCreate from "./AssignmentCreate";
+import AssignmentModal from "./AssignmentModal";
 import Link from "next/link";
-import LeftNavContent from "./LeftNavContent";
+import AssignmentLeftNavContent from "./AssignmentLeftNavContent";
 
 const USER_INFO = {
   id: 1,
@@ -12,13 +12,13 @@ const USER_INFO = {
   username: "김지은",
 };
 
-const LeftNav = () => {
+const AssignmentLeftNav = () => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
 
   return (
     <div className="float-left mr-[30px]">
       <div className="w-[245px] p-[13px] rounded-xl bg-[#f5f8ff] ">
-        <Link href="/assignment/list">
+        <Link href="/assignment">
           <img
             className="inline align-middle mr-1"
             src="https://interactive-examples.mdn.mozilla.net/media/examples/star2.png"
@@ -28,7 +28,7 @@ const LeftNav = () => {
           전체과제
         </Link>
       </div>
-      <LeftNavContent />
+      <AssignmentLeftNavContent />
       {USER_INFO.role === "관리자" ? (
         <div>
           <div className="flex justify-center items-center w-[246px] h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
@@ -46,15 +46,15 @@ const LeftNav = () => {
               과제 만들기
             </button>
           </div>
-          <Modal
+          <AssignmentModal
             title="과제만들기"
             isOpen={isLinkOpen}
             onClose={() => {
               setIsLinkOpen(false);
             }}
           >
-            <CreateAssignments />
-          </Modal>
+            <AssignmentCreate />
+          </AssignmentModal>
           <div className="flex justify-center items-center w-[246px] h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
             <button type="button">
               <img
@@ -73,4 +73,4 @@ const LeftNav = () => {
   );
 };
 
-export default LeftNav;
+export default AssignmentLeftNav;
