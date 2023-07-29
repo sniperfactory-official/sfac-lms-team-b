@@ -3,7 +3,7 @@
 import React from "react";
 import AssignmentListContent from "./(components)/AssignmentListContent";
 
-const List = () => {
+const Assignment = () => {
   return (
     <div>
       <AssignmentListContent />
@@ -11,4 +11,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default Assignment;
