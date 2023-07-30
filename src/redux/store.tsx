@@ -6,6 +6,7 @@ import storageSession from "redux-persist/lib/storage/session";
 import { persistReducer, persistStore } from "redux-persist";
 import classroomModalReducer from "./slice/classroomModalSlice";
 import lectureInfoSliceReducer from "./slice/lectureInfoSlice";
+import dropzoneFileReducer from "./slice/dropzoneFileSlice";
 
 const persistConfig = {
   key: "root",
@@ -18,6 +19,7 @@ export const store = configureStore({
     userId: persistedReducer,
     classroomModal: classroomModalReducer,
     lectureInfo: lectureInfoSliceReducer,
+    dropzoneFile: dropzoneFileReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({ serializableCheck: false }),

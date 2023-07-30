@@ -1,12 +1,30 @@
 import React, { FC, useState, ChangeEvent, FormEvent } from "react";
+import useAuth from "@/hooks/user/useAuth";
+import useUsername from "@/hooks/user/useUserName";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useAddCommentMutation } from "@/hooks/lecture/useAddCommentMutation";
 
 const CommentForm: FC = () => {
   const [comment, setComment] = useState("");
+  const user = useAuth();
+  const username = useUsername(user?.uid ?? null);
+  const lectureId = useSelector(
+    (state: RootState) => state.classroomModal.lectureId,
+  );
+  const mutation = useAddCommentMutation();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // handleComment(comment);
-    setComment("");
+    if (user && lectureId) {
+      mutation.mutate({
+        content: comment,
+        lectureId: lectureId,
+        parentId: "",
+        userId: user.uid,
+      });
+      setComment("");
+    }
   };
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -17,7 +35,7 @@ const CommentForm: FC = () => {
     <div className="flex w-full h-25 flex-col space-x-4 items-start rounded-lg border text-gray-500 ">
       <div className="flex ml-4 mt-2">
         <div className="w-7 h-7 bg-white border border-gray-300 rounded-full"></div>
-        <div className="ml-2 text-gray-500 mb-1 pt-[3px]">Username</div>
+        <div className="ml-2 text-gray-500 mb-1 pt-[3px]">{username}</div>
       </div>
       <div className="flex w-full mb-2">
         <form onSubmit={handleSubmit} className="w-full flex pr-8">

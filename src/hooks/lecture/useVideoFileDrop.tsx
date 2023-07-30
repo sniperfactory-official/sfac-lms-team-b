@@ -1,54 +1,67 @@
-import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { FileRejection, useDropzone } from "react-dropzone";
+import {
+  setVideoFile,
+  setErrorMessage,
+  setSuccessMessage,
+  reset,
+} from "@/redux/slice/dropzoneFileSlice";
 
-interface useVideoFileDropProps {
-  setVideoFile: (file: File | null) => void;
-}
+const useVideoFileDrop = () => {
+  const dispatch = useDispatch();
+  const videoFile = useSelector(
+    (state: RootState) => state.dropzoneFile.videoFile,
+  );
 
-const useVideoFileDrop = ({ setVideoFile }: useVideoFileDropProps) => {
-  const [videoFileURL, setVideoFileURL] = useState<string>("");
-
-  // 파일 업로드 핸들러
-  const handleDrop = useCallback(
-    (acceptedFiles: FileList | File[]) => {
-      if (acceptedFiles.length !== 0) {
+  const onDrop = useCallback(
+    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      if (videoFile) {
+        dispatch(
+          setErrorMessage(
+            "이미 사용 중인 파일이 있습니다. 기존의 파일을 삭제하고 진행해주세요.",
+          ),
+        );
+      } else if (acceptedFiles.length !== 0) {
         const file: File = acceptedFiles[0];
-        if (file.type.includes("video")) {
-          // 기존에 생성한 비디오 파일의 URL을 해제 -> 메모리 누수 방지
-          videoFileURL && URL.revokeObjectURL(videoFileURL);
-          setVideoFileURL(URL.createObjectURL(file));
-          setVideoFile(file);
+        dispatch(setVideoFile(file));
+        dispatch(setSuccessMessage("파일이 업로드되었습니다!"));
+      } else if (fileRejections.length > 0) {
+        if (
+          fileRejections[0].errors[0].message ===
+          "File type must be video/*,.mp4,.wav,.avi"
+        ) {
+          dispatch(
+            setErrorMessage("파일 형식이 올바르지 않습니다. (mp4, wav, avi)"),
+          );
+        } else {
+          dispatch(
+            setErrorMessage(
+              `에러가 발생하였습니다. 다시 시도해주세요. (${fileRejections[0].errors[0].message})`,
+            ),
+          );
         }
       }
     },
-    [setVideoFile, videoFileURL],
+    [dispatch, videoFile],
   );
 
-  // 업로드된 비디오파일 삭제 핸들러
   const handleRemoveVideoFile = () => {
-    setVideoFile(null);
-    setVideoFileURL("");
+    dispatch(reset());
   };
 
-  // Dropzone 컴포넌트 설정
-  const { getRootProps, isDragActive } = useDropzone({
-    // 드래그 앤 드롭과 파일 선택을 동시에 처리하는 핸들러 사용
-    onDrop: handleDrop,
-    accept: { "video/*": [] },
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    multiple: false,
+    accept: { "video/*": [".mp4", ".wav", ".avi"] },
+    noClick: true,
   });
-
-  // DropzoneSection 컴포넌트가 언마운트될 때 videoFileURL 해제
-  useEffect(() => {
-    return () => {
-      videoFileURL && URL.revokeObjectURL(videoFileURL);
-    };
-  }, [videoFileURL]);
 
   return {
     getRootProps,
+    getInputProps,
     isDragActive,
-    videoFileURL,
-    handleDrop,
     handleRemoveVideoFile,
   };
 };
