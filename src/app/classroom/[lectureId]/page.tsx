@@ -2,10 +2,10 @@
 
 import React, { FC, use } from "react";
 
-import LectureHeader from "@/components/lectureRoom/LectureHeader";
-import TypeOfLecture from "@/components/lectureRoom/typesOf/TypeOfLecture";
-import LectureComment from "@/components/lectureRoom/LectureComment";
-import LectureNavigation from "@/components/lectureRoom/LectureNavigation";
+import LectureHeader from "@/app/classroom/[lectureId]/(components)/lectureRoom/LectureHeader";
+import TypeOfLecture from "@/app/classroom/[lectureId]/(components)/lectureRoom/typesOf/TypeOfLecture";
+import LectureComment from "@/app/classroom/[lectureId]/(components)/lectureRoom/LectureComment";
+import LectureNavigation from "@/app/classroom/[lectureId]/(components)/lectureRoom/LectureNavigation";
 import useGetLectureInfo from "@/hooks/lecture/useGetLectureInfo";
 import { usePathname, useSearchParams } from "next/navigation";
 

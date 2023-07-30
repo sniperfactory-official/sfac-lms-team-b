@@ -1,6 +1,6 @@
 "use client";
 
-import ProfileImage from "./ProfileImage";
+import ProfileImage from "./AssignmentProfileImage";
 
 const TeacherViewCard = () => {
   return (

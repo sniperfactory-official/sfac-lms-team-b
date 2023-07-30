@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import LeftNav from "./components/LeftNav";
+import LeftNav from "./(components)/AssignmentLeftNav";
 
 interface Props {
   children: ReactNode;

@@ -1,9 +1,9 @@
 import { useDispatch } from "react-redux";
 import ContentCard from "./main/ContentCard";
-import MakeLectureModal from "../classroomModal/createLecture/MakeLectureModal";
-import AddNoteModal from "../classroomModal/createLecture/AddNoteModal";
-import AddLinkModal from "../classroomModal/createLecture/AddLinkModal";
-import AddVideoFileModal from "../classroomModal/createLecture/AddVideoFileModal";
+import MakeLectureModal from "./modal/createLecture/MakeLectureModal";
+import AddNoteModal from "./modal/createLecture/AddNoteModal";
+import AddLinkModal from "./modal/createLecture/AddLinkModal";
+import AddVideoFileModal from "./modal/createLecture/AddVideoFileModal";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import { ICourseField } from "@/hooks/queries/useGetCourseList";
