@@ -6,6 +6,7 @@ interface IButton {
   src: string;
 }
 
+// 섹션 추가, 섹션 수정 버튼
 const SectionHandlerButton = ({ text, src, onClick }: IButton) => {
   return (
     <div className="w-[245px] h-[46px] mt-3 border border-primary-40 rounded-lg text-primary-60 text-base font-bold flex justify-center items-center">
