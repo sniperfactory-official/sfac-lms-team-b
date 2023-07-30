@@ -35,7 +35,6 @@ const user = [
 ];
 
 const AssignmentFeedback = () => {
-
   // const { data, isLoading, error } = useGetAssignment();
   // console.log(data);
   // console.log(isLoading);
@@ -119,4 +118,3 @@ const AssignmentFeedback = () => {
 };
 
 export default AssignmentFeedback;
-

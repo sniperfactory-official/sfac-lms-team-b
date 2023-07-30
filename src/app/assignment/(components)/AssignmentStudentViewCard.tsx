@@ -7,7 +7,6 @@ import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
 import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
 import AssignmentFeedback from "./AssignmentFeedback";
 
-
 const AssignmentStudentViewCard: React.FC = () => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [isFileOpen, setIsFileOpen] = useState(false);

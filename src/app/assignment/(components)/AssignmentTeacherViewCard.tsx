@@ -7,7 +7,6 @@ import AssignmentFeedback from "./AssignmentFeedback";
 const AssignmentTeacherViewCard = () => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-
   return (
     <>
       <div

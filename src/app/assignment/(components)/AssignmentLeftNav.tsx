@@ -86,4 +86,3 @@ const AssignmentLeftNav = () => {
 };
 
 export default AssignmentLeftNav;
-
