@@ -1,12 +1,7 @@
 import useVideoFileDrop from "@/hooks/lecture/useVideoFileDrop";
-interface DropzoneSectionProps {
-  setVideoFile: React.Dispatch<React.SetStateAction<File | null>>;
-}
 
-const DropzoneSection: React.FC<DropzoneSectionProps> = ({ setVideoFile }) => {
-  const { getRootProps, getInputProps, isDragActive } = useVideoFileDrop({
-    setVideoFile: setVideoFile,
-  });
+const DropzoneSection: React.FC = () => {
+  const { getRootProps, getInputProps, isDragActive } = useVideoFileDrop();
 
   return (
     <div
@@ -24,6 +19,7 @@ const DropzoneSection: React.FC<DropzoneSectionProps> = ({ setVideoFile }) => {
           ? "파일을 이곳에 드롭하세요"
           : "파일을 여기로 드래그 해주세요"}
       </p>
+
       <label
         htmlFor="videoFile"
         className="w-52 h-10 cursor-pointer font-bold text-base bg-grayscale-5 text-grayscale-50 rounded-[10px] flex flex-col justify-center items-center hover:text-white hover:bg-primary-80"
