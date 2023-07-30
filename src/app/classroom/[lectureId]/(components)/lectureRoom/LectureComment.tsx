@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setModalVisibility } from "../../redux/slice/classroomModalSlice";
-import ReplySection from "@/components/classroomModal/comment/ReplySection";
-import CommentsSection from "@/components/lectureRoom/CommentsSection";
+import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
+import ReplySection from "@/app/classroom/(components)/modal/comment/ReplySection";
+import CommentsSection from "@/app/classroom/[lectureId]/(components)/lectureRoom/CommentsSection";
 import useGetComments from "@/hooks/lecture/useGetComments";
 
 interface LectureCommentProps {
@@ -23,10 +23,11 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
     );
   };
 
-  const handleButtonClick = () =>
+  const handleButtonClick = () => {
     dispatch(
       setModalVisibility({ modalName: "commentModalOpen", visible: true }),
     );
+  };
 
   if (isLoading) return <div className="w-full h-full">Loading...</div>;
 
@@ -44,8 +45,14 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
         </button>
       </header>
       <main>
-        <CommentsSection comments={data} onCommentClick={handleCommentClick} />
-        {selectedCommentId && <ReplySection commentId={selectedCommentId} />}
+        <CommentsSection
+          comments={data}
+          onCommentClick={handleCommentClick}
+          lectureId={lectureId}
+        />
+        {selectedCommentId && (
+          <ReplySection commentId={selectedCommentId} lectureId={lectureId} />
+        )}
       </main>
     </section>
   );

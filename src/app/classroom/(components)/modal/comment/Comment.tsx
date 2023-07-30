@@ -2,7 +2,8 @@ import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
 import React from "react";
 import { getTime } from "@/utils/getTime";
-import timestampToDate from "@/utils/timestampToDate";
+import useAuth from "@/hooks/user/useAuth";
+import { useDeleteComment } from "@/hooks/lecture/useDeleteComment";
 
 interface CommentProps {
   comment: DocumentData;
@@ -18,20 +19,31 @@ const Comment: React.FC<CommentProps> = ({
   onCommentClick,
 }) => {
   const { id, content, createdAt, updatedAt, parentId } = comment;
-  const { username, role, userId } = comment.user;
+  const { username, role } = comment.user;
+  const userId = comment.userId;
+
+  const user = useAuth();
+
+  const deleteMutation = useDeleteComment();
 
   const displayedComment =
     !showFullComment && content.length > 10
       ? `${content.slice(0, 10)}...`
       : content;
 
-  const time = getTime(new Date(timestampToDate(createdAt)));
+  const time = getTime(createdAt.toDate());
 
   const handleCommentClick = () => {
     if (onCommentClick) {
       onCommentClick(id);
     }
   };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    deleteMutation.mutate(id);
+  };
+
   return (
     <div className="flex items-start space-x-2 w-full h-30">
       {isReply && (
@@ -63,14 +75,16 @@ const Comment: React.FC<CommentProps> = ({
         </div>
         <div className="flex flex-col space-y-2 float-right text-sm w-3/12 p-2">
           <div className="w-full">
-            {/* 관리자나 작성자가 들어올 경우 보여지기 */}
-            {userId === "로그인한 유저 아이디" ? (
+            {showFullComment && userId.id === user?.uid ? (
               <ul className="flex text-xs space-x-1.5 text-gray-400 float-right pt-2">
                 <li className="text-black hover:text-blue-500 cursor-pointer">
                   수정
                 </li>
                 <li>|</li>
-                <li className="text-black hover:text-red cursor-pointer">
+                <li
+                  className="text-black hover:text-red cursor-pointer"
+                  onClick={handleDeleteClick}
+                >
                   삭제
                 </li>
               </ul>

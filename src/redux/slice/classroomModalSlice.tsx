@@ -7,7 +7,8 @@ interface ModalState {
   videoFileModalOpen: boolean;
   commentModalOpen: boolean;
   replyCommentModalOpen: boolean;
-  [key: string]: boolean;
+  lectureId: string | null;
+  [key: string]: boolean | string | null;
 }
 
 const initialState: ModalState = {
@@ -17,6 +18,7 @@ const initialState: ModalState = {
   videoFileModalOpen: false,
   commentModalOpen: false,
   replyCommentModalOpen: false,
+  lectureId: null,
 };
 
 const classroomModalSlice = createSlice({

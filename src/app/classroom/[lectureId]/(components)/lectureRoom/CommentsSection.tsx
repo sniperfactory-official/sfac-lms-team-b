@@ -1,18 +1,20 @@
 import React, { FC } from "react";
-import CommentForm from "../classroomModal/comment/CommentForm";
-import Comment from "../classroomModal/comment/Comment";
-import Layout from "../classroomModal/common/Layout";
+import CommentForm from "../../../(components)/modal/comment/CommentForm";
+import Comment from "../../../(components)/modal/comment/Comment";
+import Layout from "../../../(components)/modal/common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { DocumentData } from "firebase/firestore";
 
 interface CommentsSectionProps {
   comments: DocumentData[] | undefined;
   onCommentClick: (id: string) => void;
+  lectureId: string;
 }
 
 const CommentsSection: FC<CommentsSectionProps> = ({
   comments = [],
   onCommentClick,
+  lectureId,
 }) => {
   const { commentModalOpen } = useClassroomModal();
 
@@ -29,7 +31,7 @@ const CommentsSection: FC<CommentsSectionProps> = ({
       {commentModalOpen && (
         <Layout>
           <h2 className="text-xl font-bold">댓글 달기</h2>
-          <CommentForm />
+          <CommentForm lectureId={lectureId} />
         </Layout>
       )}
     </ul>

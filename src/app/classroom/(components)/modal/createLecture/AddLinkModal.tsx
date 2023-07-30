@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
-import { setInputContent } from "@/redux/slice/linkContentSlice";
+import { RootState } from "@/redux/store";
+import { setLectureContent } from "@/redux/slice/lectureInfoSlice";
 import Layout from "../common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import ModalHeader from "../common/ModalHeader";
@@ -7,7 +8,9 @@ import LectureTitle from "../common/LectureTitle";
 import ModalFooter from "../common/ModalFooter";
 
 const AddLinkModal: React.FC = () => {
-  const inputContent = useSelector((state: any) => state.content.inputContent);
+  const inputContent = useSelector(
+    (state: RootState) => state.lectureInfo.lectureContent,
+  );
   const dispatch = useDispatch();
 
   const { handleModalMove } = useClassroomModal();
@@ -18,7 +21,9 @@ const AddLinkModal: React.FC = () => {
   const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(
-      setInputContent(value.startsWith("http://") ? value : "http://" + value),
+      setLectureContent(
+        value.startsWith("http://") ? value : "http://" + value,
+      ),
     );
   };
   return (

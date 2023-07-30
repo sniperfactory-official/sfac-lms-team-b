@@ -35,8 +35,9 @@ const fetchComments = async (
         const commentId = doc.id;
         const userSnap = await getDoc(docData.userId);
         const user = userSnap.data() as User;
+        const userId = docData.userId.id;
 
-        return { id: commentId, ...docData, user };
+        return { id: commentId, ...docData, user, userId };
       }),
     );
 

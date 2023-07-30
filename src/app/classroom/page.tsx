@@ -1,6 +1,6 @@
 "use client";
-import Aside from "@/components/classroom/Aside";
-import ClassContent from "@/components/classroom/ClassContent";
+import Aside from "@/app/classroom/(components)/Sidebar";
+import ClassContent from "@/app/classroom/(components)/ClassContent";
 import useGetLectureList from "@/hooks/queries/useGetCourseList";
 import { useState, useEffect } from "react";
 
