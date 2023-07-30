@@ -1,6 +1,9 @@
 import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import { setModalVisibility } from "../../redux/slice/classroomModalSlice";
+import {
+  setModalVisibility,
+  setLectureId,
+} from "@/redux/slice/classroomModalSlice";
 import ReplySection from "@/components/classroomModal/comment/ReplySection";
 import CommentsSection from "@/components/lectureRoom/CommentsSection";
 import useGetComments from "@/hooks/lecture/useGetComments";
@@ -23,10 +26,12 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
     );
   };
 
-  const handleButtonClick = () =>
+  const handleButtonClick = () => {
+    dispatch(setLectureId(lectureId));
     dispatch(
       setModalVisibility({ modalName: "commentModalOpen", visible: true }),
     );
+  };
 
   if (isLoading) return <div className="w-full h-full">Loading...</div>;
 
