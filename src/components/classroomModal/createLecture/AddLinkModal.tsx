@@ -1,4 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "@/redux/store";
 import { setLectureContent } from "@/redux/slice/lectureInfoSlice";
 import Layout from "../common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
@@ -8,7 +9,7 @@ import ModalFooter from "../common/ModalFooter";
 
 const AddLinkModal: React.FC = () => {
   const inputContent = useSelector(
-    (state: any) => state.lectureInfo.lectureContent,
+    (state: RootState) => state.lectureInfo.lectureContent,
   );
   const dispatch = useDispatch();
 

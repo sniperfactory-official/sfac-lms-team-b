@@ -1,15 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
+import { setSelectedModal, resetInput } from "@/redux/slice/lectureInfoSlice";
+import { RootState } from "@/redux/store";
 import Layout from "../common/Layout";
 import ModalHeader from "../common/ModalHeader";
 import Image from "next/image";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { setSelectedModal, resetInput } from "@/redux/slice/lectureInfoSlice";
 
-const MakeLectureModal: React.FC = ({}) => {
+const MakeLectureModal: React.FC = () => {
   const { handleModalMove } = useClassroomModal();
   const dispatch = useDispatch();
   const selectedModal = useSelector(
-    (state: any) => state.lectureInfo.selectedModal,
+    (state: RootState) => state.lectureInfo.selectedModal,
   );
 
   const isSelectModal = (modal: string) => {

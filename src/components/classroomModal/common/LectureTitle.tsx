@@ -1,9 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setLectureTitle } from "@/redux/slice/lectureInfoSlice";
+import { RootState } from "@/redux/store";
 
 const LectureTitle: React.FC = () => {
   const lectureTitle = useSelector(
-    (state: any) => state.lectureInfo.lectureTitle,
+    (state: RootState) => state.lectureInfo.lectureTitle,
   );
   const dispatch = useDispatch();
 

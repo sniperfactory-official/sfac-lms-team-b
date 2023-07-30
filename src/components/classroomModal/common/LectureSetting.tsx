@@ -1,24 +1,27 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { ko } from "date-fns/esm/locale";
 import {
   setDateRange,
   setStartDate,
   setEndDate,
-  setLecturePublic,
+  setIsLecturePublic,
 } from "@/redux/slice/lectureInfoSlice";
-import { ko } from "date-fns/esm/locale";
 import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 const LectureSetting: React.FC = () => {
-  const dateRange = useSelector((state: any) => state.lectureInfo.dateRange);
-  const lecturePublic = useSelector(
-    (state: any) => state.lectureInfo.lecturePublic,
+  const dateRange = useSelector(
+    (state: RootState) => state.lectureInfo.dateRange,
+  );
+  const isLecturePublic = useSelector(
+    (state: RootState) => state.lectureInfo.isLecturePublic,
   );
   const [startDate, endDate] = dateRange;
   const dispatch = useDispatch();
 
   const handleToggle = () => {
-    dispatch(setLecturePublic(!lecturePublic));
+    dispatch(setIsLecturePublic(!isLecturePublic));
   };
 
   return (
@@ -53,7 +56,7 @@ const LectureSetting: React.FC = () => {
             id="toggle"
             name="toggle"
             className="hidden"
-            checked={lecturePublic}
+            checked={isLecturePublic}
             onChange={handleToggle}
           />
           <div
@@ -64,7 +67,7 @@ const LectureSetting: React.FC = () => {
               width: "100%",
               height: "100%",
               borderRadius: "26px",
-              backgroundColor: lecturePublic ? "#e5eeff" : "#f2f2f2",
+              backgroundColor: isLecturePublic ? "#e5eeff" : "#f2f2f2",
               transition: "all 0.4s ease-in-out",
             }}
           ></div>
@@ -73,11 +76,11 @@ const LectureSetting: React.FC = () => {
             style={{
               position: "absolute",
               top: "50%",
-              left: lecturePublic ? "calc(100% - 21px)" : "5px",
+              left: isLecturePublic ? "calc(100% - 21px)" : "5px",
               width: "16px",
               height: "16px",
               borderRadius: "13px",
-              backgroundColor: lecturePublic ? "#337aff" : "#c5c5c5",
+              backgroundColor: isLecturePublic ? "#337aff" : "#c5c5c5",
               boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.3)",
               transition: "all 0.4s ease-in-out",
               transform: "translateY(-50%)",

@@ -4,7 +4,7 @@ interface LectureInfoState {
   lectureContent: string;
   selectedModal: string | null;
   dateRange: [Date | null, Date | null];
-  lecturePublic: boolean;
+  isLecturePublic: boolean;
 }
 
 const initialState: LectureInfoState = {
@@ -12,7 +12,7 @@ const initialState: LectureInfoState = {
   lectureContent: "",
   selectedModal: null,
   dateRange: [null, null],
-  lecturePublic: false,
+  isLecturePublic: false,
 };
 const LectureInfoSlice = createSlice({
   name: "lectureInfo",
@@ -36,8 +36,8 @@ const LectureInfoSlice = createSlice({
     setEndDate: (state, action) => {
       state.dateRange[1] = action.payload;
     },
-    setLecturePublic: (state, action) => {
-      state.lecturePublic = action.payload;
+    setIsLecturePublic: (state, action) => {
+      state.isLecturePublic = action.payload;
     },
     resetInput: () => initialState,
   },
@@ -50,7 +50,7 @@ export const {
   setDateRange,
   setStartDate,
   setEndDate,
-  setLecturePublic,
+  setIsLecturePublic,
   resetInput,
 } = LectureInfoSlice.actions;
 export default LectureInfoSlice.reducer;
