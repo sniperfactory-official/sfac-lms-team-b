@@ -32,13 +32,10 @@ const classroomModalSlice = createSlice({
       const { modalName, visible } = action.payload;
       state[modalName] = visible;
     },
-    setLectureId: (state, action: PayloadAction<string | null>) => {
-      state.lectureId = action.payload;
-    },
     closeModal: () => initialState,
   },
 });
 
-export const { setModalVisibility, setLectureId, closeModal } =
+export const { setModalVisibility, closeModal } =
   classroomModalSlice.actions;
 export default classroomModalSlice.reducer;

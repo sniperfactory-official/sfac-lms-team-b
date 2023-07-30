@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
 import React from "react";

@@ -1,6 +1,5 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC } from "react";
 
-import { DocumentData } from "firebase/firestore";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import Layout from "../common/Layout";
@@ -9,9 +8,10 @@ import useGetComments from "@/hooks/lecture/useGetComments";
 
 interface ReplySectionProps {
   commentId: string;
+  lectureId: string;
 }
 
-const ReplySection: FC<ReplySectionProps> = ({ commentId }) => {
+const ReplySection: FC<ReplySectionProps> = ({ commentId, lectureId }) => {
   const { replyCommentModalOpen } = useClassroomModal();
   const { data: comment } = useGetComments(undefined, undefined, commentId);
   const { data: replies } = useGetComments(undefined, commentId, undefined);
@@ -35,7 +35,7 @@ const ReplySection: FC<ReplySectionProps> = ({ commentId }) => {
               </li>
             ))}
         </ul>
-        <CommentForm />
+        <CommentForm parentId={commentId} lectureId={lectureId} />
       </Layout>
     )
   );

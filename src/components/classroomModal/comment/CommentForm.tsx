@@ -1,26 +1,27 @@
 import React, { FC, useState, ChangeEvent, FormEvent } from "react";
 import useAuth from "@/hooks/user/useAuth";
 import useUsername from "@/hooks/user/useUserName";
-import { RootState } from "@/redux/store";
-import { useSelector } from "react-redux/es/hooks/useSelector";
 import { useAddCommentMutation } from "@/hooks/lecture/useAddCommentMutation";
 
-const CommentForm: FC = () => {
+interface CommentFormProps {
+  parentId?: string;
+  lectureId: string;
+}
+
+const CommentForm: FC<CommentFormProps> = ({ parentId = "", lectureId }) => {
   const [comment, setComment] = useState("");
   const user = useAuth();
   const username = useUsername(user?.uid ?? null);
-  const lectureId = useSelector(
-    (state: RootState) => state.classroomModal.lectureId,
-  );
   const mutation = useAddCommentMutation();
-
+  
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(lectureId);
     if (user && lectureId) {
       mutation.mutate({
         content: comment,
         lectureId: lectureId,
-        parentId: "",
+        parentId: parentId,
         userId: user.uid,
       });
       setComment("");
