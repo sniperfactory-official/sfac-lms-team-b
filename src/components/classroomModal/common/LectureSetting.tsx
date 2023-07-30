@@ -1,20 +1,29 @@
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/esm/locale";
+import {
+  setDateRange,
+  setStartDate,
+  setEndDate,
+  setIsLecturePublic,
+} from "@/redux/slice/lectureInfoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
-const LectureSetting: React.FC = ({}) => {
-  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
-  ]);
+const LectureSetting: React.FC = () => {
+  const dateRange = useSelector(
+    (state: RootState) => state.lectureInfo.dateRange,
+  );
+  const isLecturePublic = useSelector(
+    (state: RootState) => state.lectureInfo.isLecturePublic,
+  );
   const [startDate, endDate] = dateRange;
-
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const handleToggle = () => {
-    setIsChecked(prev => !prev);
+    dispatch(setIsLecturePublic(!isLecturePublic));
   };
+
   return (
     <div className="flex relative gap-[69px]">
       <div className="flex gap-[12px] items-center ">
@@ -26,7 +35,9 @@ const LectureSetting: React.FC = ({}) => {
           locale={ko}
           selected={startDate}
           onChange={(update: [Date | null, Date | null]) => {
-            setDateRange(update);
+            dispatch(setDateRange(update));
+            dispatch(setStartDate(update[0]));
+            dispatch(setEndDate(update[1]));
           }}
           startDate={startDate}
           endDate={endDate}
@@ -40,7 +51,14 @@ const LectureSetting: React.FC = ({}) => {
           강의 공개
         </span>
         <label htmlFor="toggle" className="relative block w-[51px] h-[26px]">
-          <input type="checkbox" id="toggle" name="toggle" className="hidden" />
+          <input
+            type="checkbox"
+            id="toggle"
+            name="toggle"
+            className="hidden"
+            checked={isLecturePublic}
+            onChange={handleToggle}
+          />
           <div
             style={{
               position: "absolute",
@@ -49,26 +67,24 @@ const LectureSetting: React.FC = ({}) => {
               width: "100%",
               height: "100%",
               borderRadius: "26px",
-              backgroundColor: isChecked ? "#e5eeff" : "#f2f2f2",
+              backgroundColor: isLecturePublic ? "#e5eeff" : "#f2f2f2",
               transition: "all 0.4s ease-in-out",
             }}
-            onClick={handleToggle}
           ></div>
           <div
             className="absolute top-50%"
             style={{
               position: "absolute",
               top: "50%",
-              left: isChecked ? "calc(100% - 21px)" : "5px",
+              left: isLecturePublic ? "calc(100% - 21px)" : "5px",
               width: "16px",
               height: "16px",
               borderRadius: "13px",
-              backgroundColor: isChecked ? "#337aff" : "#c5c5c5",
+              backgroundColor: isLecturePublic ? "#337aff" : "#c5c5c5",
               boxShadow: "0px 1px 3px rgba(0, 0, 0, 0.3)",
               transition: "all 0.4s ease-in-out",
               transform: "translateY(-50%)",
             }}
-            onClick={handleToggle}
           />
         </label>
       </div>
