@@ -14,7 +14,7 @@ interface CommentsSectionProps {
 const CommentsSection: FC<CommentsSectionProps> = ({
   comments = [],
   onCommentClick,
-  lectureId
+  lectureId,
 }) => {
   const { commentModalOpen } = useClassroomModal();
 

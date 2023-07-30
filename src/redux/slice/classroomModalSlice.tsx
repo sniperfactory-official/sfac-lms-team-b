@@ -36,6 +36,5 @@ const classroomModalSlice = createSlice({
   },
 });
 
-export const { setModalVisibility, closeModal } =
-  classroomModalSlice.actions;
+export const { setModalVisibility, closeModal } = classroomModalSlice.actions;
 export default classroomModalSlice.reducer;

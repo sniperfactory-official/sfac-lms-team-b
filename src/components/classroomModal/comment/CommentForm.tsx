@@ -13,7 +13,7 @@ const CommentForm: FC<CommentFormProps> = ({ parentId = "", lectureId }) => {
   const user = useAuth();
   const username = useUsername(user?.uid ?? null);
   const mutation = useAddCommentMutation();
-  
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(lectureId);
