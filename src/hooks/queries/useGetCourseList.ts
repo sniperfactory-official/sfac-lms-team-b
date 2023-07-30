@@ -32,7 +32,7 @@ const fetchCourseList = async () => {
 };
 
 const useGetCourseList = () => {
-  return useQuery<Course[]>({
+  return useQuery({
     queryKey: [QUERY_KEY.COURSE],
     queryFn: () => fetchCourseList(),
   });
