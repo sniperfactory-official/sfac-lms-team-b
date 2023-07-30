@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
 import React from "react";
 import { getTime } from "@/utils/getTime";
 import useAuth from "@/hooks/user/useAuth";
+import { useDeleteComment } from "@/hooks/lecture/useDeleteComment";
 
 interface CommentProps {
   comment: DocumentData;
@@ -24,6 +24,8 @@ const Comment: React.FC<CommentProps> = ({
 
   const user = useAuth();
 
+  const deleteMutation = useDeleteComment();
+
   const displayedComment =
     !showFullComment && content.length > 10
       ? `${content.slice(0, 10)}...`
@@ -36,6 +38,12 @@ const Comment: React.FC<CommentProps> = ({
       onCommentClick(id);
     }
   };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    deleteMutation.mutate(id);
+  };
+
   return (
     <div className="flex items-start space-x-2 w-full h-30">
       {isReply && (
@@ -73,7 +81,10 @@ const Comment: React.FC<CommentProps> = ({
                   수정
                 </li>
                 <li>|</li>
-                <li className="text-black hover:text-red cursor-pointer">
+                <li
+                  className="text-black hover:text-red cursor-pointer"
+                  onClick={handleDeleteClick}
+                >
                   삭제
                 </li>
               </ul>
