@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import facebookLogo from "/public/images/facebookLogo.svg";
-import instagramLogo from "/public/images/instagramLogo.svg";
-import youtubeLogo from "/public/images/youtubeLogo.svg";
+import facebookLogo from "/public/images/facebook-logo.svg";
+import instagramLogo from "/public/images/instagram-logo.svg";
+import youtubeLogo from "/public/images/youtube-logo.svg";
 
 export default function Footer() {
   return (

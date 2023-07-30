@@ -26,7 +26,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({
       <div className="w-1/12 h-full flex justify-center items-center">
         <Link href="/classroom" className="w-full pr-12 pb-14">
           <Image
-            src="/images/arrowLeft.svg"
+            src="/images/arrow-left.svg"
             alt="뒤로가기"
             width={15}
             height={15}

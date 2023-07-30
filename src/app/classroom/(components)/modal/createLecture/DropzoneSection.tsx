@@ -8,7 +8,7 @@ const DropzoneSection: React.FC = () => {
       {...getRootProps()}
       className="flex-1 gap-[10px] border-[10px] border-solid border-transparent rounded-[10px] flex flex-col justify-center items-center"
       style={{
-        borderImageSource: "url('/images/dropzoneBorder.svg')",
+        borderImageSource: "url('/images/dropzone-border.svg')",
         borderImageSlice: "100",
         borderImageRepeat: "repeat",
         borderImageWidth: "10",
