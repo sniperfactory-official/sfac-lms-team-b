@@ -1,6 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/utils/firebase";
-import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, serverTimestamp, DocumentData } from "firebase/firestore";
 
 const addCommentToDB = async (data: {
   content: string;
@@ -25,9 +25,28 @@ const addCommentToDB = async (data: {
     userId: userRef,
   };
   const docRef = await addDoc(commentRef, commentDoc);
-  return docRef.id;
+  return { id: docRef.id, ...commentDoc };
 };
 
 export const useAddCommentMutation = () => {
-  return useMutation(addCommentToDB);
+  const queryClient = useQueryClient();
+
+  return useMutation(addCommentToDB, {
+    onMutate: async (newComment) => {
+      await queryClient.cancelQueries(['comments']);
+      const previousComments = queryClient.getQueryData<DocumentData[]>(['comments']);
+      queryClient.setQueryData(['comments'], (old: DocumentData[] | undefined) => {
+        return [...(old ?? []), newComment];
+      });
+      return { previousComments };
+    },    
+    onSettled: () => {
+      queryClient.invalidateQueries(['comments']);
+    },
+    onError: (_err, _newComment, context) => {
+      if (context?.previousComments) {
+        queryClient.setQueryData(['comments'], context.previousComments);
+      }
+    },
+  });
 };
