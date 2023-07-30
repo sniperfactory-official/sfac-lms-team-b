@@ -37,6 +37,7 @@ export default function AssignmentCreate() {
           과제 난이도
         </label>
         <select
+          id="level-select"
           {...register("level", { required: true })}
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
         >
@@ -59,10 +60,10 @@ export default function AssignmentCreate() {
           placeholder="내용을 입력해주세요"
           {...register("content", { required: true })}
         />
-        <div className="flex items-center">
+        <div className="flex items-center justify-start overflow-auto">
           <label
             htmlFor="picture"
-            className="w-[60px] h-[60px] bg-grayscale-10 cursor-pointer flex items-center justify-center rounded-[10px] ml-[8px]"
+            className="w-[60px] h-[60px] bg-grayscale-10 cursor-pointer flex items-center justify-center rounded-[10px] ml-[8px] shrink-0"
           >
             <input
               {...register("images", { required: true })}
@@ -86,7 +87,7 @@ export default function AssignmentCreate() {
               />
             </svg>
           </label>
-          <div className="flex">
+          <div className="flex justify-start items-center">
             {imageFiles.map((file, index) => (
               <div
                 key={index}
@@ -98,7 +99,7 @@ export default function AssignmentCreate() {
                     alt="assignment"
                     width="0"
                     height="0"
-                    className="w-full h-full"
+                    className="w-full h-full object-cover"
                   />
                 ) : (
                   ""
@@ -109,29 +110,33 @@ export default function AssignmentCreate() {
         </div>
       </div>
 
-      <div className="mx-auto flex items-center justify-between">
-        <label
-          htmlFor="submit-period"
-          className="font-bold text-base mr-[12px]"
-        >
-          제출 기간
-        </label>
-        <input
-          type="date"
-          className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-          {...register("startDate", { required: true })}
-        />
-        <input
-          type="date"
-          className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-          {...register("endDate", { required: true })}
-        />
-        <button
-          type="submit"
-          className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
-        >
-          업로드
-        </button>
+      <div className="flex items-center justify-between">
+        <div className="flex justify-start items-center">
+          <label
+            htmlFor="submit-period"
+            className="font-bold text-base mr-[12px]"
+          >
+            제출 기간
+          </label>
+          <input
+            type="date"
+            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
+            {...register("startDate", { required: true })}
+          />
+          <input
+            type="date"
+            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
+            {...register("endDate", { required: true })}
+          />
+        </div>
+        <div className="flex justify-end items-center">
+          <button
+            type="submit"
+            className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
+          >
+            업로드
+          </button>
+        </div>
       </div>
     </form>
   );

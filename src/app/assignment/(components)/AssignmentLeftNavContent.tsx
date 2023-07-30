@@ -15,10 +15,7 @@ const AssignmentLeftNavContent = () => {
   if (assignmentData.isLoading === false) {
     const assignment = assignmentData.data;
     const htmlContent = assignment?.map((assign: AssignmentNumberAdded) => (
-      <li
-        key={assign.assignmentNumber}
-        className="list-none w-[245px] p-[10px]"
-      >
+      <li key={assign.assignmentNumber} className="list-none w-full p-[10px]">
         <Link href={"/assignment/" + assign.assignmentNumber}>
           {assign.title}
         </Link>

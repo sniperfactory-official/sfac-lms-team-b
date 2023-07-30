@@ -5,10 +5,12 @@ import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
 import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
+import AssignmentFeedback from "./AssignmentFeedback";
 
 const AssignmentStudentViewCard: React.FC = () => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [isFileOpen, setIsFileOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   return (
     <>
@@ -55,7 +57,13 @@ const AssignmentStudentViewCard: React.FC = () => {
 
           {/* 제출 후 */}
           <div>
-            <button type="button" className="border">
+            <button
+              type="button"
+              className="border"
+              onClick={() => {
+                setIsDetailOpen(true);
+              }}
+            >
               확인하기
             </button>
           </div>
@@ -90,6 +98,17 @@ const AssignmentStudentViewCard: React.FC = () => {
             setIsFileOpen(false);
           }}
         />
+      </AssignmentModal>
+
+      {/* 과제: 과제 상세 */}
+      <AssignmentModal
+        title="상세보기"
+        isOpen={isDetailOpen}
+        onClose={() => {
+          setIsDetailOpen(false);
+        }}
+      >
+        <AssignmentFeedback />
       </AssignmentModal>
     </>
   );

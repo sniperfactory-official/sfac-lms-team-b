@@ -1,11 +1,21 @@
 "use client";
 
+import { useState } from "react";
+import AssignmentModal from "./AssignmentModal";
 import AssignmentProfileImage from "./AssignmentProfileImage";
+import AssignmentFeedback from "./AssignmentFeedback";
 
 const AssignmentTeacherViewCard = () => {
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
+
   return (
     <>
-      <div className="flex justify-between items-start px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]">
+      <div
+        className="flex justify-between items-start px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]"
+        onClick={() => {
+          setIsDetailOpen(true);
+        }}
+      >
         <div className="flex justify-start items-start gap-[14px]">
           <AssignmentProfileImage />
           <div>
@@ -42,6 +52,16 @@ const AssignmentTeacherViewCard = () => {
           </p>
         </div>
       </div>
+
+      <AssignmentModal
+        title="상세보기"
+        isOpen={isDetailOpen}
+        onClose={() => {
+          setIsDetailOpen(false);
+        }}
+      >
+        <AssignmentFeedback />
+      </AssignmentModal>
     </>
   );
 };

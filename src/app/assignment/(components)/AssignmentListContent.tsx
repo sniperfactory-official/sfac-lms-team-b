@@ -27,12 +27,12 @@ const AssignmentListContent = () => {
         className="w-[775px] h-[87px] flex-shrink-0 border-radius-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center px-[24px]"
       >
         <div className="flex w-[244px] flex-col items-start gap-[10px]">
-          <div className="inline-flex p-[4px] px-[10px] justify-center items-center gap-[8px] rounded-[4px] bg-grayscale-5">
+          <span className="p-[4px] px-[10px] rounded-[4px] bg-grayscale-5">
             {assign.level}
-          </div>
-          <div className="text-grayscale-80 font-bold text-[16px]">
+          </span>
+          <span className="text-grayscale-80 font-bold text-[16px]">
             {assign.title}
-          </div>
+          </span>
         </div>
         {USER_INFO.role === "관리자" ? (
           <Link

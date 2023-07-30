@@ -10,7 +10,7 @@ const user = {
   username: "김지은",
 };
 
-const Detail = () => {
+const AssignmentDetailPage = () => {
   return (
     <div className="py-[36px] px-[20px]">
       <div className="px-[20px] py-[29px]">
@@ -86,4 +86,4 @@ const Detail = () => {
   );
 };
 
-export default Detail;
+export default AssignmentDetailPage;

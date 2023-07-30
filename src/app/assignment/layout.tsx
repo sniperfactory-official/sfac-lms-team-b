@@ -7,9 +7,13 @@ interface Props {
 
 const layout = ({ children }: Props) => {
   return (
-    <div>
-      <AssignmentLeftNav />
-      {children}
+    <div className="w-screen flex justify-center">
+      <div className="w-4/5 flex mb-[20px]">
+        <div className="w-1/5 h-100 flex items-center flex-col mr-[20px] pt-[50px]">
+          <AssignmentLeftNav />
+        </div>
+        <div className="w-4/5 h-100 pt-[50px] ml-[50px]">{children}</div>
+      </div>
     </div>
   );
 };
