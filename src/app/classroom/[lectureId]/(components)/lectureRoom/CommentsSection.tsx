@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import CommentForm from "../classroomModal/comment/CommentForm";
-import Comment from "../classroomModal/comment/Comment";
-import Layout from "../classroomModal/common/Layout";
+import CommentForm from "../../../(components)/modal/comment/CommentForm";
+import Comment from "../../../(components)/modal/comment/Comment";
+import Layout from "../../../(components)/modal/common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { DocumentData } from "firebase/firestore";
 
