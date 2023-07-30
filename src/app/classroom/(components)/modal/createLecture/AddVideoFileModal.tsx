@@ -56,7 +56,7 @@ const AddVideoFileModal: React.FC = () => {
         {videoFile?.type.includes("video") && (
           <div className="flex gap-3 items-center">
             <Image
-              src={"/images/file-icon.svg"}
+              src={"/images/fileIcon.svg"}
               alt={"파일 아이콘"}
               width={0}
               height={0}

@@ -5,7 +5,7 @@ const LectureNavigation = () => {
     <nav className="flex justify-between items-center p-10 h-24 text-gray-500">
       <button className="flex items-center cursor-pointer">
         <Image
-          src="/images/backward-step.svg"
+          src="/images/backwardStep.svg"
           alt="이전강의"
           width={20}
           height={20}
@@ -15,7 +15,7 @@ const LectureNavigation = () => {
       </button>
       <button className="flex items-center cursor-pointer">
         <Image
-          src="/images/forward-step.svg"
+          src="/images/forwardStep.svg"
           alt="다음강의"
           width={20}
           height={20}
