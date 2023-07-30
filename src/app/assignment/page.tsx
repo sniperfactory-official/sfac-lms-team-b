@@ -1,4 +1,4 @@
-import Feedback from "./(components)/Feedback";
+import Feedback from "./(components)/AssignmentFeedback";
 import React from "react";
 
 const AssignmentPage = () => {

@@ -1,7 +1,7 @@
 import EmptyContents from "@/components/EmptyContents";
-import ProfileImage from "../../components/ProfileImage";
-import TeacherViewCard from "../../components/TeacherViewCard";
-import StudentViewCard from "../../components/StudentViewCard";
+import ProfileImage from "../../(components)/AssignmentProfileImage";
+import TeacherViewCard from "../../(components)/AssignmentTeacherViewCard";
+import StudentViewCard from "../../(components)/AssignmentStudentViewCard";
 
 // FIXME: 임시 유저 정보, 추후 firebase 들고 오면 삭제, 삭제시 반드시 binding 확인
 const user = {

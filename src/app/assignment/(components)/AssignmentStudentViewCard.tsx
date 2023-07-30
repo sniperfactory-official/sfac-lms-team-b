@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import ProfileImage from "./ProfileImage";
-import Modal from "./Modal";
-import SubmitAssignmentWithLink from "./SubmitAssignmentWithLink";
-import SubmitAssignmentWithFile from "./SubmitAssignmentWithFile";
+import ProfileImage from "./AssignmentProfileImage";
+import Modal from "./AssignmentModal";
+import SubmitAssignmentWithLink from "./AssignmentSubmitWithLink";
+import SubmitAssignmentWithFile from "./AssignmentSubmitWithFile";
 
 const StudentViewCard: React.FC = () => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
