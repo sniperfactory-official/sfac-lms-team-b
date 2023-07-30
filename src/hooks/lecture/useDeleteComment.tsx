@@ -1,5 +1,6 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/utils/firebase";
+import { useDispatch } from "react-redux";
 import {
   collection,
   doc,
@@ -7,7 +8,9 @@ import {
   query,
   where,
   getDocs,
+  DocumentData,
 } from "firebase/firestore";
+import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 
 const deleteCommentFromDB = async (commentId: string) => {
   const commentRef = doc(db, "lectureComments", commentId);
@@ -25,5 +28,42 @@ const deleteCommentFromDB = async (commentId: string) => {
 };
 
 export const useDeleteComment = () => {
-  return useMutation(deleteCommentFromDB);
+  const dispatch = useDispatch();
+  const queryClient = useQueryClient();
+
+  return useMutation(deleteCommentFromDB, {
+    onMutate: async (commentId: string) => {
+      await queryClient.cancelQueries(["comments"]);
+      const previousComments = queryClient.getQueryData<DocumentData[]>([
+        "comments",
+      ]);
+
+      queryClient.setQueryData(
+        ["comments"],
+        (old: DocumentData[] | undefined) => {
+          return old?.filter(
+            comment =>
+              comment.id !== commentId && comment.parentId !== commentId,
+          );
+        },
+      );
+
+      return { previousComments };
+    },
+    onError: (err, commentId, context: any) => {
+      queryClient.setQueryData(["comments"], context.previousComments);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["comments"]);
+      dispatch(
+        setModalVisibility({ modalName: "commentModalOpen", visible: false }),
+      );
+      dispatch(
+        setModalVisibility({
+          modalName: "replyCommentModalOpen",
+          visible: false,
+        }),
+      );
+    },
+  });
 };
