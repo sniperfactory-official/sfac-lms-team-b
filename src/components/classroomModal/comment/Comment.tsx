@@ -81,7 +81,10 @@ const Comment: React.FC<CommentProps> = ({
                   수정
                 </li>
                 <li>|</li>
-                <li className="text-black hover:text-red cursor-pointer" onClick={handleDeleteClick}>
+                <li
+                  className="text-black hover:text-red cursor-pointer"
+                  onClick={handleDeleteClick}
+                >
                   삭제
                 </li>
               </ul>
