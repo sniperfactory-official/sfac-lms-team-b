@@ -31,7 +31,7 @@ const CommentsSection: FC<CommentsSectionProps> = ({
       {commentModalOpen && (
         <Layout>
           <h2 className="text-xl font-bold">댓글 달기</h2>
-          <CommentForm lectureId={lectureId} />
+          <CommentForm lectureId={lectureId} isReply={false} />
         </Layout>
       )}
     </ul>

@@ -35,7 +35,11 @@ const ReplySection: FC<ReplySectionProps> = ({ commentId, lectureId }) => {
               </li>
             ))}
         </ul>
-        <CommentForm parentId={commentId} lectureId={lectureId} />
+        <CommentForm
+          parentId={commentId}
+          lectureId={lectureId}
+          isReply={true}
+        />
       </Layout>
     )
   );
