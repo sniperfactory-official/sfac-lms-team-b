@@ -1,22 +1,29 @@
 import React, { FC, useState, ChangeEvent, FormEvent } from "react";
 import useAuth from "@/hooks/user/useAuth";
 import useUsername from "@/hooks/user/useUserName";
+import { useDispatch } from "react-redux";
 import { useAddCommentMutation } from "@/hooks/lecture/useAddCommentMutation";
+import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 
 interface CommentFormProps {
   parentId?: string;
   lectureId: string;
+  isReply?: boolean;
 }
 
-const CommentForm: FC<CommentFormProps> = ({ parentId = "", lectureId }) => {
+const CommentForm: FC<CommentFormProps> = ({
+  parentId = "",
+  lectureId,
+  isReply,
+}) => {
   const [comment, setComment] = useState("");
   const user = useAuth();
   const username = useUsername(user?.uid ?? null);
   const mutation = useAddCommentMutation();
+  const dispatch = useDispatch();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(lectureId);
     if (user && lectureId) {
       mutation.mutate({
         content: comment,
@@ -25,6 +32,11 @@ const CommentForm: FC<CommentFormProps> = ({ parentId = "", lectureId }) => {
         userId: user.uid,
       });
       setComment("");
+      if (!isReply) {
+        dispatch(
+          setModalVisibility({ modalName: "commentModalOpen", visible: false }),
+        );
+      }
     }
   };
 
