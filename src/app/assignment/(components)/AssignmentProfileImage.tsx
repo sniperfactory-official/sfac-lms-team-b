@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-const ProfileImage = () => {
+const AssignmentProfileImage = () => {
   return (
     <div>
       <div className="relative rounded-full overflow-hidden border border-grayscale-10 w-[43px] h-[43px]">
@@ -17,4 +17,4 @@ const ProfileImage = () => {
   );
 };
 
-export default ProfileImage;
+export default AssignmentProfileImage;

@@ -6,7 +6,7 @@ type OwnProps = {
   onClose: () => void;
 };
 
-const SubmitAssignmentWithFile: React.FC<OwnProps> = ({ onClose }) => {
+const AssignmentSubmitWithFile: React.FC<OwnProps> = ({ onClose }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
@@ -181,4 +181,4 @@ const SubmitAssignmentWithFile: React.FC<OwnProps> = ({ onClose }) => {
   );
 };
 
-export default SubmitAssignmentWithFile;
+export default AssignmentSubmitWithFile;

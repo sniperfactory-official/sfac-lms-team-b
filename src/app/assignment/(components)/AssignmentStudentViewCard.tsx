@@ -1,20 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import ProfileImage from "./AssignmentProfileImage";
-import Modal from "./AssignmentModal";
-import SubmitAssignmentWithLink from "./AssignmentSubmitWithLink";
-import SubmitAssignmentWithFile from "./AssignmentSubmitWithFile";
+import AssignmentProfileImage from "./AssignmentProfileImage";
+import AssignmentModal from "./AssignmentModal";
+import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
+import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
+import AssignmentFeedback from "./AssignmentFeedback";
 
-const StudentViewCard: React.FC = () => {
+
+const AssignmentStudentViewCard: React.FC = () => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [isFileOpen, setIsFileOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   return (
     <>
       <div className="flex justify-between items-center px-[21px] py-[24px] border rounded-[10px]">
         <div className="flex justify-start items-center gap-[14px]">
-          <ProfileImage />
+          <AssignmentProfileImage />
           <div>
             <div className="mb-[5px]">
               <span className="mr-[15px] text-grayscale-100 text-[16px] font-[700]">
@@ -55,7 +58,13 @@ const StudentViewCard: React.FC = () => {
 
           {/* 제출 후 */}
           <div>
-            <button type="button" className="border">
+            <button
+              type="button"
+              className="border"
+              onClick={() => {
+                setIsDetailOpen(true);
+              }}
+            >
               확인하기
             </button>
           </div>
@@ -63,36 +72,47 @@ const StudentViewCard: React.FC = () => {
         </div>
       </div>
       {/* 과제: 링크 제출 */}
-      <Modal
+      <AssignmentModal
         title="과제 제출"
         isOpen={isLinkOpen}
         onClose={() => {
           setIsLinkOpen(false);
         }}
       >
-        <SubmitAssignmentWithLink
+        <AssignmentSubmitWithLink
           onClose={() => {
             setIsLinkOpen(false);
           }}
         />
-      </Modal>
+      </AssignmentModal>
 
       {/* 과제: 파일 제출 */}
-      <Modal
+      <AssignmentModal
         title="과제 제출"
         isOpen={isFileOpen}
         onClose={() => {
           setIsFileOpen(false);
         }}
       >
-        <SubmitAssignmentWithFile
+        <AssignmentSubmitWithFile
           onClose={() => {
             setIsFileOpen(false);
           }}
         />
-      </Modal>
+      </AssignmentModal>
+
+      {/* 과제: 과제 상세 */}
+      <AssignmentModal
+        title="상세보기"
+        isOpen={isDetailOpen}
+        onClose={() => {
+          setIsDetailOpen(false);
+        }}
+      >
+        <AssignmentFeedback />
+      </AssignmentModal>
     </>
   );
 };
 
-export default StudentViewCard;
+export default AssignmentStudentViewCard;
