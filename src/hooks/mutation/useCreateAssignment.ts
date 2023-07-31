@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { collection, addDoc, DocumentReference } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Assignment } from "@/types/firebase.types";
@@ -7,19 +7,28 @@ import { Assignment } from "@/types/firebase.types";
 const createAssignment = async (
   assignmentValue: Assignment,
 ): Promise<DocumentReference> => {
-  const addAssignment = await addDoc(collection(db, "assignments"), {
-    ...assignmentValue,
-  });
-  return addAssignment;
+  try {
+    const addAssignment = await addDoc(collection(db, "assignments"), {
+      ...assignmentValue,
+    });
+    return addAssignment;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };
 
-const useCreateAssignment = (assignmentValue: Assignment) => {
-  const { data, isLoading, error } = useQuery(
-    ["createAssignment", assignmentValue],
-    () => createAssignment(assignmentValue),
-    { cacheTime: 0, refetchOnWindowFocus: false }, // 과제 생성기능 이므로 cache기능 off
-  );
-  return { data, isLoading, error };
+const useCreateAssignment = () => {
+  const queryClient = useQueryClient();
+  const { mutate, isLoading, error } = useMutation(createAssignment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["getAssignment", ""]);
+    },
+    onError: err => {
+      console.log(err);
+    },
+  });
+  return { mutate, isLoading, error };
 };
 
 export { useCreateAssignment };
