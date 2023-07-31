@@ -7,16 +7,15 @@ import { Assignment } from "@/types/firebase.types";
 const createAssignment = async (
   assignmentValue: Assignment,
 ): Promise<DocumentReference> => {
-  const addAssignmentData = await addDoc(
-    collection(db, "assignments"),
-    assignmentValue,
-  );
-  return addAssignmentData;
+  const addAssignment = await addDoc(collection(db, "assignments"), {
+    ...assignmentValue,
+  });
+  return addAssignment;
 };
 
 const useCreateAssignment = (assignmentValue: Assignment) => {
   const { data, isLoading, error } = useQuery(
-    ["createAssignment"],
+    ["createAssignment", assignmentValue],
     () => createAssignment(assignmentValue),
     { cacheTime: 0, refetchOnWindowFocus: false }, // 과제 생성기능 이므로 cache기능 off
   );
