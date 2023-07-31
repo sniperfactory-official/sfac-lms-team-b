@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
 import Element from "./Element";
 import useSelectCourse from "@/hooks/classroom/useSelectCourse";
+import { useDispatch } from "react-redux";
+import { setCourseId } from "@/redux/slice/lectureInfoSlice";
 
 interface IProps {
   courseList: ICourseField[];
@@ -9,7 +11,7 @@ interface IProps {
 }
 
 const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
-  // 체크하여 삭제할 항목 ID들
+  const dispatch = useDispatch();
   const { selectedCourse, handleCurrentCourse } = useSelectCourse({
     courseList,
     setCurrentCourse,
