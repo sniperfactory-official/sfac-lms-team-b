@@ -74,6 +74,7 @@ const AssignmentStudentViewCard: React.FC = () => {
       <AssignmentModal
         title="과제 제출"
         isOpen={isLinkOpen}
+        isBottomButton={true}
         onClose={() => {
           setIsLinkOpen(false);
         }}
@@ -89,6 +90,7 @@ const AssignmentStudentViewCard: React.FC = () => {
       <AssignmentModal
         title="과제 제출"
         isOpen={isFileOpen}
+        isBottomButton={true}
         onClose={() => {
           setIsFileOpen(false);
         }}
@@ -104,6 +106,7 @@ const AssignmentStudentViewCard: React.FC = () => {
       <AssignmentModal
         title="상세보기"
         isOpen={isDetailOpen}
+        isBottomButton={false}
         onClose={() => {
           setIsDetailOpen(false);
         }}
