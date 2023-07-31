@@ -163,16 +163,6 @@ export default function AssignmentCreate() {
         </div>
       </div>
 
-      <div className="absolute left-[33px] bottom-[33px]">
-        {toastMsg && (
-          <PageToast
-            toastMsg={toastMsg}
-            isAccept={isAccept}
-            onClose={closeToast}
-          />
-        )}
-      </div>
-
       <div className="flex items-center justify-between">
         <div className="flex justify-start items-center">
           <label
@@ -200,6 +190,16 @@ export default function AssignmentCreate() {
           >
             업로드
           </button>
+        </div>
+
+        <div className="absolute left-[33px] bottom-[33px]">
+          {toastMsg && (
+            <PageToast
+              toastMsg={toastMsg}
+              isAccept={isAccept}
+              onClose={closeToast}
+            />
+          )}
         </div>
       </div>
     </form>
