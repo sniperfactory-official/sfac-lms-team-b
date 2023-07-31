@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { ICourseField } from "@/hooks/queries/useGetCourseList";
 import Element from "./Element";
 import { Lecture } from "@/types/firebase.types";
 import useSelectCourse from "@/hooks/classroom/useSelectCourse";
+import { useDispatch } from "react-redux";
+import { setCourseId } from "@/redux/slice/lectureInfoSlice";
 
 interface IProps {
   courseList: ICourseField[];
@@ -11,10 +13,12 @@ interface IProps {
 }
 
 const CourseList = ({ courseList, isEditMode, setCurrentCourse }: IProps) => {
+  const dispatch = useDispatch();
   const { selectedCourse, handleCurrentCourse } = useSelectCourse({
     courseList,
     setCurrentCourse,
   });
+
   return (
     // 2중 map, course순회 & course하위 lecture 순회
     <React.Fragment>
@@ -25,7 +29,10 @@ const CourseList = ({ courseList, isEditMode, setCurrentCourse }: IProps) => {
             type="course"
             title={course.courseData.title}
             isEditMode={isEditMode}
-            clickFn={() => handleCurrentCourse({ course, idx })!}
+            clickFn={() => {
+              dispatch(setCourseId(course.courseId));
+              handleCurrentCourse({ course, idx })!;
+            }}
             isSelected={selectedCourse[idx]}
           />
           {/* 선택된 lecture만 보이도록 */}
