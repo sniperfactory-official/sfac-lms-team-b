@@ -4,7 +4,7 @@ import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import Layout from "../common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import useGetComments from "@/hooks/lecture/useGetComments";
+import useGetComments from "@/hooks/queries/useGetComments";
 
 interface ReplySectionProps {
   commentId: string;
