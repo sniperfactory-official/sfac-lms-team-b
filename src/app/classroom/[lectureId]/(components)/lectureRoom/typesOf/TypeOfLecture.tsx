@@ -11,11 +11,11 @@ interface TypeOfLectureProps {
 
 const TypeOfLecture: FC<TypeOfLectureProps> = ({ type, content }) => {
   switch (type) {
-    case "VIDEO":
+    case "비디오":
       return <VideoLecture content={content} />;
-    case "NOTE":
+    case "노트":
       return <NoteLecture content={content} />;
-    case "LINK":
+    case "링크":
       return <LinkLecture content={content} />;
     default:
       return <div>Invalid lecture type</div>;

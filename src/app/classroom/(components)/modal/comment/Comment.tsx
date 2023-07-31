@@ -4,6 +4,7 @@ import React from "react";
 import { getTime } from "@/utils/getTime";
 import useAuth from "@/hooks/user/useAuth";
 import { useDeleteComment } from "@/hooks/lecture/useDeleteComment";
+import highlightTags from "@/utils/highlightTags";
 
 interface CommentProps {
   comment: DocumentData;
@@ -28,8 +29,8 @@ const Comment: React.FC<CommentProps> = ({
 
   const displayedComment =
     !showFullComment && content.length > 10
-      ? `${content.slice(0, 10)}...`
-      : content;
+      ? highlightTags(`${content.slice(0, 10)}...`)
+      : highlightTags(content);
 
   const time = getTime(createdAt.toDate());
 
@@ -62,7 +63,7 @@ const Comment: React.FC<CommentProps> = ({
           <div className="flex flex-col">
             <div className="flex items-center mb-1">
               <span className="font-semibold ">{username}</span>
-              <span className="text-sm ml-1 text-gray-400 font-light">
+              <span className="text-sm ml-1 text-gray-500 font-light">
                 &#183; {role}
               </span>
             </div>

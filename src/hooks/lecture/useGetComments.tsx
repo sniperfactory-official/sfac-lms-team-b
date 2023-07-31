@@ -9,6 +9,7 @@ import {
   getDocs,
   query,
   where,
+  orderBy,
 } from "firebase/firestore";
 
 /**
@@ -26,6 +27,7 @@ const fetchComments = async (
     const commentsQuery = query(
       collection(db, "lectureComments"),
       where("lectureId", "==", doc(db, "lectures", lectureId)),
+      orderBy("createdAt"),
     );
     const querySnapshot = await getDocs(commentsQuery);
 
@@ -46,6 +48,7 @@ const fetchComments = async (
     const commentsQuery = query(
       collection(db, "lectureComments"),
       where("parentId", "==", parentId),
+      orderBy("createdAt"),
     );
     const querySnapshot = await getDocs(commentsQuery);
 

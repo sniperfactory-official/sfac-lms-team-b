@@ -1,9 +1,13 @@
+import dynamic from "next/dynamic";
 import Layout from "../common/Layout";
 import ModalFooter from "../common/ModalFooter";
 import LectureTitle from "../common/LectureTitle";
-import NoteSction from "./NoteSction";
 import ModalHeader from "../common/ModalHeader";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+
+const NoSsrEditor = dynamic(() => import("./NoteSection"), {
+  ssr: false,
+});
 
 const AddNoteModal: React.FC = () => {
   const { handleModalMove } = useClassroomModal();
@@ -20,7 +24,7 @@ const AddNoteModal: React.FC = () => {
         </button>
       </ModalHeader>
       <LectureTitle />
-      <NoteSction />
+      <NoSsrEditor />
       <ModalFooter />
     </Layout>
   );
