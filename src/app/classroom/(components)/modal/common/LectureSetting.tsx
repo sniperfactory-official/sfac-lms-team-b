@@ -1,6 +1,6 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/esm/locale";
+import { ko } from "date-fns/locale";
 import {
   setDateRange,
   setStartDate,
@@ -9,6 +9,7 @@ import {
 } from "@/redux/slice/lectureInfoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { Timestamp } from "firebase/firestore";
 
 const LectureSetting: React.FC = () => {
   const dateRange = useSelector(
@@ -17,11 +18,33 @@ const LectureSetting: React.FC = () => {
   const isLecturePublic = useSelector(
     (state: RootState) => state.lectureInfo.isLecturePublic,
   );
-  const [startDate, endDate] = dateRange;
+  const [startDate, endDate] = dateRange.map(dateStr =>
+    dateStr ? new Date(dateStr) : null,
+  );
   const dispatch = useDispatch();
 
   const handleToggle = () => {
     dispatch(setIsLecturePublic(!isLecturePublic));
+  };
+
+  const handleChangeDate = (update: [Date | null, Date | null]) => {
+    dispatch(
+      setDateRange(
+        update.map(date =>
+          date ? new Timestamp(date.getTime() / 1000, 0) : null,
+        ),
+      ),
+    );
+    dispatch(
+      setStartDate(
+        update[0] ? new Timestamp(update[0].getTime() / 1000, 0) : null,
+      ),
+    );
+    dispatch(
+      setEndDate(
+        update[1] ? new Timestamp(update[1].getTime() / 1000, 0) : null,
+      ),
+    );
   };
 
   return (
@@ -34,11 +57,7 @@ const LectureSetting: React.FC = () => {
           placeholderText="Pick a date"
           locale={ko}
           selected={startDate}
-          onChange={(update: [Date | null, Date | null]) => {
-            dispatch(setDateRange(update));
-            dispatch(setStartDate(update[0]));
-            dispatch(setEndDate(update[1]));
-          }}
+          onChange={handleChangeDate}
           startDate={startDate}
           endDate={endDate}
           selectsRange
