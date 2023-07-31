@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
-import { UseMutationResult } from '@tanstack/react-query';
+import { useCallback } from "react";
+import { UseMutationResult } from "@tanstack/react-query";
 
 export const useHandleClicks = (
   onCommentClick: ((id: string) => void) | undefined,
-  deleteMutation: UseMutationResult<void, unknown, string, unknown>
+  deleteMutation: UseMutationResult<void, unknown, string, unknown>,
 ) => {
   const handleCommentClick = useCallback(
     (id: string) => {
@@ -11,7 +11,7 @@ export const useHandleClicks = (
         onCommentClick(id);
       }
     },
-    [onCommentClick]
+    [onCommentClick],
   );
 
   const handleDeleteClick = useCallback(
@@ -19,7 +19,7 @@ export const useHandleClicks = (
       e.stopPropagation();
       deleteMutation.mutate(id);
     },
-    [deleteMutation]
+    [deleteMutation],
   );
 
   return { handleCommentClick, handleDeleteClick };
