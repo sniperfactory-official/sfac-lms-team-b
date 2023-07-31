@@ -13,12 +13,8 @@ const MakeLectureModal: React.FC = () => {
     (state: RootState) => state.lectureInfo.selectedModal,
   );
 
-  const isSelectModal = (modal: string) => {
-    if (selectedModal === modal) {
-    } else {
-      dispatch(resetInput());
-      dispatch(setSelectedModal(modal));
-    }
+  const selectModalType = (modal: string) => {
+    dispatch(setSelectedModal(modal));
   };
 
   const onNextButtonClick = () => {
@@ -40,7 +36,7 @@ const MakeLectureModal: React.FC = () => {
             className={`flex flex-col items-center justify-center border-2 border-grayscale-10 rounded-md w-[222px] h-[153px] text-[18px] cursor-pointer ${
               selectedModal === "note" ? "bg-primary-5 border-primary-60" : ""
             }`}
-            onClick={() => isSelectModal("note")}
+            onClick={() => selectModalType("note")}
           >
             <Image
               src="images/note.svg"
@@ -56,7 +52,7 @@ const MakeLectureModal: React.FC = () => {
             className={`flex flex-col items-center justify-center border-2 border-grayscale-10 rounded-md w-[222px] h-[153px] text-[18px] cursor-pointer ${
               selectedModal === "video" ? "bg-primary-5 border-primary-60" : ""
             }`}
-            onClick={() => isSelectModal("video")}
+            onClick={() => selectModalType("video")}
           >
             <Image
               src="images/video.svg"
@@ -72,7 +68,7 @@ const MakeLectureModal: React.FC = () => {
             className={`flex flex-col items-center justify-center border-2 border-grayscale-10 rounded-md w-[222px] h-[153px] text-[18px] cursor-pointer ${
               selectedModal === "link" ? "bg-primary-5 border-primary-60" : ""
             }`}
-            onClick={() => isSelectModal("link")}
+            onClick={() => selectModalType("link")}
           >
             <Image
               src="images/link.svg"

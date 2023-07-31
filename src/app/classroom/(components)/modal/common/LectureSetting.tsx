@@ -2,7 +2,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import {
-  setDateRange,
   setStartDate,
   setEndDate,
   setIsLecturePublic,
@@ -10,41 +9,34 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { Timestamp } from "firebase/firestore";
+import timestampToDate from "@/utils/timestampToDate";
 
 const LectureSetting: React.FC = () => {
-  const dateRange = useSelector(
-    (state: RootState) => state.lectureInfo.dateRange,
+  const startDate = useSelector(
+    (state: RootState) => state.lectureInfo.startDate,
   );
+  const endDate = useSelector((state: RootState) => state.lectureInfo.endDate);
   const isLecturePublic = useSelector(
     (state: RootState) => state.lectureInfo.isLecturePublic,
   );
-  const [startDate, endDate] = dateRange.map(dateStr =>
-    dateStr ? new Date(dateStr) : null,
-  );
+
   const dispatch = useDispatch();
 
   const handleToggle = () => {
     dispatch(setIsLecturePublic(!isLecturePublic));
   };
 
-  const handleChangeDate = (update: [Date | null, Date | null]) => {
-    dispatch(
-      setDateRange(
-        update.map(date =>
-          date ? new Timestamp(date.getTime() / 1000, 0) : null,
-        ),
-      ),
-    );
-    dispatch(
-      setStartDate(
-        update[0] ? new Timestamp(update[0].getTime() / 1000, 0) : null,
-      ),
-    );
-    dispatch(
-      setEndDate(
-        update[1] ? new Timestamp(update[1].getTime() / 1000, 0) : null,
-      ),
-    );
+  const handleChangeDate = (update: [Date, Date]) => {
+    const [startDate, endDate] = update;
+    const startTimestamp: Timestamp | null = startDate
+      ? new Timestamp(startDate.getTime() / 1000, 0)
+      : null;
+    const endTimestamp: Timestamp | null = endDate
+      ? new Timestamp(endDate.getTime() / 1000, 0)
+      : null;
+
+    dispatch(setStartDate(startTimestamp));
+    dispatch(setEndDate(endTimestamp));
   };
 
   return (
