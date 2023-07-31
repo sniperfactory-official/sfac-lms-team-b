@@ -5,6 +5,7 @@ interface EditDeleteButtonsProps {
   userId: string;
   userUid: string | undefined;
   handleDeleteClick: (e: React.MouseEvent) => void;
+  setIsEditMode: (isEditMode: boolean) => void;
 }
 
 const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
@@ -12,10 +13,16 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
   userId,
   userUid,
   handleDeleteClick,
-}) =>
-  showFullComment && userId === userUid ? (
+  setIsEditMode,
+}) => {
+  return showFullComment && userId === userUid ? (
     <ul className="flex text-xs space-x-1.5 text-gray-400 float-right pt-2">
-      <li className="text-black hover:text-blue-500 cursor-pointer">수정</li>
+      <li
+        className="text-black hover:text-blue-500 cursor-pointer"
+        onClick={() => setIsEditMode(true)}
+      >
+        수정
+      </li>
       <li>|</li>
       <li
         className="text-black hover:text-red cursor-pointer"
@@ -25,5 +32,5 @@ const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
       </li>
     </ul>
   ) : null;
-
+};
 export default EditDeleteButtons;
