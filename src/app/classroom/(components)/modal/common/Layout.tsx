@@ -16,7 +16,7 @@ const Layout: React.FC<ModalProps> = ({ children }) => {
       onClick={() => dispatch(closeModal())}
     >
       <article
-        className="relative w-[770px] bg-white px-8 py-9 flex flex-col gap-5 rounded-[10px] border border-solid border-grayscale-10 drop-shadow-[0_0_8px_rgba(0,0,0,0.25)] box-border"
+        className="relative w-[770px] bg-white px-[35px] py-[40px] flex flex-col gap-5 rounded-[10px] border border-solid border-grayscale-10 drop-shadow-[0_0_8px_rgba(0,0,0,0.25)] box-border"
         onClick={e => e.stopPropagation()}
       >
         {children}
@@ -26,7 +26,7 @@ const Layout: React.FC<ModalProps> = ({ children }) => {
             alt="닫기 버튼"
             width={24}
             height={24}
-            className="absolute top-9 right-8"
+            className="absolute top-[40px] right-[35px]"
             onClick={() => dispatch(closeModal())}
           />
         </button>
