@@ -2,6 +2,8 @@ import { useDispatch } from "react-redux";
 import { toggleDeletionId } from "@/redux/slice/editCourseIdSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { useEffect } from "react";
+import { setLectureCount } from "@/redux/slice/editCourseIdSlice";
 
 interface IProp {
   type: "course" | "lecture";
@@ -9,13 +11,28 @@ interface IProp {
   clickFn?: () => void;
   isSelected: boolean;
   uniqueId: string; // 삭제시 필요한 데이터ID
+  childCount?: number; // course 하위 lecture의 개수 몇 개인지 count, 하위 lecture를 모두 클릭하지 않을 시 course 삭제를 못하게 막는 방어변수
 }
 
-const Element = ({ type, title, clickFn, isSelected, uniqueId }: IProp) => {
+const Element = ({
+  type,
+  title,
+  clickFn,
+  isSelected,
+  uniqueId,
+  childCount,
+}: IProp) => {
   const dispatch = useDispatch();
   const isEditMode = useSelector(
     (state: RootState) => state.editCourse.isEditMode,
   );
+
+  useEffect(() => {
+    // 선택된 course의 하위 lecture를 전역변수로 관리,
+    if (type === "course" && isSelected) {
+      dispatch(setLectureCount(childCount!));
+    }
+  }, [isSelected]);
 
   const type_obj = {
     course: {

@@ -31,6 +31,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
             clickFn={() => handleCurrentCourse({ course, idx })!}
             isSelected={selectedCourse[idx]}
             uniqueId={course.courseId}
+            childCount={course.lectureList.length}
           />
           {/* 선택된 lecture만 보이도록 */}
           {selectedCourse[idx] &&
