@@ -8,11 +8,13 @@ export interface DeleteId {
 export interface IEditCourse {
   deleteIdArray: DeleteId[];
   isEditMode: boolean;
+  lectureCount: number;
 }
 
 const initialState: IEditCourse = {
   deleteIdArray: [],
   isEditMode: false,
+  lectureCount: 0, 
 };
 
 const editCourseSlice = createSlice({
@@ -32,18 +34,22 @@ const editCourseSlice = createSlice({
         });
       }
     },
-    resetDeletionId: state => {
-      state.deleteIdArray = [];
-    },
-    handleEditMode: state => {
-      console.log("hello handleEditMOdeㅅ");
 
+    handleEditMode: state => {
       state.isEditMode = !state.isEditMode;
-      state.deleteIdArray = [];
+      if(!state.isEditMode){
+        state.deleteIdArray = [];
+        state.lectureCount = 0;
+      }      
+    },
+
+    setLectureCount: (state, action: PayloadAction<number>) => {
+      state.lectureCount = action.payload;
+
     },
   },
 });
 
-export const { toggleDeletionId, resetDeletionId, handleEditMode } =
+export const { toggleDeletionId, handleEditMode, setLectureCount } =
   editCourseSlice.actions;
 export default editCourseSlice.reducer;
