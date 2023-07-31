@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Timestamp } from "firebase/firestore";
 import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
+import PageToast from "@/components/PageToast";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
 
 export default function AssignmentCreate() {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [toastMsg, setToastMsg] = useState<string>("");
+  const [isAccept, setIsAccept] = useState<boolean>(false);
 
   const {
     register,
@@ -14,17 +16,61 @@ export default function AssignmentCreate() {
     formState: { errors },
   } = useForm<Assignment>();
 
-  const onSubmit: SubmitHandler<Assignment> = data => {
+  const onSubmit: SubmitHandler<Assignment> = async data => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
     data.images = imageFiles.map(file => URL.createObjectURL(file));
   };
+
+  const MAX_FILE_SIZE_MB = 5;
+  const MAX_IMAGES = 5;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files) {
       const fileList = Array.from(files);
+
+      const oversizedFiles = fileList.filter(
+        file => file.size > MAX_FILE_SIZE_MB * 1024 * 1024,
+      );
+      if (oversizedFiles.length > 0) {
+        console.log(oversizedFiles);
+        setToastMsg(`파일 용량이 너무 큽니다. (최대 ${MAX_FILE_SIZE_MB}MB).`);
+        setIsAccept(false);
+        return;
+      }
+
+      // 이미지 개수를 확인하여 5개 이상인 경우 토스트 메시지 표시
+      if (imageFiles.length + fileList.length > MAX_IMAGES) {
+        setToastMsg(`이미지는 최대 ${MAX_IMAGES}개까지 등록 가능합니다.`);
+        setIsAccept(false);
+        return;
+      }
       setImageFiles(prevFiles => [...prevFiles, ...fileList]);
     }
+  };
+
+  const closeToast = () => {
+    setToastMsg("");
+  };
+
+  const handleImageRemove = (index: number) => {
+    const newImageFiles = [...imageFiles];
+    newImageFiles.splice(index, 1);
+    setImageFiles(newImageFiles);
+  };
+
+  const handleFormValidation = () => {
+    if (
+      !errors.title ||
+      !errors.content ||
+      errors.startDate ||
+      !errors.endDate
+    ) {
+      setToastMsg("필수 항목을 모두 입력해주세요.");
+      setIsAccept(false);
+      return;
+    }
+    handleSubmit(onSubmit);
   };
 
   return (
@@ -74,33 +120,40 @@ export default function AssignmentCreate() {
               onChange={handleFileChange}
               multiple
             />
-            <svg
-              width="28"
-              height="29"
-              viewBox="0 0 28 29"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M27.6774 14.3333C27.6774 15.4379 26.782 16.3333 25.6774 16.3333H15.9931V26.636C15.9931 27.7115 15.1212 28.5833 14.0457 28.5833C12.9702 28.5833 12.0984 27.7115 12.0984 26.636V16.3333H2.41406C1.30949 16.3333 0.414062 15.4379 0.414062 14.3333V14.25C0.414062 13.1454 1.30949 12.25 2.41406 12.25H12.0984V1.94738C12.0984 0.871872 12.9702 0 14.0457 0C15.1212 0 15.9931 0.871872 15.9931 1.94738V12.25H25.6774C26.782 12.25 27.6774 13.1454 27.6774 14.25V14.3333Z"
-                fill="#808080"
-              />
-            </svg>
+            <Image
+              src={"/images/image-add.svg"}
+              alt={"이미지추가"}
+              width={61}
+              height={61}
+            />
           </label>
           <div className="flex justify-start items-center">
             {imageFiles.map((file, index) => (
               <div
                 key={index}
-                className="ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+                className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
               >
                 {file ? (
-                  <Image
-                    src={URL.createObjectURL(file)}
-                    alt="assignment"
-                    width="0"
-                    height="0"
-                    className="w-full h-full object-cover"
-                  />
+                  <>
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt="assignment"
+                      width="0"
+                      height="0"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => handleImageRemove(index)}
+                      className="absolute top-1 right-1"
+                    >
+                      <Image
+                        src={"images/image-delete.svg"}
+                        alt={"이미지 삭제"}
+                        width={14}
+                        height={14}
+                      />
+                    </button>
+                  </>
                 ) : (
                   ""
                 )}
@@ -133,9 +186,20 @@ export default function AssignmentCreate() {
           <button
             type="submit"
             className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
+            onClick={handleFormValidation}
           >
             업로드
           </button>
+        </div>
+
+        <div className="absolute left-[33px] bottom-[33px]">
+          {toastMsg && (
+            <PageToast
+              toastMsg={toastMsg}
+              isAccept={isAccept}
+              onClose={closeToast}
+            />
+          )}
         </div>
       </div>
     </form>
