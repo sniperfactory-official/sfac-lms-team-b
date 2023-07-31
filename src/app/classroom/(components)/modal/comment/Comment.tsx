@@ -75,7 +75,11 @@ const Comment: React.FC<CommentProps> = ({
             onCancel={() => setIsEditMode(false)}
           />
         ) : (
-          <ReadComment displayedComment={displayedComment} username={username} role={role} />
+          <ReadComment
+            displayedComment={displayedComment}
+            username={username}
+            role={role}
+          />
         )}
         {!isEditMode && (
           <div className="flex flex-col space-y-2 text-sm w-3/12">

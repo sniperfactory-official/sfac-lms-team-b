@@ -7,10 +7,7 @@ import {
   DocumentData,
 } from "firebase/firestore";
 
-const updateCommentInDB = async (data: {
-  id: string;
-  newContent: string;
-}) => {
+const updateCommentInDB = async (data: { id: string; newContent: string }) => {
   const { id, newContent } = data;
 
   const commentRef = doc(db, "lectureComments", id);
@@ -29,13 +26,20 @@ export const useUpdateComment = () => {
   return useMutation(updateCommentInDB, {
     onMutate: async updatedComment => {
       await queryClient.cancelQueries(["comments"]);
-      const previousComments = queryClient.getQueryData<DocumentData[]>(["comments"]);
+      const previousComments = queryClient.getQueryData<DocumentData[]>([
+        "comments",
+      ]);
 
-      queryClient.setQueryData(["comments"], (old: DocumentData[] | undefined) => {
-        return old?.map(comment =>
-          comment.id === updatedComment.id ? { ...comment, ...updatedComment } : comment
-        );
-      });
+      queryClient.setQueryData(
+        ["comments"],
+        (old: DocumentData[] | undefined) => {
+          return old?.map(comment =>
+            comment.id === updatedComment.id
+              ? { ...comment, ...updatedComment }
+              : comment,
+          );
+        },
+      );
 
       return { previousComments };
     },
