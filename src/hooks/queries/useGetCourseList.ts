@@ -19,7 +19,7 @@ const fetchCourseList = async () => {
 
   courseQuerySnapshot.forEach(courseDoc => {
     const lectureList: Lecture[] = [];
-    const courseId = courseDoc.id
+    const courseId = courseDoc.id;
     lectureQuerySnapshot.forEach(lectureDoc => {
       if (lectureDoc.data().courseId.id === courseDoc.id) {
         lectureList.push(lectureDoc.data() as Lecture);
@@ -32,7 +32,7 @@ const fetchCourseList = async () => {
     });
   });
   return courseField;
-  // courseFiled 데이터 구조 
+  // courseFiled 데이터 구조
   // courseData : {title: 'IT기본', createdAt: Timestamp, updatedAt: Timestamp}
   // courseId : "I7YsTuxOWvT1M2lakkAM"
   // lectureList : [{…}, {…}, {…}]

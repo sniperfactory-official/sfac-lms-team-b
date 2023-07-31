@@ -22,9 +22,11 @@ const Element = ({ type, isEditMode, title, clickFn, isSelected }: IProp) => {
 
   return (
     <div
-      className={`flex justify-center items-center w-[245px] h-[46px] ${isSelected ? type_obj[type].bg : 'bg-white'} rounded-lg ${type_obj[type].margin}`}
+      className={`flex justify-center items-center w-[245px] h-[46px] ${
+        isSelected ? type_obj[type].bg : "bg-white"
+      } rounded-lg ${type_obj[type].margin}`}
       onClick={clickFn}
-    > 
+    >
       {isEditMode && isSelected ? (
         <input
           className="w-[15px] h-[15px] border border-primary-30 "
