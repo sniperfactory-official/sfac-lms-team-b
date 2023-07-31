@@ -7,6 +7,7 @@ import { QUERY_KEY } from "@/constants/queryKey";
 export interface ICourseField {
   courseData: Course;
   lectureList: Lecture[];
+  courseId: string;
 }
 
 const fetchCourseList = async () => {
@@ -18,6 +19,7 @@ const fetchCourseList = async () => {
 
   courseQuerySnapshot.forEach(courseDoc => {
     const lectureList: Lecture[] = [];
+    const courseId = courseDoc.id
     lectureQuerySnapshot.forEach(lectureDoc => {
       if (lectureDoc.data().courseId.id === courseDoc.id) {
         lectureList.push(lectureDoc.data() as Lecture);
@@ -26,9 +28,14 @@ const fetchCourseList = async () => {
     courseField.push({
       courseData: courseDoc.data() as Course,
       lectureList,
+      courseId,
     });
   });
   return courseField;
+  // courseFiled 데이터 구조 
+  // courseData : {title: 'IT기본', createdAt: Timestamp, updatedAt: Timestamp}
+  // courseId : "I7YsTuxOWvT1M2lakkAM"
+  // lectureList : [{…}, {…}, {…}]
 };
 
 const useGetCourseList = () => {
