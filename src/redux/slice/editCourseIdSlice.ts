@@ -14,7 +14,7 @@ export interface IEditCourse {
 const initialState: IEditCourse = {
   deleteIdArray: [],
   isEditMode: false,
-  lectureCount: 0, 
+  lectureCount: 0,
 };
 
 const editCourseSlice = createSlice({
@@ -37,15 +37,14 @@ const editCourseSlice = createSlice({
 
     handleEditMode: state => {
       state.isEditMode = !state.isEditMode;
-      if(!state.isEditMode){
+      if (!state.isEditMode) {
         state.deleteIdArray = [];
         state.lectureCount = 0;
-      }      
+      }
     },
 
     setLectureCount: (state, action: PayloadAction<number>) => {
       state.lectureCount = action.payload;
-
     },
   },
 });

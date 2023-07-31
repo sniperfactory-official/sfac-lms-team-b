@@ -10,6 +10,10 @@ interface IProp {
 
 const SectionButton = ({ type }: IProp) => {
   const dispatch = useDispatch();
+  const lectureCount = useSelector(
+    (state: RootState) => state.editCourse.lectureCount,
+  );
+
   const { mutate: deleteCourse, isLoading } = useDeleteCourse();
   const deleteIdArray = useSelector(
     (state: RootState) => state.editCourse.deleteIdArray,
@@ -18,14 +22,14 @@ const SectionButton = ({ type }: IProp) => {
     set: {
       text: "적용",
       bg: "bg-primary-80",
-      onClick: () => console.log("set"),
+      onClick: () => dispatch(handleEditMode()),
     },
     remove: {
       text: "선택 삭제",
       bg: "bg-red",
       onClick: () =>
         deleteCourse(
-          { deleteIdArray },
+          { deleteIdArray, lectureCount },
           {
             onSuccess: () => {
               dispatch(handleEditMode());
