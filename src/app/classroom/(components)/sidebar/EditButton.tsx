@@ -7,12 +7,13 @@ interface IProp {
   setIsEditMode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const AsideButton = ({ isEditMode, setIsEditMode }: IProp) => {
+const EditButton = ({ isEditMode, setIsEditMode }: IProp) => {
   const handleEditMode = () => {
     setIsEditMode(!isEditMode);
   };
 
   return (
+    // isEditMode ? '적용', '선택 삭제' : '섹션 수정'
     <React.Fragment>
       {isEditMode ? (
         <div className="w-[245px] h-[46px] mt-3 text-base flex justify-around items-center">
@@ -30,4 +31,4 @@ const AsideButton = ({ isEditMode, setIsEditMode }: IProp) => {
   );
 };
 
-export default AsideButton;
+export default EditButton;

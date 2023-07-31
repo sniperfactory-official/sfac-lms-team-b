@@ -3,9 +3,10 @@ interface IProp {
   isEditMode: boolean;
   title: string;
   clickFn?: () => void;
+  isSelected: boolean;
 }
 
-const Element = ({ type, isEditMode, title, clickFn }: IProp) => {
+const Element = ({ type, isEditMode, title, clickFn, isSelected }: IProp) => {
   const type_obj = {
     course: {
       bg: "bg-primary-5",
@@ -21,10 +22,12 @@ const Element = ({ type, isEditMode, title, clickFn }: IProp) => {
 
   return (
     <div
-      className={`flex justify-center items-center w-[245px] h-[46px] ${type_obj[type].bg} rounded-lg ${type_obj[type].margin}`}
+      className={`flex justify-center items-center w-[245px] h-[46px] ${
+        isSelected ? type_obj[type].bg : "bg-white"
+      } rounded-lg ${type_obj[type].margin}`}
       onClick={clickFn}
     >
-      {isEditMode ? (
+      {isEditMode && isSelected ? (
         <input
           className="w-[15px] h-[15px] border border-primary-30 "
           type="checkbox"
