@@ -3,7 +3,7 @@ import { DocumentData } from "firebase/firestore";
 import React from "react";
 import { getTime } from "@/utils/getTime";
 import useAuth from "@/hooks/user/useAuth";
-import { useDeleteComment } from "@/hooks/lecture/useDeleteComment";
+import { useDeleteComment } from "@/hooks/mutation/useDeleteComment";
 import highlightTags from "@/utils/highlightTags";
 
 interface CommentProps {
@@ -19,7 +19,7 @@ const Comment: React.FC<CommentProps> = ({
   isReply = false,
   onCommentClick,
 }) => {
-  const { id, content, createdAt, updatedAt, parentId } = comment;
+  const { id, content, createdAt, updatedAt, parentId, replyCount } = comment;
   const { username, role } = comment.user;
   const userId = comment.userId;
 
@@ -91,7 +91,7 @@ const Comment: React.FC<CommentProps> = ({
               </ul>
             ) : (
               <div className="text-gray-400 text-xs space-x-2 float-right">
-                <span>답글 0</span>
+                <span>답글 {replyCount}</span>
               </div>
             )}
           </div>
