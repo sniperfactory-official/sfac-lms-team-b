@@ -8,7 +8,10 @@ function highlightTags(comment: string) {
     .map((word, index) => {
       if (word.match(tagPattern)) {
         return (
-          <span key={index} className="text-sm font-semibold text-blue-500 break-all whitespace-pre-wrap">
+          <span
+            key={index}
+            className="text-sm font-semibold text-blue-500 break-all whitespace-pre-wrap"
+          >
             {word}
           </span>
         );
