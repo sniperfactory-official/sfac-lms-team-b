@@ -1,11 +1,21 @@
 import { closeModal } from "@/redux/slice/classroomModalSlice";
-import { resetInFo } from "@/redux/slice/lectureInfoSlice";
-import { useDispatch } from "react-redux";
+import { resetInput } from "@/redux/slice/lectureInfoSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+
 const ModalSubmitButton: React.FC = () => {
   const dispatch = useDispatch();
+  const startDate = useSelector(
+    (state: RootState) => state.lectureInfo.startDate,
+  );
+  const endDate = useSelector((state: RootState) => state.lectureInfo.endDate);
+
   const lectureUpload = () => {
+    if (startDate && endDate) {
+      //강의 업로드
+    }
     dispatch(closeModal());
-    dispatch(resetInFo());
+    dispatch(resetInput());
   };
   return (
     <button

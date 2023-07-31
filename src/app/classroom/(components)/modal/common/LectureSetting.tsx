@@ -9,7 +9,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { Timestamp } from "firebase/firestore";
-import timestampToDate from "@/utils/timestampToDate";
 
 const LectureSetting: React.FC = () => {
   const startDate = useSelector(
@@ -28,15 +27,18 @@ const LectureSetting: React.FC = () => {
 
   const handleChangeDate = (update: [Date, Date]) => {
     const [startDate, endDate] = update;
-    const startTimestamp: Timestamp | null = startDate
-      ? new Timestamp(startDate.getTime() / 1000, 0)
-      : null;
-    const endTimestamp: Timestamp | null = endDate
-      ? new Timestamp(endDate.getTime() / 1000, 0)
-      : null;
+    dispatch(
+      setStartDate(
+        startDate ? new Timestamp(startDate.getTime() / 1000, 0) : null,
+      ),
+    );
+    dispatch(
+      setEndDate(endDate ? new Timestamp(endDate.getTime() / 1000, 0) : null),
+    );
+  };
 
-    dispatch(setStartDate(startTimestamp));
-    dispatch(setEndDate(endTimestamp));
+  const timestampToDate = (timestamp: Timestamp | null): Date | null => {
+    return timestamp ? timestamp.toDate() : null;
   };
 
   return (
@@ -48,10 +50,10 @@ const LectureSetting: React.FC = () => {
         <DatePicker
           placeholderText="Pick a date"
           locale={ko}
-          selected={startDate}
+          selected={startDate ? timestampToDate(startDate) : null}
           onChange={handleChangeDate}
-          startDate={startDate}
-          endDate={endDate}
+          startDate={startDate ? timestampToDate(startDate) : null}
+          endDate={endDate ? timestampToDate(endDate) : null}
           selectsRange
           className="bg-white border-2 border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 cursor-pointer"
           dateFormat="yyyy.MM.dd"
