@@ -63,7 +63,9 @@ const CommentForm: FC<CommentFormProps> = ({
               type="submit"
               disabled={!comment}
               className={`w-4/5 h-7 text-sm rounded-md float-right ${
-                comment ? "bg-blue-500 text-white" : "bg-gray-100 text-gray-400"
+                comment
+                  ? "bg-blue-500 text-white hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"
+                  : "bg-gray-100 text-gray-400"
               }`}
             >
               업로드
