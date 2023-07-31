@@ -2,7 +2,7 @@ import React, { FC, useState, ChangeEvent, FormEvent } from "react";
 import useAuth from "@/hooks/user/useAuth";
 import useUsername from "@/hooks/user/useUserName";
 import { useDispatch } from "react-redux";
-import { useAddCommentMutation } from "@/hooks/lecture/useAddCommentMutation";
+import { useAddComment } from "@/hooks/mutation/useAddComment";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 
 interface CommentFormProps {
@@ -19,7 +19,7 @@ const CommentForm: FC<CommentFormProps> = ({
   const [comment, setComment] = useState("");
   const user = useAuth();
   const username = useUsername(user?.uid ?? null);
-  const mutation = useAddCommentMutation();
+  const mutation = useAddComment();
   const dispatch = useDispatch();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

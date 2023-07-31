@@ -6,8 +6,7 @@ import LectureHeader from "@/app/classroom/[lectureId]/(components)/lectureRoom/
 import TypeOfLecture from "@/app/classroom/[lectureId]/(components)/lectureRoom/typesOf/TypeOfLecture";
 import LectureComment from "@/app/classroom/[lectureId]/(components)/lectureRoom/LectureComment";
 import LectureNavigation from "@/app/classroom/[lectureId]/(components)/lectureRoom/LectureNavigation";
-import useGetLectureInfo from "@/hooks/lecture/useGetLectureInfo";
-import { usePathname, useSearchParams } from "next/navigation";
+import useGetLectureInfo from "@/hooks/queries/useGetLectureInfo";
 
 interface lectureIdProps {
   lectureId: string;

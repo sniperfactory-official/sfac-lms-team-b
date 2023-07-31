@@ -1,10 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/utils/firebase";
 import {
-  addDoc,
   collection,
   doc,
   serverTimestamp,
+  runTransaction,
+  updateDoc,
   DocumentData,
 } from "firebase/firestore";
 
@@ -18,8 +19,10 @@ const addCommentToDB = async (data: {
 
   const userRef = doc(db, "users", userId);
   const lectureRef = doc(db, "lectures", lectureId);
+  const parentCommentRef = doc(db, "lectureComments", parentId);
 
-  const commentRef = collection(db, "lectureComments");
+  const commentRef = doc(collection(db, "lectureComments"));
+
   const commentDoc = {
     content,
     createdAt: serverTimestamp(),
@@ -30,11 +33,25 @@ const addCommentToDB = async (data: {
     updatedAt: serverTimestamp(),
     userId: userRef,
   };
-  const docRef = await addDoc(commentRef, commentDoc);
-  return { id: docRef.id, ...commentDoc };
+
+  await runTransaction(db, async transaction => {
+    if (parentId) {
+      const parentCommentSnapshot = await transaction.get(parentCommentRef);
+      if (!parentCommentSnapshot.exists()) {
+        throw Error("Parent comment does not exist!");
+      }
+      const parentComment = parentCommentSnapshot.data();
+      transaction.update(parentCommentRef, {
+        replyCount: parentComment.replyCount + 1,
+      });
+    }
+
+    transaction.set(commentRef, commentDoc);
+    return { id: commentRef.id, ...commentDoc };
+  });
 };
 
-export const useAddCommentMutation = () => {
+export const useAddComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation(addCommentToDB, {
