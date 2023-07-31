@@ -16,8 +16,8 @@ const useLectureInfo = () => {
   const noteImages: File | null = useSelector(
     (state: RootState) => state.lectureInfo.noteImages,
   );
-  const selectedModal: string | null = useSelector(
-    (state: RootState) => state.lectureInfo.selectedModal,
+  const lectureType: string = useSelector(
+    (state: RootState) => state.lectureInfo.lectureType,
   );
   const dateRange = useSelector(
     (state: RootState) => state.lectureInfo.dateRange,
@@ -32,7 +32,7 @@ const useLectureInfo = () => {
     lectureTitle,
     lectureContent,
     noteImages,
-    selectedModal,
+    lectureType,
     dateRange,
     isLecturePublic,
   };

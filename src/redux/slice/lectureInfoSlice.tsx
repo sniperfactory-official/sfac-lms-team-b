@@ -1,23 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 interface LectureInfoState {
   courseId: string;
+  lectureType: string;
   lectureTitle: string;
   lectureContent: string;
   noteImages: File | null;
-  selectedModal: string | null;
   dateRange: [Date | null, Date | null];
   isLecturePublic: boolean;
 }
 
 const initialState: LectureInfoState = {
   courseId: "",
+  lectureType: "",
   lectureTitle: "",
   lectureContent: "",
   noteImages: null,
-  selectedModal: null,
   dateRange: [null, null],
   isLecturePublic: false,
 };
+
 const LectureInfoSlice = createSlice({
   name: "lectureInfo",
   initialState,
@@ -34,8 +35,8 @@ const LectureInfoSlice = createSlice({
     setNoteImages: (state, action) => {
       state.noteImages = action.payload;
     },
-    setSelectedModal: (state, action) => {
-      state.selectedModal = action.payload;
+    setLectureType: (state, action) => {
+      state.lectureType = action.payload;
     },
     setDateRange: (state, action) => {
       state.dateRange = action.payload;
@@ -57,7 +58,7 @@ export const {
   setCourseId,
   setLectureTitle,
   setLectureContent,
-  setSelectedModal,
+  setLectureType,
   setDateRange,
   setStartDate,
   setEndDate,
