@@ -4,6 +4,8 @@ import LectureTitle from "./LectureTitle";
 import ModalFooter from "./ModalFooter";
 import { closeModal } from "@/redux/slice/classroomModalSlice";
 import { resetInput } from "@/redux/slice/lectureInfoSlice";
+import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
+import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -11,8 +13,32 @@ interface ModalMainProps {
 
 const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const dispatch = useDispatch();
+  const mutation = useCreateLecture();
+  const {
+    user,
+    courseId,
+    lectureType,
+    lectureTitle,
+    lectureContent,
+    noteImages,
+    startDate,
+    endDate,
+    isLecturePrivate,
+  } = useLectureInfo();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (user && lectureType && startDate && endDate) {
+      mutation.mutate({
+        userId: user.uid,
+        courseId: courseId,
+        lectureType,
+        title: lectureTitle,
+        startDate,
+        endDate,
+        isPrivate: isLecturePrivate,
+      });
+    }
     dispatch(closeModal());
     dispatch(resetInput());
   };

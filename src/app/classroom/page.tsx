@@ -1,16 +1,23 @@
 "use client";
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import Sidebar from "@/app/classroom/(components)/Sidebar";
 import ClassContent from "@/app/classroom/(components)/ClassContent";
-import useGetLectureList from "@/hooks/queries/useGetCourseList";
-import { useState, useEffect } from "react";
+import { setCourseId } from "@/redux/slice/lectureInfoSlice";
+import useGetLectureList, {
+  ICourseField,
+} from "@/hooks/queries/useGetCourseList";
 
 const Classroom = () => {
+  const dispatch = useDispatch();
+  const [currentCourse, setCurrentCourse] = useState<ICourseField>();
   const { data: courseList, isLoading: isLectureListFetch } =
     useGetLectureList();
-  const [currentCourse, setCurrentCourse] = useState<any>();
+
   useEffect(() => {
     if (!isLectureListFetch && courseList!.length !== 0) {
       setCurrentCourse(courseList![0]);
+      dispatch(setCourseId(courseList![0].courseId));
     }
   }, [isLectureListFetch]);
 
