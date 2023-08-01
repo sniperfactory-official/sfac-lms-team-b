@@ -14,12 +14,14 @@ interface IArg {
 const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
   // 선택된 course의 lecture state 관리
   const [currentLectures, setCurrentLectures] = useState<ILecture[]>([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const isEditMode = useSelector(
     (state: RootState) => state.editCourse.isEditMode,
   );
-  const selectedCourse = useSelector((state: RootState) => state.editCourse.selectedCourse)
+  const selectedCourse = useSelector(
+    (state: RootState) => state.editCourse.selectedCourse,
+  );
 
   // 클릭 시, 현재 선택한 Course데이터 state에 저장
   const handleCurrentCourse = ({
@@ -33,17 +35,21 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
     if (!isEditMode) {
       setCurrentCourse(course);
       setCurrentLectures(course.lectureList);
-      dispatch(setSelectedCourse(selectedCourse.map((_, index) => index === idx)));
+      dispatch(
+        setSelectedCourse(selectedCourse.map((_, index) => index === idx)),
+      );
     }
   };
 
   // 새로운 섹션 생성 시, useEffect로 업데이트
   useEffect(() => {
-    dispatch(setSelectedCourse(
-      Array.from({ length: courseList.length }, (_, idx) =>
-        idx === 0 ? true : false,
+    dispatch(
+      setSelectedCourse(
+        Array.from({ length: courseList.length }, (_, idx) =>
+          idx === 0 ? true : false,
+        ),
       ),
-    ))
+    );
   }, [courseList.length]);
 
   return {
