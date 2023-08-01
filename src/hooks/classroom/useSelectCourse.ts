@@ -1,11 +1,11 @@
-import React, { SetStateAction, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { ICourseField } from "../queries/useGetCourseList";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 interface IArg {
   courseList: ICourseField[];
-  setCurrentCourse: React.Dispatch<React.SetStateAction<any>>;
+  setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
 }
 
 // hook의 목적 : 선택된 Course관리

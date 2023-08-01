@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
-import Element from "./Element";
-import useSelectCourse from "@/hooks/classroom/useSelectCourse";
+import React from "react";
 import { useDispatch } from "react-redux";
+import Element from "./Element";
 import { setCourseId } from "@/redux/slice/lectureInfoSlice";
+import useSelectCourse from "@/hooks/classroom/useSelectCourse";
+import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
 
 interface IProps {
   courseList: ICourseField[];
-  setCurrentCourse: React.Dispatch<React.SetStateAction<any>>;
+  setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
 }
 
 const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
@@ -23,32 +23,32 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
     // courseId : "I7YsTuxOWvT1M2lakkAM"
     // lectureList : [{…}, {…}, {…}]
     // 2중 map, course순회 & course하위 lecture 순회
-    <React.Fragment>
-      {courseList.map((course: ICourseField, idx: number) => (
-        <>
-          <Element
-            key={course.courseData.title}
-            type="course"
-            title={course.courseData.title}
-            clickFn={() => handleCurrentCourse({ course, idx })!}
-            isSelected={selectedCourse[idx]}
-            uniqueId={course.courseId}
-            childCount={course.lectureList.length}
-          />
-          {/* 선택된 lecture만 보이도록 */}
-          {selectedCourse[idx] &&
-            course.lectureList.map((lecture: ILecture) => (
-              <Element
-                key={lecture.lectureId}
-                type="lecture"
-                title={lecture.title}
-                isSelected={selectedCourse[idx]}
-                uniqueId={lecture.lectureId}
-              />
-            ))}
-        </>
-      ))}
-    </React.Fragment>
+    courseList.map((course: ICourseField, idx: number) => (
+      <React.Fragment key={idx}>
+        <Element
+          type="course"
+          title={course.courseData.title}
+          clickFn={() => {
+            dispatch(setCourseId(course.courseId));
+            handleCurrentCourse({ course, idx })!;
+          }}
+          isSelected={selectedCourse[idx]}
+          uniqueId={course.courseId}
+          childCount={course.lectureList.length}
+        />
+        {/* 선택된 lecture만 보이도록 */}
+        {selectedCourse[idx] &&
+          course.lectureList.map((lecture: ILecture) => (
+            <Element
+              key={lecture.lectureId}
+              type="lecture"
+              title={lecture.title}
+              isSelected={selectedCourse[idx]}
+              uniqueId={lecture.lectureId}
+            />
+          ))}
+      </React.Fragment>
+    ))
   );
 };
 

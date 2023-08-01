@@ -51,7 +51,11 @@ const LectureInfoSlice = createSlice({
     setIsLecturePrivate: (state, action) => {
       state.isLecturePrivate = action.payload;
     },
-    resetInput: () => initialState,
+    resetInput: state => {
+      const { courseId } = state;
+      initialState;
+      state.courseId = courseId;
+    },
   },
 });
 
