@@ -23,8 +23,8 @@ const UserImage: FC<UserImageProps> = ({ profileImage, size = "default" }) => {
       <Image
         src={profileImageURL}
         alt="사용자 이미지"
-        layout="fill"
-        objectFit="cover"
+        sizes="(max-width: 768px) 100vw"
+        fill={true}
         className="rounded-full"
       />
     </div>
