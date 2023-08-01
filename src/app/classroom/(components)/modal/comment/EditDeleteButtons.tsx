@@ -7,7 +7,6 @@ interface EditDeleteButtonsProps {
   handleDeleteClick: (e: React.MouseEvent) => void;
   setIsEditMode: (isEditMode: boolean) => void;
 }
-
 const EditDeleteButtons: React.FC<EditDeleteButtonsProps> = ({
   showFullComment,
   userId,

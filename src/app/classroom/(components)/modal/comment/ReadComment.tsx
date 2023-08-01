@@ -7,7 +7,6 @@ interface ReadCommentProps {
   username: string;
   role: string;
 }
-
 const ReadComment: React.FC<ReadCommentProps> = ({
   displayedComment,
   username,

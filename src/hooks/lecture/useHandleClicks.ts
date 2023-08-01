@@ -13,7 +13,6 @@ export const useHandleClicks = (
     },
     [onCommentClick],
   );
-
   const handleDeleteClick = useCallback(
     (e: React.MouseEvent, id: string) => {
       e.stopPropagation();

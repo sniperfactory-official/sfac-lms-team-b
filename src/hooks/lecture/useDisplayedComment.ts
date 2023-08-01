@@ -9,5 +9,6 @@ export const useDisplayedComment = (
     return !showFullComment && content.length > 10
       ? highlightTags(`${content.slice(0, 10)}...`)
       : highlightTags(content);
+      
   }, [showFullComment, content]);
 };

@@ -9,7 +9,6 @@ interface EditCommentProps {
   onEdit: (newContent: string) => void;
   onCancel: () => void;
 }
-
 const EditComment: React.FC<EditCommentProps> = ({
   content,
   username,

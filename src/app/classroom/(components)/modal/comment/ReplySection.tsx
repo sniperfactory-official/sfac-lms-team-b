@@ -10,7 +10,6 @@ interface ReplySectionProps {
   commentId: string;
   lectureId: string;
 }
-
 const ReplySection: FC<ReplySectionProps> = ({ commentId, lectureId }) => {
   const { replyCommentModalOpen } = useClassroomModal();
   const { data: comment } = useGetComments(undefined, undefined, commentId);
