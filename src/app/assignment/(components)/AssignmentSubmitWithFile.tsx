@@ -34,7 +34,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({ onClose }) => {
       file => file.size > MAX_FILE_SIZE_MB * 1024 * 1024,
     );
     if (oversizedFiles.length > 0) {
-      setToastMsg("파일 용량이 너무 큽니다. (최대 5MB).");
+      setToastMsg(`파일 용량이 너무 큽니다. (최대 ${MAX_FILE_SIZE_MB}MB).`);
       setIsAccept(false);
       return;
     }

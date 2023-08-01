@@ -55,6 +55,7 @@ const AssignmentTeacherViewCard = () => {
       <AssignmentModal
         title="상세보기"
         isOpen={isDetailOpen}
+        isBottomButton={false}
         onClose={() => {
           setIsDetailOpen(false);
         }}

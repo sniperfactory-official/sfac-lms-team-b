@@ -7,7 +7,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
-import { Assignment } from "@/types/firebase.types";
+import { Assignment, User } from "@/types/firebase.types";
 
 // Firestore 데이터 return
 const getAssignments = async (
@@ -15,9 +15,16 @@ const getAssignments = async (
 ): Promise<Assignment[] | Assignment> => {
   if (assignmentId) {
     const assignmentRef = doc(db, "assignments", assignmentId);
-    const assignment = (await getDoc(assignmentRef)).data() as Assignment;
+    // const assignment = (await getDoc(assignmentRef)).data() as Assignment;
+    // return assignment;
 
-    return assignment;
+    const docSnap = await getDoc(assignmentRef);
+    if (docSnap.exists()) {
+      const userSnap = await getDoc(docSnap.data().userId);
+      const user = userSnap.data() as User;
+      return { ...docSnap.data(), user } as Assignment; // user정보 포함해서 return
+    }
+    return docSnap.data() as Assignment;
   }
   const assignmentsDocs = await getDocs(collection(db, "assignments"));
   const assignments = assignmentsDocs?.docs.map((doc: DocumentData) => {
