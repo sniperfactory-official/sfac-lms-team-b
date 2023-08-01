@@ -2,7 +2,6 @@ import Navbar from "@/components/Header/Navbar";
 import Tab from "@/components/Header/Tab";
 import Footer from "@/components/Footer/Footer";
 import { useAppSelector } from "@/redux/store";
-import { useParams } from "next/navigation";
 
 export default function RequireAuth({
   children,
@@ -10,11 +9,10 @@ export default function RequireAuth({
   children: React.ReactNode;
 }) {
   const uid = useAppSelector(state => state.userId.uid);
-  const isLecturePage = useParams().lectureId?.length > 0;
 
   return (
     <>
-      {uid && !isLecturePage ? (
+      {uid ? (
         <>
           <Navbar />
           <Tab />

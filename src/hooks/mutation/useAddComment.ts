@@ -19,9 +19,7 @@ const addCommentToDB = async (data: {
 
   const userRef = doc(db, "users", userId);
   const lectureRef = doc(db, "lectures", lectureId);
-  const parentCommentRef = parentId
-    ? doc(db, "lectureComments", parentId)
-    : null;
+  const parentCommentRef = doc(db, "lectureComments", parentId);
 
   const commentRef = doc(collection(db, "lectureComments"));
 
@@ -31,12 +29,13 @@ const addCommentToDB = async (data: {
     lectureId: lectureRef,
     parentId,
     replyCount: 0,
+    timestamp: "",
     updatedAt: serverTimestamp(),
     userId: userRef,
   };
 
   await runTransaction(db, async transaction => {
-    if (parentId && parentCommentRef) {
+    if (parentId) {
       const parentCommentSnapshot = await transaction.get(parentCommentRef);
       if (!parentCommentSnapshot.exists()) {
         throw Error("Parent comment does not exist!");

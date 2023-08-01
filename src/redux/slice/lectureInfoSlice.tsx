@@ -1,11 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Timestamp } from "firebase/firestore";
+
 interface LectureInfoState {
   courseId: string;
   lectureType: string;
   lectureTitle: string;
   lectureContent: string;
+  selectedModal: string | null;
+  startDate: Timestamp | null;
+  endDate: Timestamp | null;
   noteImages: File | null;
-  dateRange: [Date | null, Date | null];
   isLecturePublic: boolean;
 }
 
@@ -14,8 +18,10 @@ const initialState: LectureInfoState = {
   lectureType: "",
   lectureTitle: "",
   lectureContent: "",
+  selectedModal: null,
+  startDate: null,
+  endDate: null,
   noteImages: null,
-  dateRange: [null, null],
   isLecturePublic: false,
 };
 
@@ -38,14 +44,12 @@ const LectureInfoSlice = createSlice({
     setLectureType: (state, action) => {
       state.lectureType = action.payload;
     },
-    setDateRange: (state, action) => {
-      state.dateRange = action.payload;
-    },
     setStartDate: (state, action) => {
-      state.dateRange[0] = action.payload;
+      state.startDate = action.payload;
     },
+
     setEndDate: (state, action) => {
-      state.dateRange[1] = action.payload;
+      state.endDate = action.payload;
     },
     setIsLecturePublic: (state, action) => {
       state.isLecturePublic = action.payload;
@@ -59,7 +63,6 @@ export const {
   setLectureTitle,
   setLectureContent,
   setLectureType,
-  setDateRange,
   setStartDate,
   setEndDate,
   setIsLecturePublic,
