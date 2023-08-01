@@ -6,11 +6,10 @@ interface LectureInfoState {
   lectureType: string;
   lectureTitle: string;
   lectureContent: string;
-  selectedModal: string | null;
+  noteImages: string[];
   startDate: Timestamp | null;
   endDate: Timestamp | null;
-  noteImages: File | null;
-  isLecturePublic: boolean;
+  isLecturePrivate: boolean;
 }
 
 const initialState: LectureInfoState = {
@@ -18,11 +17,10 @@ const initialState: LectureInfoState = {
   lectureType: "",
   lectureTitle: "",
   lectureContent: "",
-  selectedModal: null,
+  noteImages: [],
   startDate: null,
   endDate: null,
-  noteImages: null,
-  isLecturePublic: false,
+  isLecturePrivate: true,
 };
 
 const LectureInfoSlice = createSlice({
@@ -32,6 +30,9 @@ const LectureInfoSlice = createSlice({
     setCourseId: (state, action) => {
       state.courseId = action.payload;
     },
+    setLectureType: (state, action) => {
+      state.lectureType = action.payload;
+    },
     setLectureTitle: (state, action) => {
       state.lectureTitle = action.payload;
     },
@@ -39,20 +40,16 @@ const LectureInfoSlice = createSlice({
       state.lectureContent = action.payload;
     },
     setNoteImages: (state, action) => {
-      state.noteImages = action.payload;
-    },
-    setLectureType: (state, action) => {
-      state.lectureType = action.payload;
+      state.noteImages.push(action.payload);
     },
     setStartDate: (state, action) => {
       state.startDate = action.payload;
     },
-
     setEndDate: (state, action) => {
       state.endDate = action.payload;
     },
-    setIsLecturePublic: (state, action) => {
-      state.isLecturePublic = action.payload;
+    setIsLecturePrivate: (state, action) => {
+      state.isLecturePrivate = action.payload;
     },
     resetInput: () => initialState,
   },
@@ -60,12 +57,13 @@ const LectureInfoSlice = createSlice({
 
 export const {
   setCourseId,
+  setLectureType,
   setLectureTitle,
   setLectureContent,
-  setLectureType,
+  setNoteImages,
   setStartDate,
   setEndDate,
-  setIsLecturePublic,
+  setIsLecturePrivate,
   resetInput,
 } = LectureInfoSlice.actions;
 export default LectureInfoSlice.reducer;
