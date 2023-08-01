@@ -9,18 +9,21 @@ export interface IEditCourse {
   deleteIdArray: DeleteId[];
   isEditMode: boolean;
   lectureCount: number;
+  selectedCourse: boolean[];
 }
 
 const initialState: IEditCourse = {
   deleteIdArray: [],
   isEditMode: false,
   lectureCount: 0,
+  selectedCourse: [],
 };
 
 const editCourseSlice = createSlice({
   name: "editCourse",
   initialState,
   reducers: {
+    // 체크박스 체크한 요소 저장하는 state
     toggleDeletionId: (state, action: PayloadAction<DeleteId>) => {
       const index = state.deleteIdArray.findIndex(
         item => item.id === action.payload.id,
@@ -34,7 +37,7 @@ const editCourseSlice = createSlice({
         });
       }
     },
-
+    // 수정 상태인지 체크
     handleEditMode: state => {
       state.isEditMode = !state.isEditMode;
       if (!state.isEditMode) {
@@ -42,13 +45,19 @@ const editCourseSlice = createSlice({
         state.lectureCount = 0;
       }
     },
-
+    // course 하위에 lecture가 존재할 경우 course를 삭제하지 못하도록, 체크해줄 방어변수
     setLectureCount: (state, action: PayloadAction<number>) => {
       state.lectureCount = action.payload;
     },
+    
+    // 선택된 몇 번째 course가 선택된건지 체크
+    setSelectedCourse: (state, action) => {
+      state.selectedCourse = action.payload
+    }
+
   },
 });
 
-export const { toggleDeletionId, handleEditMode, setLectureCount } =
+export const { toggleDeletionId, handleEditMode, setLectureCount, setSelectedCourse } =
   editCourseSlice.actions;
 export default editCourseSlice.reducer;
