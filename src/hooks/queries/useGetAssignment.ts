@@ -20,7 +20,13 @@ const getAssignments = async (
     return assignment;
   }
   const assignmentsDocs = await getDocs(collection(db, "assignments"));
-  const assignments = assignmentsDocs?.docs.map((doc: DocumentData) => {
+
+  // order number로 sort
+  const sortAssignments = assignmentsDocs?.docs.sort(
+    (a: DocumentData, b: DocumentData) => a.data().order - b.data().order,
+  );
+
+  const assignments = sortAssignments.map((doc: DocumentData) => {
     return { id: doc.id, ...doc.data() };
   });
 
@@ -36,10 +42,6 @@ const useGetAssignment = (assignmentId?: string) => {
       refetchOnWindowFocus: false,
     },
   );
-
-  // if (data === undefined) {
-  //   refetch();
-  // }
 
   return { data, isLoading, error };
 };

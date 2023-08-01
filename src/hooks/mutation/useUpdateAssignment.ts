@@ -1,26 +1,25 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { collection, addDoc, DocumentReference } from "firebase/firestore";
+import { updateDoc, doc, DocumentReference } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Assignment } from "@/types/firebase.types";
 
 // Firestore 데이터 추가
-const createAssignment = async (
-  assignmentValue: Assignment,
-): Promise<DocumentReference> => {
+const updateAssignment = async (assignmentValue: Assignment) => {
   try {
-    const addAssignment = await addDoc(collection(db, "assignments"), {
-      ...assignmentValue,
-    });
-    return addAssignment;
+    const updateAssignment = await updateDoc(
+      doc(db, "assignments", "assignmentValue.id"),
+      { ...assignmentValue },
+    );
+    return updateAssignment;
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
 
-const useCreateAssignment = () => {
+const useUpdateAssignment = () => {
   const queryClient = useQueryClient();
-  const { mutate, isLoading, error } = useMutation(createAssignment, {
+  const { mutate, isLoading, error } = useMutation(updateAssignment, {
     onSuccess: () => {
       queryClient.invalidateQueries(["getAssignment", ""]);
     },
@@ -31,4 +30,4 @@ const useCreateAssignment = () => {
   return { mutate, isLoading, error };
 };
 
-export { useCreateAssignment };
+export { useUpdateAssignment };
