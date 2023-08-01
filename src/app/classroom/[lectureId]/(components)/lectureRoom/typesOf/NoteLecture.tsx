@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import type { LectureContent } from "@/types/firebase.types";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 interface NoteLectureProps {
   content: LectureContent;
