@@ -6,6 +6,7 @@ interface EditCommentProps {
   content: string;
   username: string;
   role: string;
+  profileImage: string;
   onEdit: (newContent: string) => void;
   onCancel: () => void;
 }
@@ -13,6 +14,7 @@ const EditComment: React.FC<EditCommentProps> = ({
   content,
   username,
   role,
+  profileImage,
   onEdit,
   onCancel,
 }) => {
@@ -20,7 +22,7 @@ const EditComment: React.FC<EditCommentProps> = ({
 
   return (
     <div className="flex items-start space-x-4 w-full">
-      <UserImage />
+      <UserImage profileImage={profileImage} size="large" />
       <div className="flex flex-col w-full">
         <UserInfo username={username} role={role} />
         <div className="w-full flex justify-between items-start">

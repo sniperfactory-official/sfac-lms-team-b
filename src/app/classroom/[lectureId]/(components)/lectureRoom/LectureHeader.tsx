@@ -5,6 +5,7 @@ import timestampToDate from "@/utils/timestampToDate";
 import Image from "next/image";
 import Link from "next/link";
 import { getProfileImageURL } from "@/hooks/lecture/useProfileImageURL";
+import UserImage from "@/app/classroom/(components)/modal/comment/UserImage";
 
 interface LectureHeaderProps {
   title: string;
@@ -51,19 +52,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({
           </span>
         </div>
         <div className="flex items-center mt-2">
-          {profileImageURL ? (
-            <div className="w-7 h-7 relative">
-              <Image
-                src={profileImageURL}
-                alt="사용자 이미지"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-full"
-              />
-            </div>
-          ) : (
-            <div className="w-7 h-7 bg-white border border-gray-300 rounded-full flex-shrink-0"></div>
-          )}
+          {profileImageURL && <UserImage profileImage={profileImageURL} />}
           <div className="flex items-center ml-2">
             <span className=" text-sm font-semibold text-blue-500 ">
               {user.username}
