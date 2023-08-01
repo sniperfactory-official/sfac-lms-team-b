@@ -9,7 +9,7 @@ interface ModalMainProps {
   children: ReactNode;
 }
 
-const ModalMain:React.FC<ModalMainProps> = ({children}) => {
+const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

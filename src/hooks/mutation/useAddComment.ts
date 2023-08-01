@@ -16,11 +16,13 @@ const addCommentToDB = async (data: {
   userId: string;
 }) => {
   const { content, lectureId, parentId, userId } = data;
-  
+
   const userRef = doc(db, "users", userId);
   const lectureRef = doc(db, "lectures", lectureId);
-  const parentCommentRef = parentId ? doc(db, "lectureComments", parentId) : null;
-  
+  const parentCommentRef = parentId
+    ? doc(db, "lectureComments", parentId)
+    : null;
+
   const commentRef = doc(collection(db, "lectureComments"));
 
   const commentDoc = {
