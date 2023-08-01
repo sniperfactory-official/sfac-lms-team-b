@@ -16,7 +16,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
     courseList,
     setCurrentCourse,
   });
-
+  // to merge
   return (
     // courseFiled 데이터 구조
     // courseData : {title: 'IT기본', createdAt: Timestamp, updatedAt: Timestamp}
