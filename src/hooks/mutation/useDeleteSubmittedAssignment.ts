@@ -6,7 +6,7 @@ const deleteSubmittedAssignment = async (submittedAssimentId: string) => {
   try {
     // 관리자의 feedback 없을때 해당과제만 삭제
     const deleteSubmittedAssignmentDoc = await deleteDoc(
-      doc(db, "submittedAssignments", "제출된 과제의 ID"),
+      doc(db, "submittedAssignments", submittedAssimentId),
     );
     return deleteSubmittedAssignmentDoc;
   } catch (err) {
