@@ -1,10 +1,18 @@
 import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
-import React from "react";
+import React, { useState } from "react";
 import { getTime } from "@/utils/getTime";
 import useAuth from "@/hooks/user/useAuth";
 import { useDeleteComment } from "@/hooks/mutation/useDeleteComment";
-import highlightTags from "@/utils/highlightTags";
+import { useUpdateComment } from "@/hooks/mutation/useUpdateComment";
+import { useDisplayedComment } from "@/hooks/lecture/useDisplayedComment";
+import { useHandleClicks } from "@/hooks/lecture/useHandleClicks";
+import UserImage from "./UserImage";
+import UserInfo from "./UserInfo";
+import EditDeleteButtons from "./EditDeleteButtons";
+import ReplyCount from "./ReplyCount";
+import EditComment from "./EditComment";
+import ReadComment from "./ReadComment";
 
 interface CommentProps {
   comment: DocumentData;
@@ -19,30 +27,32 @@ const Comment: React.FC<CommentProps> = ({
   isReply = false,
   onCommentClick,
 }) => {
-  const { id, content, createdAt, updatedAt, parentId, replyCount } = comment;
+  const { id, content, createdAt, parentId, replyCount } = comment;
   const { username, role } = comment.user;
   const userId = comment.userId;
 
   const user = useAuth();
 
   const deleteMutation = useDeleteComment();
+  const updateMutation = useUpdateComment();
 
-  const displayedComment =
-    !showFullComment && content.length > 10
-      ? highlightTags(`${content.slice(0, 10)}...`)
-      : highlightTags(content);
+  const displayedComment = useDisplayedComment(showFullComment, content);
+
+  const { handleCommentClick, handleDeleteClick } = useHandleClicks(
+    onCommentClick,
+    deleteMutation,
+  );
 
   const time = getTime(createdAt.toDate());
 
-  const handleCommentClick = () => {
-    if (onCommentClick) {
-      onCommentClick(id);
-    }
-  };
+  const [isEditMode, setIsEditMode] = useState(false);
 
-  const handleDeleteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    deleteMutation.mutate(id);
+  const handleEdit = (newContent: string) => {
+    updateMutation.mutate({
+      id,
+      newContent,
+    });
+    setIsEditMode(false);
   };
 
   return (
@@ -54,52 +64,43 @@ const Comment: React.FC<CommentProps> = ({
       )}
       <div
         className="w-full h-30 p-5 rounded-lg bg-white border border-gray-300  flex space-x-4 items-start justify-between"
-        onClick={handleCommentClick}
+        onClick={() => handleCommentClick(id)}
       >
-        <div className="flex items-center space-x-4">
-          {/* 이미지 들어가는 곳 */}
-          <div className="w-10 h-10 bg-white border border-gray-300 rounded-full flex-shrink-0"></div>
-          {/* 유저이름과 역할, 내용 */}
-          <div className="flex flex-col">
-            <div className="flex items-center mb-1">
-              <span className="font-semibold ">{username}</span>
-              <span className="text-sm ml-1 text-gray-500 font-light">
-                &#183; {role}
-              </span>
+        {isEditMode ? (
+          <EditComment
+            content={content}
+            username={username}
+            role={role}
+            onEdit={handleEdit}
+            onCancel={() => setIsEditMode(false)}
+          />
+        ) : (
+          <ReadComment
+            displayedComment={displayedComment}
+            username={username}
+            role={role}
+          />
+        )}
+        {!isEditMode && (
+          <div className="flex flex-col space-y-2 text-sm w-3/12">
+            <div className="w-full">
+              {showFullComment ? (
+                <EditDeleteButtons
+                  showFullComment={showFullComment}
+                  userId={userId.id}
+                  userUid={user?.uid}
+                  handleDeleteClick={e => handleDeleteClick(e, id)}
+                  setIsEditMode={setIsEditMode}
+                />
+              ) : (
+                <ReplyCount replyCount={replyCount} />
+              )}
             </div>
-            <div className="max-w-full">
-              <p className=" text-sm text-gray-800 break-all whitespace-pre-wrap">
-                {displayedComment}
-              </p>
+            <div className="text-gray-400 space-x-2">
+              <span className="float-right text-xs">{time}</span>
             </div>
           </div>
-        </div>
-        <div className="flex flex-col space-y-2 float-right text-sm w-3/12 p-2">
-          <div className="w-full">
-            {showFullComment && userId.id === user?.uid ? (
-              <ul className="flex text-xs space-x-1.5 text-gray-400 float-right pt-2">
-                <li className="text-black hover:text-blue-500 cursor-pointer">
-                  수정
-                </li>
-                <li>|</li>
-                <li
-                  className="text-black hover:text-red cursor-pointer"
-                  onClick={handleDeleteClick}
-                >
-                  삭제
-                </li>
-              </ul>
-            ) : (
-              <div className="text-gray-400 text-xs space-x-2 float-right">
-                <span>답글 {replyCount}</span>
-              </div>
-            )}
-          </div>
-          {/* 날짜 처리 */}
-          <div className="text-gray-400 space-x-2 float-right">
-            <span className="float-right text-xs">{time}</span>
-          </div>
-        </div>
+        )}
       </div>
     </div>
   );
