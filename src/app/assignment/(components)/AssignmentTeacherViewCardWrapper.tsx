@@ -2,7 +2,9 @@ import React from "react";
 import EmptyContents from "@/components/EmptyContents";
 import AssignmentTeacherViewCard from "../(components)/AssignmentTeacherViewCard";
 
-const AssignmentTeacherViewCardWrapper = () => {
+const AssignmentTeacherViewCardWrapper = props => {
+  const user = props.user;
+
   return (
     <div>
       <div>
