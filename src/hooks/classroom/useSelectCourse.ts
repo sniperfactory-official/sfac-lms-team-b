@@ -1,5 +1,5 @@
 import React, { SetStateAction, useState, useEffect } from "react";
-import { ICourseField } from "../queries/useGetCourseList";
+import { ICourseField, ILecture } from "../queries/useGetCourseList";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
@@ -11,6 +11,9 @@ interface IArg {
 // hook의 목적 : 선택된 Course관리
 
 const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
+  // 선택된 course의 lecture state 관리
+  const [currentLectures, setCurrentLectures] = useState<ILecture[]>([]);
+
   const isEditMode = useSelector(
     (state: RootState) => state.editCourse.isEditMode,
   );
@@ -31,6 +34,7 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
     // 수정 상태일 경우 다른 Course 선택 X
     if (!isEditMode) {
       setCurrentCourse(course);
+      setCurrentLectures(course.lectureList);
       setSelectedCourse(selectedCourse.map((_, index) => index === idx));
     }
   };
@@ -44,7 +48,12 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
     );
   }, [courseList]);
 
-  return { selectedCourse, handleCurrentCourse };
+  return {
+    selectedCourse,
+    handleCurrentCourse,
+    currentLectures,
+    setCurrentLectures,
+  };
 };
 
 export default useSelectCourse;
