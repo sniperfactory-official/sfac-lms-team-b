@@ -26,7 +26,7 @@ const Comment: React.FC<CommentProps> = ({
   onCommentClick,
 }) => {
   const { id, content, createdAt, parentId, replyCount } = comment;
-  const { username, role } = comment.user;
+  const { username, role, profileImage } = comment.user;
   const userId = comment.userId;
 
   const user = useAuth();
@@ -69,11 +69,13 @@ const Comment: React.FC<CommentProps> = ({
             content={content}
             username={username}
             role={role}
+            profileImage={profileImage}
             onEdit={handleEdit}
             onCancel={() => setIsEditMode(false)}
           />
         ) : (
           <ReadComment
+            profileImage={profileImage}
             displayedComment={displayedComment}
             username={username}
             role={role}

@@ -11,7 +11,7 @@ const useUserProfileImage = (uid: string | null) => {
         const userDoc = doc(db, "users", uid);
         const userSnap = await getDoc(userDoc);
         if (userSnap.exists()) {
-            setProfileImage(userSnap.data().profileImage);
+          setProfileImage(userSnap.data().profileImage);
         }
       };
 
