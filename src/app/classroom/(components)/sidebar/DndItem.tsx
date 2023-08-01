@@ -36,7 +36,6 @@ const DndItem: React.FC<{
       if (dragIndex === hoverIndex) {
         return;
       }
-      console.log(dragIndex, hoverIndex);
 
       moveItem(dragIndex, hoverIndex);
 
