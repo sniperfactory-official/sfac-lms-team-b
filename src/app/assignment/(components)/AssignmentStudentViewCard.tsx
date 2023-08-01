@@ -6,8 +6,17 @@ import AssignmentModal from "./AssignmentModal";
 import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
 import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
 import AssignmentFeedback from "./AssignmentFeedback";
+import { User } from "@/types/firebase.types";
 
-const AssignmentStudentViewCard: React.FC = () => {
+interface OwnProps {
+  user: User;
+  assignmentId: string;
+}
+
+const AssignmentStudentViewCard: React.FC<OwnProps> = ({
+  user,
+  assignmentId,
+}) => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -80,6 +89,7 @@ const AssignmentStudentViewCard: React.FC = () => {
         }}
       >
         <AssignmentSubmitWithLink
+          assignmentId={assignmentId}
           onClose={() => {
             setIsLinkOpen(false);
           }}
@@ -96,6 +106,7 @@ const AssignmentStudentViewCard: React.FC = () => {
         }}
       >
         <AssignmentSubmitWithFile
+          assignmentId={assignmentId}
           onClose={() => {
             setIsFileOpen(false);
           }}

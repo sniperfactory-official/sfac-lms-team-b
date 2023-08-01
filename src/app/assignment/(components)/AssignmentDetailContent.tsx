@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 import { useParams } from "next/navigation";
@@ -8,13 +8,16 @@ import Image from "next/image";
 import timestampToDate from "@/utils/timestampToDate";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
+import AssignmentConfirmDialog from "./AssignmentConfirmDialog";
 
-const AssignmentDetailContent = props => {
-  const user = props.user;
+interface OwnProps {
+  user: User;
+}
+
+const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const { assignmentId } = useParams();
   const { data, isLoading, error } = useGetAssignment(assignmentId); // FIXME: hook undefined 문제인가 체크 필요
-
-  // console.log("data", data?.user);
 
   // const blob = data?.images; // FIXME: blob 이미지 호출 체크
   // console.log(blob);
@@ -67,6 +70,9 @@ const AssignmentDetailContent = props => {
                 <button
                   className="text-grayscale-100 text-[12px] font-[400]"
                   type="button"
+                  onClick={() => {
+                    setIsConfirmOpen(true);
+                  }}
                 >
                   삭제
                 </button>
@@ -78,10 +84,10 @@ const AssignmentDetailContent = props => {
             <p className="inline-block rounded-[4px] bg-grayscale-5 text-grayscale-60 font-[400] text-[10px] mb-[8px] p-[4px_10px]">
               {data.level}
             </p>
-            <h3 className="text-grayscale-100 text-[18px] font-[700] mb-[14px]">
+            <h3 className="text-grayscale-80 text-[18px] font-[700] mb-[7px]">
               {data.title}
             </h3>
-            <p className="text-grayscale-90 text-[14px] font-[400]">
+            <p className="text-grayscale-60 text-[14px] font-[400]">
               {data.content}
             </p>
             {/* {data?.images.map((image, index) => {
@@ -95,9 +101,47 @@ const AssignmentDetailContent = props => {
               />
             );
           })} */}
+            <div className="flex justify-end items-center pt-[5px] gap-[7px]">
+              <span className="text-grayscale-60 text-[14px] font-[500]">
+                마감일
+              </span>
+              <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
+              <span className="text-grayscale-40 text-[14px] font-[500]">
+                {timestampToDate(data.endDate)}
+              </span>
+            </div>
           </div>
         </div>
       ) : null}
+
+      {/* 글로벌 컨펌 모달  */}
+      <AssignmentConfirmDialog
+        isGlobal={true}
+        title="강의를 삭제하시겠습니까?"
+        confirmBtnMsg="삭제"
+        onConfirm={() => {
+          setIsConfirmOpen(false);
+        }}
+        isOpen={isConfirmOpen}
+        onCancel={() => {
+          setIsConfirmOpen(false);
+        }}
+      />
+
+      {/* 모달 내 컨펌 모달 예시 */}
+      {/* <AssignmentConfirmDialog
+        isGlobal={false}
+        title="삭제하시겠습니까?"
+        desc="한번 삭제하시면 다시 복구가 불가능합니다."
+        confirmBtnMsg="확인"
+        onConfirm={() => {
+          setIsConfirmOpen(false);
+        }}
+        isOpen={isConfirmOpen}
+        onCancel={() => {
+          setIsConfirmOpen(false);
+        }}
+      /> */}
     </div>
   );
 };
