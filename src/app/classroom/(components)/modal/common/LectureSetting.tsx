@@ -1,27 +1,44 @@
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/esm/locale";
+import { ko } from "date-fns/locale";
 import {
-  setDateRange,
   setStartDate,
   setEndDate,
   setIsLecturePublic,
 } from "@/redux/slice/lectureInfoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { Timestamp } from "firebase/firestore";
 
 const LectureSetting: React.FC = () => {
-  const dateRange = useSelector(
-    (state: RootState) => state.lectureInfo.dateRange,
+  const startDate = useSelector(
+    (state: RootState) => state.lectureInfo.startDate,
   );
+  const endDate = useSelector((state: RootState) => state.lectureInfo.endDate);
   const isLecturePublic = useSelector(
     (state: RootState) => state.lectureInfo.isLecturePublic,
   );
-  const [startDate, endDate] = dateRange;
+
   const dispatch = useDispatch();
 
   const handleToggle = () => {
     dispatch(setIsLecturePublic(!isLecturePublic));
+  };
+
+  const handleChangeDate = (update: [Date, Date]) => {
+    const [startDate, endDate] = update;
+    dispatch(
+      setStartDate(
+        startDate ? new Timestamp(startDate.getTime() / 1000, 0) : null,
+      ),
+    );
+    dispatch(
+      setEndDate(endDate ? new Timestamp(endDate.getTime() / 1000, 0) : null),
+    );
+  };
+
+  const timestampToDate = (timestamp: Timestamp | null): Date | null => {
+    return timestamp ? timestamp.toDate() : null;
   };
 
   return (
@@ -33,14 +50,10 @@ const LectureSetting: React.FC = () => {
         <DatePicker
           placeholderText="Pick a date"
           locale={ko}
-          selected={startDate}
-          onChange={(update: [Date | null, Date | null]) => {
-            dispatch(setDateRange(update));
-            dispatch(setStartDate(update[0]));
-            dispatch(setEndDate(update[1]));
-          }}
-          startDate={startDate}
-          endDate={endDate}
+          selected={startDate ? timestampToDate(startDate) : null}
+          onChange={handleChangeDate}
+          startDate={startDate ? timestampToDate(startDate) : null}
+          endDate={endDate ? timestampToDate(endDate) : null}
           selectsRange
           className="bg-white border-2 border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 cursor-pointer"
           dateFormat="yyyy.MM.dd"

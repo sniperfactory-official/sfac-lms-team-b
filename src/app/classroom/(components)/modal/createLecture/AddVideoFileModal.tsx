@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import Layout from "../common/Layout";
 import ModalHeader from "../common/ModalHeader";
-import ModalMain from "../common/ModalMain";
+import LectureTitle from "../common/LectureTitle";
 import DropzoneSection from "./DropzoneSection";
+import ModalFooter from "../common/ModalFooter";
 import PageToast from "@/components/PageToast";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useVideoFileDrop from "@/hooks/lecture/useVideoFileDrop";
@@ -50,33 +51,32 @@ const AddVideoFileModal: React.FC = () => {
           강의 만들기
         </button>
       </ModalHeader>
-      <ModalMain>
-        <div className="flex flex-col gap-5 h-72">
-          {videoFile?.type.includes("video") && (
-            <div className="flex gap-3 items-center">
-              <Image
-                src={"/images/fileIcon.svg"}
-                alt={"파일 아이콘"}
-                width={0}
-                height={0}
-                className="w-9 h-auto"
-              />
-              <span className="font-bold text-base text-primary-80">
-                {videoFile?.name}
-              </span>
-              <button
-                type="button"
-                className="ml-auto text-xs text-grayscale-100 hover:font-bold"
-                onClick={handleRemoveVideoFile}
-              >
-                삭제
-              </button>
-            </div>
-          )}
-          <DropzoneSection />
-        </div>
-      </ModalMain>
-
+      <LectureTitle />
+      <div className="flex flex-col gap-5 h-72">
+        {videoFile?.type.includes("video") && (
+          <div className="flex gap-3 items-center">
+            <Image
+              src={"/images/fileIcon.svg"}
+              alt={"파일 아이콘"}
+              width={0}
+              height={0}
+              className="w-9 h-auto"
+            />
+            <span className="font-bold text-base text-primary-80">
+              {videoFile?.name}
+            </span>
+            <button
+              type="button"
+              className="ml-auto text-xs text-grayscale-100 hover:font-bold"
+              onClick={handleRemoveVideoFile}
+            >
+              삭제
+            </button>
+          </div>
+        )}
+        <DropzoneSection />
+      </div>
+      <ModalFooter />
       {errorMessage && (
         <PageToast
           toastMsg={errorMessage}
