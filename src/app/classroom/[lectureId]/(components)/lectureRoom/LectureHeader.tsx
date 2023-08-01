@@ -1,9 +1,10 @@
 import { Timestamp } from "firebase/firestore";
-import { FC } from "react";
+import { FC, useState, useEffect } from "react";
 import { User } from "@/types/firebase.types";
 import timestampToDate from "@/utils/timestampToDate";
 import Image from "next/image";
 import Link from "next/link";
+import { getProfileImageURL } from "@/hooks/lecture/useProfileImageURL";
 
 interface LectureHeaderProps {
   title: string;
@@ -20,6 +21,14 @@ const LectureHeader: FC<LectureHeaderProps> = ({
 }) => {
   const startDay = timestampToDate(startDate);
   const endDay = timestampToDate(endDate);
+
+  const [profileImageURL, setProfileImageURL] = useState<string | null>(null);
+
+  useEffect(() => {
+    getProfileImageURL(user.profileImage)
+      .then(setProfileImageURL)
+      .catch(console.error);
+  }, [user.profileImage]);
 
   return (
     <header className="flex border-b border-gray-200 w-full h-40">
@@ -42,7 +51,19 @@ const LectureHeader: FC<LectureHeaderProps> = ({
           </span>
         </div>
         <div className="flex items-center mt-2">
-          <div className="w-7 h-7 bg-white border border-gray-300 rounded-full flex-shrink-0"></div>
+          {profileImageURL ? (
+            <div className="w-7 h-7 relative">
+              <Image
+                src={profileImageURL}
+                alt="사용자 이미지"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </div>
+          ) : (
+            <div className="w-7 h-7 bg-white border border-gray-300 rounded-full flex-shrink-0"></div>
+          )}
           <div className="flex items-center ml-2">
             <span className=" text-sm font-semibold text-blue-500 ">
               {user.username}
