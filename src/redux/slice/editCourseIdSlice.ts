@@ -49,15 +49,18 @@ const editCourseSlice = createSlice({
     setLectureCount: (state, action: PayloadAction<number>) => {
       state.lectureCount = action.payload;
     },
-    
+
     // 선택된 몇 번째 course가 선택된건지 체크
     setSelectedCourse: (state, action) => {
-      state.selectedCourse = action.payload
-    }
-
+      state.selectedCourse = action.payload;
+    },
   },
 });
 
-export const { toggleDeletionId, handleEditMode, setLectureCount, setSelectedCourse } =
-  editCourseSlice.actions;
+export const {
+  toggleDeletionId,
+  handleEditMode,
+  setLectureCount,
+  setSelectedCourse,
+} = editCourseSlice.actions;
 export default editCourseSlice.reducer;
