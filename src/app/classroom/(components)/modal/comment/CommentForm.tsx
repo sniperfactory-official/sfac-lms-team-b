@@ -10,7 +10,6 @@ interface CommentFormProps {
   lectureId: string;
   isReply?: boolean;
 }
-
 const CommentForm: FC<CommentFormProps> = ({
   parentId = "",
   lectureId,

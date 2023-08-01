@@ -7,8 +7,6 @@ import { useDeleteComment } from "@/hooks/mutation/useDeleteComment";
 import { useUpdateComment } from "@/hooks/mutation/useUpdateComment";
 import { useDisplayedComment } from "@/hooks/lecture/useDisplayedComment";
 import { useHandleClicks } from "@/hooks/lecture/useHandleClicks";
-import UserImage from "./UserImage";
-import UserInfo from "./UserInfo";
 import EditDeleteButtons from "./EditDeleteButtons";
 import ReplyCount from "./ReplyCount";
 import EditComment from "./EditComment";

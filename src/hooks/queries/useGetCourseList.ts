@@ -6,8 +6,12 @@ import { QUERY_KEY } from "@/constants/queryKey";
 
 export interface ICourseField {
   courseData: Course;
-  lectureList: Lecture[];
+  lectureList: ILecture[];
   courseId: string;
+}
+
+export interface ILecture extends Lecture {
+  lectureId: string;
 }
 
 const fetchCourseList = async () => {
@@ -18,11 +22,12 @@ const fetchCourseList = async () => {
   const lectureQuerySnapshot = await getDocs(lectureQuery);
 
   courseQuerySnapshot.forEach(courseDoc => {
-    const lectureList: Lecture[] = [];
+    const lectureList: ILecture[] = [];
     const courseId = courseDoc.id;
     lectureQuerySnapshot.forEach(lectureDoc => {
       if (lectureDoc.data().courseId.id === courseDoc.id) {
-        lectureList.push(lectureDoc.data() as Lecture);
+        const lectureData = { ...lectureDoc.data(), lectureId: lectureDoc.id };
+        lectureList.push(lectureData as ILecture);
       }
     });
     courseField.push({

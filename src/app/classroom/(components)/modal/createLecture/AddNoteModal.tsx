@@ -1,8 +1,7 @@
 import dynamic from "next/dynamic";
 import Layout from "../common/Layout";
-import ModalFooter from "../common/ModalFooter";
-import LectureTitle from "../common/LectureTitle";
 import ModalHeader from "../common/ModalHeader";
+import ModalMain from "../common/ModalMain";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 
 const NoSsrEditor = dynamic(() => import("./NoteSection"), {
@@ -23,9 +22,9 @@ const AddNoteModal: React.FC = () => {
           강의 만들기
         </button>
       </ModalHeader>
-      <LectureTitle />
-      <NoSsrEditor />
-      <ModalFooter />
+      <ModalMain>
+        <NoSsrEditor />
+      </ModalMain>
     </Layout>
   );
 };
