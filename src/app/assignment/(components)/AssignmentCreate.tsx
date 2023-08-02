@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
-// import { User } from "firebase/auth";
 
 interface AssignmentCreateProps {
   isOpen: boolean;
