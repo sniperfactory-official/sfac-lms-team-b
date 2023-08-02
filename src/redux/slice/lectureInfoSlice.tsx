@@ -5,7 +5,7 @@ interface LectureInfoState {
   courseId: string;
   lectureType: string;
   lectureTitle: string;
-  lectureContent: string;
+  textContent: string;
   noteImages: string[];
   startDate: Timestamp | null;
   endDate: Timestamp | null;
@@ -16,7 +16,7 @@ const initialState: LectureInfoState = {
   courseId: "",
   lectureType: "",
   lectureTitle: "",
-  lectureContent: "",
+  textContent: "",
   noteImages: [],
   startDate: null,
   endDate: null,
@@ -36,8 +36,8 @@ const LectureInfoSlice = createSlice({
     setLectureTitle: (state, action) => {
       state.lectureTitle = action.payload;
     },
-    setLectureContent: (state, action) => {
-      state.lectureContent = action.payload;
+    setTextContent: (state, action) => {
+      state.textContent = action.payload;
     },
     setNoteImages: (state, action) => {
       state.noteImages.push(action.payload);
@@ -53,7 +53,7 @@ const LectureInfoSlice = createSlice({
     },
     resetInput: state => {
       const { courseId } = state;
-      initialState;
+      Object.assign(state, initialState);
       state.courseId = courseId;
     },
   },
@@ -63,7 +63,7 @@ export const {
   setCourseId,
   setLectureType,
   setLectureTitle,
-  setLectureContent,
+  setTextContent,
   setNoteImages,
   setStartDate,
   setEndDate,
