@@ -16,8 +16,8 @@ import {
 
 const AddVideoFileModal: React.FC = () => {
   const dispatch = useDispatch();
-  const videoFile = useSelector(
-    (state: RootState) => state.dropzoneFile.videoFile,
+  const videoFileName = useSelector(
+    (state: RootState) => state.dropzoneFile.videoFileName,
   );
   const errorMessage = useSelector(
     (state: RootState) => state.dropzoneFile.errorMessage,
@@ -29,7 +29,7 @@ const AddVideoFileModal: React.FC = () => {
   const { handleRemoveVideoFile } = useVideoFileDrop();
 
   useEffect(() => {
-    if (videoFile) {
+    if (videoFileName) {
       dispatch(
         setErrorMessage(
           "이미 사용 중인 파일이 있습니다. 기존의 파일을 삭제하고 진행해주세요.",
@@ -52,7 +52,7 @@ const AddVideoFileModal: React.FC = () => {
       </ModalHeader>
       <ModalMain>
         <div className="flex flex-col gap-5 h-72">
-          {videoFile?.type.includes("video") && (
+          {videoFileName && (
             <div className="flex gap-3 items-center">
               <Image
                 src={"/images/fileIcon.svg"}
@@ -62,7 +62,7 @@ const AddVideoFileModal: React.FC = () => {
                 className="w-9 h-auto"
               />
               <span className="font-bold text-base text-primary-80">
-                {videoFile?.name}
+                {videoFileName}
               </span>
               <button
                 type="button"
