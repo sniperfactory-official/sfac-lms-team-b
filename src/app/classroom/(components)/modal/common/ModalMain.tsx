@@ -19,7 +19,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     courseId,
     lectureType,
     lectureTitle,
-    lectureContent,
+    textContent,
     noteImages,
     startDate,
     endDate,

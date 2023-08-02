@@ -13,8 +13,8 @@ const useLectureInfo = () => {
   const lectureTitle: string = useSelector(
     (state: RootState) => state.lectureInfo.lectureTitle,
   );
-  const lectureContent: string = useSelector(
-    (state: RootState) => state.lectureInfo.lectureContent,
+  const textContent: string = useSelector(
+    (state: RootState) => state.lectureInfo.textContent,
   );
   const noteImages: string[] = useSelector(
     (state: RootState) => state.lectureInfo.noteImages,
@@ -32,7 +32,7 @@ const useLectureInfo = () => {
     courseId,
     lectureType,
     lectureTitle,
-    lectureContent,
+    textContent,
     noteImages,
     startDate,
     endDate,
