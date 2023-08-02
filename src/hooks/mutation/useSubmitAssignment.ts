@@ -3,13 +3,11 @@ import { collection, doc, addDoc, DocumentReference } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Attachment, SubmittedAssignment } from "@/types/firebase.types";
 
-
 const submitAssignment = async (
   assignmentId: string,
   submitAssignmentValue: SubmittedAssignment,
-  attachmentValue: Attachment
+  attachmentValue: Attachment,
 ): Promise<DocumentReference> => {
-
   try {
     const assignmentRef = doc(db, "assignments", assignmentId);
 
@@ -42,15 +40,15 @@ const submitAssignment = async (
   }
 };
 
-
-const useSubmitAssignmnet = (
+const useSubmitAssignment = (
   assignmentId: string,
   submitAssignmentValue: SubmittedAssignment,
-  attachmentValue: Attachment
+  attachmentValue: Attachment,
 ) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    () => submitAssignment(assignmentId, submitAssignmentValue, attachmentValue),
+    () =>
+      submitAssignment(assignmentId, submitAssignmentValue, attachmentValue),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
