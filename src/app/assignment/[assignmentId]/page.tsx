@@ -1,3 +1,5 @@
+"use client";
+
 import EmptyContents from "@/components/EmptyContents";
 import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import AssignmentTeacherViewCard from "../(components)/AssignmentTeacherViewCard";
@@ -6,7 +8,7 @@ import AssignmentStudentViewCard from "../(components)/AssignmentStudentViewCard
 // FIXME: 임시 유저 정보, 추후 firebase 들고 오면 삭제, 삭제시 반드시 binding 확인
 const user = {
   id: 1,
-  role: "수강생", // 관리자, 수강생
+  role: "관리자", // 관리자, 수강생
   username: "김지은",
 };
 
