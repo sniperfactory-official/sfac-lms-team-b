@@ -148,7 +148,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
               multiple
             />
             <Image
-              src={"/images/image-add.svg"}
+              src={"/images/image_add.svg"}
               alt={"이미지추가"}
               width={61}
               height={61}
@@ -174,7 +174,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
                       className="absolute top-1 right-1"
                     >
                       <Image
-                        src={"/images/image-delete.svg"}
+                        src={"/images/image_delete.svg"}
                         alt={"이미지 삭제"}
                         width={14}
                         height={14}

@@ -8,6 +8,8 @@ import Image from "next/image";
 import timestampToDate from "@/utils/timestampToDate";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
+import { Assignment } from "@/types/firebase.types";
+
 import AssignmentConfirmDialog from "./AssignmentConfirmDialog";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentUpdate from "./AssignmentUpdate";
@@ -20,6 +22,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { assignmentId } = useParams();
+
   const { data, isLoading, error } = useGetAssignment(assignmentId as string); // FIXME: hook undefined 문제인가 체크 필요
 
   // const blob = data?.images; // FIXME: blob 이미지 호출 체크
@@ -30,7 +33,12 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   //   console.log(url);
   // }
 
+  // 데이터가 배열인지 아닌지에 따라 처리 -> 타입스크립트 오류수정
   if (isLoading) return <LoadingSpinner />;
+  if (!data) {
+    return null;
+  }
+  const assignment: Assignment = Array.isArray(data) ? data[0] : data;
 
   return (
     <div>
@@ -42,7 +50,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
               <div>
                 <div className="flex justify-start items-center gap-[9px]">
                   <p className="text-[16px] font-[700] text-grayscale-100">
-                    {data.user.username}
+                    {assignment.user?.username}
                   </p>
                   {/* FIXME: 강사만 확인 가능한 영역 */}
                   {user.role === "관리자" ? (
@@ -54,10 +62,10 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                   {/* END 강사만 확인 가능한 영역 */}
                 </div>
                 <span className="mr-[15px] text-grayscale-40 text-[16px] font-[400]">
-                  {data.user.role}
+                  {assignment.user?.role}
                 </span>
                 <span className="text-grayscale-40 text-[14px] font-[500]">
-                  {timestampToDate(data.createdAt)}
+                  {timestampToDate(assignment.createdAt)}
                 </span>
               </div>
             </div>
@@ -102,13 +110,13 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
           </div>
           <div className="pb-[35px] border-b">
             <p className="inline-block rounded-[4px] bg-grayscale-5 text-grayscale-60 font-[400] text-[10px] mb-[8px] p-[4px_10px]">
-              {data.level}
+              {assignment.level}
             </p>
             <h3 className="text-grayscale-80 text-[18px] font-[700] mb-[7px]">
-              {data.title}
+              {assignment.title}
             </h3>
             <p className="text-grayscale-60 text-[14px] font-[400]">
-              {data.content}
+              {assignment.content}
             </p>
             {/* {data?.images.map((image, index) => {
             return (
@@ -127,7 +135,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
               <span className="text-grayscale-40 text-[14px] font-[500]">
-                {timestampToDate(data.endDate)}
+                {timestampToDate(assignment.endDate)}
               </span>
             </div>
           </div>
