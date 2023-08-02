@@ -5,17 +5,27 @@ import useGetLectureList, {
   ICourseField,
 } from "@/hooks/queries/useGetCourseList";
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
 import { setCourseId } from "@/redux/slice/lectureInfoSlice";
+import { RootState } from "@/redux/store";
 
 const Classroom = () => {
   const [currentCourse, setCurrentCourse] = useState<ICourseField>();
   const dispatch = useDispatch();
-  const { data: courseList, isLoading: isLectureListFetch } =
-    useGetLectureList();
-
+  const seletedCourse = useSelector(
+    (state: RootState) => state.editCourse.selectedCourse,
+  );
+  const {
+    data: courseList,
+    isLoading: isLectureListFetch,
+    isFetched,
+    isFetching,
+  } = useGetLectureList();
+  console.log(courseList);
   useEffect(() => {
+    console.log("isFetched useEffect");
+
     if (!isLectureListFetch && courseList!.length !== 0) {
       // 처음에 첫 번째 course 선택
       setCurrentCourse(courseList![0]);
@@ -29,7 +39,19 @@ const Classroom = () => {
       );
       // [true, false, false] -> 첫 번째 course 선택으로 초기화
     }
-  }, [isLectureListFetch]);
+  }, [isFetched]);
+
+  // lecture 만들 경우 refech된 courseList setCurrentCourse통해서 반영
+  useEffect(() => {
+    let SELECTED_COURSE_INDEX = 0;
+    for (let i = 0; i < seletedCourse.length; i++) {
+      if (seletedCourse[i] === true) {
+        SELECTED_COURSE_INDEX = i;
+        setCurrentCourse(courseList![SELECTED_COURSE_INDEX]);
+        break;
+      }
+    }
+  }, [isFetching, seletedCourse]);
 
   if (isLectureListFetch || currentCourse === undefined)
     return <div>isLoading</div>;
