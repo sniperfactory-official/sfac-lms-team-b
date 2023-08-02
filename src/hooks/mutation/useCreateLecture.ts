@@ -43,7 +43,7 @@ const LectureInfo = async (data: LectureInfoType) => {
       courseId: courseRef,
       lectureType,
       title,
-      // lectureContent,
+      lectureContent,
       startDate,
       endDate,
       isPrivate,

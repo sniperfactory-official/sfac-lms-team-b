@@ -37,6 +37,7 @@ const NoteSction: React.FC = () => {
   ) => {
     if (imageFile instanceof File) {
       const imageURL: string | undefined = await onUploadImage(imageFile);
+      dispatch(setNoteImages(imageURL));
       imageURL && callback(imageURL);
     }
   };

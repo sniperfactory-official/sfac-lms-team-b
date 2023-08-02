@@ -26,6 +26,11 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     isLecturePrivate,
   } = useLectureInfo();
 
+  const lectureContent = {
+    images: noteImages,
+    textContent,
+  };
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (user && lectureType && startDate && endDate) {
@@ -34,6 +39,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
         courseId: courseId,
         lectureType,
         title: lectureTitle,
+        lectureContent,
         startDate,
         endDate,
         isPrivate: isLecturePrivate,
