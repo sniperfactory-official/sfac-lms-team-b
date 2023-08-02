@@ -1,56 +1,73 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Timestamp } from "firebase/firestore";
+
 interface LectureInfoState {
+  courseId: string;
+  lectureType: string;
   lectureTitle: string;
   lectureContent: string;
-  selectedModal: string | null;
-  dateRange: [Date | null, Date | null];
-  isLecturePublic: boolean;
+  noteImages: string[];
+  startDate: Timestamp | null;
+  endDate: Timestamp | null;
+  isLecturePrivate: boolean;
 }
 
 const initialState: LectureInfoState = {
+  courseId: "",
+  lectureType: "",
   lectureTitle: "",
   lectureContent: "",
-  selectedModal: null,
-  dateRange: [null, null],
-  isLecturePublic: false,
+  noteImages: [],
+  startDate: null,
+  endDate: null,
+  isLecturePrivate: true,
 };
+
 const LectureInfoSlice = createSlice({
   name: "lectureInfo",
   initialState,
   reducers: {
+    setCourseId: (state, action) => {
+      state.courseId = action.payload;
+    },
+    setLectureType: (state, action) => {
+      state.lectureType = action.payload;
+    },
     setLectureTitle: (state, action) => {
       state.lectureTitle = action.payload;
     },
     setLectureContent: (state, action) => {
       state.lectureContent = action.payload;
     },
-    setSelectedModal: (state, action) => {
-      state.selectedModal = action.payload;
-    },
-    setDateRange: (state, action) => {
-      state.dateRange = action.payload;
+    setNoteImages: (state, action) => {
+      state.noteImages.push(action.payload);
     },
     setStartDate: (state, action) => {
-      state.dateRange[0] = action.payload;
+      state.startDate = action.payload;
     },
     setEndDate: (state, action) => {
-      state.dateRange[1] = action.payload;
+      state.endDate = action.payload;
     },
-    setIsLecturePublic: (state, action) => {
-      state.isLecturePublic = action.payload;
+    setIsLecturePrivate: (state, action) => {
+      state.isLecturePrivate = action.payload;
     },
-    resetInput: () => initialState,
+    resetInput: state => {
+      const { courseId } = state;
+      initialState;
+      state.courseId = courseId;
+    },
   },
 });
 
 export const {
+  setCourseId,
+  setLectureType,
   setLectureTitle,
   setLectureContent,
-  setSelectedModal,
-  setDateRange,
+  setNoteImages,
   setStartDate,
   setEndDate,
-  setIsLecturePublic,
+  setIsLecturePrivate,
   resetInput,
 } = LectureInfoSlice.actions;
 export default LectureInfoSlice.reducer;

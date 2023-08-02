@@ -1,11 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setLectureContent } from "@/redux/slice/lectureInfoSlice";
 import Layout from "../common/Layout";
-import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import ModalHeader from "../common/ModalHeader";
-import LectureTitle from "../common/LectureTitle";
-import ModalFooter from "../common/ModalFooter";
+import ModalMain from "../common/ModalMain";
+import { setLectureContent } from "@/redux/slice/lectureInfoSlice";
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 
 const AddLinkModal: React.FC = () => {
   const inputContent = useSelector(
@@ -36,17 +35,17 @@ const AddLinkModal: React.FC = () => {
           강의 만들기
         </button>
       </ModalHeader>
-      <LectureTitle />
-      <input
-        type="text"
-        name="inputContent"
-        id="inputContent"
-        placeholder="http://..."
-        className="justify-center text-[16px] w-[707px] h-[42px] flex-shrink-0 border-[1px] border-grayscale-10 bg-grayscale-0 rounded-md pl-[14px]"
-        value={inputContent}
-        onChange={handleInputContent}
-      />
-      <ModalFooter />
+      <ModalMain>
+        <input
+          type="text"
+          name="inputContent"
+          id="inputContent"
+          placeholder="http://..."
+          className="justify-center text-[16px] w-[707px] h-[42px] flex-shrink-0 border-[1px] border-grayscale-10 bg-grayscale-0 rounded-md pl-[14px]"
+          value={inputContent}
+          onChange={handleInputContent}
+        />
+      </ModalMain>
     </Layout>
   );
 };

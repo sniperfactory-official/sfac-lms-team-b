@@ -1,17 +1,33 @@
 "use client";
-import Aside from "@/app/classroom/(components)/Sidebar";
+import Sidebar from "@/app/classroom/(components)/Sidebar";
 import ClassContent from "@/app/classroom/(components)/ClassContent";
-import useGetLectureList from "@/hooks/queries/useGetCourseList";
+import useGetLectureList, {
+  ICourseField,
+} from "@/hooks/queries/useGetCourseList";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
+import { setCourseId } from "@/redux/slice/lectureInfoSlice";
 
 const Classroom = () => {
+  const [currentCourse, setCurrentCourse] = useState<ICourseField>();
+  const dispatch = useDispatch();
   const { data: courseList, isLoading: isLectureListFetch } =
     useGetLectureList();
-  const [currentCourse, setCurrentCourse] = useState<any>();
 
   useEffect(() => {
     if (!isLectureListFetch && courseList!.length !== 0) {
+      // 처음에 첫 번째 course 선택
       setCurrentCourse(courseList![0]);
+      dispatch(setCourseId(courseList![0].courseId));
+      dispatch(
+        setSelectedCourse(
+          Array.from({ length: courseList!.length }, (_, idx) =>
+            idx === 0 ? true : false,
+          ),
+        ),
+      );
+      // [true, false, false] -> 첫 번째 course 선택으로 초기화
     }
   }, [isLectureListFetch]);
 
@@ -21,7 +37,7 @@ const Classroom = () => {
   return (
     <div className="w-screen flex justify-center">
       <section className="w-4/5 flex mb-[20px]">
-        <Aside courseList={courseList!} setCurrentCourse={setCurrentCourse} />
+        <Sidebar courseList={courseList!} setCurrentCourse={setCurrentCourse} />
         <ClassContent currentCourse={currentCourse!} />
       </section>
     </div>
