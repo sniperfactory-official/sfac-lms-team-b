@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import Image from "next/image";
-import { getProfileImageURL } from "@/hooks/lecture/useProfileImageURL";
+import { getMediaURL } from "@/hooks/lecture/useGetMediaURL";
 
 interface UserImageProps {
   profileImage?: string | null;
@@ -12,7 +12,7 @@ const UserImage: FC<UserImageProps> = ({ profileImage, size = "default" }) => {
 
   useEffect(() => {
     if (profileImage) {
-      getProfileImageURL(profileImage)
+      getMediaURL(profileImage)
         .then(setProfileImageURL)
         .catch(console.error);
     }

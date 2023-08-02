@@ -4,7 +4,7 @@ import { User } from "@/types/firebase.types";
 import timestampToDate from "@/utils/timestampToDate";
 import Image from "next/image";
 import Link from "next/link";
-import { getProfileImageURL } from "@/hooks/lecture/useProfileImageURL";
+import { getMediaURL } from "@/hooks/lecture/useGetMediaURL";
 import UserImage from "@/app/classroom/(components)/modal/comment/UserImage";
 
 interface LectureHeaderProps {
@@ -26,7 +26,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({
   const [profileImageURL, setProfileImageURL] = useState<string | null>(null);
 
   useEffect(() => {
-    getProfileImageURL(user.profileImage)
+    getMediaURL(user.profileImage)
       .then(setProfileImageURL)
       .catch(console.error);
   }, [user.profileImage]);
