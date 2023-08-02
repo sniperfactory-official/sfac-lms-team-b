@@ -16,12 +16,18 @@ const deleteCourses = async ({
   lectureCount: number;
 }) => {
   try {
+    let isIncludeCourse = false;
+    for (let i = 0; i < deleteIdArray.length; i++) {
+      if (deleteIdArray[i].type === "course") {
+        isIncludeCourse = true;
+      }
+    }
+    if (isIncludeCourse && lectureCount + 1 !== deleteIdArray.length) {
+      return alert("아직 남아있는 강의가 있습니다");
+    }
     // 각 courseId에 대해 deleteDoc 작업을 수행하고, 결과 Promise들을 배열로 만듭니다.
     const deletePromises = deleteIdArray.map(({ id, type }) => {
       if (type === "course") {
-        if (lectureCount + 1 !== deleteIdArray.length) {
-          return alert("아직 남아있는 강의가 있습니다");
-        }
         deleteDoc(doc(db, "courses", id));
       } else if (type === "lecture") {
         deleteDoc(doc(db, "lectures", id));
