@@ -53,7 +53,7 @@ const LectureInfoSlice = createSlice({
     },
     resetInput: state => {
       const { courseId } = state;
-      initialState;
+      Object.assign(state, initialState);
       state.courseId = courseId;
     },
   },
