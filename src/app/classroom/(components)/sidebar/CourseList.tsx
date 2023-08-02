@@ -42,56 +42,56 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
     // courseId : "I7YsTuxOWvT1M2lakkAM"
     // lectureList : [{…}, {…}, {…}]
     // 2중 map, course순회 & course하위 lecture 순회
-      courseList.map((course: ICourseField, idx: number) => (
-        <React.Fragment key={idx}>
-          <Element
-            key={course.courseData.title}
-            type="course"
-            title={course.courseData.title}
-            clickFn={() => {
-              dispatch(setCourseId(course.courseId));
-              handleCurrentCourse({ course, idx })!}
-            }
-            isSelected={selectedCourse[idx]}
-            uniqueId={course.courseId}
-            childCount={course.lectureList.length}
-          />
-          {/* 선택된 lecture만 보이도록 */}
-          {selectedCourse[idx] &&
-            (isEditMode ? (
-              <DndProvider backend={HTML5Backend}>
-                {currentLectures.map((lecture: ILecture, index: number) => (
-                  <DndItem
-                    key={lecture.id}
-                    index={index}
-                    id={lecture.lectureId}
-                    moveItem={(dragIndex, hoverIndex) =>
-                      moveItem(dragIndex, hoverIndex)
-                    }
-                    child={
-                      <Element
-                        type="lecture"
-                        title={lecture.title}
-                        isSelected={selectedCourse[idx]}
-                        uniqueId={lecture.lectureId}
-                      />
-                    }
-                  />
-                ))}
-              </DndProvider>
-            ) : (
-              course.lectureList.map((lecture: ILecture) => (
-                <Element
-                  key={lecture.lectureId}
-                  type="lecture"
-                  title={lecture.title}
-                  isSelected={selectedCourse[idx]}
-                  uniqueId={lecture.lectureId}
+    courseList.map((course: ICourseField, idx: number) => (
+      <React.Fragment key={idx}>
+        <Element
+          key={course.courseData.title}
+          type="course"
+          title={course.courseData.title}
+          clickFn={() => {
+            dispatch(setCourseId(course.courseId));
+            handleCurrentCourse({ course, idx })!;
+          }}
+          isSelected={selectedCourse[idx]}
+          uniqueId={course.courseId}
+          childCount={course.lectureList.length}
+        />
+        {/* 선택된 lecture만 보이도록 */}
+        {selectedCourse[idx] &&
+          (isEditMode ? (
+            <DndProvider backend={HTML5Backend}>
+              {currentLectures.map((lecture: ILecture, index: number) => (
+                <DndItem
+                  key={lecture.id}
+                  index={index}
+                  id={lecture.lectureId}
+                  moveItem={(dragIndex, hoverIndex) =>
+                    moveItem(dragIndex, hoverIndex)
+                  }
+                  child={
+                    <Element
+                      type="lecture"
+                      title={lecture.title}
+                      isSelected={selectedCourse[idx]}
+                      uniqueId={lecture.lectureId}
+                    />
+                  }
                 />
-              ))
-            ))}
-        </React.Fragment>
-      ))
+              ))}
+            </DndProvider>
+          ) : (
+            course.lectureList.map((lecture: ILecture) => (
+              <Element
+                key={lecture.lectureId}
+                type="lecture"
+                title={lecture.title}
+                isSelected={selectedCourse[idx]}
+                uniqueId={lecture.lectureId}
+              />
+            ))
+          ))}
+      </React.Fragment>
+    ))
   );
 };
 

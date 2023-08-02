@@ -1,12 +1,14 @@
 "use client";
 import Sidebar from "@/app/classroom/(components)/Sidebar";
 import ClassContent from "@/app/classroom/(components)/ClassContent";
-import useGetLectureList, { ICourseField } from "@/hooks/queries/useGetCourseList";
+import useGetLectureList, {
+  ICourseField,
+} from "@/hooks/queries/useGetCourseList";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
 import { setCourseId } from "@/redux/slice/lectureInfoSlice";
-        
+
 const Classroom = () => {
   const [currentCourse, setCurrentCourse] = useState<ICourseField>();
   const dispatch = useDispatch();
@@ -26,7 +28,6 @@ const Classroom = () => {
         ),
       );
       // [true, false, false] -> 첫 번째 course 선택으로 초기화
-
     }
   }, [isLectureListFetch]);
 
