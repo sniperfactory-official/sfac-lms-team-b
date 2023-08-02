@@ -14,8 +14,10 @@ interface ModalMainProps {
 
 const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const dispatch = useDispatch();
-  const lectureCount = useSelector((state: RootState) => state.editCourse.lectureCount)
-  
+  const lectureCount = useSelector(
+    (state: RootState) => state.editCourse.lectureCount,
+  );
+
   const mutation = useCreateLecture();
   const {
     user,
@@ -40,7 +42,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
         startDate,
         endDate,
         isPrivate: isLecturePrivate,
-        order:lectureCount+1
+        order: lectureCount + 1,
       });
     }
     dispatch(closeModal());

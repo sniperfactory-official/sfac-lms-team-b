@@ -19,6 +19,7 @@ interface LectureInfoType {
   startDate: Timestamp;
   endDate: Timestamp;
   isPrivate: boolean;
+  order: number;
 }
 
 const LectureInfo = async (data: LectureInfoType) => {
@@ -31,6 +32,7 @@ const LectureInfo = async (data: LectureInfoType) => {
     isPrivate,
     userId,
     courseId,
+    order,
   } = data;
 
   try {
@@ -49,6 +51,7 @@ const LectureInfo = async (data: LectureInfoType) => {
       isPrivate,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
+      order,
     };
     await addDoc(lectureRef, lectureDoc);
     return lectureRef;

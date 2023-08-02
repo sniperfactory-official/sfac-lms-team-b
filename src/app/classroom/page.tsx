@@ -48,7 +48,11 @@ const Classroom = () => {
       if (seletedCourse[i] === true) {
         SELECTED_COURSE_INDEX = i;
         setCurrentCourse(courseList![SELECTED_COURSE_INDEX]);
-        dispatch(setLectureCount(courseList![SELECTED_COURSE_INDEX].lectureList.length))
+        dispatch(
+          setLectureCount(
+            courseList![SELECTED_COURSE_INDEX].lectureList.length,
+          ),
+        );
         break;
       }
     }
