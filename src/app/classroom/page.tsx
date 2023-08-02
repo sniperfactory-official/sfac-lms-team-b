@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
 import { setCourseId } from "@/redux/slice/lectureInfoSlice";
 import { RootState } from "@/redux/store";
+import { setLectureCount } from "@/redux/slice/editCourseIdSlice";
 
 const Classroom = () => {
   const [currentCourse, setCurrentCourse] = useState<ICourseField>();
@@ -47,6 +48,11 @@ const Classroom = () => {
       if (seletedCourse[i] === true) {
         SELECTED_COURSE_INDEX = i;
         setCurrentCourse(courseList![SELECTED_COURSE_INDEX]);
+        dispatch(
+          setLectureCount(
+            courseList![SELECTED_COURSE_INDEX].lectureList.length,
+          ),
+        );
         break;
       }
     }

@@ -1,11 +1,12 @@
 import React, { FormEvent, ReactNode } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LectureTitle from "./LectureTitle";
 import ModalFooter from "./ModalFooter";
 import { closeModal } from "@/redux/slice/classroomModalSlice";
 import { resetInput } from "@/redux/slice/lectureInfoSlice";
 import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
+import { RootState } from "@/redux/store";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -13,6 +14,10 @@ interface ModalMainProps {
 
 const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const dispatch = useDispatch();
+  const lectureCount = useSelector(
+    (state: RootState) => state.editCourse.lectureCount,
+  );
+
   const mutation = useCreateLecture();
   const {
     user,
@@ -37,6 +42,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
         startDate,
         endDate,
         isPrivate: isLecturePrivate,
+        order: lectureCount + 1,
       });
     }
     dispatch(closeModal());
