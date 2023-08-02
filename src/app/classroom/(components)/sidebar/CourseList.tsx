@@ -50,7 +50,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
             title={course.courseData.title}
             clickFn={() => {
               dispatch(setCourseId(course.courseId));
-              handleCurrentCourse({ course, idx })!};
+              handleCurrentCourse({ course, idx })!}
             }
             isSelected={selectedCourse[idx]}
             uniqueId={course.courseId}
