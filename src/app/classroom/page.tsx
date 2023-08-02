@@ -37,7 +37,6 @@ const Classroom = () => {
           ),
         ),
       );
-      // [true, false, false] -> 첫 번째 course 선택으로 초기화
     }
   }, [isFetched]);
 
