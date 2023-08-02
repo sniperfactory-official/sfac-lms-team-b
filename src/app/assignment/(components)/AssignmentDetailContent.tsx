@@ -9,6 +9,8 @@ import timestampToDate from "@/utils/timestampToDate";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
 import AssignmentConfirmDialog from "./AssignmentConfirmDialog";
+import AssignmentModal from "./AssignmentModal";
+import AssignmentUpdate from "./AssignmentUpdate";
 
 interface OwnProps {
   user: User;
@@ -16,6 +18,7 @@ interface OwnProps {
 
 const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const { assignmentId } = useParams();
   const { data, isLoading, error } = useGetAssignment(assignmentId); // FIXME: hook undefined 문제인가 체크 필요
 
@@ -64,9 +67,22 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                 <button
                   type="button"
                   className="text-grayscale-100 text-[12px] font-[400] after:content-['|'] after:text-grayscale-30 after:ml-[6px] after:mr-[6px]"
+                  onClick={() => {
+                    setIsOpen(true);
+                  }}
                 >
                   수정
                 </button>
+                <AssignmentModal
+                  title="과제 수정하기"
+                  isOpen={isOpen}
+                  isBottomButton={false}
+                  onClose={() => {
+                    setIsOpen(false);
+                  }}
+                >
+                  <AssignmentUpdate isOpen={isOpen} setIsOpen={setIsOpen} />
+                </AssignmentModal>
                 <button
                   className="text-grayscale-100 text-[12px] font-[400]"
                   type="button"
