@@ -4,7 +4,7 @@ import EmptyContents from "@/components/EmptyContents";
 import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import AssignmentTeacherViewCard from "../(components)/AssignmentTeacherViewCard";
 import AssignmentStudentViewCard from "../(components)/AssignmentStudentViewCard";
-
+import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
 // FIXME: 임시 유저 정보, 추후 firebase 들고 오면 삭제, 삭제시 반드시 binding 확인
 const user = {
   id: 1,
@@ -13,6 +13,11 @@ const user = {
 };
 
 const AssignmentDetailPage = () => {
+  const { data, isLoading, error } = useGetSubmittedAssignments(
+    "yjQmFY45VoZduNQ4Twxy",
+  );
+  console.log({ data, isLoading, error });
+
   return (
     <div className="py-[36px] px-[20px]">
       <div className="px-[20px] py-[29px]">
