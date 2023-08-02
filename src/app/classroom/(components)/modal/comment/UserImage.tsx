@@ -12,9 +12,7 @@ const UserImage: FC<UserImageProps> = ({ profileImage, size = "default" }) => {
 
   useEffect(() => {
     if (profileImage) {
-      getMediaURL(profileImage)
-        .then(setProfileImageURL)
-        .catch(console.error);
+      getMediaURL(profileImage).then(setProfileImageURL).catch(console.error);
     }
   }, [profileImage]);
 
