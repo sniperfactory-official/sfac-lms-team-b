@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useState, useEffect } from "react";
 
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
@@ -10,17 +10,34 @@ interface ReplySectionProps {
   commentId: string;
   lectureId: string;
 }
+
 const ReplySection: FC<ReplySectionProps> = ({ commentId, lectureId }) => {
   const { replyCommentModalOpen } = useClassroomModal();
   const { data: comment } = useGetComments(undefined, undefined, commentId);
   const { data: replies } = useGetComments(undefined, commentId, undefined);
+
+  const [initialContent, setInitialContent] = useState<string | undefined>("");
+
+  const handleReplyClick = (username: string) => {
+    setInitialContent(`@${username} `);
+  };
+
+  useEffect(() => {
+    if (!replyCommentModalOpen) {
+      setInitialContent(undefined);
+    }
+  }, [replyCommentModalOpen]);
 
   return (
     replyCommentModalOpen && (
       <Layout>
         <h2 className="text-2xl font-bold">상세보기</h2>
         {comment && comment[0] && (
-          <Comment comment={comment[0]} showFullComment={true} />
+          <Comment
+            comment={comment[0]}
+            showFullComment={true}
+            onReplyClick={handleReplyClick}
+          />
         )}
         <ul>
           {replies &&
@@ -30,6 +47,7 @@ const ReplySection: FC<ReplySectionProps> = ({ commentId, lectureId }) => {
                   comment={reply}
                   showFullComment={true}
                   isReply={true}
+                  onReplyClick={handleReplyClick}
                 />
               </li>
             ))}
@@ -38,6 +56,8 @@ const ReplySection: FC<ReplySectionProps> = ({ commentId, lectureId }) => {
           parentId={commentId}
           lectureId={lectureId}
           isReply={true}
+          initialContent={initialContent}
+          modalOpen={replyCommentModalOpen}
         />
       </Layout>
     )
