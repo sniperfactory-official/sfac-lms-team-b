@@ -11,12 +11,13 @@ import EditDeleteButtons from "./EditDeleteButtons";
 import ReplyCount from "./ReplyCount";
 import EditComment from "./EditComment";
 import ReadComment from "./ReadComment";
-// to merge test
+
 interface CommentProps {
   comment: DocumentData;
   showFullComment?: boolean;
   isReply?: boolean;
   onCommentClick?: (id: string) => void;
+  onReplyClick?: (username: string) => void;
 }
 
 const Comment: React.FC<CommentProps> = ({
@@ -24,6 +25,7 @@ const Comment: React.FC<CommentProps> = ({
   showFullComment = false,
   isReply = false,
   onCommentClick,
+  onReplyClick,
 }) => {
   const { id, content, createdAt, parentId, replyCount } = comment;
   const { username, role, profileImage } = comment.user;
@@ -96,6 +98,19 @@ const Comment: React.FC<CommentProps> = ({
                 <ReplyCount replyCount={replyCount} />
               )}
             </div>
+            {showFullComment && (
+              <div className="space-x-2 text-black">
+                <button
+                  className="float-right text-xs hover:text-blue-500 cursor-pointer"
+                  onClick={event => {
+                    event.stopPropagation();
+                    onReplyClick && onReplyClick(username);
+                  }}
+                >
+                  답글달기
+                </button>
+              </div>
+            )}
             <div className="text-gray-400 space-x-2">
               <span className="float-right text-xs">{time}</span>
             </div>

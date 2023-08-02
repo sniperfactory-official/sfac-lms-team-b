@@ -1,4 +1,4 @@
-import React, { FC, useState, ChangeEvent, FormEvent } from "react";
+import React, { FC, useState, ChangeEvent, FormEvent, useEffect } from "react";
 import useAuth from "@/hooks/user/useAuth";
 import useUsername from "@/hooks/user/useUserName";
 import useUserProfileImage from "@/hooks/user/useUserProfileImage";
@@ -12,18 +12,33 @@ interface CommentFormProps {
   parentId?: string;
   lectureId: string;
   isReply?: boolean;
+  initialContent?: string;
+  modalOpen: boolean;
 }
+
 const CommentForm: FC<CommentFormProps> = ({
   parentId = "",
   lectureId,
   isReply,
+  initialContent = "",
+  modalOpen,
 }) => {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState(initialContent);
   const user = useAuth();
   const username = useUsername(user?.uid ?? null);
   const profileImage = useUserProfileImage(user?.uid ?? null);
   const mutation = useAddComment();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    setComment(initialContent);
+  }, [initialContent]);
+
+  useEffect(() => {
+    if (!modalOpen) {
+      setComment("");
+    }
+  }, [modalOpen]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
