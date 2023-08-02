@@ -1,11 +1,12 @@
 import Image from "next/image";
+import { ReactNode } from "react";
 
 type OwnProps = {
   title: string;
   isOpen: boolean;
   isBottomButton: boolean;
   onClose: () => void;
-  children: any; // any 괜찮은지 체크 필요
+  children: ReactNode;
 };
 
 const AssignmentModal: React.FC<OwnProps> = ({
