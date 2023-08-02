@@ -60,7 +60,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
         {selectedCourse[idx] &&
           (isEditMode ? (
             <DndProvider backend={HTML5Backend}>
-              {currentLectures.map((lecture: ILecture, index: number) => (
+              {course.lectureList.map((lecture: ILecture, index: number) => (
                 <DndItem
                   key={lecture.id}
                   index={index}
