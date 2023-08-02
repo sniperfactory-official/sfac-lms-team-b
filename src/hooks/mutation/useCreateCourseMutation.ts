@@ -23,7 +23,7 @@ const useCreateCourseMutation = () => {
 
   return useMutation(createCourse, {
     onSuccess: () => {
-      queryClient.invalidateQueries([QUERY_KEY.COURSE]); 
+      queryClient.invalidateQueries([QUERY_KEY.COURSE]);
     },
   });
 };

@@ -13,13 +13,19 @@ import { RootState } from "@/redux/store";
 const Classroom = () => {
   const [currentCourse, setCurrentCourse] = useState<ICourseField>();
   const dispatch = useDispatch();
-  const seletedCourse = useSelector((state:RootState) => state.editCourse.selectedCourse)
-  const { data: courseList, isLoading: isLectureListFetch, isFetched, isFetching } =
-    useGetLectureList();
+  const seletedCourse = useSelector(
+    (state: RootState) => state.editCourse.selectedCourse,
+  );
+  const {
+    data: courseList,
+    isLoading: isLectureListFetch,
+    isFetched,
+    isFetching,
+  } = useGetLectureList();
   console.log(courseList);
   useEffect(() => {
-    console.log('isFetched useEffect');
-    
+    console.log("isFetched useEffect");
+
     if (!isLectureListFetch && courseList!.length !== 0) {
       // 처음에 첫 번째 course 선택
       setCurrentCourse(courseList![0]);
@@ -35,18 +41,17 @@ const Classroom = () => {
     }
   }, [isFetched]);
 
-
   // lecture 만들 경우 refech된 courseList setCurrentCourse통해서 반영
   useEffect(() => {
     let SELECTED_COURSE_INDEX = 0;
-    for(let i=0; i<seletedCourse.length; i++){
-      if(seletedCourse[i] === true){ 
-        SELECTED_COURSE_INDEX = i
+    for (let i = 0; i < seletedCourse.length; i++) {
+      if (seletedCourse[i] === true) {
+        SELECTED_COURSE_INDEX = i;
         setCurrentCourse(courseList![SELECTED_COURSE_INDEX]);
-        break
+        break;
       }
     }
-  }, [isFetching, seletedCourse])
+  }, [isFetching, seletedCourse]);
 
   if (isLectureListFetch || currentCourse === undefined)
     return <div>isLoading</div>;
