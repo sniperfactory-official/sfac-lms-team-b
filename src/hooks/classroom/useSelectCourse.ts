@@ -26,7 +26,6 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
   const currentLectures = useSelector(
     (state: RootState) => state.editCourse.currentLectures,
   );
-  console.log(currentLectures);
 
   // 클릭 시, 현재 선택한 Course데이터 state에 저장
   const handleCurrentCourse = ({

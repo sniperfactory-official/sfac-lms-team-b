@@ -1,4 +1,4 @@
-import { doc, deleteDoc, updateDoc} from "firebase/firestore";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEY } from "@/constants/queryKey";
@@ -39,14 +39,12 @@ const deleteCourses = async ({
 
     // Promise.all을 사용하여 모든 삭제 작업이 완료될 때까지 기다립니다.
     await Promise.all(deletePromises);
-    
-    if(isIncludeCourse && lectureCount + 1 === deleteIdArray.length){
 
-    }else{
-      const leftLectures = currentLectures.filter(aItem => !deleteIdArray.some(bItem => aItem.lectureId === bItem.id));
-      console.log(currentLectures, 'current');
-      console.log(deleteIdArray, 'delete Array');
-      console.log(leftLectures, 'left');
+    if (isIncludeCourse && lectureCount + 1 === deleteIdArray.length) {
+    } else {
+      const leftLectures = currentLectures.filter(
+        aItem => !deleteIdArray.some(bItem => aItem.lectureId === bItem.id),
+      );
       for (let i = 0; i < leftLectures.length; i++) {
         const docRef = doc(db, "lectures", leftLectures[i].lectureId);
         await updateDoc(docRef, {

@@ -43,7 +43,7 @@ const SectionButton = ({ type }: IProp) => {
       bg: "bg-red",
       onClick: () =>
         deleteCourse(
-          { deleteIdArray, lectureCount },
+          { deleteIdArray, lectureCount, currentLectures },
           {
             onSuccess: () => {
               dispatch(handleEditMode());

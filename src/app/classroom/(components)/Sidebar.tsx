@@ -18,7 +18,7 @@ interface IProps {
 }
 
 const Sidebar = forwardRef<HTMLDivElement, IProps>(
-  ({ courseList, setCurrentCourse }, ref) => {
+  ({ courseList, setCurrentCourse }) => {
     const { mutate: createCourse, isLoading } = useCreateCourseMutation();
     const [getBackLectureOrderTrigger, setGetBackLectureOrderTrigger] =
       useState<boolean>(false);

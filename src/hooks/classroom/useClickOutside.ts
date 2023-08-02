@@ -10,7 +10,6 @@ const useClickOutside = (
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
-        console.log("outside click");
         setGetBackLectureOrderTrigger(!getBackLectureOrderTrigger);
         callback();
       }
