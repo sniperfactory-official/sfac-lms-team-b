@@ -7,34 +7,36 @@ const useLectureInfo = () => {
   const courseId: string = useSelector(
     (state: RootState) => state.lectureInfo.courseId,
   );
+  const lectureType: string = useSelector(
+    (state: RootState) => state.lectureInfo.lectureType,
+  );
   const lectureTitle: string = useSelector(
     (state: RootState) => state.lectureInfo.lectureTitle,
   );
   const lectureContent: string = useSelector(
     (state: RootState) => state.lectureInfo.lectureContent,
   );
-  const noteImages: File | null = useSelector(
+  const noteImages: string[] = useSelector(
     (state: RootState) => state.lectureInfo.noteImages,
   );
-  const lectureType: string = useSelector(
-    (state: RootState) => state.lectureInfo.lectureType,
+  const startDate = useSelector(
+    (state: RootState) => state.lectureInfo.startDate,
   );
-  const dateRange = useSelector(
-    (state: RootState) => state.lectureInfo.dateRange,
-  );
-  const isLecturePublic: boolean = useSelector(
-    (state: RootState) => state.lectureInfo.isLecturePublic,
+  const endDate = useSelector((state: RootState) => state.lectureInfo.endDate);
+  const isLecturePrivate: boolean = useSelector(
+    (state: RootState) => state.lectureInfo.isLecturePrivate,
   );
 
   return {
     user,
     courseId,
+    lectureType,
     lectureTitle,
     lectureContent,
     noteImages,
-    lectureType,
-    dateRange,
-    isLecturePublic,
+    startDate,
+    endDate,
+    isLecturePrivate,
   };
 };
 

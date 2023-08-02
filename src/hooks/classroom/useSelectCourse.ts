@@ -7,7 +7,7 @@ import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
 
 interface IArg {
   courseList: ICourseField[];
-  setCurrentCourse: React.Dispatch<React.SetStateAction<any>>;
+  setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
 }
 
 // hook의 목적 : 선택된 Course관리

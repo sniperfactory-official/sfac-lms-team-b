@@ -7,10 +7,11 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { RootState } from "@/redux/store";
 import { DndProvider } from "react-dnd";
 import DndItem from "./DndItem";
+import { setCourseId } from "@/redux/slice/lectureInfoSlice";
 
 interface IProps {
   courseList: ICourseField[];
-  setCurrentCourse: React.Dispatch<React.SetStateAction<any>>;
+  setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
 }
 
 const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
@@ -41,14 +42,16 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
     // courseId : "I7YsTuxOWvT1M2lakkAM"
     // lectureList : [{…}, {…}, {…}]
     // 2중 map, course순회 & course하위 lecture 순회
-    <React.Fragment>
-      {courseList.map((course: ICourseField, idx: number) => (
-        <>
+      courseList.map((course: ICourseField, idx: number) => (
+        <React.Fragment key={idx}>
           <Element
             key={course.courseData.title}
             type="course"
             title={course.courseData.title}
-            clickFn={() => handleCurrentCourse({ course, idx })!}
+            clickFn={() => {
+              dispatch(setCourseId(course.courseId));
+              handleCurrentCourse({ course, idx })!};
+            }
             isSelected={selectedCourse[idx]}
             uniqueId={course.courseId}
             childCount={course.lectureList.length}
@@ -87,9 +90,8 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
                 />
               ))
             ))}
-        </>
-      ))}
-    </React.Fragment>
+        </React.Fragment>
+      ))
   );
 };
 
