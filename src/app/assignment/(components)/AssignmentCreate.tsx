@@ -41,7 +41,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
       setTimeout(() => {
         setIsOpen(false);
         reset();
-      }, 1500); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
+      }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
     } catch (error) {
       setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
