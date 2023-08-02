@@ -25,7 +25,7 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
     <>
       <div className="flex justify-between items-center px-[21px] py-[24px] border rounded-[10px]">
         <div className="flex justify-start items-center gap-[14px]">
-          <AssignmentProfileImage />
+          <AssignmentProfileImage profileImage={user.profileImage} />
           <div>
             <div className="mb-[5px] flex justify-start items-center gap-[6px]">
               <span className="text-grayscale-100 text-[16px] font-[700]">

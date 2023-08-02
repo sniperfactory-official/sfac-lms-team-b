@@ -10,7 +10,7 @@ import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
 import { Assignment } from "@/types/firebase.types";
 
-import AssignmentConfirmDialog from "./AssignmentConfirmDialog";
+import AssignmentGlobalConfirmDialog from "./AssignmentGlobalConfirmDialog";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentUpdate from "./AssignmentUpdate";
 
@@ -23,7 +23,9 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { assignmentId } = useParams();
 
-  const { data, isLoading, error } = useGetAssignment(assignmentId as string); // FIXME: hook undefined 문제인가 체크 필요
+  const { data, isLoading, error } = useGetAssignment(assignmentId as string);
+
+  console.log("data", data);
 
   // const blob = data?.images; // FIXME: blob 이미지 호출 체크
   // console.log(blob);
@@ -46,7 +48,9 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
         <div className="px-[20px] py-[29px]">
           <div className="flex justify-between items-start">
             <div className="flex justify-start items-center gap-[16px] mb-[31px]">
-              <AssignmentProfileImage data={data} />
+              <AssignmentProfileImage
+                profileImage={assignment.user?.profileImage}
+              />
               <div>
                 <div className="flex justify-start items-center gap-[9px]">
                   <p className="text-[16px] font-[700] text-grayscale-100">
@@ -55,7 +59,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                   {/* FIXME: 강사만 확인 가능한 영역 */}
                   {user.role === "관리자" ? (
                     <span className="border border-primary-90 rounded-[4px] text-primary-100 font-[500] text-[10px] px-[3.5px] py-[1px]">
-                      63% 읽음
+                      {"63%"} 읽음
                     </span>
                   ) : null}
 
@@ -118,7 +122,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
             <p className="text-grayscale-60 text-[14px] font-[400]">
               {assignment.content}
             </p>
-            {/* {data?.images.map((image, index) => {
+            {/* {assignment.images.map((image, index) => {
             return (
               <Image
                 key={index}
@@ -143,8 +147,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
       ) : null}
 
       {/* 글로벌 컨펌 모달  */}
-      <AssignmentConfirmDialog
-        isGlobal={true}
+      <AssignmentGlobalConfirmDialog
         title="강의를 삭제하시겠습니까?"
         confirmBtnMsg="삭제"
         onConfirm={() => {
@@ -155,21 +158,6 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
           setIsConfirmOpen(false);
         }}
       />
-
-      {/* 모달 내 컨펌 모달 예시 */}
-      {/* <AssignmentConfirmDialog
-        isGlobal={false}
-        title="삭제하시겠습니까?"
-        desc="한번 삭제하시면 다시 복구가 불가능합니다."
-        confirmBtnMsg="확인"
-        onConfirm={() => {
-          setIsConfirmOpen(false);
-        }}
-        isOpen={isConfirmOpen}
-        onCancel={() => {
-          setIsConfirmOpen(false);
-        }}
-      /> */}
     </div>
   );
 };
