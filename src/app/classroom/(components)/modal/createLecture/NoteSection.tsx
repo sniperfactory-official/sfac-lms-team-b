@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Editor } from "@toast-ui/react-editor";
 import { RootState } from "@/redux/store";
 import { setNoteImages, setTextContent } from "@/redux/slice/lectureInfoSlice";
-import useUploadNoteImage from "@/hooks/lecture/useUploadNoteImage";
+import useUploadNoteImage from "@/hooks/lecture/useUploadFile";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
 type HookCallback = (url: string, text?: string) => void;
@@ -15,7 +15,7 @@ const NoteSction: React.FC = () => {
     (state: RootState) => state.lectureInfo.textContent,
   );
   const [content, setContent] = useState<string | undefined>(textContent);
-  const { onUploadImage } = useUploadNoteImage();
+  const { onUploadFile } = useUploadNoteImage();
 
   const toolbarItems = [
     ["heading", "bold", "italic", "strike"],
@@ -36,7 +36,7 @@ const NoteSction: React.FC = () => {
     callback: HookCallback,
   ) => {
     if (imageFile instanceof File) {
-      const imageURL: string | undefined = await onUploadImage(imageFile);
+      const imageURL: string | undefined = await onUploadFile(imageFile);
       dispatch(setNoteImages(imageURL));
       imageURL && callback(imageURL);
     }
