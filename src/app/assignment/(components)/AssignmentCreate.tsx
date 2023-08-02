@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
-import { reset } from "@/redux/slice/dropzoneFileSlice";
 
 interface AssignmentCreateProps {
   isOpen: boolean;
@@ -31,6 +30,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
   const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
     assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
+    assignmentData.readStudents = [];
 
     try {
       createAssignmentMutation.mutate(assignmentData);
