@@ -1,15 +1,21 @@
 "use client";
 
-import React from "react";
+import { FC } from "react";
 import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
+import { User } from "@/types/firebase.types";
+import { useParams } from "next/navigation";
 
-const AssignmentTeacherViewCardWrapper = props => {
-  const user = props.user;
+interface OwnProps {
+  user: User;
+}
+
+const AssignmentTeacherViewCardWrapper: FC<OwnProps> = ({ user }) => {
+  const { assignmentId } = useParams();
 
   return (
     <div>
       <div>
-        <AssignmentStudentViewCard />
+        <AssignmentStudentViewCard user={user} assignmentId={assignmentId} />
       </div>
     </div>
   );

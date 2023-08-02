@@ -7,19 +7,27 @@ import { SubmittedAssignment } from "@/types/firebase.types";
 interface SubmitAssignmentParams {
   assignmentId: string;
   submitAssignmentValue: SubmittedAssignment;
+  attachmentValue: Attachment;
 }
 
 const submitAssignment = async ({
   assignmentId,
   submitAssignmentValue,
+  attachmentValue,
 }: SubmitAssignmentParams): Promise<DocumentReference> => {
   try {
     const assignmentRef = doc(db, "assignments", assignmentId);
 
     const addSubmittedAssignmentData = await addDoc(
       collection(db, "submittedAssignments"),
-      submitAssignmentValue,
+      { submitAssignmentValue },
     );
+
+    const attachmentsData = await addDoc(collection(db, "attachments"), {
+      ...attachmentValue,
+      addSubmittedAssignmentData,
+      userId,
+    });
 
     // submittedAssignment안에 서브컬렉션으로 feedbacks가 존재하므로 넣어줌
     await addDoc(
@@ -39,7 +47,7 @@ const submitAssignment = async ({
   }
 };
 
-const useSubmitAssignmnet = (assignmentId: string) => {
+const useSubmitAssignment = (assignmentId: string) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(submitAssignment, {
     onSuccess: () => {
@@ -53,4 +61,4 @@ const useSubmitAssignmnet = (assignmentId: string) => {
   return { mutate, isLoading, error };
 };
 
-export { useSubmitAssignmnet };
+export { useSubmitAssignment };

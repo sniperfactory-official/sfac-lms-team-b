@@ -6,7 +6,7 @@ import AssignmentStudentViewCardWrapper from "../(components)/AssignmentStudentV
 // FIXME: 임시 유저 정보, 추후 firebase 들고 오면 삭제, 삭제시 반드시 binding 확인
 const user: User = {
   id: "id",
-  role: "수강생", // 관리자, 수강생
+  role: "관리자", // 관리자, 수강생
   username: "김지은",
 };
 
