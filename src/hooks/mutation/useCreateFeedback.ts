@@ -3,9 +3,9 @@ import { collection, addDoc, DocumentReference } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Feedback } from "@/types/firebase.types";
 
-const createFeedbacks = async (
+const createFeedback = async (
   submittedAssignmentId: string,
-  feedbackValue?: Feedback,
+  feedbackValue: Feedback,
 ) => {
   try {
     await addDoc(
@@ -22,10 +22,13 @@ const createFeedbacks = async (
   }
 };
 
-const useCreateFeedback = (submittedAssignmentId: string) => {
+const useCreateFeedback = (
+  submittedAssignmentId: string,
+  feedbackValue: Feedback,
+) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    () => createFeedbacks(submittedAssignmentId),
+    () => createFeedback(submittedAssignmentId, feedbackValue),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getFeedbacks", submittedAssignmentId]);
@@ -39,4 +42,4 @@ const useCreateFeedback = (submittedAssignmentId: string) => {
   return { mutate, isLoading, error };
 };
 
-export default useCreateFeedback;
+export { useCreateFeedback };
