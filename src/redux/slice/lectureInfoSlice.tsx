@@ -7,6 +7,8 @@ interface LectureInfoState {
   lectureTitle: string;
   textContent: string;
   noteImages: string[];
+  videoURL: string;
+  videoLength: number;
   startDate: Timestamp | null;
   endDate: Timestamp | null;
   isLecturePrivate: boolean;
@@ -18,6 +20,8 @@ const initialState: LectureInfoState = {
   lectureTitle: "",
   textContent: "",
   noteImages: [],
+  videoURL: "",
+  videoLength: 0,
   startDate: null,
   endDate: null,
   isLecturePrivate: true,
@@ -42,6 +46,12 @@ const LectureInfoSlice = createSlice({
     setNoteImages: (state, action) => {
       state.noteImages.push(action.payload);
     },
+    setVideoURL: (state, action) => {
+      state.videoURL = action.payload;
+    },
+    setVideoLength: (state, action) => {
+      state.videoLength = action.payload;
+    },
     setStartDate: (state, action) => {
       state.startDate = action.payload;
     },
@@ -65,6 +75,8 @@ export const {
   setLectureTitle,
   setTextContent,
   setNoteImages,
+  setVideoURL,
+  setVideoLength,
   setStartDate,
   setEndDate,
   setIsLecturePrivate,
