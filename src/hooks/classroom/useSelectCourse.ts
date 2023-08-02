@@ -3,7 +3,10 @@ import { ICourseField, ILecture } from "../queries/useGetCourseList";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { setSelectedCourse, setCurrentLecture } from "@/redux/slice/editCourseIdSlice";
+import {
+  setSelectedCourse,
+  setCurrentLecture,
+} from "@/redux/slice/editCourseIdSlice";
 interface IArg {
   courseList: ICourseField[];
   setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
@@ -20,9 +23,10 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
   const selectedCourse = useSelector(
     (state: RootState) => state.editCourse.selectedCourse,
   );
-  const currentLectures = useSelector((state: RootState) => state.editCourse.currentLectures)
+  const currentLectures = useSelector(
+    (state: RootState) => state.editCourse.currentLectures,
+  );
   console.log(currentLectures);
-  
 
   // 클릭 시, 현재 선택한 Course데이터 state에 저장
   const handleCurrentCourse = ({

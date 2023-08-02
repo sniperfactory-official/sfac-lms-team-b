@@ -23,10 +23,8 @@ const Classroom = () => {
     isFetched,
     isFetching,
   } = useGetLectureList();
-  console.log(courseList);
-  useEffect(() => {
-    console.log("isFetched useEffect");
 
+  useEffect(() => {
     if (!isLectureListFetch && courseList!.length !== 0) {
       // 처음에 첫 번째 course 선택
       setCurrentCourse(courseList![0]);

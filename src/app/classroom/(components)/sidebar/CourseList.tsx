@@ -23,14 +23,17 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
   const selectedCourse = useSelector(
     (state: RootState) => state.editCourse.selectedCourse,
   );
-  const { handleCurrentCourse, currentLectures } = useSelectCourse({ courseList, setCurrentCourse });
+  const { handleCurrentCourse, currentLectures } = useSelectCourse({
+    courseList,
+    setCurrentCourse,
+  });
 
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     const dragItem = currentLectures[dragIndex];
     const newList = [...currentLectures];
     newList.splice(dragIndex, 1);
     newList.splice(hoverIndex, 0, dragItem);
-    dispatch(setCurrentLecture(newList))
+    dispatch(setCurrentLecture(newList));
   };
 
   return (

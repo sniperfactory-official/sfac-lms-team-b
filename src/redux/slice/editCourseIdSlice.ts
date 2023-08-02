@@ -19,7 +19,7 @@ const initialState: IEditCourse = {
   isEditMode: false,
   lectureCount: 0,
   selectedCourse: [],
-  currentLectures: []
+  currentLectures: [],
 };
 
 const editCourseSlice = createSlice({
@@ -59,8 +59,8 @@ const editCourseSlice = createSlice({
     },
     // 현재 선택된 Course의 하위 lecture
     setCurrentLecture: (state, action) => {
-      state.currentLectures = action.payload
-    }
+      state.currentLectures = action.payload;
+    },
   },
 });
 
