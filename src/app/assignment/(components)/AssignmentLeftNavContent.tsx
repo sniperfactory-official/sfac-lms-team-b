@@ -7,13 +7,19 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import AssignmentLeftNavBlock from './AssignmentLeftNavContentCard'
 import {useState, useEffect, useCallback, useRef} from 'react'
 import {AssignmentExtracted} from './AssignmentLeftNavContentCard'
+import {writeBatch, doc} from 'firebase/firestore'
+import { db } from "@utils/firebase";
 
 type AssignmentExtractedOmitted = Omit<AssignmentExtracted, 'movecard'>
+type AssignmentExtractedPicked = Pick<AssignmentExtracted, 'id'|'order'> //id가 assignmentId인지 확인필요
 
 const AssignmentLeftNavContent = () => {
   const assignQueries = useGetAssignment("");
   const [htmlContent, setHtmlcontent] = useState<AssignmentExtractedOmitted[]>()
   const isLoading = assignQueries.isLoading
+  const initialOrder = useRef<AssignmentExtractedPicked[]>();
+  const currentOrder = useRef<AssignmentExtractedPicked[]>();
+
   console.log("[COMP]AssignmentLeftNavContent 실행!", htmlContent);
   console.log("isLoading:", isLoading);
 
@@ -21,6 +27,7 @@ const AssignmentLeftNavContent = () => {
   const FetchAssignmentData = useCallback(()=>{
     console.log("[COMP_FUNC]FetchAssignmentData 실행!", isLoading);
     let htmlcontent=[]
+    let initialorder=[]
 
     if (isLoading === false) {
       console.log('데이터 로드!');
@@ -33,11 +40,14 @@ const AssignmentLeftNavContent = () => {
 
         if (assignCopied!==undefined){ //order 있을경우에만 push
           let assignExtracted = {id:assignCopied.id, index: htmlcontent.length, order:assignCopied.order, title:assignCopied.title}
+          let orderExtracted = {id:assignCopied.id, order:assignCopied.order}
           htmlcontent.push(assignExtracted);
+          initialorder.push(orderExtracted);
         }
       }
       console.log('데이터 로드 완료!', htmlcontent);
       setHtmlcontent(htmlcontent);
+      initialOrder.current=initialorder;
     }
   },[isLoading])
 
@@ -56,6 +66,23 @@ const AssignmentLeftNavContent = () => {
       return (htmlcontent)
     })
   };
+
+  const UpdateAssignmentOrder = async() => {
+    console.log('[COMP_FUNC]UpdateAssignmentOrder 실행!');
+    
+    //? transaction(batch)으로 일괄처리하는게 좋을 듯합니다.
+    const batch = writeBatch(db);
+
+    for (let i=0; i<htmlContent?.length; i++){
+      let targetId = htmlContent[i].id //현재 htmlcontent에서 id 추출
+      let targetDat = initialOrder.filter((data)=> data.id === targetId) //해당 id로 initialOrder의 order 값 추출
+      let newOrder = targetDat.order 
+      const assignRef = doc(db, 'assignment', targetId);
+      batch.update(assignRef,{"order" : newOrder}); //updateDoc
+    }
+
+    await batch.commit();//commit
+    }
 
     return (
       <DndProvider backend={HTML5Backend}>
