@@ -4,6 +4,10 @@
 
 import { Feedback } from "@/types/firebase.types";
 import AssignmentProfileImage from "./AssignmentProfileImage";
+import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
 
 const user = [
   {
@@ -23,26 +27,50 @@ const user = [
 ];
 
 const AssignmentFeedback = () => {
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
   return (
     <div>
       {/* uploaded */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] mb-[12px]">
         <div className="flex mb-[22px] items-center">
-          <AssignmentProfileImage />
-          <div className="ml-[13px]">
-            <span className="font-[700] text-grayscale-100">
+          <AssignmentProfileImage profileImage={user[1].profileImage} />
+          <div className="flex justify-start items-center ml-[13px]">
+            <span className="text-[16px] font-[700] text-grayscale-100">
               {user[1].username}
             </span>
-            <span className="text-grayscale-20 font-[400]">
-              {" "}
-              &middot; {"수강생"}
-            </span>
+            <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
+            <span className="text-grayscale-40 font-[400]">{"수강생"}</span>
           </div>
         </div>
         <ul className="space-y-[12px] mb-[10px]">
-          <li>파일 & 링크</li>
-          <li>파일 & 링크</li>
-          <li>파일 & 링크</li>
+          <li>
+            {/* 파일의 경우 */}
+            <div className="flex justify-start items-center gap-[13px] mb-[8px]">
+              <div className="w-[36.5px] h-[39.5px]">
+                <Image
+                  src="/images/fileIcon.svg"
+                  alt=""
+                  width="0"
+                  height="0"
+                  className="w-full h-full"
+                />
+              </div>
+              <p className="text-[16px] text-primary-80 font-[700]">
+                {"김스팩_과제제출_20221231.pdf"}
+              </p>
+            </div>
+          </li>
+          <li>
+            {/* 링크의 경우 */}
+            <Link
+              className="block text-[14px] text-primary-100 font-[400] mb-[3px]"
+              href="https://github.com/sniperfactory-official/sfac-lms-team-b"
+              target="_blank"
+            >
+              https://github.com/sniperfactory-official/sfac-lms-team-b
+            </Link>
+          </li>
         </ul>
         <p className="text-[12px] text-end text-grayscale-40">{"3일전"}</p>
       </div>
@@ -54,19 +82,52 @@ const AssignmentFeedback = () => {
               key={i}
               className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]"
             >
-              <div className="flex mb-[18px] items-center">
-                <AssignmentProfileImage />
-                <div className="ml-[13px]">
-                  <span className="font-[700] text-grayscale-100">
-                    {"이름"}
-                  </span>
-                  <span className="text-grayscale-20 font-[400]">
-                    {" "}
-                    &middot; {"수강생"}
-                  </span>
+              <div className="flex justify-start items-start gap-[13px]">
+                <div className="pt-[3px]">
+                  <AssignmentProfileImage profileImage={"profileImage"} />
+                </div>
+                <div className="grow">
+                  <div className="flex justify-between items-center mb-[9px]">
+                    <div>
+                      <span className="font-[700] text-grayscale-100">
+                        {"이름"}
+                      </span>
+                      <span className="text-grayscale-20 font-[400]">
+                        {" "}
+                        &middot; {"수강생"}
+                      </span>
+                    </div>
+                    <div>
+                      <button
+                        type="button"
+                        className="text-grayscale-100 text-[12px] font-[400] after:content-['|'] after:text-grayscale-30 after:ml-[5px] after:mr-[5px]"
+                      >
+                        수정
+                      </button>
+                      <button
+                        type="button"
+                        className="text-grayscale-100 text-[12px] font-[400]"
+                        onClick={() => {
+                          setIsConfirmOpen(true);
+                        }}
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  </div>
+                  <div>
+                    <textarea
+                      className="w-full text-[14px] text-black font-[400] bg-white"
+                      name=""
+                      id=""
+                      rows={3}
+                      disabled={true}
+                      style={{ resize: "none" }}
+                      defaultValue={"본문"}
+                    />
+                  </div>
                 </div>
               </div>
-              <p className="text-[12px]">{"본문"}</p>
               <p className="text-[12px] text-end text-grayscale-40">
                 {"3일전"}
               </p>
@@ -76,20 +137,42 @@ const AssignmentFeedback = () => {
       </ul>
       {/* feedback_upload */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
-        <div className="flex mb-[8px] items-center">
-          <AssignmentProfileImage />
-          <p className="font-[500] text-grayscale-60 ml-[13px]">{"이름"}</p>
+        <div className="flex justify-start items-start gap-[11px]">
+          <AssignmentProfileImage profileImage={"profileImage"} />
+          <div className="grow">
+            <p className="font-[500] text-grayscale-60 text-[16px] mb-[9px]">
+              {"이름"}
+            </p>
+            <form className="w-full">
+              <textarea
+                className="w-full outline-none placeholder:text-grayscale-20 grow text-[14px]"
+                placeholder="댓글을 입력해주세요."
+                style={{ resize: "none" }}
+                rows={3}
+                defaultValue={""}
+              />
+              <div className="flex justify-end items-center mt-[16px]">
+                <button className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0">
+                  업로드
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
-        <form className="flex justify-between">
-          <textarea
-            className="outline-none placeholder:text-grayscale-20"
-            placeholder="댓글을 입력해주세요."
-          />
-          <button className="bg-primary-80 p-[5px_32px] text-white text-[14px] font-[500] rounded-md">
-            업로드
-          </button>
-        </form>
       </div>
+      {/* 모달 내 컨펌 모달 예시 */}
+      <AssignmentLocalConfirmDialog
+        title="삭제하시겠습니까?"
+        content="한번 삭제하시면 다시 복구가 불가능합니다."
+        confirmBtnMsg="확인"
+        onConfirm={() => {
+          setIsConfirmOpen(false);
+        }}
+        isOpen={isConfirmOpen}
+        onCancel={() => {
+          setIsConfirmOpen(false);
+        }}
+      />
     </div>
   );
 };
