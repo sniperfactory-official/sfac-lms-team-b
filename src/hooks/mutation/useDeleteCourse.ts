@@ -15,8 +15,6 @@ const deleteCourses = async ({
   deleteIdArray: IDeleteId[];
   lectureCount: number;
 }) => {
-  console.log(deleteIdArray);
-
   try {
     if (lectureCount + 1 !== deleteIdArray.length) {
       return alert("아직 남아있는 강의가 있습니다");

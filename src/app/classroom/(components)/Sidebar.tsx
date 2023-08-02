@@ -11,6 +11,10 @@ interface IProps {
 
 const Sidebar = ({ courseList, setCurrentCourse }: IProps) => {
   const { mutate: createCourse, isLoading } = useCreateCourseMutation();
+  const handleCreateSection = () => {
+    createCourse();
+    setCurrentCourse(courseList![0]);
+  };
 
   return (
     <aside className="w-1/5 h-100 flex items-center flex-col mr-[20px] pt-[50px]">
@@ -18,7 +22,7 @@ const Sidebar = ({ courseList, setCurrentCourse }: IProps) => {
       <SectionHandlerButton
         text="섹션 추가"
         src="/images/plus.svg"
-        onClick={createCourse}
+        onClick={handleCreateSection}
       />
       <EditButton />
     </aside>
