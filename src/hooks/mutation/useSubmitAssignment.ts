@@ -1,20 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { collection, doc, addDoc, DocumentReference } from "firebase/firestore";
-
 import { db } from "@utils/firebase";
-import { SubmittedAssignment } from "@/types/firebase.types";
+import { Attachment, SubmittedAssignment } from "@/types/firebase.types";
 
-interface SubmitAssignmentParams {
-  assignmentId: string;
-  submitAssignmentValue: SubmittedAssignment;
-  attachmentValue: Attachment;
-}
 
-const submitAssignment = async ({
-  assignmentId,
-  submitAssignmentValue,
-  attachmentValue,
-}: SubmitAssignmentParams): Promise<DocumentReference> => {
+const submitAssignment = async (
+  assignmentId: string,
+  submitAssignmentValue: SubmittedAssignment,
+  attachmentValue: Attachment
+): Promise<DocumentReference> => {
+
   try {
     const assignmentRef = doc(db, "assignments", assignmentId);
 
@@ -47,16 +42,24 @@ const submitAssignment = async ({
   }
 };
 
-const useSubmitAssignment = (assignmentId: string) => {
+
+const useSubmitAssignmnet = (
+  assignmentId: string,
+  submitAssignmentValue: SubmittedAssignment,
+  attachmentValue: Attachment
+) => {
   const queryClient = useQueryClient();
-  const { mutate, isLoading, error } = useMutation(submitAssignment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
+  const { mutate, isLoading, error } = useMutation(
+    () => submitAssignment(assignmentId, submitAssignmentValue, attachmentValue),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
+      },
+      onError: err => {
+        console.log(err);
+      },
     },
-    onError: err => {
-      console.log(err);
-    },
-  });
+  );
 
   return { mutate, isLoading, error };
 };
