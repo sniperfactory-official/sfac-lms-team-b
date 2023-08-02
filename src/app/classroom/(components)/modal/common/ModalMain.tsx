@@ -26,6 +26,8 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     lectureTitle,
     textContent,
     noteImages,
+    videoURL,
+    videoLength,
     startDate,
     endDate,
     isLecturePrivate,
@@ -34,6 +36,8 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const lectureContent = {
     images: noteImages,
     textContent,
+    videoURL,
+    videoLength,
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
