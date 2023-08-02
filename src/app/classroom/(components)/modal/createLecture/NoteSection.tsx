@@ -1,9 +1,12 @@
 import { useRef, useState } from "react";
-import { Editor } from "@toast-ui/react-editor";
 import { useDispatch, useSelector } from "react-redux";
+import { Editor } from "@toast-ui/react-editor";
 import { RootState } from "@/redux/store";
 import { setLectureContent } from "@/redux/slice/lectureInfoSlice";
+import useUploadNoteImage from "@/hooks/lecture/useUploadNoteImage";
 import "@toast-ui/editor/dist/toastui-editor.css";
+
+type HookCallback = (url: string, text?: string) => void;
 
 const NoteSction: React.FC = () => {
   const editorRef = useRef<Editor>(null);
@@ -12,6 +15,7 @@ const NoteSction: React.FC = () => {
     (state: RootState) => state.lectureInfo.lectureContent,
   );
   const [content, setContent] = useState<string | undefined>(lectureContent);
+  const { onUploadImage } = useUploadNoteImage();
 
   const toolbarItems = [
     ["heading", "bold", "italic", "strike"],
@@ -27,6 +31,16 @@ const NoteSction: React.FC = () => {
     dispatch(setLectureContent(newContent));
   };
 
+  const handleUploadImage = async (
+    imageFile: File | Blob,
+    callback: HookCallback,
+  ) => {
+    if (imageFile instanceof File) {
+      const imageURL: string | undefined = await onUploadImage(imageFile);
+      imageURL && callback(imageURL);
+    }
+  };
+
   return (
     <Editor
       ref={editorRef}
@@ -38,6 +52,9 @@ const NoteSction: React.FC = () => {
       useCommandShortcut={true}
       toolbarItems={toolbarItems}
       onChange={handleChangeContent}
+      hooks={{
+        addImageBlobHook: handleUploadImage,
+      }}
     />
   );
 };
