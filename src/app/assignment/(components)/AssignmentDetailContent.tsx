@@ -20,7 +20,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { assignmentId } = useParams();
-  const { data, isLoading, error } = useGetAssignment(assignmentId); // FIXME: hook undefined 문제인가 체크 필요
+  const { data, isLoading, error } = useGetAssignment(assignmentId as string); // FIXME: hook undefined 문제인가 체크 필요
 
   // const blob = data?.images; // FIXME: blob 이미지 호출 체크
   // console.log(blob);
@@ -81,7 +81,11 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                     setIsOpen(false);
                   }}
                 >
-                  <AssignmentUpdate isOpen={isOpen} setIsOpen={setIsOpen} />
+                  <AssignmentUpdate
+                    isOpen={isOpen}
+                    setIsOpen={setIsOpen}
+                    assignmentId={assignmentId as string}
+                  />
                 </AssignmentModal>
                 <button
                   className="text-grayscale-100 text-[12px] font-[400]"
