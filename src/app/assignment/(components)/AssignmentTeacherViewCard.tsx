@@ -3,8 +3,12 @@ import { useState } from "react";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentFeedback from "./AssignmentFeedback";
+import { User } from "@/types/firebase.types";
+interface OwnProps {
+  user: User;
+}
 
-const AssignmentTeacherViewCard = () => {
+const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ user }) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   return (
@@ -55,6 +59,7 @@ const AssignmentTeacherViewCard = () => {
       <AssignmentModal
         title="상세보기"
         isOpen={isDetailOpen}
+        isBottomButton={false}
         onClose={() => {
           setIsDetailOpen(false);
         }}

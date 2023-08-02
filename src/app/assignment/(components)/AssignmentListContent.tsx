@@ -3,8 +3,8 @@
 import React from "react";
 import { useGetAssignment } from "@hooks/queries/useGetAssignment";
 import { Assignment } from "@/types/firebase.types";
-import AssignmentListSubButton from './AssignmentListSubButton';
-import {useRouter} from 'next/navigation'
+import AssignmentListSubButton from "./AssignmentListSubButton";
+import { useRouter } from "next/navigation";
 
 interface AssignmentNumberAdded extends Assignment {
   assignmentNumber: number;
@@ -40,12 +40,15 @@ const AssignmentListContent = () => {
         {USER_INFO.role === "관리자" ? (
           <button
             type="button"
-            onClick={()=>{router.push("/assignment/" + assign.assignmentNumber)}}
-            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 border-none">
+            onClick={() => {
+              router.push("/assignment/" + assign.assignmentNumber);
+            }}
+            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 border-none"
+          >
             확인하기
           </button>
         ) : (
-          <AssignmentListSubButton targetId={assign.id}/>
+          <AssignmentListSubButton targetId={assign.id} />
         )}
       </div>
     ));
