@@ -6,8 +6,9 @@ import ModalMain from "../common/ModalMain";
 import { setTextContent } from "@/redux/slice/lectureInfoSlice";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { db } from "@/utils/firebase";
+import useLinkValidity from "@/hooks/lecture/useLinkValidity";
 
 const AddLinkModal: React.FC = () => {
   const textContent = useSelector(
@@ -20,39 +21,42 @@ const AddLinkModal: React.FC = () => {
   const prevModal = () => {
     handleModalMove("lectureTypeModalOpen", "linkModalOpen");
   };
+
+  const [errorMessage, setErrorMessage] = useState("");
+
   const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (!value.startsWith("http://") && !value.startsWith("https://")) {
-      dispatch(setTextContent("http://" + value));
-    } else {
-      dispatch(setTextContent(value));
+    dispatch(
+      setTextContent(value.startsWith("http://") ? value : "http://" + value),
+    );
+    isValidLink();
+  };
+
+  const { checkLinkValidity } = useLinkValidity(db);
+
+  const isValidLink = async () => {
+    const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
+    if (!linkRegex.test(textContent)) {
+      setErrorMessage("올바른 URL 형식이 아닙니다.");
+      return;
+    }
+    try {
+      await checkLinkValidity(textContent);
+      setErrorMessage(""); // 유효성 검사 에러 메시지 초기화
+    } catch (error) {
+      setErrorMessage("링크 유효성 검사 실패"); // 유효성 검사 실패 에러 메시지 설정
     }
   };
 
-  /*   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
- */
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await axios.get(textContent);
-      if (response.status === 200) {
-        // 링크가 존재하고 접근 가능한 경우
-        setErrorMessage(null);
-        console.log("링크가 유효합니다:", textContent);
-      } else {
-        // 링크가 존재하지 않거나 접근할 수 없는 경우
-        setErrorMessage("링크가 존재하지 않거나 접근할 수 없습니다.");
-      }
-    } catch (error) {
-      // 에러 발생 시
-      setErrorMessage("링크 접속 중 오류가 발생했습니다.");
-    }
-  };
+  useEffect(() => {
+    // 키보드 입력이 종료될 때마다 유효성 검사 실행
+    const handleKeyUp = () => {
+      isValidLink();
+    };
+    return () => {
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, []);
 
   return (
     <Layout>
@@ -65,17 +69,16 @@ const AddLinkModal: React.FC = () => {
         </button>
       </ModalHeader>
       <ModalMain>
-        <form onSubmit={handleSubmit}>
+        <form>
           <input
             type="text"
             name="textContent"
             id="textContent"
-            placeholder="http://..."
+            placeholder="https://..."
             className="justify-center text-[16px] w-[707px] h-[42px] flex-shrink-0 border-[1px] border-grayscale-10 bg-grayscale-0 rounded-md pl-[14px]"
             value={textContent}
             onChange={handleInputContent}
           />
-          {/* 에러 메시지 출력 */}
           {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
         </form>
       </ModalMain>
