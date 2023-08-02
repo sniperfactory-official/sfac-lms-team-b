@@ -3,7 +3,6 @@ import AssignmentDetailContent from "../(components)/AssignmentDetailContent";
 import AssignmentTeacherViewCardWrapper from "../(components)/AssignmentTeacherViewCardWrapper";
 import AssignmentStudentViewCardWrapper from "../(components)/AssignmentStudentViewCardWrapper";
 
-
 // FIXME: 임시 유저 정보, 추후 firebase 들고 오면 삭제, 삭제시 반드시 binding 확인
 const user: User = {
   id: "id",
@@ -12,7 +11,6 @@ const user: User = {
 };
 
 const AssignmentDetailPage = () => {
-
   return (
     <div className="py-[36px] px-[20px]">
       <AssignmentDetailContent user={user} />
