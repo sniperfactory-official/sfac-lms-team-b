@@ -3,16 +3,19 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
-import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
+import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
+import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 
-interface AssignmentCreateProps {
+interface AssignmentUpdateProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  assignmentId: string;
 }
 
-const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
+const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   isOpen,
   setIsOpen,
+  assignmentId,
 }) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
@@ -21,11 +24,36 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
     reset,
   } = useForm<Assignment>();
 
-  const createAssignmentMutation = useCreateAssignment();
+  const updateAssignmentMutation = useUpdateAssignment();
+
+  const { data, isLoading, error } = useGetAssignment(assignmentId);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (Array.isArray(data)) {
+        // assignment가 배열로 넘어올 일은 없으니깐 아무 처리도 하지 않도록 우선 놔두었습니다.
+      } else if (data) {
+        setValue("level", data.level);
+        setValue("title", data.title);
+        setValue("content", data.content);
+
+        const startDate = data.startDate.toDate() as Date;
+        const endDate = data.endDate.toDate() as Date;
+
+        const startDateString = startDate.toISOString().split("T")[0];
+        const endDateString = endDate.toISOString().split("T")[0];
+
+        // starDateString, endDateString 타입에러남 -> 추후 수정하겠습니다
+        setValue("startDate", startDateString);
+        setValue("endDate", endDateString);
+      }
+    }
+  }, [data, isLoading]);
 
   const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
@@ -33,9 +61,9 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
     assignmentData.readStudents = [];
 
     try {
-      createAssignmentMutation.mutate(assignmentData);
+      updateAssignmentMutation.mutate(assignmentData);
 
-      setToastMsg("과제가 성공적으로 등록되었습니다.");
+      setToastMsg("과제가 성공적으로 수정되었습니다.");
       setIsAccept(true);
 
       setTimeout(() => {
@@ -43,7 +71,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         reset();
       }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
     } catch (error) {
-      setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
+      setToastMsg("과제 수정에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
     }
   };
@@ -215,7 +243,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
             className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
             onClick={handleFormValidation}
           >
-            업로드
+            수정하기
           </button>
         </div>
 
@@ -233,4 +261,4 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
   );
 };
 
-export default AssignmentCreate;
+export default AssignmentUpdate;

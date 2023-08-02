@@ -14,7 +14,7 @@ const USER_INFO = {
 };
 
 const AssignmentLeftNav = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <div className="w-full flex flex-col items-center justify-start">
@@ -56,11 +56,12 @@ const AssignmentLeftNav = () => {
           <AssignmentModal
             title="과제만들기"
             isOpen={isOpen}
+            isBottomButton={false}
             onClose={() => {
               setIsOpen(false);
             }}
           >
-            <AssignmentCreate />
+            <AssignmentCreate isOpen={isOpen} setIsOpen={setIsOpen} />
           </AssignmentModal>
           <div className="flex justify-center items-center w-full h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
             <button

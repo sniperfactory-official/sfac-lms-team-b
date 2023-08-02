@@ -1,48 +1,67 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { collection, doc, addDoc, DocumentReference } from "firebase/firestore";
-
 import { db } from "@utils/firebase";
-import { SubmittedAssignment } from "@/types/firebase.types";
+import { Attachment, SubmittedAssignment } from "@/types/firebase.types";
 
 const submitAssignment = async (
   assignmentId: string,
   submitAssignmentValue: SubmittedAssignment,
+  attachmentValue: Attachment,
 ): Promise<DocumentReference> => {
-  const assignmentRef = doc(db, "assignments", assignmentId);
+  try {
+    const assignmentRef = doc(db, "assignments", assignmentId);
 
-  const addSubmittedAssignmentData = await addDoc(
-    collection(db, "submittedAssignments"),
-    submitAssignmentValue,
-  );
+    const addSubmittedAssignmentData = await addDoc(
+      collection(db, "submittedAssignments"),
+      { submitAssignmentValue },
+    );
 
-  // submittedAssignment안에 서브컬렉션으로 feedbacks가 존재하므로 넣어줌
-  await addDoc(
-    collection(
-      db,
-      "submittedAssignments",
-      addSubmittedAssignmentData.id,
-      "feedbacks",
-    ),
-    {},
-  );
 
-  return addSubmittedAssignmentData;
+    await addDoc(collection(db, "attachment"), {
+      ...attachmentValue,
+      submittedAssignmentId: "서브밋참조",
+      useId: "유저참조",
+
+    });
+
+    // submittedAssignment안에 서브컬렉션으로 feedbacks가 존재하므로 넣어줌
+    await addDoc(
+      collection(
+        db,
+        "submittedAssignments",
+        addSubmittedAssignmentData.id,
+        "feedbacks",
+      ),
+      {},
+    );
+
+    return addSubmittedAssignmentData;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
 };
 
-const useSubmitAssignmnet = (
+const useSubmitAssignment = (
   assignmentId: string,
   submitAssignmentValue: SubmittedAssignment,
+  attachmentValue: Attachment,
 ) => {
-  const { data, isLoading, error } = useQuery(
-    ["submitAssignmnet", assignmentId],
-    () => submitAssignment(assignmentId, submitAssignmentValue),
+  const queryClient = useQueryClient();
+  const { mutate, isLoading, error } = useMutation(
+    () =>
+      submitAssignment(assignmentId, submitAssignmentValue, attachmentValue),
     {
-      cacheTime: 0, // 업로드 기능 이므로 cacheTime 0
-      refetchOnWindowFocus: false,
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
+      },
+      onError: err => {
+        console.log(err);
+      },
     },
   );
 
-  return { data, isLoading, error };
+  return { mutate, isLoading, error };
 };
 
-export { useSubmitAssignmnet };
+export { useSubmitAssignment };

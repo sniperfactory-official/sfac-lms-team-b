@@ -2,19 +2,7 @@
 
 "use client";
 
-import {
-  collection,
-  getDoc,
-  getDocs,
-  addDoc,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from "firebase/firestore";
-import { useEffect } from "react";
-import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
-import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
-import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
+import { Feedback } from "@/types/firebase.types";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 
 const user = [
@@ -35,17 +23,6 @@ const user = [
 ];
 
 const AssignmentFeedback = () => {
-  // const { data, isLoading, error } = useGetAssignment();
-  // console.log(data);
-  // console.log(isLoading);
-  // console.log(error);
-  // `yjQmFY45VoZduNQ4Twxy`
-
-  // const { data, isLoading, error } = useGetSubmittedAssignments();
-  // console.log(data);
-  // console.log(isLoading);
-  // console.log(error);
-
   return (
     <div>
       {/* uploaded */}
@@ -71,7 +48,7 @@ const AssignmentFeedback = () => {
       </div>
       {/* feedback */}
       <ul className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll ">
-        {[1, 2, 3, 4, 5, 6].map((a, i) => {
+        {[1, 2, 3, 4, 5].map((a, i) => {
           return (
             <li
               key={i}
@@ -104,7 +81,7 @@ const AssignmentFeedback = () => {
           <p className="font-[500] text-grayscale-60 ml-[13px]">{"이름"}</p>
         </div>
         <form className="flex justify-between">
-          <input
+          <textarea
             className="outline-none placeholder:text-grayscale-20"
             placeholder="댓글을 입력해주세요."
           />
