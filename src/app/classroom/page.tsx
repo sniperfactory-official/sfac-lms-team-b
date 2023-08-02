@@ -6,7 +6,10 @@ import useGetLectureList, {
 } from "@/hooks/queries/useGetCourseList";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
+import {
+  setCurrentLecture,
+  setSelectedCourse,
+} from "@/redux/slice/editCourseIdSlice";
 import { setCourseId } from "@/redux/slice/lectureInfoSlice";
 import { RootState } from "@/redux/store";
 import { setLectureCount } from "@/redux/slice/editCourseIdSlice";
@@ -41,6 +44,7 @@ const Classroom = () => {
 
   // lecture 만들 경우 refech된 courseList setCurrentCourse통해서 반영
   useEffect(() => {
+    if (!currentCourse) return;
     let SELECTED_COURSE_INDEX = 0;
     for (let i = 0; i < seletedCourse.length; i++) {
       if (seletedCourse[i] === true) {
@@ -55,6 +59,26 @@ const Classroom = () => {
       }
     }
   }, [isFetching, seletedCourse]);
+
+  useEffect(() => {
+    if (!currentCourse) return;
+    let SELECTED_COURSE_INDEX = 0;
+    for (let i = 0; i < seletedCourse.length; i++) {
+      if (seletedCourse[i] === true) {
+        SELECTED_COURSE_INDEX = i;
+        setCurrentCourse(courseList![SELECTED_COURSE_INDEX]);
+        dispatch(
+          setLectureCount(
+            courseList![SELECTED_COURSE_INDEX].lectureList.length,
+          ),
+        );
+        dispatch(
+          setCurrentLecture(courseList![SELECTED_COURSE_INDEX].lectureList),
+        );
+        break;
+      }
+    }
+  }, [courseList]);
 
   if (isLectureListFetch || currentCourse === undefined)
     return <div>isLoading</div>;
