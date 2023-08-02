@@ -4,8 +4,17 @@ import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
+import { reset } from "@/redux/slice/dropzoneFileSlice";
 
-export default function AssignmentCreate() {
+interface AssignmentCreateProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
+  isOpen,
+  setIsOpen,
+}) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
@@ -14,6 +23,7 @@ export default function AssignmentCreate() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Assignment>();
 
   const createAssignmentMutation = useCreateAssignment();
@@ -24,10 +34,16 @@ export default function AssignmentCreate() {
 
     try {
       createAssignmentMutation.mutate(assignmentData);
-      setToastMsg("과제가 성공적으로 생성되었습니다.");
+
+      setToastMsg("과제가 성공적으로 등록되었습니다.");
       setIsAccept(true);
+
+      setTimeout(() => {
+        setIsOpen(false);
+        reset();
+      }, 1500); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
     } catch (error) {
-      setToastMsg("과제 생성에 실패했습니다. 다시 시도해주세요.");
+      setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
     }
   };
@@ -215,4 +231,6 @@ export default function AssignmentCreate() {
       </div>
     </form>
   );
-}
+};
+
+export default AssignmentCreate;
