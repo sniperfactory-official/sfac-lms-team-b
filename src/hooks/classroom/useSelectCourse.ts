@@ -3,8 +3,7 @@ import { ICourseField, ILecture } from "../queries/useGetCourseList";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
-
+import { setSelectedCourse, setCurrentLecture } from "@/redux/slice/editCourseIdSlice";
 interface IArg {
   courseList: ICourseField[];
   setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
@@ -13,7 +12,6 @@ interface IArg {
 // hook의 목적 : 선택된 Course관리
 const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
   // 선택된 course의 lecture state 관리
-  const [currentLectures, setCurrentLectures] = useState<ILecture[]>([]);
   const dispatch = useDispatch();
 
   const isEditMode = useSelector(
@@ -22,6 +20,9 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
   const selectedCourse = useSelector(
     (state: RootState) => state.editCourse.selectedCourse,
   );
+  const currentLectures = useSelector((state: RootState) => state.editCourse.currentLectures)
+  console.log(currentLectures);
+  
 
   // 클릭 시, 현재 선택한 Course데이터 state에 저장
   const handleCurrentCourse = ({
@@ -34,7 +35,7 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
     // 수정 상태일 경우 다른 Course 선택 X
     if (!isEditMode) {
       setCurrentCourse(course);
-      setCurrentLectures(course.lectureList);
+      dispatch(setCurrentLecture(course.lectureList));
       dispatch(
         setSelectedCourse(selectedCourse.map((_, index) => index === idx)),
       );
@@ -52,11 +53,7 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
     );
   }, [courseList.length]);
 
-  return {
-    handleCurrentCourse,
-    currentLectures,
-    setCurrentLectures,
-  };
+  return { handleCurrentCourse, currentLectures };
 };
 
 export default useSelectCourse;
