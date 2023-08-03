@@ -6,8 +6,7 @@ import AddLinkModal from "./modal/createLecture/AddLinkModal";
 import AddVideoFileModal from "./modal/createLecture/AddVideoFileModal";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
-import { ICourseField } from "@/hooks/queries/useGetCourseList";
-import { Lecture } from "@/types/firebase.types";
+import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
 
 interface IProps {
   currentCourse: ICourseField;
@@ -46,7 +45,7 @@ const ClassContent = ({ currentCourse }: IProps) => {
           강의 만들기
         </button>
       </div>
-      {currentCourse.lectureList.map((lecture: Lecture) => (
+      {currentCourse.lectureList.map((lecture: ILecture) => (
         <ContentCard key={lecture.title} lecture={lecture} />
       ))}
       {lectureTypeModalOpen && <MakeLectureModal />}
