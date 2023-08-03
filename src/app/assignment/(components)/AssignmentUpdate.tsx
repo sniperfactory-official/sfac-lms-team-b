@@ -5,7 +5,6 @@ import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
-import timestampToDate from "@/utils/timestampToDate";
 
 interface AssignmentUpdateProps {
   isOpen: boolean;
@@ -31,10 +30,8 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   } = useForm<Assignment>();
 
   const updateAssignmentMutation = useUpdateAssignment(assignmentId);
-
   const { data, isLoading, error } = useGetAssignment(assignmentId);
 
-  console.log(data);
   useEffect(() => {
     if (!isLoading) {
       if (Array.isArray(data)) {

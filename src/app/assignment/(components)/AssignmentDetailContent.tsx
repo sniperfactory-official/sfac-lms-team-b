@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
+import { useDeleteRegisteredAssignment } from "@/hooks/mutation/useDeleteRegisteredAssignment";
 import { useParams } from "next/navigation";
-import Image from "next/image";
 import timestampToDate from "@/utils/timestampToDate";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
@@ -19,14 +20,15 @@ interface OwnProps {
 }
 
 const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
+  const router = useRouter();
+
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { assignmentId } = useParams();
-
   const { data, isLoading, error } = useGetAssignment(assignmentId as string);
-
-  console.log("data", data);
-
+  const deleteAssignmentMutation = useDeleteRegisteredAssignment(
+    assignmentId as string,
+  );
   // const blob = data?.images; // FIXME: blob 이미지 호출 체크
   // console.log(blob);
 
@@ -151,7 +153,9 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
         title="강의를 삭제하시겠습니까?"
         confirmBtnMsg="삭제"
         onConfirm={() => {
+          deleteAssignmentMutation.mutate(assignmentId as string);
           setIsConfirmOpen(false);
+          router.push("/assignment");
         }}
         isOpen={isConfirmOpen}
         onCancel={() => {
