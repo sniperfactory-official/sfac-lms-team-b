@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DropzoneFileState {
-  videoFile: File | null;
+  videoFileName: string;
   errorMessage: string;
   successMessage: string;
 }
 
 const initialState: DropzoneFileState = {
-  videoFile: null,
+  videoFileName: "",
   errorMessage: "",
   successMessage: "",
 };
@@ -16,8 +16,8 @@ const dropzoneFileSlice = createSlice({
   name: "dropzoneFile",
   initialState,
   reducers: {
-    setVideoFile: (state, action: PayloadAction<File | null>) => {
-      state.videoFile = action.payload;
+    setVideoFileName: (state, action: PayloadAction<string>) => {
+      state.videoFileName = action.payload;
     },
     setErrorMessage: (state, action: PayloadAction<string>) => {
       state.errorMessage = action.payload;
@@ -29,6 +29,6 @@ const dropzoneFileSlice = createSlice({
   },
 });
 
-export const { setVideoFile, setErrorMessage, setSuccessMessage, reset } =
+export const { setVideoFileName, setErrorMessage, setSuccessMessage, reset } =
   dropzoneFileSlice.actions;
 export default dropzoneFileSlice.reducer;

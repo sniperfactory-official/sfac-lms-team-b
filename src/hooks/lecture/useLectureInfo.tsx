@@ -19,6 +19,12 @@ const useLectureInfo = () => {
   const noteImages: string[] = useSelector(
     (state: RootState) => state.lectureInfo.noteImages,
   );
+  const videoURL: string = useSelector(
+    (state: RootState) => state.lectureInfo.videoURL,
+  );
+  const videoLength: number = useSelector(
+    (state: RootState) => state.lectureInfo.videoLength,
+  );
   const startDate = useSelector(
     (state: RootState) => state.lectureInfo.startDate,
   );
@@ -34,6 +40,8 @@ const useLectureInfo = () => {
     lectureTitle,
     textContent,
     noteImages,
+    videoURL,
+    videoLength,
     startDate,
     endDate,
     isLecturePrivate,

@@ -3,29 +3,45 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { FileRejection, useDropzone } from "react-dropzone";
 import {
-  setVideoFile,
   setErrorMessage,
   setSuccessMessage,
-  reset,
 } from "@/redux/slice/dropzoneFileSlice";
+import useUploadFile from "./useUploadFile";
+import { setVideoLength } from "@/redux/slice/lectureInfoSlice";
+import useDeleteFile from "./useDeleteFile";
 
 const useVideoFileDrop = () => {
   const dispatch = useDispatch();
-  const videoFile = useSelector(
-    (state: RootState) => state.dropzoneFile.videoFile,
+  const videoFileName = useSelector(
+    (state: RootState) => state.dropzoneFile.videoFileName,
   );
+  const videoURL = useSelector(
+    (state: RootState) => state.lectureInfo.videoURL,
+  );
+  const { isUploading, onUploadFile } = useUploadFile();
+  const { onDeleteFile } = useDeleteFile();
 
   const onDrop = useCallback(
-    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-      if (videoFile) {
+    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+      if (videoFileName) {
         dispatch(
           setErrorMessage(
             "이미 사용 중인 파일이 있습니다. 기존의 파일을 삭제하고 진행해주세요.",
           ),
         );
-      } else if (acceptedFiles.length !== 0) {
+      } else if (acceptedFiles.length > 0) {
         const file: File = acceptedFiles[0];
-        dispatch(setVideoFile(file));
+        const videoFileURL: string | undefined = await onUploadFile(file);
+
+        if (videoFileURL) {
+          const videoElement: HTMLVideoElement =
+            document.createElement("video");
+          videoElement.src = videoFileURL;
+          videoElement.onloadedmetadata = () => {
+            dispatch(setVideoLength(videoElement.duration));
+          };
+        }
+
         dispatch(setSuccessMessage("파일이 업로드되었습니다!"));
       } else if (fileRejections.length > 0) {
         if (
@@ -44,11 +60,11 @@ const useVideoFileDrop = () => {
         }
       }
     },
-    [dispatch, videoFile],
+    [dispatch, videoFileName, onUploadFile],
   );
 
   const handleRemoveVideoFile = () => {
-    dispatch(reset());
+    onDeleteFile(videoURL);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
