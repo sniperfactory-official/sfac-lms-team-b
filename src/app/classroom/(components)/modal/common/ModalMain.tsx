@@ -37,7 +37,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const lectureContent = {
     images: noteImages,
     textContent,
-    videoURL,
+    videoUrl: videoURL,
     videoLength,
   };
 
