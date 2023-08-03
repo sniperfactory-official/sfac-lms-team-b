@@ -5,58 +5,39 @@ import ModalHeader from "../common/ModalHeader";
 import ModalMain from "../common/ModalMain";
 import { setTextContent } from "@/redux/slice/lectureInfoSlice";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { db } from "@/utils/firebase";
-import useLinkValidity from "@/hooks/lecture/useLinkValidity";
 
 const AddLinkModal: React.FC = () => {
   const textContent = useSelector(
     (state: RootState) => state.lectureInfo.textContent,
   );
   const dispatch = useDispatch();
-
   const { handleModalMove } = useClassroomModal();
 
   const prevModal = () => {
     handleModalMove("lectureTypeModalOpen", "linkModalOpen");
   };
-
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    dispatch(
-      setTextContent(value.startsWith("http://") ? value : "http://" + value),
-    );
-    isValidLink();
-  };
-
-  const { checkLinkValidity } = useLinkValidity(db);
-
-  const isValidLink = async () => {
-    const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
-    if (!linkRegex.test(textContent)) {
-      setErrorMessage("올바른 URL 형식이 아닙니다.");
-      return;
-    }
-    try {
-      await checkLinkValidity(textContent);
-      setErrorMessage(""); // 유효성 검사 에러 메시지 초기화
-    } catch (error) {
-      setErrorMessage("링크 유효성 검사 실패"); // 유효성 검사 실패 에러 메시지 설정
-    }
+    dispatch(setTextContent(e.target.value));
   };
 
   useEffect(() => {
     // 키보드 입력이 종료될 때마다 유효성 검사 실행
     const handleKeyUp = () => {
-      isValidLink();
+      const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
+      if (!linkRegex.test(textContent)) {
+        setErrorMessage("올바른 URL 형식이 아닙니다.");
+      } else {
+        setErrorMessage("");
+      }
     };
+    const timer = setTimeout(handleKeyUp, 500); // 1초 후에 실행
     return () => {
-      window.removeEventListener("keyup", handleKeyUp);
+      clearTimeout(timer); // 타이머 제거 (1초 내에 입력이 다시 시작되면 타이머 리셋)
     };
-  }, []);
+  }, [textContent]);
 
   return (
     <Layout>
