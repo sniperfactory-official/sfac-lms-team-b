@@ -1,10 +1,10 @@
-import { Lecture } from "@/types/firebase.types";
+import { ILecture } from "@/hooks/queries/useGetCourseList";
 import { useRouter } from "next/navigation";
 
-const ContentCard = ({ lecture }: { lecture: Lecture }) => {
+const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const router = useRouter();
   const handleMovePage = () => {
-    router.push(`/classroom/${lecture.Id}`);
+    router.push(`/classroom/${lecture.lectureId}`);
   };
 
   return (
