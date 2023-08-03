@@ -10,7 +10,9 @@ const VideoLecture: FC<VideoLectureProps> = ({ content }) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    getMediaURL(content.videoUrl).then(setVideoUrl).catch(console.error);
+    if (content.videoUrl !== undefined) {
+      getMediaURL(content.videoUrl).then(setVideoUrl).catch(console.error);
+    }
   }, [content.videoUrl]);
 
   return (
