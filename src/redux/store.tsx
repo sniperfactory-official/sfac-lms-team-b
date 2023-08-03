@@ -7,6 +7,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import classroomModalReducer from "./slice/classroomModalSlice";
 import lectureInfoSliceReducer from "./slice/lectureInfoSlice";
 import dropzoneFileReducer from "./slice/dropzoneFileSlice";
+import editCourseReducer from "./slice/editCourseIdSlice";
 
 const persistConfig = {
   key: "root",
@@ -20,6 +21,7 @@ export const store = configureStore({
     classroomModal: classroomModalReducer,
     lectureInfo: lectureInfoSliceReducer,
     dropzoneFile: dropzoneFileReducer,
+    editCourse: editCourseReducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({ serializableCheck: false }),

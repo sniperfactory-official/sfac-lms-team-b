@@ -5,7 +5,15 @@ import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
 
-export default function AssignmentCreate() {
+interface AssignmentCreateProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
+  isOpen,
+  setIsOpen,
+}) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
@@ -14,11 +22,30 @@ export default function AssignmentCreate() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Assignment>();
 
-  const onSubmit: SubmitHandler<Assignment> = async data => {
+  const createAssignmentMutation = useCreateAssignment();
+
+  const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
-    data.images = imageFiles.map(file => URL.createObjectURL(file));
+    assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
+    assignmentData.readStudents = [];
+
+    try {
+      createAssignmentMutation.mutate(assignmentData);
+
+      setToastMsg("과제가 성공적으로 등록되었습니다.");
+      setIsAccept(true);
+
+      setTimeout(() => {
+        setIsOpen(false);
+        reset();
+      }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
+    } catch (error) {
+      setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
+      setIsAccept(false);
+    }
   };
 
   const MAX_FILE_SIZE_MB = 5;
@@ -63,7 +90,7 @@ export default function AssignmentCreate() {
     if (
       !errors.title ||
       !errors.content ||
-      errors.startDate ||
+      !errors.startDate ||
       !errors.endDate
     ) {
       setToastMsg("필수 항목을 모두 입력해주세요.");
@@ -112,7 +139,7 @@ export default function AssignmentCreate() {
             className="w-[60px] h-[60px] bg-grayscale-10 cursor-pointer flex items-center justify-center rounded-[10px] ml-[8px] shrink-0"
           >
             <input
-              {...register("images", { required: true })}
+              {...register("images")}
               id="picture"
               type="file"
               className="hidden"
@@ -121,7 +148,7 @@ export default function AssignmentCreate() {
               multiple
             />
             <Image
-              src={"/images/image-add.svg"}
+              src={"/images/image_add.svg"}
               alt={"이미지추가"}
               width={61}
               height={61}
@@ -147,7 +174,7 @@ export default function AssignmentCreate() {
                       className="absolute top-1 right-1"
                     >
                       <Image
-                        src={"images/image-delete.svg"}
+                        src={"/images/image_delete.svg"}
                         alt={"이미지 삭제"}
                         width={14}
                         height={14}
@@ -204,4 +231,6 @@ export default function AssignmentCreate() {
       </div>
     </form>
   );
-}
+};
+
+export default AssignmentCreate;

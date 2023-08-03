@@ -1,10 +1,22 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
+import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
+import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 
-export default function AssignmentCreate() {
+interface AssignmentUpdateProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  assignmentId: string;
+}
+
+const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
+  isOpen,
+  setIsOpen,
+  assignmentId,
+}) => {
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
@@ -12,12 +24,56 @@ export default function AssignmentCreate() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
+    reset,
   } = useForm<Assignment>();
 
-  const onSubmit: SubmitHandler<Assignment> = async data => {
+  const updateAssignmentMutation = useUpdateAssignment();
+
+  const { data, isLoading, error } = useGetAssignment(assignmentId);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (Array.isArray(data)) {
+        // assignment가 배열로 넘어올 일은 없으니깐 아무 처리도 하지 않도록 우선 놔두었습니다.
+      } else if (data) {
+        setValue("level", data.level);
+        setValue("title", data.title);
+        setValue("content", data.content);
+
+        const startDate = data.startDate.toDate() as Date;
+        const endDate = data.endDate.toDate() as Date;
+
+        const startDateString = startDate.toISOString().split("T")[0];
+        const endDateString = endDate.toISOString().split("T")[0];
+
+        // starDateString, endDateString 타입에러남 -> 추후 수정하겠습니다
+        setValue("startDate", startDateString);
+        setValue("endDate", endDateString);
+      }
+    }
+  }, [data, isLoading]);
+
+  const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
-    data.images = imageFiles.map(file => URL.createObjectURL(file));
+    assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
+    assignmentData.readStudents = [];
+
+    try {
+      updateAssignmentMutation.mutate(assignmentData);
+
+      setToastMsg("과제가 성공적으로 수정되었습니다.");
+      setIsAccept(true);
+
+      setTimeout(() => {
+        setIsOpen(false);
+        reset();
+      }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
+    } catch (error) {
+      setToastMsg("과제 수정에 실패했습니다. 다시 시도해주세요.");
+      setIsAccept(false);
+    }
   };
 
   const MAX_FILE_SIZE_MB = 5;
@@ -62,7 +118,7 @@ export default function AssignmentCreate() {
     if (
       !errors.title ||
       !errors.content ||
-      errors.startDate ||
+      !errors.startDate ||
       !errors.endDate
     ) {
       setToastMsg("필수 항목을 모두 입력해주세요.");
@@ -111,7 +167,7 @@ export default function AssignmentCreate() {
             className="w-[60px] h-[60px] bg-grayscale-10 cursor-pointer flex items-center justify-center rounded-[10px] ml-[8px] shrink-0"
           >
             <input
-              {...register("images", { required: true })}
+              {...register("images")}
               id="picture"
               type="file"
               className="hidden"
@@ -120,7 +176,7 @@ export default function AssignmentCreate() {
               multiple
             />
             <Image
-              src={"/images/image-add.svg"}
+              src={"/images/image_add.svg"}
               alt={"이미지추가"}
               width={61}
               height={61}
@@ -146,7 +202,7 @@ export default function AssignmentCreate() {
                       className="absolute top-1 right-1"
                     >
                       <Image
-                        src={"images/image-delete.svg"}
+                        src={"/images/image_delete.svg"}
                         alt={"이미지 삭제"}
                         width={14}
                         height={14}
@@ -187,7 +243,7 @@ export default function AssignmentCreate() {
             className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
             onClick={handleFormValidation}
           >
-            업로드
+            수정하기
           </button>
         </div>
 
@@ -203,4 +259,6 @@ export default function AssignmentCreate() {
       </div>
     </form>
   );
-}
+};
+
+export default AssignmentUpdate;

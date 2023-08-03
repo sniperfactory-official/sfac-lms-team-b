@@ -15,10 +15,10 @@ import { SubmittedAssignment, Attachment } from "@/types/firebase.types";
 const getSubmittedAssignments = async (assignmentId: string): Promise<any> => {
   const assignmentRef = doc(db, "assignments", assignmentId);
   const assignmentDoc = await getDoc(assignmentRef);
-  const loginUserRef = doc(db, "users", "유저아이디 넣기");
+  const loginUserRef = doc(db, "users", "유저아이디 넣기"); //? 유저아이디 안들어감
   const loginUserDoc = await getDoc(loginUserRef);
 
-  if (!"수강생일때 조건문 넣기") {
+  if (!"수강생일때 조건문 넣기") { //? 조건문 안들어감
     const submittedAssignmentsQuery = query(
       collection(db, "submittedAssignments"),
       where("assignmentId", "==", assignmentDoc.ref),

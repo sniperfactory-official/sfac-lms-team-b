@@ -1,54 +1,46 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/utils/firebase";
 import {
-  addDoc,
-  collection,
   doc,
   serverTimestamp,
+  updateDoc,
   DocumentData,
 } from "firebase/firestore";
 
-const addCommentToDB = async (data: {
-  content: string;
-  lectureId: string;
-  parentId: string;
-  userId: string;
-}) => {
-  const { content, lectureId, parentId, userId } = data;
+const updateCommentInDB = async (data: { id: string; newContent: string }) => {
+  const { id, newContent } = data;
 
-  const userRef = doc(db, "users", userId);
-  const lectureRef = doc(db, "lectures", lectureId);
+  const commentRef = doc(db, "lectureComments", id);
 
-  const commentRef = collection(db, "lectureComments");
-  const commentDoc = {
-    content,
-    createdAt: serverTimestamp(),
-    lectureId: lectureRef,
-    parentId,
-    replyCount: 0,
-    timestamp: "",
+  const updatedComment = {
+    content: newContent,
     updatedAt: serverTimestamp(),
-    userId: userRef,
   };
-  const docRef = await addDoc(commentRef, commentDoc);
-  return { id: docRef.id, ...commentDoc };
+
+  await updateDoc(commentRef, updatedComment);
 };
 
-export const useAddCommentMutation = () => {
+export const useUpdateComment = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(addCommentToDB, {
-    onMutate: async newComment => {
+  return useMutation(updateCommentInDB, {
+    onMutate: async updatedComment => {
       await queryClient.cancelQueries(["comments"]);
       const previousComments = queryClient.getQueryData<DocumentData[]>([
         "comments",
       ]);
+
       queryClient.setQueryData(
         ["comments"],
         (old: DocumentData[] | undefined) => {
-          return [...(old ?? []), newComment];
+          return old?.map(comment =>
+            comment.id === updatedComment.id
+              ? { ...comment, ...updatedComment }
+              : comment,
+          );
         },
       );
+
       return { previousComments };
     },
     onSettled: () => {

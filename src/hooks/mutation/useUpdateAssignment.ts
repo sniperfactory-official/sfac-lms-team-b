@@ -7,7 +7,7 @@ import { Assignment } from "@/types/firebase.types";
 const updateAssignment = async (assignmentValue: Assignment) => {
   try {
     const updateAssignment = await updateDoc(
-      doc(db, "assignments", "assignmentValue.id"),
+      doc(db, "assignments", "assignmentValue.id"),//? 인자연결 안됨
       { ...assignmentValue },
     );
     return updateAssignment;
@@ -16,7 +16,7 @@ const updateAssignment = async (assignmentValue: Assignment) => {
     throw err;
   }
 };
-
+//? updateAssignment에 인자 전달이 안됨
 const useUpdateAssignment = () => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(updateAssignment, {

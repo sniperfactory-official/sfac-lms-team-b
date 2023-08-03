@@ -23,10 +23,10 @@ const AssignmentListContent = () => {
 
   if (assignmentData.isLoading === false) {
     const assignmentInfo = assignmentData.data;
-    //map이 assignmentInfo의 property로 인식되어 경고문구가 뜸
+    // map이 assignmentInfo의 property로 인식되어 경고문구가 뜸
     htmlContent = assignmentInfo?.map((assign: AssignmentNumberAdded) => (
       <div
-        key={assign.assignmentNumber}
+        key={assign.id}
         className="w-[775px] px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center"
       >
         <div className="flex w-[244px] flex-col items-start gap-[10px]">

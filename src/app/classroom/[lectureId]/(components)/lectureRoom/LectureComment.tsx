@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import ReplySection from "@/app/classroom/(components)/modal/comment/ReplySection";
 import CommentsSection from "@/app/classroom/[lectureId]/(components)/lectureRoom/CommentsSection";
-import useGetComments from "@/hooks/lecture/useGetComments";
+import useGetComments from "@/hooks/queries/useGetComments";
 
 interface LectureCommentProps {
   lectureId: string;
