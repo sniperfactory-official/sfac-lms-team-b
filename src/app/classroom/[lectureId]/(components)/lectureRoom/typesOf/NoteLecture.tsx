@@ -11,7 +11,7 @@ const NoteLecture: FC<NoteLectureProps> = ({ content }) => {
   return (
     <div className="noteContainer h-full w-full">
       <div className="prose p-10">
-        <ReactMarkdown>{textContent}</ReactMarkdown>
+        <ReactMarkdown>{textContent ?? ""}</ReactMarkdown>
       </div>
     </div>
   );
