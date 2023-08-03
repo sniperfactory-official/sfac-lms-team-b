@@ -115,9 +115,9 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
         >
           <option className="text-grayscale-40">난이도를 선택해주세요</option>
-          <option value="상">상</option>
+          <option value="초">초</option>
           <option value="중">중</option>
-          <option value="하">하</option>
+          <option value="고">고</option>
         </select>
       </div>
 
