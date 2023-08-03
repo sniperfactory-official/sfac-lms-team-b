@@ -13,7 +13,7 @@ const LectureHome = ({ params }: { params: { lectureId: string } }) => {
     <main className="lectuerContainer flex flex-col w-full h-full">
       <LectureHeader lectureId={lectureId} />
       <div className="mainContainer flex w-full h-screen">
-        <div className="Container flex flex-col w-3/4">
+        <div className="Container flex flex-col w-3/4 h-full">
           <TypeOfLecture lectureId={lectureId} />
           <LectureNavigation lectureId={lectureId} />
         </div>

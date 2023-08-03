@@ -39,7 +39,7 @@ const ReplySection: FC<ReplySectionProps> = ({ commentId, lectureId }) => {
             onReplyClick={handleReplyClick}
           />
         )}
-        <ul>
+        <ul className="max-h-[250px] overflow-y-scroll">
           {replies &&
             replies.map((reply, index) => (
               <li key={index} className="mt-2">
