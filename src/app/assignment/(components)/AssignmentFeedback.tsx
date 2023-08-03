@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
+import { useForm } from "react-hook-form";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 import Image from "next/image";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
 
 const user = [
   {
@@ -30,16 +30,49 @@ interface IAssignmentFeedbackProps {
   submittedAssignmentId: string;
 }
 
+interface IFormType {
+  feedback: string;
+}
+
 const AssignmentFeedback = ({
   submittedAssignmentId,
 }: IAssignmentFeedbackProps) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const scrollRef = useRef<any>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+    reset,
+  } = useForm<IFormType>({ mode: "onChange" });
+
   const {
     data: feedbacks,
     isLoading,
     error,
   } = useGetFeedbacks(submittedAssignmentId);
+
+  const {
+    mutate,
+    isLoading: loading,
+    error: err,
+  } = useCreateFeedback("gZWELALnKoZLzJKjXGUM");
+
+  const onValid = (textValue: IFormType) => {
+    mutate({
+      content: textValue.feedback,
+      createdAt: new Date() as any,
+      updatedAt: new Date() as any,
+    });
+    reset();
+  };
+
+  // 스크롤 최하단으로 최신피드백 보여주기
+  useEffect(() => {
+    const element = scrollRef.current;
+    element.scrollTop = element.scrollHeight;
+  }, [feedbacks]);
 
   return (
     <div>
@@ -87,7 +120,10 @@ const AssignmentFeedback = ({
         <p className="text-[12px] text-end text-grayscale-40">{"3일전"}</p>
       </div>
       {/* feedback */}
-      <ul className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll ">
+      <ul
+        ref={scrollRef}
+        className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll "
+      >
         {isLoading
           ? "Loading..."
           : feedbacks?.map(
@@ -165,18 +201,23 @@ const AssignmentFeedback = ({
             <p className="font-[500] text-grayscale-60 text-[16px] mb-[9px]">
               {"이름"}
             </p>
-            <form className="w-full">
+            <form onSubmit={handleSubmit(onValid)} className="w-full">
               <textarea
+                {...register("feedback", {
+                  required: true,
+                })}
                 className="w-full outline-none placeholder:text-grayscale-20 grow text-[14px]"
                 placeholder="댓글을 입력해주세요."
                 style={{ resize: "none" }}
                 rows={3}
                 defaultValue={""}
+                maxLength={500}
               />
               <div className="flex justify-end items-center mt-[16px]">
                 <button
                   type="submit"
-                  className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0"
+                  disabled={!isValid}
+                  className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0 disabled:bg-grayscale-10 disabled:text-grayscale-20"
                 >
                   업로드
                 </button>
