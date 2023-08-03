@@ -1,86 +1,13 @@
 "use client";
 import Sidebar from "@/app/classroom/(components)/Sidebar";
 import ClassContent from "@/app/classroom/(components)/ClassContent";
-import useGetLectureList, {
-  ICourseField,
-} from "@/hooks/queries/useGetCourseList";
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setCurrentLecture,
-  setSelectedCourse,
-} from "@/redux/slice/editCourseIdSlice";
-import { setCourseId } from "@/redux/slice/lectureInfoSlice";
-import { RootState } from "@/redux/store";
-import { setLectureCount } from "@/redux/slice/editCourseIdSlice";
+import useContentSyncer from "@/hooks/classroom/useContentSyncer";
 
 const Classroom = () => {
-  const [currentCourse, setCurrentCourse] = useState<ICourseField>();
-  const dispatch = useDispatch();
-  const seletedCourse = useSelector(
-    (state: RootState) => state.editCourse.selectedCourse,
-  );
-  const {
-    data: courseList,
-    isLoading: isLectureListFetch,
-    isFetched,
-    isFetching,
-  } = useGetLectureList();
+  const { currentCourse, setCurrentCourse, courseList, isCourseListFetch } =
+    useContentSyncer();
 
-  useEffect(() => {
-    if (!isLectureListFetch && courseList!.length !== 0) {
-      // 처음에 첫 번째 course 선택
-      setCurrentCourse(courseList![0]);
-      dispatch(setCourseId(courseList![0].courseId));
-      dispatch(
-        setSelectedCourse(
-          Array.from({ length: courseList!.length }, (_, idx) =>
-            idx === 0 ? true : false,
-          ),
-        ),
-      );
-    }
-  }, [isFetched]);
-
-  // lecture 만들 경우 refech된 courseList setCurrentCourse통해서 반영
-  useEffect(() => {
-    if (!currentCourse) return;
-    let SELECTED_COURSE_INDEX = 0;
-    for (let i = 0; i < seletedCourse.length; i++) {
-      if (seletedCourse[i] === true) {
-        SELECTED_COURSE_INDEX = i;
-        setCurrentCourse(courseList![SELECTED_COURSE_INDEX]);
-        dispatch(
-          setLectureCount(
-            courseList![SELECTED_COURSE_INDEX].lectureList.length,
-          ),
-        );
-        break;
-      }
-    }
-  }, [isFetching, seletedCourse]);
-
-  useEffect(() => {
-    if (!currentCourse) return;
-    let SELECTED_COURSE_INDEX = 0;
-    for (let i = 0; i < seletedCourse.length; i++) {
-      if (seletedCourse[i] === true) {
-        SELECTED_COURSE_INDEX = i;
-        setCurrentCourse(courseList![SELECTED_COURSE_INDEX]);
-        dispatch(
-          setLectureCount(
-            courseList![SELECTED_COURSE_INDEX].lectureList.length,
-          ),
-        );
-        dispatch(
-          setCurrentLecture(courseList![SELECTED_COURSE_INDEX].lectureList),
-        );
-        break;
-      }
-    }
-  }, [courseList]);
-
-  if (isLectureListFetch || currentCourse === undefined)
+  if (isCourseListFetch || currentCourse === undefined)
     return <div>isLoading</div>;
 
   return (
