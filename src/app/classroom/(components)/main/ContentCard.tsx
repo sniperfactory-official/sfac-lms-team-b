@@ -3,14 +3,18 @@ import { useRouter } from "next/navigation";
 import timestampToDate from "@/utils/timestampToDate";
 import Image from "next/image";
 import thumnail from "../../../../../public/images/thumnail.png";
+import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
 const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const router = useRouter();
   const handleMovePage = () => {
     router.push(`/classroom/${lecture.lectureId}`);
   };
+  
+  
   const { title, lectureType, isPrivate, startDate, endDate, lectureContent } =
     lecture;
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
+  const videoLength = convertSecondsToMinute(lectureContent.videoLength!);
 
   const LECTURE_OBJ = {
     노트: {
@@ -21,7 +25,7 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
     비디오: {
       emoji: "🎬",
       text: "비디오",
-      time: "10분",
+      time: videoLength,
     },
     링크: {
       emoji: "🔗",
@@ -47,7 +51,7 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
         </div>
         {lectureType === "비디오" && (
           <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">
-            {LECTURE_OBJ[lectureType].time}
+            {LECTURE_OBJ[lectureType].time}분
           </div>
         )}
         <div className="font-bold mb-[10px]">
