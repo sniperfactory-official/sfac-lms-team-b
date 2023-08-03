@@ -6,9 +6,12 @@ import thumnail from "../../../../../public/images/thumnail.png";
 import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
 import LectureDeleteModal from "../modal/createLecture/LectureDeleteModal";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 
 const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const handleMovePage = () => {
     router.push(`/classroom/${lecture.lectureId}`);
   };
@@ -35,10 +38,24 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
       time: "",
     },
   };
+  const MODAL_OBJ: { [key: string]: string } = {
+    노트: "noteModalOpen",
+    링크: "linkModalOpen",
+    비디오: "videoFileModalOpen",
+  };
   const [deleteModal, setDeleteModal] = useState(false);
   const handleDeleteModal = () => {
     //강의 삭제 로직 구현하시면 됩니당
     setDeleteModal(false);
+  };
+  const handleEditLectureModal = () => {
+    dispatch(
+      setModalVisibility({
+        modalName: MODAL_OBJ[lectureType],
+        visible: true,
+        modalRole: "edit",
+      }),
+    );
   };
 
   return (
@@ -52,7 +69,9 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
       </div>
       <div className="w-2/3 h-5/6 ml-20px flex flex-col">
         <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
-          <button className="text-xs">수정</button>
+          <button className="text-xs" onClick={handleEditLectureModal}>
+            수정
+          </button>
           <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
           <button className="text-xs">삭제</button>
         </div>
