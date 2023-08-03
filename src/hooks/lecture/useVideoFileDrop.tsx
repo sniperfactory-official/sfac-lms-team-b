@@ -15,7 +15,7 @@ const useVideoFileDrop = () => {
   const { onUploadVideo } = useUploadVideo();
   const { onDeleteFile } = useDeleteFile();
   const { videoURL } = useLectureInfo();
-  
+
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (videoFileName) {
