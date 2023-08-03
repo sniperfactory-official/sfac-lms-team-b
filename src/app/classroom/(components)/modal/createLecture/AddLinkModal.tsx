@@ -3,17 +3,16 @@ import { RootState } from "@/redux/store";
 import Layout from "../common/Layout";
 import ModalHeader from "../common/ModalHeader";
 import ModalMain from "../common/ModalMain";
-import { setTextContent } from "@/redux/slice/lectureInfoSlice";
+import { setExternalLink } from "@/redux/slice/lectureInfoSlice";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { db } from "@/utils/firebase";
 import useLinkValidity from "@/hooks/lecture/useLinkValidity";
+import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 
 const AddLinkModal: React.FC = () => {
-  const textContent = useSelector(
-    (state: RootState) => state.lectureInfo.textContent,
-  );
+  const { externalLink } = useLectureInfo();
   const dispatch = useDispatch();
 
   const { handleModalMove } = useClassroomModal();
@@ -27,7 +26,7 @@ const AddLinkModal: React.FC = () => {
   const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     dispatch(
-      setTextContent(value.startsWith("http://") ? value : "http://" + value),
+      setExternalLink(value.startsWith("http://") ? value : "http://" + value),
     );
     isValidLink();
   };
@@ -36,12 +35,12 @@ const AddLinkModal: React.FC = () => {
 
   const isValidLink = async () => {
     const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
-    if (!linkRegex.test(textContent)) {
+    if (!linkRegex.test(externalLink)) {
       setErrorMessage("올바른 URL 형식이 아닙니다.");
       return;
     }
     try {
-      await checkLinkValidity(textContent);
+      await checkLinkValidity(externalLink);
       setErrorMessage(""); // 유효성 검사 에러 메시지 초기화
     } catch (error) {
       setErrorMessage("링크 유효성 검사 실패"); // 유효성 검사 실패 에러 메시지 설정
@@ -76,7 +75,7 @@ const AddLinkModal: React.FC = () => {
             id="textContent"
             placeholder="https://..."
             className="justify-center text-[16px] w-[707px] h-[42px] flex-shrink-0 border-[1px] border-grayscale-10 bg-grayscale-0 rounded-md pl-[14px]"
-            value={textContent}
+            value={externalLink}
             onChange={handleInputContent}
           />
           {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}

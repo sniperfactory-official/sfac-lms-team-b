@@ -5,6 +5,7 @@ interface LectureInfoState {
   courseId: string;
   lectureType: string;
   lectureTitle: string;
+  externalLink: string;
   textContent: string;
   noteImages: string[];
   videoURL: string;
@@ -18,6 +19,7 @@ const initialState: LectureInfoState = {
   courseId: "",
   lectureType: "",
   lectureTitle: "",
+  externalLink: "",
   textContent: "",
   noteImages: [],
   videoURL: "",
@@ -39,6 +41,9 @@ const LectureInfoSlice = createSlice({
     },
     setLectureTitle: (state, action) => {
       state.lectureTitle = action.payload;
+    },
+    setExternalLink: (state, action) => {
+      state.externalLink = action.payload;
     },
     setTextContent: (state, action) => {
       state.textContent = action.payload;
@@ -73,6 +78,7 @@ export const {
   setCourseId,
   setLectureType,
   setLectureTitle,
+  setExternalLink,
   setTextContent,
   setNoteImages,
   setVideoURL,

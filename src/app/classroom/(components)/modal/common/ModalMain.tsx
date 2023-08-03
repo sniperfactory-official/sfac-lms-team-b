@@ -25,6 +25,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     courseId,
     lectureType,
     lectureTitle,
+    externalLink,
     textContent,
     noteImages,
     videoURL,
@@ -35,6 +36,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   } = useLectureInfo();
 
   const lectureContent = {
+    externalLink,
     images: noteImages,
     textContent,
     videoUrl: videoURL,
