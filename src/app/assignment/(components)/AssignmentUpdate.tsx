@@ -5,6 +5,7 @@ import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
+import timestampToDate from "@/utils/timestampToDate";
 
 interface AssignmentUpdateProps {
   isOpen: boolean;
@@ -29,10 +30,11 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
     reset,
   } = useForm<Assignment>();
 
-  const updateAssignmentMutation = useUpdateAssignment();
+  const updateAssignmentMutation = useUpdateAssignment(assignmentId);
 
   const { data, isLoading, error } = useGetAssignment(assignmentId);
 
+  console.log(data);
   useEffect(() => {
     if (!isLoading) {
       if (Array.isArray(data)) {
@@ -42,18 +44,14 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setValue("title", data.title);
         setValue("content", data.content);
 
-        const startDate = data.startDate.toDate() as Date;
-        const endDate = data.endDate.toDate() as Date;
+        // 시간을 yyyy.mm.dd 로 불러오는 것 추후에 해야합니다.
 
-        const startDateString = startDate.toISOString().split("T")[0];
-        const endDateString = endDate.toISOString().split("T")[0];
-
-        // starDateString, endDateString 타입에러남 -> 추후 수정하겠습니다
-        setValue("startDate", startDateString);
-        setValue("endDate", endDateString);
+        // setValue("startDate", data.startDate);
+        // setValue("endDate", data.endDate);
       }
     }
-  }, [data, isLoading]);
+  }, [isOpen]);
+  // 일단 isOpen으로 해놓았지만 추후 변경해보자
 
   const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
@@ -143,9 +141,9 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
         >
           <option className="text-grayscale-40">난이도를 선택해주세요</option>
-          <option value="상">상</option>
+          <option value="초">초</option>
           <option value="중">중</option>
-          <option value="하">하</option>
+          <option value="고">고</option>
         </select>
       </div>
 
