@@ -53,27 +53,6 @@ export const useDeleteComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteCommentFromDB, {
-    onMutate: async (commentId: string) => {
-      await queryClient.cancelQueries(["comments"]);
-      const previousComments = queryClient.getQueryData<DocumentData[]>([
-        "comments",
-      ]);
-
-      queryClient.setQueryData(
-        ["comments"],
-        (old: DocumentData[] | undefined) => {
-          return old?.filter(
-            comment =>
-              comment.id !== commentId && comment.parentId !== commentId,
-          );
-        },
-      );
-
-      return { previousComments };
-    },
-    onError: (err, commentId, context: any) => {
-      queryClient.setQueryData(["comments"], context.previousComments);
-    },
     onSuccess: () => {
       queryClient.invalidateQueries(["comments"]);
       dispatch(
