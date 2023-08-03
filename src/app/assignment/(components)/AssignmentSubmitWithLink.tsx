@@ -17,7 +17,6 @@ const AssignmentSubmitWithLink: React.FC<OwnProps> = ({
   const [isAccept, setIsAccept] = useState<boolean>(false);
 
   const { mutate, isLoading, error } = useSubmitAssignment(assignmentId);
-  // console.log(mutate);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -64,8 +63,12 @@ const AssignmentSubmitWithLink: React.FC<OwnProps> = ({
     let filterValue: string[] = inputValues.filter(url => url !== "");
     if (filterValue.length > 0) {
       // 여기서 firebase 처리
-      // mutate({ assignmentId, filterValue }); // FIXME: 던져 줘야 되는 값이 무엇이지..?
-      console.log("filterValue", filterValue);
+      mutate(filterValue); // FIXME: ts error 수정 필요
+      setToastMsg("링크가 업로드되었습니다!");
+      setIsAccept(true);
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     } else {
       setToastMsg("1개 이상의 URL을 입력해주세요.");
       setIsAccept(false);

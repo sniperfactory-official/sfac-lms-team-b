@@ -10,7 +10,9 @@ const AssignmentTeacherViewCardWrapper: React.FC = () => {
   const [submittedData, setSubmittedData] = useState<any[]>([]);
 
   const { assignmentId } = useParams();
-  const { data, isLoading, error } = useGetSubmittedAssignments(assignmentId); // FIXME: ts error
+  const { data, isLoading, error } = useGetSubmittedAssignments(
+    assignmentId as string,
+  );
 
   useEffect(() => {
     setSubmittedData(data);

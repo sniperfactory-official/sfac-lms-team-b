@@ -25,7 +25,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
 
   const { data, isLoading, error } = useGetAssignment(assignmentId as string);
 
-  console.log("data", data);
+  // console.log("data", data);
 
   // const blob = data?.images; // FIXME: blob 이미지 호출 체크
   // console.log(blob);
@@ -56,8 +56,8 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                   <p className="text-[16px] font-[700] text-grayscale-100">
                     {assignment.user?.username}
                   </p>
-                  {/* FIXME: 강사만 확인 가능한 영역 */}
-                  {user.role === "관리자" ? (
+                  {/* 강사만 확인 가능한 영역 */}
+                  {user?.role === "관리자" ? (
                     <span className="border border-primary-90 rounded-[4px] text-primary-100 font-[500] text-[10px] px-[3.5px] py-[1px]">
                       {"63%"} 읽음
                     </span>
@@ -73,8 +73,8 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                 </span>
               </div>
             </div>
-            {/* FIXME: 강사만 확인 가능 영역 */}
-            {user.role === "관리자" ? (
+            {/* 강사만 확인 가능 영역 */}
+            {user?.role === "관리자" ? (
               <div className="flex justify-end items-center pt-1">
                 <button
                   type="button"
