@@ -8,6 +8,7 @@ import { RootState } from "@/redux/store";
 import { DndProvider } from "react-dnd";
 import DndItem from "./DndItem";
 import { setCourseId } from "@/redux/slice/lectureInfoSlice";
+import { setCurrentLecture } from "@/redux/slice/editCourseIdSlice";
 
 interface IProps {
   courseList: ICourseField[];
@@ -22,18 +23,17 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
   const selectedCourse = useSelector(
     (state: RootState) => state.editCourse.selectedCourse,
   );
-  const { handleCurrentCourse, currentLectures, setCurrentLectures } =
-    useSelectCourse({
-      courseList,
-      setCurrentCourse,
-    });
+  const { handleCurrentCourse, currentLectures } = useSelectCourse({
+    courseList,
+    setCurrentCourse,
+  });
 
   const moveItem = (dragIndex: number, hoverIndex: number) => {
     const dragItem = currentLectures[dragIndex];
     const newList = [...currentLectures];
     newList.splice(dragIndex, 1);
     newList.splice(hoverIndex, 0, dragItem);
-    setCurrentLectures(newList);
+    dispatch(setCurrentLecture(newList));
   };
 
   return (
@@ -60,7 +60,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
         {selectedCourse[idx] &&
           (isEditMode ? (
             <DndProvider backend={HTML5Backend}>
-              {course.lectureList.map((lecture: ILecture, index: number) => (
+              {currentLectures.map((lecture: ILecture, index: number) => (
                 <DndItem
                   key={lecture.id}
                   index={index}
@@ -80,7 +80,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
               ))}
             </DndProvider>
           ) : (
-            course.lectureList.map((lecture: ILecture) => (
+            currentLectures.map((lecture: ILecture) => (
               <Element
                 key={lecture.lectureId}
                 type="lecture"
