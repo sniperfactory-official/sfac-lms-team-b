@@ -31,7 +31,7 @@ const getSubmittedAssignments = async (assignmentId: string): Promise<any> => {
         id: doc.id,
         user: loginUserDoc.data(),
         ...doc.data(),
-      } as SubmittedAssignment;
+      };
     });
 
     return submittedAssignments;
