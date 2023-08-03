@@ -4,6 +4,9 @@ import timestampToDate from "@/utils/timestampToDate";
 import Image from "next/image";
 import thumnail from "../../../../../public/images/thumnail.png";
 import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
+import LectureDeleteModal from "../modal/createLecture/LectureDeleteModal";
+import { useState } from "react";
+
 const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const router = useRouter();
   const handleMovePage = () => {
@@ -31,6 +34,11 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
       text: "링크",
       time: "",
     },
+  };
+  const [deleteModal, setDeleteModal] = useState(false);
+  const handleDeleteModal = () => {
+    //강의 삭제 로직 구현하시면 됩니당
+    setDeleteModal(false);
   };
 
   return (
@@ -70,6 +78,12 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
             {LECTURE_OBJ[lectureType].text}보기
           </button>
         </div>
+        {deleteModal && (
+          <LectureDeleteModal
+            onCancel={() => setDeleteModal(false)}
+            onDelete={handleDeleteModal}
+          />
+        )}
       </div>
     </div>
   );
