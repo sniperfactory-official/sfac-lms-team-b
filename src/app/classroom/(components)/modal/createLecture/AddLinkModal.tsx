@@ -5,7 +5,6 @@ import ModalHeader from "../common/ModalHeader";
 import ModalMain from "../common/ModalMain";
 import { setTextContent } from "@/redux/slice/lectureInfoSlice";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { db } from "@/utils/firebase";
 import useLinkValidity from "@/hooks/lecture/useLinkValidity";
