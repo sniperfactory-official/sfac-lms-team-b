@@ -9,18 +9,26 @@ const NoSsrEditor = dynamic(() => import("./NoteSection"), {
 });
 
 const AddNoteModal: React.FC = () => {
-  const { handleModalMove } = useClassroomModal();
+  const { modalRole, handleModalMove } = useClassroomModal();
+  const MODAL_ROLE_OBJ: { [key: string]: string } = {
+    create: "노트 만들기",
+    edit: "수정하기",
+  };
 
   return (
     <Layout>
-      <ModalHeader currentModalName={"노트 만들기"}>
-        <button
-          onClick={() =>
-            handleModalMove("lectureTypeModalOpen", "noteModalOpen")
-          }
-        >
-          강의 만들기
-        </button>
+      <ModalHeader currentModalName={MODAL_ROLE_OBJ[modalRole]}>
+        {modalRole === "create" ? (
+          <button
+            onClick={() =>
+              handleModalMove("lectureTypeModalOpen", "noteModalOpen")
+            }
+          >
+            강의 만들기
+          </button>
+        ) : (
+          <span>강의 수정</span>
+        )}
       </ModalHeader>
       <ModalMain>
         <NoSsrEditor />
