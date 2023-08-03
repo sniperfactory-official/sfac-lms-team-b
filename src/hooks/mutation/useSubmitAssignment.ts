@@ -12,7 +12,7 @@ import { getAuth } from "firebase/auth";
 
 const submitAssignment = async (
   assignmentId: string,
-  attachmentValue: Attachment,
+  attachmentValue: string[],
 ): Promise<DocumentReference> => {
   const auth = getAuth();
   const user: any = auth.currentUser; // FIXME: any 말고 ts type 수정 필요함
@@ -38,7 +38,7 @@ const submitAssignment = async (
     );
 
     await addDoc(collection(db, "attachments"), {
-      ...attachmentValue,
+      links: [...attachmentValue],
       submittedAssignmentId: addSubmittedAssignmentData,
       // createdAt: createdAtTimeStamp,
       userId: userRef,
@@ -62,13 +62,11 @@ const submitAssignment = async (
   }
 };
 
-const useSubmitAssignment = (
-  assignmentId: string,
-  attachmentValue: Attachment,
-) => {
+const useSubmitAssignment = (assignmentId: string) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    () => submitAssignment(assignmentId, attachmentValue),
+    (attachmentValue: string[]) =>
+      submitAssignment(assignmentId, attachmentValue),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
