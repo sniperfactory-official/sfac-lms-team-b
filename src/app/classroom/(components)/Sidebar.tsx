@@ -50,7 +50,6 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
       dispatch(setCurrentLecture(courseList[index].lectureList));
     }, [getBackLectureOrderTrigger]);
 
-
     return (
       <aside
         ref={sidebarRef}
