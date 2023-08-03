@@ -6,7 +6,7 @@ interface LinkLectureProps {
 }
 
 const LinkLecture: FC<LinkLectureProps> = ({ content }) => {
-  const linkKey = content.externalLink.split("v=")[1];
+  const linkKey = content.externalLink?.split("v=")[1];
   const src = `https://www.youtube.com/embed/${linkKey}`;
 
   return (

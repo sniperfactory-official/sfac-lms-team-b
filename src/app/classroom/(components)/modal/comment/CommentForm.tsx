@@ -13,7 +13,7 @@ interface CommentFormProps {
   lectureId: string;
   isReply?: boolean;
   initialContent?: string;
-  modalOpen: boolean;
+  modalOpen?: boolean;
 }
 
 const CommentForm: FC<CommentFormProps> = ({
