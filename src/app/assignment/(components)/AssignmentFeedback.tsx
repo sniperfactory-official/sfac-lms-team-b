@@ -1,13 +1,13 @@
-// 7.21 - feedback modal ui - (LJH)
-
 "use client";
 
-import { Feedback } from "@/types/firebase.types";
+import { useState } from "react";
+import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
+import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const user = [
   {
@@ -26,8 +26,20 @@ const user = [
   },
 ];
 
-const AssignmentFeedback = () => {
+interface IAssignmentFeedbackProps {
+  submittedAssignmentId: string;
+}
+
+const AssignmentFeedback = ({
+  submittedAssignmentId,
+}: IAssignmentFeedbackProps) => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const { register, handleSubmit } = useForm();
+  const {
+    data: feedbacks,
+    isLoading,
+    error,
+  } = useGetFeedbacks(submittedAssignmentId);
 
   return (
     <div>
@@ -76,64 +88,74 @@ const AssignmentFeedback = () => {
       </div>
       {/* feedback */}
       <ul className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll ">
-        {[1, 2, 3, 4, 5].map((a, i) => {
-          return (
-            <li
-              key={i}
-              className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]"
-            >
-              <div className="flex justify-start items-start gap-[13px]">
-                <div className="pt-[3px]">
-                  <AssignmentProfileImage profileImage={"profileImage"} />
-                </div>
-                <div className="grow">
-                  <div className="flex justify-between items-center mb-[9px]">
-                    <div>
-                      <span className="font-[700] text-grayscale-100">
-                        {"이름"}
-                      </span>
-                      <span className="text-grayscale-20 font-[400]">
-                        {" "}
-                        &middot; {"수강생"}
-                      </span>
+        {isLoading
+          ? "Loading..."
+          : feedbacks?.map(
+              ({
+                id,
+                content,
+                createdAt,
+                updatedAt,
+                user: { username, role },
+              }: any) => {
+                return (
+                  <li
+                    key={id}
+                    className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]"
+                  >
+                    <div className="flex justify-start items-start gap-[13px]">
+                      <div className="pt-[3px]">
+                        <AssignmentProfileImage profileImage={"profileImage"} />
+                      </div>
+                      <div className="grow">
+                        <div className="flex justify-between items-center mb-[9px]">
+                          <div>
+                            <span className="font-[700] text-grayscale-100">
+                              {username}
+                            </span>
+                            <span className="text-grayscale-20 font-[400]">
+                              {" "}
+                              &middot; {role}
+                            </span>
+                          </div>
+                          <div>
+                            <button
+                              type="button"
+                              className="text-grayscale-100 text-[12px] font-[400] after:content-['|'] after:text-grayscale-30 after:ml-[5px] after:mr-[5px]"
+                            >
+                              수정
+                            </button>
+                            <button
+                              type="button"
+                              className="text-grayscale-100 text-[12px] font-[400]"
+                              onClick={() => {
+                                setIsConfirmOpen(true);
+                              }}
+                            >
+                              삭제
+                            </button>
+                          </div>
+                        </div>
+                        <div>
+                          <textarea
+                            className="w-full text-[14px] text-black font-[400] bg-white"
+                            name=""
+                            id=""
+                            rows={3}
+                            disabled={true}
+                            style={{ resize: "none" }}
+                            defaultValue={content}
+                          />
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <button
-                        type="button"
-                        className="text-grayscale-100 text-[12px] font-[400] after:content-['|'] after:text-grayscale-30 after:ml-[5px] after:mr-[5px]"
-                      >
-                        수정
-                      </button>
-                      <button
-                        type="button"
-                        className="text-grayscale-100 text-[12px] font-[400]"
-                        onClick={() => {
-                          setIsConfirmOpen(true);
-                        }}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <textarea
-                      className="w-full text-[14px] text-black font-[400] bg-white"
-                      name=""
-                      id=""
-                      rows={3}
-                      disabled={true}
-                      style={{ resize: "none" }}
-                      defaultValue={"본문"}
-                    />
-                  </div>
-                </div>
-              </div>
-              <p className="text-[12px] text-end text-grayscale-40">
-                {"3일전"}
-              </p>
-            </li>
-          );
-        })}
+                    <p className="text-[12px] text-end text-grayscale-40">
+                      {createdAt === updatedAt ? createdAt : updatedAt}
+                    </p>
+                  </li>
+                );
+              },
+            )}
       </ul>
       {/* feedback_upload */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
@@ -152,7 +174,10 @@ const AssignmentFeedback = () => {
                 defaultValue={""}
               />
               <div className="flex justify-end items-center mt-[16px]">
-                <button className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0">
+                <button
+                  type="submit"
+                  className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0"
+                >
                   업로드
                 </button>
               </div>

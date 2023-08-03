@@ -7,7 +7,7 @@ import { Assignment } from "@/types/firebase.types";
 const updateAssignment = async (assignmentValue: Assignment) => {
   try {
     const updateAssignment = await updateDoc(
-      doc(db, "assignments", "assignmentValue.id"),//? 인자연결 안됨
+      doc(db, "assignments", "assignmentValue.id"), //? 인자연결 안됨
       { ...assignmentValue },
     );
     return updateAssignment;

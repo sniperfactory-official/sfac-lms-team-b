@@ -16,12 +16,10 @@ const submitAssignment = async (
       { submitAssignmentValue },
     );
 
-
     await addDoc(collection(db, "attachment"), {
       ...attachmentValue,
       submittedAssignmentId: "서브밋참조",
       useId: "유저참조",
-
     });
 
     // submittedAssignment안에 서브컬렉션으로 feedbacks가 존재하므로 넣어줌

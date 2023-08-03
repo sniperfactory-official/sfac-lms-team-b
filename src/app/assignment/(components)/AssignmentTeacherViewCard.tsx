@@ -20,8 +20,6 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
   const { user, attachment }: submittedItem = submittedItem;
   const { attachmentFiles, links } = attachment;
   const { profileImage } = user;
-  // console.log("user", user);
-  // console.log("attachment", attachment);
 
   return (
     <>
@@ -83,7 +81,7 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
               ) : null}
             </div>
             <p className="text-grayscale-40 text-[14px] font-[500] mt-[5px]">
-              {timestampToDate(submittedItem.createAt)}
+              {/* {timestampToDate(submittedItem.createAt)} */}
             </p>
           </div>
         </div>
@@ -97,7 +95,7 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
           setIsDetailOpen(false);
         }}
       >
-        <AssignmentFeedback />
+        <AssignmentFeedback submittedAssignmentId={submittedItem.id} />
       </AssignmentModal>
     </>
   );

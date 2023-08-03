@@ -10,7 +10,6 @@ export interface AssignmentExtracted
 }
 
 const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
-
   const ref = useRef<HTMLDivElement>(null);
   const { id, order, title, movecard, index } = props;
   const [{ isDragging }, drag] = useDrag(() => ({

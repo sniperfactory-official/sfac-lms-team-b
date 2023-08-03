@@ -18,7 +18,8 @@ const getSubmittedAssignments = async (assignmentId: string): Promise<any> => {
   const loginUserRef = doc(db, "users", "유저아이디 넣기"); //? 유저아이디 안들어감
   const loginUserDoc = await getDoc(loginUserRef);
 
-  if (!"수강생일때 조건문 넣기") { //? 조건문 안들어감
+  if (!"수강생일때 조건문 넣기") {
+    //? 조건문 안들어감
     const submittedAssignmentsQuery = query(
       collection(db, "submittedAssignments"),
       where("assignmentId", "==", assignmentDoc.ref),
