@@ -37,9 +37,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({ lectureId }) => {
       </div>
       <div className="w-11/12 h-full flex flex-col justify-center">
         {isFetching ? (
-          <div className="w-full h-full">
-            {/* <MiniLoadingSpinner/> */}
-          </div>
+          <div className="w-full h-full">{/* <MiniLoadingSpinner/> */}</div>
         ) : (
           data && (
             <>

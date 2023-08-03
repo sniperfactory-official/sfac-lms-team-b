@@ -12,9 +12,11 @@ const TypeOfLecture: FC<TypeOfLectureProps> = ({ lectureId }) => {
   const { data } = useGetLectureInfo(lectureId);
 
   if (!data || data.lectureContent === undefined) {
-    return <div className="w-screen flex justify-center">
-    <LoadingSpinner/>          
-</div>
+    return (
+      <div className="w-screen flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   const { lectureType: type, lectureContent: content } = data;

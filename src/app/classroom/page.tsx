@@ -10,9 +10,9 @@ const Classroom = () => {
 
   if (isCourseListFetch || currentCourse === undefined)
     return (
-        <div className="w-screen flex justify-center">
-            <LoadingSpinner/>          
-        </div>
+      <div className="w-screen flex justify-center">
+        <LoadingSpinner />
+      </div>
     );
 
   return (
