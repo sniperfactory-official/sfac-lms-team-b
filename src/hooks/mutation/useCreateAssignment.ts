@@ -40,7 +40,7 @@ const createAssignment = async (
 
     const addAssignment = await addDoc(collection(db, "assignments"), {
       ...assignmentValue,
-      createdAt: serverTimestamp(), // 현재 시간을 타임스탬프로 설정하여 createdAt 필드에 추가
+      createdAt: serverTimestamp(),
       order: assignmentCount + 1,
       userId: userId,
     });
