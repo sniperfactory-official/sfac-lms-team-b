@@ -1,10 +1,18 @@
 import { ILecture } from "@/hooks/queries/useGetCourseList";
 import { useRouter } from "next/navigation";
+import LectureDeleteModal from "../modal/createLecture/LectureDeleteModal";
+import { useState } from "react";
 
 const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const router = useRouter();
   const handleMovePage = () => {
     router.push(`/classroom/${lecture.lectureId}`);
+  };
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const handleDeleteModal = () => {
+    //강의 삭제 로직 구현하시면 됩니당
+    setDeleteModal(false);
   };
 
   return (
@@ -16,7 +24,9 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
         <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
           <button className="text-xs">수정</button>
           <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
-          <button className="text-xs">삭제</button>
+          <button className="text-xs" onClick={() => setDeleteModal(true)}>
+            삭제
+          </button>
         </div>
         <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">
           10분
@@ -34,6 +44,12 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
             수강하기
           </button>
         </div>
+        {deleteModal && (
+          <LectureDeleteModal
+            onCancel={() => setDeleteModal(false)}
+            onDelete={handleDeleteModal}
+          />
+        )}
       </div>
     </div>
   );
