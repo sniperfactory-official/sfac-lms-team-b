@@ -1,32 +1,50 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateDoc, doc, DocumentReference } from "firebase/firestore";
+import { updateDoc, doc, serverTimestamp, Timestamp } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Assignment } from "@/types/firebase.types";
 
 // Firestore 데이터 추가
-const updateAssignment = async (assignmentValue: Assignment) => {
+const updateAssignment = async (
+  assignmentValue: Assignment,
+  assignmentId: string,
+) => {
   try {
-    const updateAssignment = await updateDoc(
-      doc(db, "assignments", "assignmentValue.id"), //? 인자연결 안됨
-      { ...assignmentValue },
-    );
-    return updateAssignment;
+    if (typeof assignmentValue.startDate === "string") {
+      assignmentValue.startDate = Timestamp.fromDate(
+        new Date(assignmentValue.startDate),
+      );
+    }
+    if (typeof assignmentValue.endDate === "string") {
+      assignmentValue.endDate = Timestamp.fromDate(
+        new Date(assignmentValue.endDate),
+      );
+    }
+
+    await updateDoc(doc(db, "assignments", assignmentId), {
+      ...assignmentValue,
+      updatedAt: serverTimestamp(),
+    });
+    return assignmentValue;
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
-//? updateAssignment에 인자 전달이 안됨
-const useUpdateAssignment = () => {
+
+const useUpdateAssignment = (assignmentId: string) => {
   const queryClient = useQueryClient();
-  const { mutate, isLoading, error } = useMutation(updateAssignment, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(["getAssignment", ""]);
+  const { mutate, isLoading, error } = useMutation(
+    (assignmentValue: Assignment) =>
+      updateAssignment(assignmentValue, assignmentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getAssignment", assignmentId || ""]);
+      },
+      onError: err => {
+        console.log(err);
+      },
     },
-    onError: err => {
-      console.log(err);
-    },
-  });
+  );
   return { mutate, isLoading, error };
 };
 
