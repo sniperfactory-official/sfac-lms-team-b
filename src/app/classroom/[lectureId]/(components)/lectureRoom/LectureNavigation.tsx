@@ -2,8 +2,6 @@ import React, { FC } from "react";
 
 import useGetPreAndNextLectureInfo from "@/hooks/queries/useGetPreAndNextLectureInfo";
 import NavigationButton from "./NavigationButton";
-import LoadingSpinner from "@/components/Loading/Loading";
-import MiniLoadingSpinner from "@/components/Loading/MiniLoadingSpinner";
 
 interface LectureNavigationProps {
   lectureId: string;
@@ -20,7 +18,7 @@ const LectureNavigation: FC<LectureNavigationProps> = ({ lectureId }) => {
   }
 
   if (isFetching || !data) {
-    return <div></div>;
+    return <div></div>
   }
 
   return (

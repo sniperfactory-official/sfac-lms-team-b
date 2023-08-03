@@ -6,6 +6,7 @@ import thumnail from "../../../../../public/images/thumnail.png";
 import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
 import LectureDeleteModal from "../modal/createLecture/LectureDeleteModal";
 import { useState } from "react";
+import useDeleteLecture from "@/hooks/mutation/useDeleteLecture";
 
 const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const router = useRouter();
@@ -13,8 +14,9 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
     router.push(`/classroom/${lecture.lectureId}`);
   };
 
-  const { title, lectureType, isPrivate, startDate, endDate, lectureContent } =
+  const { title, lectureType, isPrivate, startDate, endDate, lectureContent, lectureId } =
     lecture;
+  const {mutate: deleteLecture} = useDeleteLecture(lectureId)
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
   const videoLength = convertSecondsToMinute(lectureContent.videoLength!);
 
@@ -37,16 +39,11 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   };
   const [deleteModal, setDeleteModal] = useState(false);
   const handleDeleteModal = () => {
-    //강의 삭제 로직 구현하시면 됩니당
-    setDeleteModal(false);
+    setDeleteModal(true);
   };
 
   return (
     <div className="w-[775px] h-[200px] border rounded-lg p-[10px] flex flex-row items-center mb-[15px]">
-      {/* {lectureContent.images!.length !== 0 ? 
-      <div className="w-1/3 h-5/6 bg-primary-40 rounded-lg mr-[25px]">
-        <Image src={lectureContent.images![0]} alt="thumbnail" width={100} height={100}/>
-      </div> :  */}
       <div className="w-1/3 h-5/6 rounded-lg mr-[25px]">
         <Image src={thumnail} alt="thumnail" placeholder="blur" />
       </div>
@@ -54,7 +51,7 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
         <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
           <button className="text-xs">수정</button>
           <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
-          <button className="text-xs">삭제</button>
+          <button className="text-xs" onClick={() => handleDeleteModal()}>삭제</button>
         </div>
         {lectureType === "비디오" && (
           <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">
@@ -81,7 +78,7 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
         {deleteModal && (
           <LectureDeleteModal
             onCancel={() => setDeleteModal(false)}
-            onDelete={handleDeleteModal}
+            onDelete={() => deleteLecture({}, {onSuccess: () => {setDeleteModal(false)}})}
           />
         )}
       </div>
