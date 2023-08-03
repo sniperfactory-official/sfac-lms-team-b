@@ -1,3 +1,3 @@
-export const convertSecondsToMinute = (seconds:number) => {
+export const convertSecondsToMinute = (seconds: number) => {
   return Math.round(seconds / 60);
-}
+};

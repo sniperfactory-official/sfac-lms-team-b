@@ -9,8 +9,7 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const handleMovePage = () => {
     router.push(`/classroom/${lecture.lectureId}`);
   };
-  
-  
+
   const { title, lectureType, isPrivate, startDate, endDate, lectureContent } =
     lecture;
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
