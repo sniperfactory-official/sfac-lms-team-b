@@ -18,7 +18,7 @@ const LectureNavigation: FC<LectureNavigationProps> = ({ lectureId }) => {
   }
 
   if (isFetching || !data) {
-    return <div></div>
+    return <div></div>;
   }
 
   return (

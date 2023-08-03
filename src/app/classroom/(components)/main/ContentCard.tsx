@@ -14,9 +14,16 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
     router.push(`/classroom/${lecture.lectureId}`);
   };
 
-  const { title, lectureType, isPrivate, startDate, endDate, lectureContent, lectureId } =
-    lecture;
-  const {mutate: deleteLecture} = useDeleteLecture(lectureId)
+  const {
+    title,
+    lectureType,
+    isPrivate,
+    startDate,
+    endDate,
+    lectureContent,
+    lectureId,
+  } = lecture;
+  const { mutate: deleteLecture } = useDeleteLecture(lectureId);
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
   const videoLength = convertSecondsToMinute(lectureContent.videoLength!);
 
@@ -51,7 +58,9 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
         <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
           <button className="text-xs">수정</button>
           <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
-          <button className="text-xs" onClick={() => handleDeleteModal()}>삭제</button>
+          <button className="text-xs" onClick={() => handleDeleteModal()}>
+            삭제
+          </button>
         </div>
         {lectureType === "비디오" && (
           <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">
@@ -78,7 +87,16 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
         {deleteModal && (
           <LectureDeleteModal
             onCancel={() => setDeleteModal(false)}
-            onDelete={() => deleteLecture({}, {onSuccess: () => {setDeleteModal(false)}})}
+            onDelete={() =>
+              deleteLecture(
+                {},
+                {
+                  onSuccess: () => {
+                    setDeleteModal(false);
+                  },
+                },
+              )
+            }
           />
         )}
       </div>
