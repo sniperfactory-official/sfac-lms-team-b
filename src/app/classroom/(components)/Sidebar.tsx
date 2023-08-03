@@ -19,15 +19,11 @@ interface IProps {
 
 const Sidebar = forwardRef<HTMLDivElement, IProps>(
   ({ courseList, setCurrentCourse }) => {
-    const { mutate: createCourse, isLoading } = useCreateCourseMutation();
+    const dispatch = useDispatch();
+    const { mutate: createCourse } = useCreateCourseMutation();
     const [getBackLectureOrderTrigger, setGetBackLectureOrderTrigger] =
       useState<boolean>(false);
-    const handleCreateSection = () => {
-      createCourse();
-      setCurrentCourse(courseList![0]);
-    };
 
-    const dispatch = useDispatch();
     const isEditMode = useSelector(
       (state: RootState) => state.editCourse.isEditMode,
     );
@@ -35,10 +31,10 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
       (state: RootState) => state.editCourse.selectedCourse,
     );
 
-    useEffect(() => {
-      const index = selectedCourse.findIndex(value => value === true);
-      dispatch(setCurrentLecture(courseList[index].lectureList));
-    }, [getBackLectureOrderTrigger]);
+    const handleCreateSection = () => {
+      createCourse();
+      setCurrentCourse(courseList![0]);
+    };
 
     const sidebarRef = useRef<HTMLDivElement>(null);
     useClickOutside(
@@ -48,6 +44,11 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
       setGetBackLectureOrderTrigger,
       getBackLectureOrderTrigger,
     );
+
+    useEffect(() => {
+      const index = selectedCourse.findIndex(value => value === true);
+      dispatch(setCurrentLecture(courseList[index].lectureList));
+    }, [getBackLectureOrderTrigger]);
 
     return (
       <aside
