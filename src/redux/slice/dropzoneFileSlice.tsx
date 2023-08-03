@@ -25,10 +25,14 @@ const dropzoneFileSlice = createSlice({
     setSuccessMessage: (state, action: PayloadAction<string>) => {
       state.successMessage = action.payload;
     },
-    reset: () => initialState,
+    resetDropzone: () => initialState,
   },
 });
 
-export const { setVideoFileName, setErrorMessage, setSuccessMessage, reset } =
-  dropzoneFileSlice.actions;
+export const {
+  setVideoFileName,
+  setErrorMessage,
+  setSuccessMessage,
+  resetDropzone,
+} = dropzoneFileSlice.actions;
 export default dropzoneFileSlice.reducer;

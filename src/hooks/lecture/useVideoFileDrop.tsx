@@ -2,27 +2,22 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { FileRejection, useDropzone } from "react-dropzone";
-import {
-  setErrorMessage,
-  setSuccessMessage,
-} from "@/redux/slice/dropzoneFileSlice";
-import useUploadFile from "./useUploadFile";
-import { setVideoLength } from "@/redux/slice/lectureInfoSlice";
+import { setErrorMessage } from "@/redux/slice/dropzoneFileSlice";
+import useUploadVideo from "./useUploadVideo";
 import useDeleteFile from "./useDeleteFile";
+import useLectureInfo from "./useLectureInfo";
 
 const useVideoFileDrop = () => {
   const dispatch = useDispatch();
   const videoFileName = useSelector(
     (state: RootState) => state.dropzoneFile.videoFileName,
   );
-  const videoURL = useSelector(
-    (state: RootState) => state.lectureInfo.videoURL,
-  );
-  const { isUploading, onUploadFile } = useUploadFile();
+  const { onUploadVideo } = useUploadVideo();
   const { onDeleteFile } = useDeleteFile();
-
+  const { videoURL } = useLectureInfo();
+  
   const onDrop = useCallback(
-    async (acceptedFiles: File[], fileRejections: FileRejection[]) => {
+    (acceptedFiles: File[], fileRejections: FileRejection[]) => {
       if (videoFileName) {
         dispatch(
           setErrorMessage(
@@ -30,19 +25,7 @@ const useVideoFileDrop = () => {
           ),
         );
       } else if (acceptedFiles.length > 0) {
-        const file: File = acceptedFiles[0];
-        const videoFileURL: string | undefined = await onUploadFile(file);
-
-        if (videoFileURL) {
-          const videoElement: HTMLVideoElement =
-            document.createElement("video");
-          videoElement.src = videoFileURL;
-          videoElement.onloadedmetadata = () => {
-            dispatch(setVideoLength(videoElement.duration));
-          };
-        }
-
-        dispatch(setSuccessMessage("파일이 업로드되었습니다!"));
+        onUploadVideo(acceptedFiles[0]);
       } else if (fileRejections.length > 0) {
         if (
           fileRejections[0].errors[0].message ===
@@ -60,7 +43,7 @@ const useVideoFileDrop = () => {
         }
       }
     },
-    [dispatch, videoFileName, onUploadFile],
+    [dispatch, videoFileName, onUploadVideo],
   );
 
   const handleRemoveVideoFile = () => {
