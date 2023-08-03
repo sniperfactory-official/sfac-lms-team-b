@@ -8,7 +8,6 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
   const handleMovePage = () => {
     router.push(`/classroom/${lecture.lectureId}`);
   };
-  console.log(lecture);
   const { title, lectureType, isPrivate, startDate, endDate, lectureContent } =
     lecture;
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
@@ -30,7 +29,6 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
       time: "",
     },
   };
-  // console.log(lectureContent.images!.length);
 
   return (
     <div className="w-[775px] h-[200px] border rounded-lg p-[10px] flex flex-row items-center mb-[15px]">

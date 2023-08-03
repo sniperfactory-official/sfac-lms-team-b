@@ -16,13 +16,14 @@ interface IProps {
 }
 
 const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
+  const dispatch = useDispatch();
   const isEditMode = useSelector(
     (state: RootState) => state.editCourse.isEditMode,
   );
-  const dispatch = useDispatch();
   const selectedCourse = useSelector(
     (state: RootState) => state.editCourse.selectedCourse,
   );
+  // 현재 선택된 Course 관리 custom hook
   const { handleCurrentCourse, currentLectures } = useSelectCourse({
     courseList,
     setCurrentCourse,
@@ -37,11 +38,6 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
   };
 
   return (
-    // courseFiled 데이터 구조
-    // courseData : {title: 'IT기본', createdAt: Timestamp, updatedAt: Timestamp}
-    // courseId : "I7YsTuxOWvT1M2lakkAM"
-    // lectureList : [{…}, {…}, {…}]
-    // 2중 map, course순회 & course하위 lecture 순회
     courseList.map((course: ICourseField, idx: number) => (
       <React.Fragment key={idx}>
         <Element
