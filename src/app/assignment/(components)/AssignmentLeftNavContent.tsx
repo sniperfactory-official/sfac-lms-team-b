@@ -18,7 +18,7 @@ export type AssignmentExtractedPicked = Pick<
   "id" | "order"
 >; //id가 assignmentId인지 확인필요
 
-const AssignmentLeftNavContent = (prop) => {
+const AssignmentLeftNavContent = prop => {
   const assignQueries = useGetAssignment("");
   const [htmlContent, setHtmlcontent] =
     useState<AssignmentExtractedOmitted[]>();
@@ -36,8 +36,10 @@ const AssignmentLeftNavContent = (prop) => {
       let index = assignFetched?.length;
       //order 순서대로 데이터 불러오기 및 추출(이후에는 moveCard로 순서보존)
 
-      const assignSorted = assignFetched?.toSorted((a:Object,b:Object)=>(a.order-b.order))
-      const length = assignSorted[assignSorted.length-1].order
+      const assignSorted = assignFetched?.toSorted(
+        (a: Object, b: Object) => a.order - b.order,
+      );
+      const length = assignSorted[assignSorted.length - 1].order;
       console.log(length);
       for (let i = 0; i < index; i++) {
         const assignCopied = assignSorted[i];
@@ -47,9 +49,9 @@ const AssignmentLeftNavContent = (prop) => {
           order: assignCopied.order,
           title: assignCopied.title,
         };
-          htmlcontent.push(assignExtracted);
-        }
-      
+        htmlcontent.push(assignExtracted);
+      }
+
       console.log(
         "[AssignmentLeftNavContent_FUNC] FetchAssignmentData 데이터 로드 완료!",
         htmlcontent,
@@ -57,7 +59,7 @@ const AssignmentLeftNavContent = (prop) => {
       setHtmlcontent(htmlcontent);
       initialHtml.current = [...htmlcontent];
     }
-  }, [isLoading]);
+  }, [isLoading, assignQueries.data]);
 
   useEffect(() => {
     FetchAssignmentData();
@@ -104,12 +106,14 @@ const AssignmentLeftNavContent = (prop) => {
     setIseiditing(true);
   };
 
-
   const modeExecuting = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("[AssignmentLeftNavContent_FUNC] modeExecuting 실행!", event.target);
+    console.log(
+      "[AssignmentLeftNavContent_FUNC] modeExecuting 실행!",
+      event.target,
+    );
     const formData = new FormData(event.target);
-    console.log(formData.values())
+    console.log(formData.values());
 
     switch (formData.get("type")) {
       case "EDIT":
@@ -124,7 +128,7 @@ const AssignmentLeftNavContent = (prop) => {
         console.log("delete!");
         const targetId = formData.values();
         //DeleteAssignment(targetId);
-        break; 
+        break;
       default:
         break;
     }
@@ -144,10 +148,9 @@ const AssignmentLeftNavContent = (prop) => {
             <span>`none`</span>
           ) : (
             htmlContent?.map(assignExtracted => {
-      
               return (
                 <AssignmentLeftNavBlock
-                  key={assignExtracted.id+'1'}
+                  key={assignExtracted.id + "1"}
                   index={assignExtracted.index}
                   order={assignExtracted.order}
                   id={assignExtracted.id}
@@ -160,7 +163,10 @@ const AssignmentLeftNavContent = (prop) => {
           )}
         </form>
       </DndProvider>
-      <AssignmentLeftNavButton modeChanger={event => modeExecuting(event)} userInfo={prop.userId} />
+      <AssignmentLeftNavButton
+        modeChanger={event => modeExecuting(event)}
+        userInfo={prop.userId}
+      />
     </div>
   );
 };
