@@ -6,12 +6,12 @@ import logo from "/public/images/logo.svg";
 import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React from "react";
-import LoadingSpinner from "@/components/Loading/Loading";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
 import { useLogoutMutation } from "@/hooks/reactQuery/logout/useLogoutQuery";
 import { update } from "@/redux/userSlice";
 import fetchUserInfo from "@/hooks/reactQuery/navbar/useGetUserQuery";
 import useGetLectureInfoQuery from "@/hooks/reactQuery/navbar/useGetLectureQuery";
+import MiniLoadingSpinner from "../Loading/MiniLoadingSpinner";
 
 export default function Navbar() {
   const router = useRouter();
@@ -58,7 +58,7 @@ export default function Navbar() {
   };
 
   if (userLoading && lectureLoading) {
-    return <LoadingSpinner />;
+    return <MiniLoadingSpinner />;
   }
 
   if (userError && lectureError) {

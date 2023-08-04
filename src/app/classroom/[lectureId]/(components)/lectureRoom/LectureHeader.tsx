@@ -6,6 +6,7 @@ import useGetLectureInfo from "@/hooks/queries/useGetLectureInfo";
 import useProfileImage from "@/hooks/lecture/useProfileImage";
 import UserImage from "@/app/classroom/(components)/modal/comment/UserImage";
 import timestampToDate from "@/utils/timestampToDate";
+import MiniLoadingSpinner from "@/components/Loading/MiniLoadingSpinner";
 
 interface LectureHeaderProps {
   lectureId: string;
@@ -22,7 +23,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({ lectureId }) => {
   const profileImageURL = useProfileImage(profileImage);
 
   return (
-    <header className="flex border-b border-gray-200 w-full h-40">
+    <header className="flex border-b border-gray-200 w-full h-[135px]">
       <div className="w-1/12 h-full flex justify-center items-center">
         <Link href="/classroom" className="w-full pr-12 pb-14">
           <Image
@@ -36,7 +37,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({ lectureId }) => {
       </div>
       <div className="w-11/12 h-full flex flex-col justify-center">
         {isFetching ? (
-          <div className="w-full h-full">Loading...</div>
+          <div className="w-full h-full">{/* <MiniLoadingSpinner/> */}</div>
         ) : (
           data && (
             <>
