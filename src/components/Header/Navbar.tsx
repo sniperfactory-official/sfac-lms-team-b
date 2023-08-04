@@ -58,7 +58,7 @@ export default function Navbar() {
   };
 
   if (userLoading && lectureLoading) {
-    return <div></div>
+    return <div></div>;
   }
 
   if (userError && lectureError) {

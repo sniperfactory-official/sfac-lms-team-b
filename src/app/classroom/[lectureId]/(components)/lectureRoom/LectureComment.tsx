@@ -42,7 +42,7 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
       </header>
       <main className="overflow-y-auto h-[600px] pb-[60px]">
         <CommentsSection
-          lectureId={lectureId} 
+          lectureId={lectureId}
           onCommentClick={handleCommentClick}
         />
         {selectedCommentId && (
