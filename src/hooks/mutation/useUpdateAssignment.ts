@@ -20,11 +20,14 @@ const updateAssignment = async (
       );
     }
 
-    await updateDoc(doc(db, "assignments", assignmentId), {
-      ...assignmentValue,
-      updatedAt: serverTimestamp(),
-    });
-    return assignmentValue;
+    const updateAssignment = await updateDoc(
+      doc(db, "assignments", assignmentId),
+      {
+        ...assignmentValue,
+        updatedAt: serverTimestamp(),
+      },
+    );
+    return updateAssignment;
   } catch (err) {
     console.log(err);
     throw err;
