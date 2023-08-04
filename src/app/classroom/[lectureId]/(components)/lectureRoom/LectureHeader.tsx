@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import useGetLectureInfo from "@/hooks/queries/useGetLectureInfo";
-import useProfileImage from "@/hooks/lecture/useProfileImage";
 import UserImage from "@/app/classroom/(components)/modal/comment/UserImage";
 import timestampToDate from "@/utils/timestampToDate";
 import MiniLoadingSpinner from "@/components/Loading/MiniLoadingSpinner";
@@ -19,8 +18,6 @@ const LectureHeader: FC<LectureHeaderProps> = ({ lectureId }) => {
   const { profileImage, username, role } = user || {};
   const startDay = data?.startDate ? timestampToDate(data.startDate) : "";
   const endDay = data?.endDate ? timestampToDate(data.endDate) : "";
-
-  const profileImageURL = useProfileImage(profileImage);
 
   return (
     <header className="flex border-b border-gray-200 w-full h-[135px]">
@@ -48,9 +45,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({ lectureId }) => {
                 </span>
               </div>
               <div className="flex items-center mt-2">
-                {profileImageURL && (
-                  <UserImage profileImage={profileImageURL} />
-                )}
+                <UserImage profileImage={profileImage} />
                 <div className="flex items-center ml-2">
                   <span className=" text-sm font-semibold text-blue-500 ">
                     {username}

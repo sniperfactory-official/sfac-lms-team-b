@@ -1,7 +1,7 @@
 import React from "react";
 
 function highlightTags(comment: string) {
-  const tagPattern = /(@\S+)|(\b\d{2}:\d{2}\b)/g;
+  const tagPattern = /(@\S+)|(\b\d{1,2}:\d{2}\b)/g;
   const words = comment.split(" ");
 
   const highlightedComment = words

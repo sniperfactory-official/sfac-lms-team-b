@@ -11,8 +11,6 @@ const LectureNavigation: FC<LectureNavigationProps> = ({ lectureId }) => {
   const { data, isFetching, error } = useGetPreAndNextLectureInfo(lectureId);
   const { prevLectureId, nextLectureId } = data || {};
 
-  console.log(data, isFetching, error);
-
   if (error instanceof Error) {
     return <div>Error: {error.message}</div>;
   }
