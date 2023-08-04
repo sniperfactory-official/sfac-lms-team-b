@@ -58,7 +58,7 @@ export default function Navbar() {
   };
 
   if (userLoading && lectureLoading) {
-    return <MiniLoadingSpinner />;
+    return <div></div>
   }
 
   if (userError && lectureError) {
