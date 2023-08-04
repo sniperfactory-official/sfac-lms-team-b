@@ -7,6 +7,7 @@ import { resetInput } from "@/redux/slice/lectureInfoSlice";
 import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import { RootState } from "@/redux/store";
+import { resetDropzone } from "@/redux/slice/dropzoneFileSlice";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -24,6 +25,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     courseId,
     lectureType,
     lectureTitle,
+    externalLink,
     textContent,
     noteImages,
     videoURL,
@@ -34,9 +36,10 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   } = useLectureInfo();
 
   const lectureContent = {
+    externalLink,
     images: noteImages,
     textContent,
-    videoURL,
+    videoUrl: videoURL,
     videoLength,
   };
 
@@ -57,6 +60,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     }
     dispatch(closeModal());
     dispatch(resetInput());
+    dispatch(resetDropzone());
   };
 
   return (

@@ -10,6 +10,9 @@ const useLectureInfo = () => {
   const lectureType: string = useSelector(
     (state: RootState) => state.lectureInfo.lectureType,
   );
+  const externalLink: string = useSelector(
+    (state: RootState) => state.lectureInfo.externalLink,
+  );
   const lectureTitle: string = useSelector(
     (state: RootState) => state.lectureInfo.lectureTitle,
   );
@@ -38,6 +41,7 @@ const useLectureInfo = () => {
     courseId,
     lectureType,
     lectureTitle,
+    externalLink,
     textContent,
     noteImages,
     videoURL,

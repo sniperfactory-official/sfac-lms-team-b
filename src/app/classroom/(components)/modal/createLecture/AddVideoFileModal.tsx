@@ -25,8 +25,12 @@ const AddVideoFileModal: React.FC = () => {
   const successMessage = useSelector(
     (state: RootState) => state.dropzoneFile.successMessage,
   );
-  const { handleModalMove } = useClassroomModal();
+  const { modalRole, handleModalMove } = useClassroomModal();
   const { handleRemoveVideoFile } = useVideoFileDrop();
+  const MODAL_ROLE_OBJ: { [key: string]: string } = {
+    create: "영상 강의 만들기",
+    edit: "수정하기",
+  };
 
   useEffect(() => {
     if (videoFileName) {
@@ -41,14 +45,18 @@ const AddVideoFileModal: React.FC = () => {
 
   return (
     <Layout>
-      <ModalHeader currentModalName={"영상 강의 만들기"}>
-        <button
-          onClick={() =>
-            handleModalMove("lectureTypeModalOpen", "videoFileModalOpen")
-          }
-        >
-          강의 만들기
-        </button>
+      <ModalHeader currentModalName={MODAL_ROLE_OBJ[modalRole]}>
+        {modalRole === "create" ? (
+          <button
+            onClick={() =>
+              handleModalMove("lectureTypeModalOpen", "videoFileModalOpen")
+            }
+          >
+            강의 만들기
+          </button>
+        ) : (
+          <span>강의 수정</span>
+        )}
       </ModalHeader>
       <ModalMain>
         <div className="flex flex-col gap-5 h-72">

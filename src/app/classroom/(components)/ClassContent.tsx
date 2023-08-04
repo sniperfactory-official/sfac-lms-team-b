@@ -23,7 +23,11 @@ const ClassContent = ({ currentCourse }: IProps) => {
 
   const handleModalOpen = () => {
     dispatch(
-      setModalVisibility({ modalName: "lectureTypeModalOpen", visible: true }),
+      setModalVisibility({
+        modalName: "lectureTypeModalOpen",
+        visible: true,
+        modalRole: "create",
+      }),
     );
   };
 
