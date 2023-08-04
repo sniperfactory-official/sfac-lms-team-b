@@ -1,34 +1,33 @@
 // useUpdateFeedback
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateDoc, doc } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Feedback } from "@/types/firebase.types";
 
-const updateFeedback = async (
+const deleteFeedback = async (
   submittedAssignmentId: string,
-  feedbackId: Feedback,
+  feedbackId: string,
 ) => {
   try {
-    await updateDoc(
+    await deleteDoc(
       doc(
         db,
         `submittedAssignments/${submittedAssignmentId}/feedbacks`,
-        "feedbackId",
+        feedbackId,
       ),
-      { content: "ㅂㅇ" },
     );
   } catch (err) {
     throw err;
   }
 };
 
-const useUpdateFeedback = (
+const useDeleteFeedback = (
   submittedAssignmentId: string,
-  feedbackId: Feedback,
+  feedbackId: string,
 ) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    () => updateFeedback(submittedAssignmentId, feedbackId),
+    () => deleteFeedback(submittedAssignmentId, feedbackId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getFeedbacks", submittedAssignmentId]);
@@ -42,4 +41,4 @@ const useUpdateFeedback = (
   return { mutate, isLoading, error };
 };
 
-export { useUpdateFeedback };
+export { useDeleteFeedback };

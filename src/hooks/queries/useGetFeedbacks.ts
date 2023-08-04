@@ -3,13 +3,11 @@ import {
   collection,
   getDoc,
   getDocs,
-  doc,
-  query,
-  where,
   DocumentData,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
-import { Feedback } from "@/types/firebase.types";
+import { getTime } from "@/utils/getTime";
 
 const getFeedbacks = async (submittedAssignmentId: string): Promise<any> => {
   const feedbacksDocs = await getDocs(
@@ -31,10 +29,15 @@ const getFeedbacks = async (submittedAssignmentId: string): Promise<any> => {
       // userDoc가 실제로 존재하는지 확인 후 데이터를 가져옴
       const user = userDoc && userDoc.exists() ? userDoc.data() : null;
 
+      const createdDate = getTime(doc.data().createdAt.toDate());
+      const updatedDate = getTime(doc.data().updatedAt.toDate());
+
       return {
         id: doc.id,
         user: user,
         ...doc.data(),
+        createdAt: createdDate,
+        updatedAt: updatedDate,
       };
     }),
   );

@@ -4,19 +4,21 @@ import React from "react";
 import Link from "next/link";
 import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssignment";
 import { useRouter } from "next/navigation";
+import { User } from "@/types/firebase.types";
 
 interface Props {
   targetId: string;
+  userInfo: User;
 }
 
 //추후 userinfo도 넣어야함
-const AssignmentListSubButton = ({ targetId }: Props) => {
+const AssignmentListSubButton = ({ targetId, userInfo }: Props) => {
   const submittionHooks = useGetSubmittedAssignments(targetId);
   const router = useRouter();
   let isSubmitted;
 
   if (!submittionHooks.isLoading) {
-    isSubmitted = submittionHooks.data.length > 0;
+    isSubmitted = submittionHooks.data?.length > 0;
   }
 
   return (

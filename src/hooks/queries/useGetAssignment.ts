@@ -20,7 +20,8 @@ const getAssignments = async (
 
     const docSnap = await getDoc(assignmentRef);
     if (docSnap.exists()) {
-      const userSnap = await getDoc(docSnap.data().userId);
+      const assignmentData = docSnap.data() as Assignment;
+      const userSnap = await getDoc(doc(db, assignmentData.userId.path)); // userId의 path로 해당 user 문서 가져오기
       const user = userSnap.data() as User;
       return { ...docSnap.data(), user } as Assignment; // user정보 포함해서 return
     }

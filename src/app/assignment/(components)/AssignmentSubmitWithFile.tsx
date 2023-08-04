@@ -2,15 +2,22 @@ import PageToast from "@/components/PageToast";
 import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
+import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 
 type OwnProps = {
   onClose: () => void;
+  assignmentId: string;
 };
 
-const AssignmentSubmitWithFile: React.FC<OwnProps> = ({ onClose }) => {
+const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
+  onClose,
+  assignmentId,
+}) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
+  const { mutate, isLoading, error } = useSubmitAssignment(assignmentId);
+
   const allowedFileTypes = [
     // 허용되는 확장자
     "application/pdf",
@@ -62,6 +69,12 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({ onClose }) => {
   const handleUpload = useCallback(() => {
     // 선택한 파일들의 업로드 수행
     console.log("Uploaded files:", selectedFiles);
+    mutate(selectedFiles); // FIXME: ts error 수정 필요
+    setToastMsg("파일이 업로드되었습니다!");
+    setIsAccept(true);
+    setTimeout(() => {
+      onClose();
+    }, 2000);
   }, [selectedFiles]);
 
   const handleRemoveFile = (file: File) => {

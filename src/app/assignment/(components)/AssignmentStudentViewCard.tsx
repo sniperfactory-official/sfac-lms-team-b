@@ -6,77 +6,86 @@ import AssignmentModal from "./AssignmentModal";
 import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
 import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
 import AssignmentFeedback from "./AssignmentFeedback";
-import { User } from "@/types/firebase.types";
+import { User, SubmittedAssignment } from "@/types/firebase.types";
 
 interface OwnProps {
   user: User;
   assignmentId: string;
+  submittedAssignment: SubmittedAssignment;
 }
 
 const AssignmentStudentViewCard: React.FC<OwnProps> = ({
   user,
   assignmentId,
+  submittedAssignment,
 }) => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
+  // console.log("submittedAssignment", submittedAssignment);
+
   return (
     <>
       <div className="flex justify-between items-center px-[21px] py-[24px] border rounded-[10px]">
         <div className="flex justify-start items-center gap-[14px]">
-          <AssignmentProfileImage />
+          <AssignmentProfileImage profileImage={user.profileImage} />
           <div>
             <div className="mb-[5px] flex justify-start items-center gap-[6px]">
               <span className="text-grayscale-100 text-[16px] font-[700]">
-                김지은
+                {user.username}
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full" />
               <span className="text-grayscale-40 text-[14px] font-[400]">
-                수강생
+                {user.role}
               </span>
             </div>
             <span className="py-[4px] px-[10px] text-[10px] font-[500] text-grayscale-60 rounded-[4px] bg-grayscale-5">
-              제출 전
+              {submittedAssignment ? "제출 완료" : "제출 전"}
             </span>
           </div>
         </div>
         <div>
           {/* 제출 전 */}
-          <div className="flex justify-end items-center gap-[14px]">
-            <button
-              type="button"
-              className="border"
-              onClick={() => {
-                setIsFileOpen(true);
-              }}
-            >
-              파일 첨부
-            </button>
-            <button
-              type="button"
-              className="border"
-              onClick={() => {
-                setIsLinkOpen(true);
-              }}
-            >
-              링크
-            </button>
-          </div>
+          {!submittedAssignment ? (
+            <div className="flex justify-end items-center gap-[14px]">
+              <button
+                type="button"
+                className="border"
+                onClick={() => {
+                  setIsFileOpen(true);
+                }}
+              >
+                파일 첨부
+              </button>
+              <button
+                type="button"
+                className="border"
+                onClick={() => {
+                  setIsLinkOpen(true);
+                }}
+              >
+                링크
+              </button>
+            </div>
+          ) : null}
           {/* END 제출 전 */}
 
           {/* 제출 후 */}
-          <div>
-            <button
-              type="button"
-              className="border"
-              onClick={() => {
-                setIsDetailOpen(true);
-              }}
-            >
-              확인하기
-            </button>
-          </div>
+          {submittedAssignment ? (
+            <div>
+              <button
+                type="button"
+                className="border"
+                onClick={() => {
+                  setIsDetailOpen(true);
+                }}
+              >
+                확인하기
+              </button>
+            </div>
+          ) : null}
+
           {/* END 제출 후 */}
         </div>
       </div>
