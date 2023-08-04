@@ -5,6 +5,7 @@ import { useGetAssignment } from "@hooks/queries/useGetAssignment";
 import { Assignment } from "@/types/firebase.types";
 import AssignmentListSubButton from "./AssignmentListSubButton";
 import { useRouter } from "next/navigation";
+import { User } from "@/types/firebase.types";
 
 interface AssignmentNumberAdded extends Assignment {
   assignmentNumber: number;
@@ -16,9 +17,13 @@ const USER_INFO = {
   username: "김지은",
 };
 
-const AssignmentListContent = () => {
+type Props= {
+  userInfo : User;
+}
+const AssignmentListContent = (prop:Props) => {
   const assignmentData = useGetAssignment("");
   const router = useRouter();
+  const userinfo = {...prop.userInfo}
   let htmlContent;
 
   if (assignmentData.isLoading === false) {
@@ -27,7 +32,7 @@ const AssignmentListContent = () => {
     htmlContent = assignmentInfo?.map((assign: AssignmentNumberAdded) => (
       <div
         key={assign.id}
-        className="w-[775px] px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center"
+        className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center"
       >
         <div className="flex w-[244px] flex-col items-start gap-[10px]">
           <span className="p-[4px] px-[10px] rounded-[4px] bg-grayscale-5">
@@ -48,7 +53,7 @@ const AssignmentListContent = () => {
             확인하기
           </button>
         ) : (
-          <AssignmentListSubButton targetId={assign.id} />
+          <AssignmentListSubButton targetId={assign.id} userInfo={userinfo}/>
         )}
       </div>
     ));

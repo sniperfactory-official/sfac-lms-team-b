@@ -7,23 +7,25 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import AssignmentLeftNavBlock from "./AssignmentLeftNavContentCard";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { AssignmentExtracted } from "./AssignmentLeftNavContentCard";
-import { writeBatch, doc } from "firebase/firestore";
-import { db } from "@utils/firebase";
+import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
+import AssignmentLeftNavButton from './AssignmentLeftNavContentButton';
+import { useDeleteRegisteredAssignment } from "@/hooks/mutation/useDeleteRegisteredAssignment";
+
 
 type AssignmentExtractedOmitted = Omit<AssignmentExtracted, "movecard">;
-type AssignmentExtractedPicked = Pick<AssignmentExtracted, "id" | "order">; //id가 assignmentId인지 확인필요
+export type AssignmentExtractedPicked = Pick<AssignmentExtracted, "id" | "order">; //id가 assignmentId인지 확인필요
 
 const AssignmentLeftNavContent = () => {
   const assignQueries = useGetAssignment("");
-  const [htmlContent, setHtmlcontent] =
-    useState<AssignmentExtractedOmitted[]>();
+  const [htmlContent, setHtmlcontent] = useState<AssignmentExtractedOmitted[]>();
   const isLoading = assignQueries.isLoading;
-  const initialOrder = useRef<AssignmentExtractedPicked[]>();
+  const initialHtml = useRef<AssignmentExtractedPicked[]>();
+  const [isEditing, setIseiditing] = useState(false);
 
   //최초 로드시 데이터 fetch(데이터 POST 후의 로드는 고려하지 않음)
   const FetchAssignmentData = useCallback(() => {
     let htmlcontent = [];
-    let initialorder = [];
+    let initialHtml = [];
 
     if (isLoading === false) {
       const assignFetched = assignQueries.data;
@@ -42,18 +44,13 @@ const AssignmentLeftNavContent = () => {
             index: htmlcontent.length,
             order: assignCopied.order,
             title: assignCopied.title,
-          };
-          let orderExtracted = {
-            id: assignCopied.id,
-            order: assignCopied.order,
-          };
+          }; 
           htmlcontent.push(assignExtracted);
-          initialorder.push(orderExtracted);
         }
       }
-      console.log("데이터 로드 완료!", htmlcontent);
+      console.log("[AssignmentLeftNavContent_FUNC] FetchAssignmentData 데이터 로드 완료!", htmlcontent);
       setHtmlcontent(htmlcontent);
-      initialOrder.current = initialorder;
+      initialHtml.current = [...htmlcontent];
     }
   }, [isLoading]);
 
@@ -72,41 +69,83 @@ const AssignmentLeftNavContent = () => {
     });
   };
 
-  const UpdateAssignmentOrder = async () => {
-    //? transaction(batch)으로 일괄처리하는게 좋을 듯합니다.
-    const batch = writeBatch(db);
+  const UpdateAssignmentOrder = () => {
+    const assignOrderMutation = useUpdateAssignment(htmlContent);
 
-    for (let i = 0; i < htmlContent?.length; i++) {
-      let targetId = htmlContent[i].id; //현재 htmlcontent에서 id 추출
-      let targetDat = initialOrder.filter(data => data.id === targetId); //해당 id로 initialOrder의 order 값 추출
-      let newOrder = targetDat.order;
-      const assignRef = doc(db, "assignment", targetId);
-      batch.update(assignRef, { order: newOrder }); //updateDoc
+    if (!assignOrderMutation.isLoading){
+      for (let i = 0; i < htmlContent?.length; i++) {
+        let targetId = htmlContent[i].id; //현재 htmlcontent에서 id 추출
+        assignOrderMutation.mutate(targetId)
+      }
     }
-
-    await batch.commit(); //commit
   };
 
+  const DeleteAssignment = (assignmentIdArray:string[]) => {
+    const assignmentDelete = useDeleteRegisteredAssignment();
+    if (!assignmentDelete.isLoading){
+      assignmentIdArray.forEach((assignId)=>{
+        assignmentDelete.mutate(assignId);
+      })
+    }
+  }
+
+  const resetEditting = () => {
+    setHtmlcontent(initialHtml);
+    setIseiditing(false);
+  }
+
+  const startEditting = () => {
+    setHtmlcontent(initialHtml);
+    setIseiditing(true);
+  }
+
+  const modeExecuting = (event:Event)=>{
+    console.log("[AssignmentLeftNavContent_FUNC] modeExecuting 실행!");
+    const formData = new FormData(event.target)
+    event.preventDefault();
+    switch(formData.get('type')){
+      case "EDIT":
+        console.log("edit!");
+        startEditting();
+        break;
+      case "CHANGE":
+        console.log("change!");
+        //UpdateAssignmentOrder();
+        break;
+      case "DELETE":
+        console.log("delete!");
+        const targetId = formData.values();
+        //DeleteAssignment(targetId);
+        break;
+    }
+  }
+
   return (
-    <DndProvider backend={HTML5Backend}>
-      {isLoading ? (
-        <span>`none`</span>
-      ) : (
-        htmlContent?.map(assignExtracted => {
-          console.log("데이터 매핑 시작!", assignExtracted);
-          return (
-            <AssignmentLeftNavBlock
-              key={assignExtracted.id}
-              index={assignExtracted.index}
-              order={assignExtracted.order}
-              id={assignExtracted.id}
-              title={assignExtracted.title}
-              movecard={moveCard}
-            />
-          );
-        })
-      )}
-    </DndProvider>
+    <div>
+      <DndProvider backend={HTML5Backend}>
+        <form onSubmit={(event)=>{modeExecuting(event)}} id="assign" name="assign">
+          {isLoading ? (
+            <span>`none`</span>
+          ) : (
+            htmlContent?.map(assignExtracted => {
+              console.log("[AssignmentLeftNavContent_JS] 데이터 매핑 시작!", assignExtracted);
+              return (
+                <AssignmentLeftNavBlock
+                  key={assignExtracted.id}
+                  index={assignExtracted.index}
+                  order={assignExtracted.order}
+                  id={assignExtracted.id}
+                  title={assignExtracted.title}
+                  movecard={moveCard}
+                  isEditing={isEditing}
+                />
+              );
+            })
+          )}
+        </form>
+      </DndProvider>
+    <AssignmentLeftNavButton modeChanger={(event)=>(modeExecuting(event))}/>
+    </div>
   );
 };
 

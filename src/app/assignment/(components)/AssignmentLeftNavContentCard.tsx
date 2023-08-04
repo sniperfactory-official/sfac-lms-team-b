@@ -7,12 +7,13 @@ export interface AssignmentExtracted
   extends Pick<Assignment, "id" | "order" | "title"> {
   movecard: (dragIndex: Number, hoverIndex: Number) => void;
   index: number;
+  isEditing: boolean;
 }
 
 const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
 
   const ref = useRef<HTMLDivElement>(null);
-  const { id, order, title, movecard, index } = props;
+  const { id, order, title, movecard, index, isEditing } = props;
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     item: () => {
@@ -44,12 +45,26 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
   drag(drop(ref));
 
   return (
-    <div
-      ref={ref}
-      key={id}
-      className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
-    >
-      <Link href={"/assignment/" + id}>{title}</Link>
+  <div>
+    {
+      isEditing ? (
+      <input type="checkbox" name="assign" value={id}>
+        <div
+          ref={ref}
+          key={id}
+          className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+        >
+          <Link href={"/assignment/" + id}>{title}</Link>
+        </div>
+      </input>
+      ) : (
+      <div
+        key={id}
+        className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+      >
+        <Link href={"/assignment/" + id}>{title}</Link>
+      </div>
+    )}
     </div>
   );
 };
