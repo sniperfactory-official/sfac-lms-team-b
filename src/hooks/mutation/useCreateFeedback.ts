@@ -11,9 +11,10 @@ interface IFeedbackValue {
 const createFeedback = async (
   submittedAssignmentId: string,
   feedbackValue: IFeedbackValue,
+  uid: string,
 ) => {
   try {
-    const userRef = doc(db, "users", "KXwzRd0oTq6rZBAobLxz");
+    const userRef = doc(db, "users", uid);
 
     await addDoc(
       collection(
@@ -34,11 +35,11 @@ const createFeedback = async (
   }
 };
 
-const useCreateFeedback = (submittedAssignmentId: string) => {
+const useCreateFeedback = (submittedAssignmentId: string, uid: string) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
     (feedbackValue: IFeedbackValue) =>
-      createFeedback(submittedAssignmentId, feedbackValue),
+      createFeedback(submittedAssignmentId, feedbackValue, uid),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getFeedbacks", submittedAssignmentId]);

@@ -5,15 +5,15 @@ import { db } from "@utils/firebase";
 import { Feedback } from "@/types/firebase.types";
 
 const deleteFeedback = async (
-  submittedAssignmentId?: string,
-  feedbackId?: Feedback,
+  submittedAssignmentId: string,
+  feedbackId: string,
 ) => {
   try {
     await deleteDoc(
       doc(
         db,
         `submittedAssignments/${submittedAssignmentId}/feedbacks`,
-        "feedbackId",
+        feedbackId,
       ),
     );
   } catch (err) {
@@ -22,8 +22,8 @@ const deleteFeedback = async (
 };
 
 const useDeleteFeedback = (
-  submittedAssignmentId?: string,
-  feedbackId?: Feedback,
+  submittedAssignmentId: string,
+  feedbackId: string,
 ) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
