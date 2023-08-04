@@ -1,3 +1,5 @@
+import { useDeleteFeedback } from "@/hooks/mutation/useDeleteFeedback";
+
 type OwnProps = {
   onConfirm: () => void;
   onCancel: () => void;
@@ -5,6 +7,8 @@ type OwnProps = {
   title: string; // 모달 타이틀
   content: string; // 모달 설명
   confirmBtnMsg: string; // 컨펌 확인 버튼 글자
+  feedbackId: string;
+  submittedAssignmentId: string;
 };
 
 const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
@@ -14,7 +18,19 @@ const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
   title,
   content,
   confirmBtnMsg,
+  feedbackId,
+  submittedAssignmentId,
 }) => {
+  const { mutate, isLoading, error } = useDeleteFeedback(
+    "gZWELALnKoZLzJKjXGUM",
+    feedbackId,
+  );
+
+  const handleOnClick = () => {
+    onConfirm();
+    mutate();
+  };
+
   return (
     <>
       <div
@@ -30,16 +46,16 @@ const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
         </p>
         <div className="flex justify-end item-center gap-[8px]">
           <button
-            className="w-[115px] h-[35px] border"
+            className="w-[115px] h-[35px]  rounded-md bg-grayscale-5 text-grayscale-60"
             type="button"
             onClick={onCancel}
           >
             취소
           </button>
           <button
-            className="w-[115px] h-[35px] border"
+            className="w-[115px] h-[35px] rounded-md bg-primary-80 text-white"
             type="button"
-            onClick={onConfirm}
+            onClick={handleOnClick}
           >
             {confirmBtnMsg}
           </button>

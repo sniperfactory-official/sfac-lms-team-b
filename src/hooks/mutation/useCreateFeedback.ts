@@ -1,13 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { collection, addDoc, DocumentReference } from "firebase/firestore";
+import { collection, addDoc, Timestamp, doc } from "firebase/firestore";
 import { db } from "@utils/firebase";
-import { Feedback } from "@/types/firebase.types";
+
+interface IFeedbackValue {
+  content: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const createFeedback = async (
   submittedAssignmentId: string,
-  feedbackValue: Feedback,
+  feedbackValue: IFeedbackValue,
+  uid: string,
 ) => {
   try {
+    const userRef = doc(db, "users", uid);
+
     await addDoc(
       collection(
         db,
@@ -15,20 +23,23 @@ const createFeedback = async (
         submittedAssignmentId,
         "feedbacks",
       ),
-      { content: "ㅎㅇ" },
+      {
+        ...feedbackValue,
+        userId: userRef,
+        createdAt: Timestamp.fromDate(feedbackValue.createdAt),
+        updatedAt: Timestamp.fromDate(feedbackValue.updatedAt),
+      },
     );
   } catch (err) {
     throw err;
   }
 };
 
-const useCreateFeedback = (
-  submittedAssignmentId: string,
-  feedbackValue: Feedback,
-) => {
+const useCreateFeedback = (submittedAssignmentId: string, uid: string) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    () => createFeedback(submittedAssignmentId, feedbackValue),
+    (feedbackValue: IFeedbackValue) =>
+      createFeedback(submittedAssignmentId, feedbackValue, uid),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getFeedbacks", submittedAssignmentId]);

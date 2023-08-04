@@ -1,14 +1,15 @@
-// 7.21 - feedback modal ui - (LJH)
-
 "use client";
-
-import { Feedback } from "@/types/firebase.types";
+import { useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
+import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
+import { useForm } from "react-hook-form";
+import PageToast from "@/components/PageToast";
+import useUserInfo from "@/hooks/user/useUserInfo";
 import AssignmentProfileImage from "./AssignmentProfileImage";
-import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
-
+import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
 const user = [
   {
     id: 1,
@@ -26,8 +27,60 @@ const user = [
   },
 ];
 
-const AssignmentFeedback = () => {
-  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+interface IAssignmentFeedbackProps {
+  submittedAssignmentId: string;
+}
+
+interface IFormType {
+  feedback: string;
+}
+
+const AssignmentFeedback = ({
+  submittedAssignmentId,
+}: IAssignmentFeedbackProps) => {
+  // const [toastMsg, setToastMsg] = useState();
+  // const [isAccept, setIsAccept] = useState();
+  // const [onClose, setOnClose] = useState();
+
+  const loginUserId = useSelector((state: RootState) => {
+    return state.userId.uid;
+  });
+
+  const scrollRef = useRef<any>(null);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+    reset,
+  } = useForm<IFormType>({ mode: "onChange" });
+
+  const {
+    data: feedbacks,
+    isLoading,
+    error,
+  } = useGetFeedbacks("gZWELALnKoZLzJKjXGUM"); //후에 submittedId로 대체
+
+  const {
+    mutate,
+    isLoading: loading,
+    error: err,
+  } = useCreateFeedback("gZWELALnKoZLzJKjXGUM", loginUserId); //후에 submittedId로 대체
+
+  const onValid = (textValue: IFormType) => {
+    mutate({
+      content: textValue.feedback,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+    reset();
+  };
+
+  // 스크롤 최하단으로 최신피드백 보여주기
+  useEffect(() => {
+    const element = scrollRef.current;
+    element.scrollTop = element.scrollHeight;
+  }, [feedbacks]);
 
   return (
     <div>
@@ -35,12 +88,15 @@ const AssignmentFeedback = () => {
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] mb-[12px]">
         <div className="flex mb-[22px] items-center">
           <AssignmentProfileImage profileImage={user[1].profileImage} />
-          <div className="flex justify-start items-center ml-[13px]">
-            <span className="text-[16px] font-[700] text-grayscale-100">
-              {user[1].username}
-            </span>
-            <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
-            <span className="text-grayscale-40 font-[400]">{"수강생"}</span>
+          <div className="flex items-center ml-[13px] justify-between w-full">
+            <div>
+              <span className="text-[16px] font-[700] text-grayscale-100">
+                {user[1].username}
+              </span>
+              <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
+              <span className="text-grayscale-40 font-[400]">{"수강생"}</span>
+            </div>
+            <button>삭제</button>
           </div>
         </div>
         <ul className="space-y-[12px] mb-[10px]">
@@ -75,65 +131,27 @@ const AssignmentFeedback = () => {
         <p className="text-[12px] text-end text-grayscale-40">{"3일전"}</p>
       </div>
       {/* feedback */}
-      <ul className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll ">
-        {[1, 2, 3, 4, 5].map((a, i) => {
-          return (
-            <li
-              key={i}
-              className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]"
-            >
-              <div className="flex justify-start items-start gap-[13px]">
-                <div className="pt-[3px]">
-                  <AssignmentProfileImage profileImage={"profileImage"} />
-                </div>
-                <div className="grow">
-                  <div className="flex justify-between items-center mb-[9px]">
-                    <div>
-                      <span className="font-[700] text-grayscale-100">
-                        {"이름"}
-                      </span>
-                      <span className="text-grayscale-20 font-[400]">
-                        {" "}
-                        &middot; {"수강생"}
-                      </span>
-                    </div>
-                    <div>
-                      <button
-                        type="button"
-                        className="text-grayscale-100 text-[12px] font-[400] after:content-['|'] after:text-grayscale-30 after:ml-[5px] after:mr-[5px]"
-                      >
-                        수정
-                      </button>
-                      <button
-                        type="button"
-                        className="text-grayscale-100 text-[12px] font-[400]"
-                        onClick={() => {
-                          setIsConfirmOpen(true);
-                        }}
-                      >
-                        삭제
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <textarea
-                      className="w-full text-[14px] text-black font-[400] bg-white"
-                      name=""
-                      id=""
-                      rows={3}
-                      disabled={true}
-                      style={{ resize: "none" }}
-                      defaultValue={"본문"}
-                    />
-                  </div>
-                </div>
-              </div>
-              <p className="text-[12px] text-end text-grayscale-40">
-                {"3일전"}
-              </p>
-            </li>
-          );
-        })}
+      <ul
+        ref={scrollRef}
+        className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll scroll-smooth"
+      >
+        {isLoading
+          ? "Loading..."
+          : feedbacks?.map((feedback: any) => {
+              return (
+                <AssignmentFeedbackContent
+                  key={feedback.id}
+                  id={feedback.id}
+                  content={feedback.content}
+                  createdAt={feedback.createdAt}
+                  updatedAt={feedback.updatedAt}
+                  user={feedback.user}
+                  userId={feedback.userId}
+                  submittedAssignmentId={submittedAssignmentId}
+                  loginUserId={loginUserId}
+                />
+              );
+            })}
       </ul>
       {/* feedback_upload */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
@@ -143,36 +161,40 @@ const AssignmentFeedback = () => {
             <p className="font-[500] text-grayscale-60 text-[16px] mb-[9px]">
               {"이름"}
             </p>
-            <form className="w-full">
+            <form onSubmit={handleSubmit(onValid)} className="w-full">
               <textarea
+                {...register("feedback", {
+                  required: true,
+                })}
                 className="w-full outline-none placeholder:text-grayscale-20 grow text-[14px]"
                 placeholder="댓글을 입력해주세요."
                 style={{ resize: "none" }}
                 rows={3}
                 defaultValue={""}
+                maxLength={500}
               />
               <div className="flex justify-end items-center mt-[16px]">
-                <button className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0">
+                <button
+                  type="submit"
+                  disabled={!isValid}
+                  className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0 disabled:bg-grayscale-10 disabled:text-grayscale-20"
+                >
                   업로드
                 </button>
               </div>
             </form>
           </div>
+          {/* {
+            <div className="absolute left-12 bottom-16">
+              <PageToast
+                toastMsg={toastMsg}
+                isAccept={isAccept}
+                onClose={onClose}
+              />
+            </div>
+          } */}
         </div>
       </div>
-      {/* 모달 내 컨펌 모달 예시 */}
-      <AssignmentLocalConfirmDialog
-        title="삭제하시겠습니까?"
-        content="한번 삭제하시면 다시 복구가 불가능합니다."
-        confirmBtnMsg="확인"
-        onConfirm={() => {
-          setIsConfirmOpen(false);
-        }}
-        isOpen={isConfirmOpen}
-        onCancel={() => {
-          setIsConfirmOpen(false);
-        }}
-      />
     </div>
   );
 };
