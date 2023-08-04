@@ -23,7 +23,7 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  console.log("submittedAssignment", submittedAssignment);
+  // console.log("submittedAssignment", submittedAssignment);
 
   return (
     <>

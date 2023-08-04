@@ -83,7 +83,7 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
               ) : null}
             </div>
             <p className="text-grayscale-40 text-[14px] font-[500] mt-[5px]">
-              {timestampToDate(submittedItem.createAt)}
+              {timestampToDate(submittedItem.createdAt)}
             </p>
           </div>
         </div>
