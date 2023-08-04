@@ -17,18 +17,26 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
   const handleCommentClick = (id: string) => {
     setSelectedCommentId(id);
     dispatch(
-      setModalVisibility({ modalName: "replyCommentModalOpen", visible: true }),
+      setModalVisibility({
+        modalName: "replyCommentModalOpen",
+        visible: true,
+        modalRole: "create",
+      }),
     );
   };
 
   const handleButtonClick = () => {
     dispatch(
-      setModalVisibility({ modalName: "commentModalOpen", visible: true }),
+      setModalVisibility({
+        modalName: "commentModalOpen",
+        visible: true,
+        modalRole: "create",
+      }),
     );
   };
 
   return (
-    <section className="CommunityContainer bg-gray-100 w-1/4 float-right h-[740px]">
+    <section className="CommunityContainer bg-gray-100 w-1/4 float-right h-full">
       <header className="m-3 flex content-center justify-between items-center h-[50px]">
         <h1 className="text-center text-xl font-semibold pl-2">
           강의 커뮤니티
@@ -40,7 +48,7 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
           작성
         </button>
       </header>
-      <main className="overflow-y-auto h-[600px] pb-[60px]">
+      <main className="overflow-y-auto h-5/6 pb-[50px]">
         <CommentsSection
           lectureId={lectureId}
           onCommentClick={handleCommentClick}
