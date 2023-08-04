@@ -41,6 +41,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
       setTimeout(() => {
         setIsOpen(false);
         reset();
+        setImageFiles([]);
       }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
     } catch (error) {
       setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
@@ -88,6 +89,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
 
   const handleFormValidation = () => {
     if (
+      !errors.level ||
       !errors.title ||
       !errors.content ||
       !errors.startDate ||
@@ -113,8 +115,11 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           id="level-select"
           {...register("level", { required: true })}
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
+          defaultValue="난이도를 선택해주세요"
         >
-          <option className="text-grayscale-40">난이도를 선택해주세요</option>
+          <option value="" className="text-grayscale-40" selected hidden>
+            난이도를 선택해주세요
+          </option>
           <option value="초">초</option>
           <option value="중">중</option>
           <option value="고">고</option>
@@ -156,8 +161,10 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           </label>
           <div className="flex justify-start items-center">
             {imageFiles.map((file, index) => (
+              // console.log(file);
+
               <div
-                key={index}
+                key={file.name}
                 className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
               >
                 {file ? (
