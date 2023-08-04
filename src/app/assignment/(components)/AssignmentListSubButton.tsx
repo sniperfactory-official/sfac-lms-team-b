@@ -6,14 +6,13 @@ import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssign
 import { useRouter } from "next/navigation";
 import { User } from "@/types/firebase.types";
 
-
 interface Props {
   targetId: string;
-  userInfo : User;
+  userInfo: User;
 }
 
 //추후 userinfo도 넣어야함
-const AssignmentListSubButton = ({targetId, userInfo}: Props) => {
+const AssignmentListSubButton = ({ targetId, userInfo }: Props) => {
   const submittionHooks = useGetSubmittedAssignments(targetId);
   const router = useRouter();
   let isSubmitted;

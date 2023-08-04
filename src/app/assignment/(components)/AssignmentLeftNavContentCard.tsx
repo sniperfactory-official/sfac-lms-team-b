@@ -11,9 +11,9 @@ export interface AssignmentExtracted
 }
 
 const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
-
   const ref = useRef<HTMLDivElement>(null);
   const { id, order, title, movecard, index, isEditing } = props;
+  const isediting = true;
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     item: () => {
@@ -38,6 +38,7 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
         return;
       }
       movecard(dragIndex, hoverIndex);
+      console.log(dragIndex,hoverIndex)
       item.index = hoverIndex;
     },
   }));
@@ -45,26 +46,26 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
   drag(drop(ref));
 
   return (
-  <div>
-    {
-      isEditing ? (
-      <input type="checkbox" name="assign" value={id}>
+    <div>
+      {isDragging ? (
+          <div
+            ref={ref}
+            key={id}
+            className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+          >
+            <input type="checkbox" name="assign" value={id}/>
+            <Link href={"/assignment/" + id}>
+              {title}
+              </Link>
+          </div>
+      ) : (
         <div
-          ref={ref}
           key={id}
           className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
         >
           <Link href={"/assignment/" + id}>{title}</Link>
         </div>
-      </input>
-      ) : (
-      <div
-        key={id}
-        className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
-      >
-        <Link href={"/assignment/" + id}>{title}</Link>
-      </div>
-    )}
+      )}
     </div>
   );
 };

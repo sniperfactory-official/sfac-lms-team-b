@@ -17,17 +17,17 @@ const deleteRegisteredAssignment = async (assignmentId: string) => {
 const useDeleteRegisteredAssignment = () => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    (assignmentId: string) => 
-      deleteRegisteredAssignment(assignmentId), 
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries(["getAssignment", ""]);
-        },
-        onError: err => {
-          console.log(err);
-        },
-      });
-      return { mutate, isLoading, error };
+    (assignmentId: string) => deleteRegisteredAssignment(assignmentId),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["getAssignment", ""]);
+      },
+      onError: err => {
+        console.log(err);
+      },
+    },
+  );
+  return { mutate, isLoading, error };
 };
 
 export { useDeleteRegisteredAssignment };

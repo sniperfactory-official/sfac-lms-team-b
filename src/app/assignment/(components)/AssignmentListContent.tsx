@@ -11,19 +11,13 @@ interface AssignmentNumberAdded extends Assignment {
   assignmentNumber: number;
 }
 
-const USER_INFO = {
-  id: 1,
-  role: "수강생", // 관리자, 수강생
-  username: "김지은",
+type Props = {
+  userInfo: User;
 };
-
-type Props= {
-  userInfo : User;
-}
-const AssignmentListContent = (prop:Props) => {
+const AssignmentListContent = (prop: Props) => {
   const assignmentData = useGetAssignment("");
   const router = useRouter();
-  const userinfo = {...prop.userInfo}
+  const userinfo = { ...prop.userInfo };
   let htmlContent;
 
   if (assignmentData.isLoading === false) {
@@ -42,18 +36,18 @@ const AssignmentListContent = (prop:Props) => {
             {assign.title}
           </span>
         </div>
-        {USER_INFO.role === "관리자" ? (
+        {userinfo.role === "관리자" ? (
           <button
             type="button"
             onClick={() => {
-              router.push("/assignment/" + assign.assignmentNumber);
+              router.push("/assignment/" + assign.id);
             }}
-            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 border-none"
+            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80  text-slate-50 border-none"
           >
             확인하기
           </button>
         ) : (
-          <AssignmentListSubButton targetId={assign.id} userInfo={userinfo}/>
+          <AssignmentListSubButton targetId={assign.id} userInfo={userinfo} />
         )}
       </div>
     ));

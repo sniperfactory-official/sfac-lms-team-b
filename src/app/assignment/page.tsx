@@ -7,17 +7,16 @@ import useUserInfo from "@/hooks/user/useUserInfo";
 import { RootState } from "@/redux/store";
 import { User } from "@/types/firebase.types";
 
-
 const Assignment = () => {
   const userId = useSelector((state: RootState) => {
     return state.userId;
   });
 
   const user = useUserInfo(userId.uid) as User;
-  const userInfo = {...user}
+  const userInfo = { ...user };
   return (
     <div>
-      <AssignmentListContent userInfo={userInfo}/>
+      <AssignmentListContent userInfo={userInfo} />
     </div>
   );
 };
