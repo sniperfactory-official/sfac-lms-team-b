@@ -20,7 +20,6 @@ const fetchCourseList = async () => {
   const courseQuerySnapshot = await getDocs(courseQuery);
   const lectureQuery = query(collection(db, "lectures"));
   const lectureQuerySnapshot = await getDocs(lectureQuery);
-
   courseQuerySnapshot.forEach(courseDoc => {
     const lectureList: ILecture[] = [];
     const courseId = courseDoc.id;
@@ -38,6 +37,7 @@ const fetchCourseList = async () => {
       courseId,
     });
   });
+  courseField.sort((a, b) => a.courseData.order - b.courseData.order)  
   return courseField;
   // courseFiled 데이터 구조
   // courseData : {title: 'IT기본', createdAt: Timestamp, updatedAt: Timestamp}

@@ -44,6 +44,7 @@ const useContentSyncer = () => {
   // lecture 만들 경우 refech된 courseList setCurrentCourse통해서 반영
   useEffect(() => {
     if (!currentCourse) return;
+    if(courseList!.length !== seletedCourse.length) return
     let SELECTED_COURSE_INDEX = 0;
     for (let i = 0; i < seletedCourse.length; i++) {
       if (seletedCourse[i] === true) {
@@ -61,6 +62,7 @@ const useContentSyncer = () => {
 
   useEffect(() => {
     if (!currentCourse) return;
+    if(courseList!.length !== seletedCourse.length) return
     let SELECTED_COURSE_INDEX = 0;
     for (let i = 0; i < seletedCourse.length; i++) {
       if (seletedCourse[i] === true) {
