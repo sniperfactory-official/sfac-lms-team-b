@@ -187,47 +187,43 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
             />
           </label>
           <div className="flex justify-start items-center">
-            {changeFiles.map((file, index) => {
-              console.log(file);
-
-              return (
-                <div
-                  key={index}
-                  className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
-                >
-                  {file ? (
-                    <>
+            {changeFiles.map((file, index) => (
+              <div
+                key={index}
+                className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+              >
+                {file ? (
+                  <>
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt="assignment"
+                      width="0"
+                      height="0"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => handleImageRemove(index)}
+                      className="absolute top-1 right-1"
+                    >
                       <Image
-                        src={URL.createObjectURL(file)}
-                        alt="assignment"
-                        width="0"
-                        height="0"
-                        className="w-full h-full object-cover"
+                        src={"/images/image_delete.svg"}
+                        alt={"이미지 삭제"}
+                        width={14}
+                        height={14}
                       />
-                      <button
-                        onClick={() => handleImageRemove(index)}
-                        className="absolute top-1 right-1"
-                      >
-                        <Image
-                          src={"/images/image_delete.svg"}
-                          alt={"이미지 삭제"}
-                          width={14}
-                          height={14}
-                        />
-                      </button>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              );
-            })}
+                    </button>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex justify-start items-center">
+      <div className="flex absolute w-[720px] h-[50px] bottom-[33px] items-center justify-evenly">
+        <div className="flex items-center">
           <label
             htmlFor="submit-period"
             className="font-bold text-base mr-[12px]"
@@ -245,7 +241,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
             {...register("endDate", { required: true })}
           />
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center">
           <button
             type="submit"
             className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
