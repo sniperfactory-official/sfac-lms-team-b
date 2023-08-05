@@ -37,7 +37,7 @@ const fetchCourseList = async () => {
       courseId,
     });
   });
-  courseField.sort((a, b) => a.courseData.order - b.courseData.order)  
+  courseField.sort((a, b) => a.courseData.order - b.courseData.order);
   return courseField;
   // courseFiled 데이터 구조
   // courseData : {title: 'IT기본', createdAt: Timestamp, updatedAt: Timestamp}

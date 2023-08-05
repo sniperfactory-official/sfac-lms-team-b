@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { QUERY_KEY } from "@/constants/queryKey";
-import { collection, addDoc, serverTimestamp, getDocs } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "@utils/firebase";
 
 const createCourse = async () => {
@@ -10,7 +15,7 @@ const createCourse = async () => {
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
     title: "새로운 섹션",
-    order: courseSnapshot.size
+    order: courseSnapshot.size,
   };
 
   try {
