@@ -1,9 +1,9 @@
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import useAuth from "../user/useAuth";
+import useUser from "../user/useUser";
 
 const useLectureInfo = () => {
-  const user = useAuth();
+  const { user } = useUser();
   const courseId: string = useSelector(
     (state: RootState) => state.lectureInfo.courseId,
   );
