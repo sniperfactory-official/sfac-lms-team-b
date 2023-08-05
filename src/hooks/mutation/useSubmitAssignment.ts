@@ -1,83 +1,48 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  collection,
-  doc,
-  addDoc,
-  DocumentReference,
-  Timestamp,
-} from "firebase/firestore";
+import { useQuery } from "@tanstack/react-query";
+import { collection, doc, addDoc, DocumentReference } from "firebase/firestore";
+
 import { db } from "@utils/firebase";
-import { Attachment, User } from "@/types/firebase.types";
-import { getAuth } from "firebase/auth";
+import { SubmittedAssignment } from "@/types/firebase.types";
 
 const submitAssignment = async (
   assignmentId: string,
-  attachmentValue: string[],
+  submitAssignmentValue: SubmittedAssignment,
 ): Promise<DocumentReference> => {
-  const auth = getAuth();
-  const user: any = auth.currentUser; // FIXME: any 말고 ts type 수정 필요함
-  const userId = user.uid;
-  const userRef = doc(db, "user", userId);
+  const assignmentRef = doc(db, "assignments", assignmentId);
 
-  try {
-    const createdAtTime = new Date();
-    const updatedAtTime = new Date();
-    const createdAtTimeStamp = Timestamp.fromDate(createdAtTime);
-    const updatedAtTimeStamp = Timestamp.fromDate(updatedAtTime);
+  const addSubmittedAssignmentData = await addDoc(
+    collection(db, "submittedAssignments"),
+    submitAssignmentValue,
+  );
 
-    const assignmentRef = doc(db, "assignments", assignmentId);
-    const addSubmittedAssignmentData = await addDoc(
-      collection(db, "submittedAssignments"),
-      {
-        assignmentId: assignmentRef,
-        isRead: false,
-        createdAt: createdAtTimeStamp,
-        updatedAt: updatedAtTimeStamp,
-        userId: userRef,
-      },
-    );
+  // submittedAssignment안에 서브컬렉션으로 feedbacks가 존재하므로 넣어줌
+  await addDoc(
+    collection(
+      db,
+      "submittedAssignments",
+      addSubmittedAssignmentData.id,
+      "feedbacks",
+    ),
+    {},
+  );
 
-    await addDoc(collection(db, "attachments"), {
-      links: [...attachmentValue],
-      submittedAssignmentId: addSubmittedAssignmentData,
-      // createdAt: createdAtTimeStamp,
-      userId: userRef,
-    });
-
-    // submittedAssignment안에 서브컬렉션으로 feedbacks가 존재하므로 넣어줌
-    await addDoc(
-      collection(
-        db,
-        "submittedAssignments",
-        addSubmittedAssignmentData.id,
-        "feedbacks",
-      ),
-      {},
-    );
-
-    return addSubmittedAssignmentData;
-  } catch (err) {
-    console.log(err);
-    throw err;
-  }
+  return addSubmittedAssignmentData;
 };
 
-const useSubmitAssignment = (assignmentId: string) => {
-  const queryClient = useQueryClient();
-  const { mutate, isLoading, error } = useMutation(
-    (attachmentValue: string[]) =>
-      submitAssignment(assignmentId, attachmentValue),
+const useSubmitAssignmnet = (
+  assignmentId: string,
+  submitAssignmentValue: SubmittedAssignment,
+) => {
+  const { data, isLoading, error } = useQuery(
+    ["submitAssignmnet", assignmentId],
+    () => submitAssignment(assignmentId, submitAssignmentValue),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
-      },
-      onError: err => {
-        console.log(err);
-      },
+      cacheTime: 0, // 업로드 기능 이므로 cacheTime 0
+      refetchOnWindowFocus: false,
     },
   );
 
-  return { mutate, isLoading, error };
+  return { data, isLoading, error };
 };
 
-export { useSubmitAssignment };
+export { useSubmitAssignmnet };

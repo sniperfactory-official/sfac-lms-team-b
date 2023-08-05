@@ -68,25 +68,8 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
 
   return (
     <div className="w-[775px] h-[200px] border rounded-lg p-[10px] flex flex-row items-center mb-[15px]">
-      <div className="w-1/3 h-5/6 rounded-lg mr-[25px] relative justify-center items-center flex">
-        <Image
-          src={thumnail}
-          alt="thumnail"
-          placeholder="blur"
-          className="absolute left-[0px] top-[0px] w-full h-full"
-        />
-        {isPrivate && (
-          <>
-            <div className="absolute left-[0px] top-[0px] bg-gray-600 w-full h-full rounded-lg opacity-40 flex justify-center items-center"></div>
-            <Image
-              src="/images/private.svg"
-              alt="비공개 강의"
-              width={50}
-              height={50}
-              className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-            />
-          </>
-        )}
+      <div className="w-1/3 h-5/6 rounded-lg mr-[25px]">
+        <Image src={thumnail} alt="thumnail" placeholder="blur" />
       </div>
       <div className="w-2/3 h-5/6 ml-20px flex flex-col">
         <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
@@ -104,7 +87,7 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
           </div>
         )}
         <div className="font-bold mb-[10px]">
-          {LECTURE_OBJ[lectureType].emoji} {title}
+          {LECTURE_OBJ[lectureType].emoji} {lecture.title}
         </div>
         <div className="flex flex-row justify-between mt-[20px]">
           <div className="flex flex-col">

@@ -1,7 +1,7 @@
 import EmptyContents from "@/components/EmptyContents";
-import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
-import AssignmentTeacherViewCard from "../(components)/AssignmentTeacherViewCard";
-import AssignmentStudentViewCard from "../(components)/AssignmentStudentViewCard";
+import ProfileImage from "../../(components)/AssignmentProfileImage";
+import TeacherViewCard from "../../(components)/AssignmentTeacherViewCard";
+import StudentViewCard from "../../(components)/AssignmentStudentViewCard";
 
 // FIXME: 임시 유저 정보, 추후 firebase 들고 오면 삭제, 삭제시 반드시 binding 확인
 const user = {
@@ -10,13 +10,13 @@ const user = {
   username: "김지은",
 };
 
-const AssignmentDetailPage = () => {
+const Detail = () => {
   return (
     <div className="py-[36px] px-[20px]">
       <div className="px-[20px] py-[29px]">
         <div className="flex justify-between items-start">
           <div className="flex justify-start items-center gap-[16px] mb-[31px]">
-            <AssignmentProfileImage />
+            <ProfileImage />
             <div>
               <div className="flex justify-start items-center gap-[9px]">
                 <p className="text-[16px] font-[700] text-grayscale-100">
@@ -74,16 +74,16 @@ const AssignmentDetailPage = () => {
         <div>
           {/* 제출된 과제 존재 유무에 따른 분기처리 필요 */}
           <EmptyContents emptyTxt="제출된 과제가 없습니다" />
-          <AssignmentTeacherViewCard />
+          <TeacherViewCard />
         </div>
       ) : null}
       {/* END 강사용카드 */}
 
       {/* 학생용카드 */}
-      {user.role === "수강생" ? <AssignmentStudentViewCard /> : null}
+      {user.role === "수강생" ? <StudentViewCard /> : null}
       {/* END 학생용카드 */}
     </div>
   );
 };
 
-export default AssignmentDetailPage;
+export default Detail;
