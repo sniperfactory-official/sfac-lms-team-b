@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import ReplySection from "@/app/classroom/(components)/modal/comment/ReplySection";
 import CommentsSection from "@/app/classroom/[lectureId]/(components)/lectureRoom/CommentsSection";
+import CommentForm from "@/app/classroom/(components)/modal/comment/CommentForm";
+import Layout from "@/app/classroom/(components)/modal/common/Layout";
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 
 interface LectureCommentProps {
   lectureId: string;
@@ -13,6 +16,7 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
     null,
   );
   const dispatch = useDispatch();
+  const { commentModalOpen } = useClassroomModal();
 
   const handleCommentClick = (id: string) => {
     setSelectedCommentId(id);
@@ -55,6 +59,12 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
         />
         {selectedCommentId && (
           <ReplySection commentId={selectedCommentId} lectureId={lectureId} />
+        )}
+        {commentModalOpen && (
+          <Layout>
+            <h2 className="text-xl font-bold">댓글 달기</h2>
+            <CommentForm lectureId={lectureId} isReply={false} />
+          </Layout>
         )}
       </main>
     </section>
