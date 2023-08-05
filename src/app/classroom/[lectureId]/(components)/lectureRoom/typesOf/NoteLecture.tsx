@@ -9,9 +9,9 @@ interface NoteLectureProps {
 const NoteLecture: FC<NoteLectureProps> = ({ content }) => {
   const { textContent } = content;
   return (
-    <div className="noteContainer h-full w-full">
+    <div className="noteContainer h-[700px] overflow-y-scroll w-full">
       <div className="prose p-10">
-        <ReactMarkdown>{textContent}</ReactMarkdown>
+        <ReactMarkdown>{textContent ?? ""}</ReactMarkdown>
       </div>
     </div>
   );

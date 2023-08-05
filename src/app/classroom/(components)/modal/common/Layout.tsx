@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { closeModal } from "@/redux/slice/classroomModalSlice";
 import Image from "next/image";
+import { resetInput } from "@/redux/slice/lectureInfoSlice";
+import { resetDropzone } from "@/redux/slice/dropzoneFileSlice";
 
 interface ModalProps {
   children: ReactNode;
@@ -27,7 +29,11 @@ const Layout: React.FC<ModalProps> = ({ children }) => {
             width={24}
             height={24}
             className="absolute top-[40px] right-[35px]"
-            onClick={() => dispatch(closeModal())}
+            onClick={() => {
+              dispatch(resetInput());
+              dispatch(resetDropzone());
+              dispatch(closeModal());
+            }}
           />
         </button>
       </article>

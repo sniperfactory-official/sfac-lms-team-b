@@ -10,14 +10,23 @@ const useLectureInfo = () => {
   const lectureType: string = useSelector(
     (state: RootState) => state.lectureInfo.lectureType,
   );
+  const externalLink: string = useSelector(
+    (state: RootState) => state.lectureInfo.externalLink,
+  );
   const lectureTitle: string = useSelector(
     (state: RootState) => state.lectureInfo.lectureTitle,
   );
-  const lectureContent: string = useSelector(
-    (state: RootState) => state.lectureInfo.lectureContent,
+  const textContent: string = useSelector(
+    (state: RootState) => state.lectureInfo.textContent,
   );
   const noteImages: string[] = useSelector(
     (state: RootState) => state.lectureInfo.noteImages,
+  );
+  const videoURL: string = useSelector(
+    (state: RootState) => state.lectureInfo.videoURL,
+  );
+  const videoLength: number = useSelector(
+    (state: RootState) => state.lectureInfo.videoLength,
   );
   const startDate = useSelector(
     (state: RootState) => state.lectureInfo.startDate,
@@ -32,8 +41,11 @@ const useLectureInfo = () => {
     courseId,
     lectureType,
     lectureTitle,
-    lectureContent,
+    externalLink,
+    textContent,
     noteImages,
+    videoURL,
+    videoLength,
     startDate,
     endDate,
     isLecturePrivate,

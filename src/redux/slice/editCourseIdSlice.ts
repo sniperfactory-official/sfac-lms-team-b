@@ -1,3 +1,4 @@
+import { ILecture } from "@/hooks/queries/useGetCourseList";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface DeleteId {
@@ -10,6 +11,7 @@ export interface IEditCourse {
   isEditMode: boolean;
   lectureCount: number;
   selectedCourse: boolean[];
+  currentLectures: ILecture[];
 }
 
 const initialState: IEditCourse = {
@@ -17,6 +19,7 @@ const initialState: IEditCourse = {
   isEditMode: false,
   lectureCount: 0,
   selectedCourse: [],
+  currentLectures: [],
 };
 
 const editCourseSlice = createSlice({
@@ -54,6 +57,10 @@ const editCourseSlice = createSlice({
     setSelectedCourse: (state, action) => {
       state.selectedCourse = action.payload;
     },
+    // 현재 선택된 Course의 하위 lecture
+    setCurrentLecture: (state, action) => {
+      state.currentLectures = action.payload;
+    },
   },
 });
 
@@ -62,5 +69,6 @@ export const {
   handleEditMode,
   setLectureCount,
   setSelectedCourse,
+  setCurrentLecture,
 } = editCourseSlice.actions;
 export default editCourseSlice.reducer;

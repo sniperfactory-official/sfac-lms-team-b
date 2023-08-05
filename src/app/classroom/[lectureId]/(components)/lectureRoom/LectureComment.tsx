@@ -3,14 +3,12 @@ import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import ReplySection from "@/app/classroom/(components)/modal/comment/ReplySection";
 import CommentsSection from "@/app/classroom/[lectureId]/(components)/lectureRoom/CommentsSection";
-import useGetComments from "@/hooks/queries/useGetComments";
 
 interface LectureCommentProps {
   lectureId: string;
 }
 
 const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
-  const { data, isLoading } = useGetComments(lectureId);
   const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
     null,
   );
@@ -19,21 +17,27 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
   const handleCommentClick = (id: string) => {
     setSelectedCommentId(id);
     dispatch(
-      setModalVisibility({ modalName: "replyCommentModalOpen", visible: true }),
+      setModalVisibility({
+        modalName: "replyCommentModalOpen",
+        visible: true,
+        modalRole: "create",
+      }),
     );
   };
 
   const handleButtonClick = () => {
     dispatch(
-      setModalVisibility({ modalName: "commentModalOpen", visible: true }),
+      setModalVisibility({
+        modalName: "commentModalOpen",
+        visible: true,
+        modalRole: "create",
+      }),
     );
   };
 
-  if (isLoading) return <div className="w-full h-full">Loading...</div>;
-
   return (
     <section className="CommunityContainer bg-gray-100 w-1/4 float-right h-full">
-      <header className="m-3 flex content-center justify-between items-center">
+      <header className="m-3 flex content-center justify-between items-center h-[50px]">
         <h1 className="text-center text-xl font-semibold pl-2">
           강의 커뮤니티
         </h1>
@@ -44,11 +48,10 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
           작성
         </button>
       </header>
-      <main>
+      <main className="overflow-y-auto h-5/6 pb-[50px]">
         <CommentsSection
-          comments={data}
-          onCommentClick={handleCommentClick}
           lectureId={lectureId}
+          onCommentClick={handleCommentClick}
         />
         {selectedCommentId && (
           <ReplySection commentId={selectedCommentId} lectureId={lectureId} />
