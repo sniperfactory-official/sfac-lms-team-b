@@ -12,6 +12,5 @@ const useAuth = () => {
 
   return user;
 };
-// test
 
 export default useAuth;
