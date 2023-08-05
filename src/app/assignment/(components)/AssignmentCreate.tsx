@@ -161,8 +161,6 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           </label>
           <div className="flex justify-start items-center">
             {imageFiles.map((file, index) => (
-              // console.log(file);
-
               <div
                 key={file.name}
                 className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
@@ -197,8 +195,8 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex justify-start items-center">
+      <div className="flex absolute w-[720px] h-[50px] bottom-[33px] items-center justify-evenly">
+        <div className="items-center">
           <label
             htmlFor="submit-period"
             className="font-bold text-base mr-[12px]"
@@ -216,7 +214,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
             {...register("endDate", { required: true })}
           />
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center">
           <button
             type="submit"
             className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
