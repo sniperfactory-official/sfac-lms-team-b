@@ -3,28 +3,30 @@
 import React from "react";
 import { useGetAssignment } from "@hooks/queries/useGetAssignment";
 import { Assignment } from "@/types/firebase.types";
-import Link from "next/link";
+import AssignmentListSubButton from "./AssignmentListSubButton";
+import { useRouter } from "next/navigation";
+import { User } from "@/types/firebase.types";
 
 interface AssignmentNumberAdded extends Assignment {
   assignmentNumber: number;
 }
 
-const USER_INFO = {
-  id: 1,
-  role: "관리자", // 관리자, 수강생
-  username: "김지은",
+type Props = {
+  userInfo: User;
 };
-
-const AssignmentListContent = () => {
+const AssignmentListContent = (prop: Props) => {
   const assignmentData = useGetAssignment("");
+  const router = useRouter();
+  const userinfo = { ...prop.userInfo };
   let htmlContent;
 
   if (assignmentData.isLoading === false) {
     const assignmentInfo = assignmentData.data;
+    // map이 assignmentInfo의 property로 인식되어 경고문구가 뜸
     htmlContent = assignmentInfo?.map((assign: AssignmentNumberAdded) => (
       <div
-        key={assign.assignmentNumber}
-        className="w-[775px] h-[87px] flex-shrink-0 border-radius-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center px-[24px]"
+        key={assign.id}
+        className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center"
       >
         <div className="flex w-[244px] flex-col items-start gap-[10px]">
           <span className="p-[4px] px-[10px] rounded-[4px] bg-grayscale-5">
@@ -34,20 +36,18 @@ const AssignmentListContent = () => {
             {assign.title}
           </span>
         </div>
-        {USER_INFO.role === "관리자" ? (
-          <Link
-            href={"/assignment/" + assign.assignmentNumber}
-            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 border-none"
+        {userinfo.role === "관리자" ? (
+          <button
+            type="button"
+            onClick={() => {
+              router.push("/assignment/" + assign.id);
+            }}
+            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80  text-slate-50 border-none"
           >
             확인하기
-          </Link>
+          </button>
         ) : (
-          <Link
-            href={"/assignment/" + assign.assignmentNumber}
-            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 border-none"
-          >
-            제출하기
-          </Link>
+          <AssignmentListSubButton targetId={assign.id} userInfo={userinfo} />
         )}
       </div>
     ));
