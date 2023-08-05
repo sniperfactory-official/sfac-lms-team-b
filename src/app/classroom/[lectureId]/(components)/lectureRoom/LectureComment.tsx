@@ -1,20 +1,26 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
+import useGetAllComments from "@/hooks/queries/useGetAllComments";
+import useFilterTopLevelComments from "@/hooks/lecture/useFilterTopLevelComments";
+import useGetSelectedCommentAndReplies from "@/hooks/lecture/useGetSelectedCommentAndReplies";
+
+import LectureCommentHeader from "./LectureCommentHeader";
 import ReplySection from "@/app/classroom/(components)/modal/comment/ReplySection";
 import CommentsSection from "@/app/classroom/[lectureId]/(components)/lectureRoom/CommentsSection";
 import CommentForm from "@/app/classroom/(components)/modal/comment/CommentForm";
 import Layout from "@/app/classroom/(components)/modal/common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+import { useLectureCommentContext } from "@/app/classroom/(components)/contexts/LectureCommentContext";
 
 interface LectureCommentProps {
   lectureId: string;
 }
 
 const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
-  const [selectedCommentId, setSelectedCommentId] = useState<string | null>(
-    null,
-  );
+  const { selectedCommentId, setSelectedCommentId } =
+    useLectureCommentContext();
+  const { data: comments, isLoading, isError } = useGetAllComments(lectureId);
   const dispatch = useDispatch();
   const { commentModalOpen } = useClassroomModal();
 
@@ -39,26 +45,29 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
     );
   };
 
+  const topLevelComments = useFilterTopLevelComments(comments);
+  const { comment, replies } = useGetSelectedCommentAndReplies(lectureId);
+
   return (
     <section className="CommunityContainer bg-gray-100 w-1/4 float-right h-full">
-      <header className="m-3 flex content-center justify-between items-center h-[50px]">
-        <h1 className="text-center text-xl font-semibold pl-2">
-          강의 커뮤니티
-        </h1>
-        <button
-          className="m-5 h-11 w-28 text-white rounded-md bg-blue-600 hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"
-          onClick={handleButtonClick}
-        >
-          작성
-        </button>
-      </header>
+      <LectureCommentHeader onButtonClick={handleButtonClick} />
       <main className="overflow-y-auto h-5/6 pb-[50px]">
-        <CommentsSection
-          lectureId={lectureId}
-          onCommentClick={handleCommentClick}
-        />
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : isError ? (
+          <div>Error loading comments</div>
+        ) : (
+          <CommentsSection
+            onCommentClick={handleCommentClick}
+            comments={topLevelComments}
+          />
+        )}
         {selectedCommentId && (
-          <ReplySection commentId={selectedCommentId} lectureId={lectureId} />
+          <ReplySection
+            comment={comment || null}
+            replies={replies}
+            lectureId={lectureId}
+          />
         )}
         {commentModalOpen && (
           <Layout>
