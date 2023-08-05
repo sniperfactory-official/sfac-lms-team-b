@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from "react";
+import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import ReplySection from "@/app/classroom/(components)/modal/comment/ReplySection";

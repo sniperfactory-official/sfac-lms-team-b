@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import useGetLectureInfo from "@/hooks/queries/useGetLectureInfo";
 
 import VideoLecture from "./VideoLecture";
 import NoteLecture from "./NoteLecture";

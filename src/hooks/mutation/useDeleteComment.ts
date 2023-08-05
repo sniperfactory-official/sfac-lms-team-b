@@ -4,17 +4,16 @@ import { useDispatch } from "react-redux";
 import {
   collection,
   doc,
-  deleteDoc,
   query,
   where,
   getDocs,
-  DocumentData,
   runTransaction,
 } from "firebase/firestore";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 
 const deleteCommentFromDB = async (commentId: string) => {
   const commentRef = doc(db, "lectureComments", commentId);
+  let isComment;
 
   await runTransaction(db, async transaction => {
     const commentSnap = await transaction.get(commentRef);
@@ -23,6 +22,8 @@ const deleteCommentFromDB = async (commentId: string) => {
     }
 
     const comment = commentSnap.data();
+    isComment = !comment.parentId;
+
     if (comment.parentId) {
       const parentCommentRef = doc(db, "lectureComments", comment.parentId);
       const parentCommentSnapshot = await transaction.get(parentCommentRef);
@@ -46,6 +47,8 @@ const deleteCommentFromDB = async (commentId: string) => {
       transaction.delete(reply.ref);
     });
   });
+
+  return isComment;
 };
 
 export const useDeleteComment = () => {
@@ -53,17 +56,24 @@ export const useDeleteComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteCommentFromDB, {
-    onSuccess: () => {
+    onSuccess: isComment => {
       queryClient.invalidateQueries(["comments"]);
-      dispatch(
-        setModalVisibility({ modalName: "commentModalOpen", visible: false }),
-      );
-      dispatch(
-        setModalVisibility({
-          modalName: "replyCommentModalOpen",
-          visible: false,
-        }),
-      );
+      if (isComment) {
+        dispatch(
+          setModalVisibility({
+            modalName: "commentModalOpen",
+            visible: false,
+            modalRole: "edit",
+          }),
+        );
+        dispatch(
+          setModalVisibility({
+            modalName: "replyCommentModalOpen",
+            visible: false,
+            modalRole: "edit",
+          }),
+        );
+      }
     },
   });
 };
