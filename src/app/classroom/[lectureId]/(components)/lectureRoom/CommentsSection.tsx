@@ -1,8 +1,5 @@
-import React, { FC, useRef, useEffect, useState } from "react";
-import CommentForm from "../../../(components)/modal/comment/CommentForm";
+import React, { FC } from "react";
 import Comment from "../../../(components)/modal/comment/Comment";
-import Layout from "../../../(components)/modal/common/Layout";
-import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useGetComment from "@/hooks/queries/useGetComment";
 import MiniLoadingSpinner from "@/components/Loading/MiniLoadingSpinner";
 import useObserver from "@/hooks/lecture/useObserver";
@@ -16,7 +13,6 @@ const CommentsSection: FC<CommentsSectionProps> = ({
   lectureId,
   onCommentClick,
 }: CommentsSectionProps) => {
-  const { commentModalOpen } = useClassroomModal();
   const {
     data: comments,
     fetchNextPage,
@@ -47,12 +43,6 @@ const CommentsSection: FC<CommentsSectionProps> = ({
         </div>
       ) : (
         <li ref={observerElement}></li>
-      )}
-      {commentModalOpen && (
-        <Layout>
-          <h2 className="text-xl font-bold">댓글 달기</h2>
-          <CommentForm lectureId={lectureId} isReply={false} />
-        </Layout>
       )}
     </ul>
   );
