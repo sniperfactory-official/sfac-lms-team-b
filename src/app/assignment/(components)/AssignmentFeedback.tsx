@@ -1,15 +1,15 @@
 "use client";
 import { useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import { useForm } from "react-hook-form";
-import PageToast from "@/components/PageToast";
-import useUserInfo from "@/hooks/user/useUserInfo";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
+import { RootState } from "@/redux/store";
+
 const user = [
   {
     id: 1,
@@ -31,16 +31,14 @@ interface IAssignmentFeedbackProps {
   submittedAssignmentId: string;
 }
 
-interface IFormType {
+interface IFeedbackForm {
   feedback: string;
 }
 
 const AssignmentFeedback = ({
   submittedAssignmentId,
 }: IAssignmentFeedbackProps) => {
-  // const [toastMsg, setToastMsg] = useState();
-  // const [isAccept, setIsAccept] = useState();
-  // const [onClose, setOnClose] = useState();
+  const [updateDelete, setUpdateDelete] = useState(false);
 
   const loginUserId = useSelector((state: RootState) => {
     return state.userId.uid;
@@ -53,7 +51,7 @@ const AssignmentFeedback = ({
     handleSubmit,
     formState: { isValid },
     reset,
-  } = useForm<IFormType>({ mode: "onChange" });
+  } = useForm<IFeedbackForm>({ mode: "onChange" });
 
   const {
     data: feedbacks,
@@ -67,7 +65,7 @@ const AssignmentFeedback = ({
     error: err,
   } = useCreateFeedback("gZWELALnKoZLzJKjXGUM", loginUserId); //후에 submittedId로 대체
 
-  const onValid = (textValue: IFormType) => {
+  const onValid = (textValue: IFeedbackForm) => {
     mutate({
       content: textValue.feedback,
       createdAt: new Date(),
@@ -149,6 +147,8 @@ const AssignmentFeedback = ({
                   userId={feedback.userId}
                   submittedAssignmentId={submittedAssignmentId}
                   loginUserId={loginUserId}
+                  updateDelete={updateDelete}
+                  setUpdateDelete={setUpdateDelete}
                 />
               );
             })}
@@ -166,12 +166,13 @@ const AssignmentFeedback = ({
                 {...register("feedback", {
                   required: true,
                 })}
-                className="w-full outline-none placeholder:text-grayscale-20 grow text-[14px]"
+                className="w-full outline-none placeholder:text-grayscale-20 grow text-[14px] disabled:bg-white"
                 placeholder="댓글을 입력해주세요."
                 style={{ resize: "none" }}
                 rows={3}
                 defaultValue={""}
                 maxLength={500}
+                disabled={updateDelete}
               />
               <div className="flex justify-end items-center mt-[16px]">
                 <button
@@ -184,15 +185,6 @@ const AssignmentFeedback = ({
               </div>
             </form>
           </div>
-          {/* {
-            <div className="absolute left-12 bottom-16">
-              <PageToast
-                toastMsg={toastMsg}
-                isAccept={isAccept}
-                onClose={onClose}
-              />
-            </div>
-          } */}
         </div>
       </div>
     </div>
