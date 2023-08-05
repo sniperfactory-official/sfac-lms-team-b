@@ -5,7 +5,7 @@ import Image from "next/image";
 import useGetLectureInfo from "@/hooks/queries/useGetLectureInfo";
 import UserImage from "@/app/classroom/(components)/modal/comment/UserImage";
 import timestampToDate from "@/utils/timestampToDate";
-import MiniLoadingSpinner from "@/components/Loading/MiniLoadingSpinner";
+import UserInfo from "@/app/classroom/(components)/modal/comment/UserInfo";
 
 interface LectureHeaderProps {
   lectureId: string;
@@ -46,14 +46,7 @@ const LectureHeader: FC<LectureHeaderProps> = ({ lectureId }) => {
               </div>
               <div className="flex items-center mt-2">
                 <UserImage profileImage={profileImage} />
-                <div className="flex items-center ml-2">
-                  <span className=" text-sm font-semibold text-blue-500 ">
-                    {username}
-                  </span>
-                  <span className="text-sm ml-1 text-gray-500">
-                    &#183; {role}
-                  </span>
-                </div>
+                <UserInfo username={username} role={role} isHeader={true} />
               </div>
             </>
           )
