@@ -5,6 +5,7 @@ import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
+import useImageUpload from "@/hooks/mutation/useUpdateImage";
 
 interface AssignmentUpdateProps {
   isOpen: boolean;
@@ -17,9 +18,10 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   setIsOpen,
   assignmentId,
 }) => {
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [changeFiles, setChangeFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const {
     register,
@@ -29,7 +31,6 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
     reset,
   } = useForm<Assignment>();
 
-  const updateAssignmentMutation = useUpdateAssignment(assignmentId);
   const { data, isLoading, error } = useGetAssignment(assignmentId);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setValue("level", data.level);
         setValue("title", data.title);
         setValue("content", data.content);
-
+        setImageUrls(data.images || []);
         // 시간을 yyyy.mm.dd 로 불러오는 것 추후에 해야합니다.
 
         // setValue("startDate", data.startDate);
@@ -50,12 +51,22 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   }, [isOpen]);
   // 일단 isOpen으로 해놓았지만 추후 변경해보자
 
+  const updateAssignmentMutation = useUpdateAssignment(assignmentId);
+  const imageUploadMutation = useImageUpload();
+
   const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
-    assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
-    assignmentData.readStudents = [];
+    assignmentData.images = changeFiles.map(file => URL.createObjectURL(file));
 
     try {
+      //이미지등록코드
+      const uploadPromises = changeFiles.map(file =>
+        imageUploadMutation.mutateAsync(file),
+      );
+      const uploadedUrls = await Promise.all(uploadPromises);
+      assignmentData.images = uploadedUrls;
+      //이미지등록코드
+
       updateAssignmentMutation.mutate(assignmentData);
 
       setToastMsg("과제가 성공적으로 수정되었습니다.");
@@ -64,6 +75,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
       setTimeout(() => {
         setIsOpen(false);
         reset();
+        setChangeFiles([]);
       }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
     } catch (error) {
       setToastMsg("과제 수정에 실패했습니다. 다시 시도해주세요.");
@@ -90,12 +102,13 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
       }
 
       // 이미지 개수를 확인하여 5개 이상인 경우 토스트 메시지 표시
-      if (imageFiles.length + fileList.length > MAX_IMAGES) {
+      if (changeFiles.length + fileList.length > MAX_IMAGES) {
         setToastMsg(`이미지는 최대 ${MAX_IMAGES}개까지 등록 가능합니다.`);
         setIsAccept(false);
         return;
       }
-      setImageFiles(prevFiles => [...prevFiles, ...fileList]);
+
+      setChangeFiles(prevFiles => [...prevFiles, ...fileList]);
     }
   };
 
@@ -103,14 +116,21 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
     setToastMsg("");
   };
 
+  const handleImageRemoveUrls = (index: number) => {
+    const newImageUrls = [...imageUrls];
+    newImageUrls.splice(index, 1);
+    setImageUrls(newImageUrls);
+  };
+
   const handleImageRemove = (index: number) => {
-    const newImageFiles = [...imageFiles];
+    const newImageFiles = [...changeFiles];
     newImageFiles.splice(index, 1);
-    setImageFiles(newImageFiles);
+    setChangeFiles(newImageFiles);
   };
 
   const handleFormValidation = () => {
     if (
+      !errors.level ||
       !errors.title ||
       !errors.content ||
       !errors.startDate ||
@@ -136,8 +156,11 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
           id="level-select"
           {...register("level", { required: true })}
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
+          defaultValue="난이도를 선택해주세요"
         >
-          <option className="text-grayscale-40">난이도를 선택해주세요</option>
+          <option value="" className="text-grayscale-40" selected hidden>
+            난이도를 선택해주세요
+          </option>
           <option value="초">초</option>
           <option value="중">중</option>
           <option value="고">고</option>
@@ -158,27 +181,52 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         />
         <div className="flex items-center justify-start overflow-auto">
           <label
-            htmlFor="picture"
+            htmlFor="update_picture"
             className="w-[60px] h-[60px] bg-grayscale-10 cursor-pointer flex items-center justify-center rounded-[10px] ml-[8px] shrink-0"
           >
             <input
               {...register("images")}
-              id="picture"
+              id="update_picture"
               type="file"
               className="hidden"
               accept="image/*"
               onChange={handleFileChange}
-              multiple
             />
             <Image
               src={"/images/image_add.svg"}
-              alt={"이미지추가"}
+              alt={"이미지수정"}
               width={61}
               height={61}
             />
           </label>
+
           <div className="flex justify-start items-center">
-            {imageFiles.map((file, index) => (
+            {imageUrls.map((imageUrl, index) => (
+              <div
+                key={index}
+                className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+              >
+                <Image
+                  src={imageUrl}
+                  alt="assignment"
+                  layout="fill"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  onClick={() => handleImageRemoveUrls(index)}
+                  className="absolute top-1 right-1"
+                >
+                  <Image
+                    src={"/images/image_delete.svg"}
+                    alt={"이미지 삭제"}
+                    width={14}
+                    height={14}
+                  />
+                </button>
+              </div>
+            ))}
+
+            {changeFiles.map((file, index) => (
               <div
                 key={index}
                 className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
@@ -213,8 +261,8 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex justify-start items-center">
+      <div className="flex absolute w-[720px] h-[50px] bottom-[33px] items-center justify-evenly">
+        <div className="flex items-center">
           <label
             htmlFor="submit-period"
             className="font-bold text-base mr-[12px]"
@@ -232,7 +280,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
             {...register("endDate", { required: true })}
           />
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center">
           <button
             type="submit"
             className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"

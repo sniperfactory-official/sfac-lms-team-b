@@ -92,6 +92,7 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
         </div>
       ) : null}
 
+
       {isDetailOpen ? (
         <AssignmentModal
           title="상세보기"
