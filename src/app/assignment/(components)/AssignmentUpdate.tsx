@@ -5,6 +5,7 @@ import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
+import useImageUpload from "@/hooks/mutation/useUpdateImage";
 
 interface AssignmentUpdateProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   const [changeFiles, setChangeFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const {
     register,
@@ -39,7 +41,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setValue("level", data.level);
         setValue("title", data.title);
         setValue("content", data.content);
-
+        setImageUrls(data.images || []);
         // 시간을 yyyy.mm.dd 로 불러오는 것 추후에 해야합니다.
 
         // setValue("startDate", data.startDate);
@@ -50,12 +52,21 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   // 일단 isOpen으로 해놓았지만 추후 변경해보자
 
   const updateAssignmentMutation = useUpdateAssignment(assignmentId);
+  const imageUploadMutation = useImageUpload();
 
   const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
     assignmentData.images = changeFiles.map(file => URL.createObjectURL(file));
 
     try {
+      //이미지등록코드
+      const uploadPromises = changeFiles.map(file =>
+        imageUploadMutation.mutateAsync(file),
+      );
+      const uploadedUrls = await Promise.all(uploadPromises);
+      assignmentData.images = uploadedUrls;
+      //이미지등록코드
+
       updateAssignmentMutation.mutate(assignmentData);
 
       setToastMsg("과제가 성공적으로 수정되었습니다.");
@@ -101,12 +112,14 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
     }
   };
 
-  useEffect(() => {
-    console.log("After setChangeFiles:", changeFiles);
-  }, [changeFiles]);
-
   const closeToast = () => {
     setToastMsg("");
+  };
+
+  const handleImageRemoveUrls = (index: number) => {
+    const newImageUrls = [...imageUrls];
+    newImageUrls.splice(index, 1);
+    setImageUrls(newImageUrls);
   };
 
   const handleImageRemove = (index: number) => {
@@ -186,7 +199,33 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
               height={61}
             />
           </label>
+
           <div className="flex justify-start items-center">
+            {imageUrls.map((imageUrl, index) => (
+              <div
+                key={index}
+                className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+              >
+                <Image
+                  src={imageUrl}
+                  alt="assignment"
+                  layout="fill"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  onClick={() => handleImageRemoveUrls(index)}
+                  className="absolute top-1 right-1"
+                >
+                  <Image
+                    src={"/images/image_delete.svg"}
+                    alt={"이미지 삭제"}
+                    width={14}
+                    height={14}
+                  />
+                </button>
+              </div>
+            ))}
+
             {changeFiles.map((file, index) => (
               <div
                 key={index}
