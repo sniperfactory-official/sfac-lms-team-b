@@ -36,13 +36,13 @@ const AssignmentFeedbackContent = ({
     mutate: updateMutate,
     isLoading: updateLoding,
     error: updateError,
-  } = useUpdateFeedback("gZWELALnKoZLzJKjXGUM", id); //후에 submittedId로 대체
+  } = useUpdateFeedback(submittedAssignmentId, id);
 
   const {
     mutate: deleteMutate,
     isLoading: deleteLoading,
     error: deleteError,
-  } = useDeleteFeedback("gZWELALnKoZLzJKjXGUM", id); //후에 submittedId로 대체
+  } = useDeleteFeedback(submittedAssignmentId, id);
 
   const onValid = (textValue: IUpdateFeedbackForm) => {
     updateMutate({

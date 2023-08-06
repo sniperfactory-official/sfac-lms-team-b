@@ -54,7 +54,7 @@ const getSubmittedAssignments = async (
         };
       });
 
-      return submittedAssignments;
+      return { ...submittedAssignments[0] };
     }
   }
   // 관리자일때

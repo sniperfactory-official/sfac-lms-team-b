@@ -23,7 +23,6 @@ const AssignmentTeacherViewCardWrapper: FC<OwnProps> = ({ user }) => {
     assignmentId as string,
     userId.uid,
   );
-  console.log(data);
 
   // console.log("studentData", data);
 

@@ -11,6 +11,7 @@ import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
 import useUserInfo from "@/hooks/user/useUserInfo";
 import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
+import { User } from "@/types/firebase.types";
 
 const user = [
   {
@@ -33,6 +34,7 @@ interface IAssignmentFeedbackProps {
   submittedAssignmentId: string;
   assignmentId?: string;
   isRead?: boolean;
+  loginUser: User;
 }
 
 interface IFeedbackForm {
@@ -43,14 +45,9 @@ const AssignmentFeedback = ({
   submittedAssignmentId,
   assignmentId,
   isRead,
+  loginUser,
 }: IAssignmentFeedbackProps) => {
   const [updateDelete, setUpdateDelete] = useState(false);
-
-  // 현재 로그인 유저 정보
-  const loginUserId = useSelector((state: RootState) => {
-    return state.userId.uid;
-  });
-  const loginUserInfo = useUserInfo(loginUserId);
 
   const scrollRef = useRef<HTMLUListElement>(null);
 
@@ -65,19 +62,19 @@ const AssignmentFeedback = ({
     data: feedbacks,
     isLoading: getLoading,
     error: getError,
-  } = useGetFeedbacks("gZWELALnKoZLzJKjXGUM"); //후에 submittedId로 대체
+  } = useGetFeedbacks(submittedAssignmentId);
 
   const {
     mutate: createMutate,
     isLoading: createLoading,
     error: createError,
-  } = useCreateFeedback("gZWELALnKoZLzJKjXGUM", loginUserId); //후에 submittedId로 대체
+  } = useCreateFeedback(submittedAssignmentId, loginUser.id);
 
   const {
     mutate: updateMutate,
     isLoading: updateLoading,
     error: updateError,
-  } = useUpdateSubmittedAssignment(assignmentId!, "gZWELALnKoZLzJKjXGUM"); //후에 submittedId로 대체
+  } = useUpdateSubmittedAssignment(assignmentId!, submittedAssignmentId);
 
   const onValid = (textValue: IFeedbackForm) => {
     createMutate({
@@ -98,11 +95,12 @@ const AssignmentFeedback = ({
   }, [feedbacks]);
 
   // 불필요한 post 요청 방지 useCallback? useMemo?
-  // useEffect(() => {
-  //   if (loginUserInfo?.role === "관리자" && isRead === false) {
-  //     updateMutate({ isRead: true });
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (loginUser?.role === "관리자" && isRead === false) {
+      updateMutate({ isRead: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -170,7 +168,7 @@ const AssignmentFeedback = ({
                   user={feedback.user}
                   userId={feedback.userId}
                   submittedAssignmentId={submittedAssignmentId}
-                  loginUserId={loginUserId}
+                  loginUserId={loginUser.id}
                   updateDelete={updateDelete}
                   setUpdateDelete={setUpdateDelete}
                 />

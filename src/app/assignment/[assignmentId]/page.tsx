@@ -27,7 +27,9 @@ const AssignmentDetailPage = () => {
     <div className="py-[36px] px-[20px]">
       <AssignmentDetailContent user={user} />
       {/* 강사용카드 */}
-      {user?.role === "관리자" ? <AssignmentTeacherViewCardWrapper /> : null}
+      {user?.role === "관리자" ? (
+        <AssignmentTeacherViewCardWrapper user={user} />
+      ) : null}
       {/* END 강사용카드 */}
 
       {/* 학생용카드 */}
