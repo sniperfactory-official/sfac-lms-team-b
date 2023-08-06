@@ -7,7 +7,7 @@ interface IProps {
 }
 
 const ClassContent = ({ currentCourse }: IProps) => {
-  const {modal : SelectedModal, handleModalOpen} = useModalManage()
+  const { modal: SelectedModal, handleModalOpen } = useModalManage();
 
   return (
     <div className="w-4/5 h-100 pt-[50px] ml-[50px]">
@@ -30,7 +30,7 @@ const ClassContent = ({ currentCourse }: IProps) => {
       {currentCourse.lectureList.map((lecture: ILecture) => (
         <ContentCard key={lecture.lectureId} lecture={lecture} />
       ))}
-      {SelectedModal && <SelectedModal/>}
+      {SelectedModal && <SelectedModal />}
     </div>
   );
 };
