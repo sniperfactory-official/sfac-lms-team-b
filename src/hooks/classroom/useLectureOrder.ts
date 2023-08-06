@@ -19,6 +19,6 @@ const useLectureOrder = (courseList: ICourseField[]) => {
   }, [getBackLectureOrderTrigger]);
 
   return { getBackLectureOrderTrigger, setGetBackLectureOrderTrigger };
-}
+};
 
 export default useLectureOrder;

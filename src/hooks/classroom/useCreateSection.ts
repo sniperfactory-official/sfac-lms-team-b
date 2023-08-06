@@ -4,13 +4,13 @@ import { ICourseField } from "../queries/useGetCourseList";
 import { useDispatch } from "react-redux";
 import { setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
 
-interface IProps{
+interface IProps {
   setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
-  courseList: ICourseField[]
+  courseList: ICourseField[];
 }
 
-const useCreateSection = ({courseList, setCurrentCourse}: IProps) => {
-  const dispatch = useDispatch()
+const useCreateSection = ({ courseList, setCurrentCourse }: IProps) => {
+  const dispatch = useDispatch();
   const { mutate: createCourse } = useCreateCourseMutation();
   const handleCreateSection = () => {
     createCourse();
@@ -23,7 +23,7 @@ const useCreateSection = ({courseList, setCurrentCourse}: IProps) => {
       ),
     );
   };
-  return { handleCreateSection }
-}
+  return { handleCreateSection };
+};
 
-export default useCreateSection
+export default useCreateSection;

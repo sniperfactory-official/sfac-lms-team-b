@@ -15,8 +15,12 @@ interface IProps {
 
 const Sidebar = forwardRef<HTMLDivElement, IProps>(
   ({ courseList, setCurrentCourse }) => {
-    const { handleCreateSection } = useCreateSection({courseList, setCurrentCourse})
-    const { getBackLectureOrderTrigger, setGetBackLectureOrderTrigger } = useLectureOrder(courseList)
+    const { handleCreateSection } = useCreateSection({
+      courseList,
+      setCurrentCourse,
+    });
+    const { getBackLectureOrderTrigger, setGetBackLectureOrderTrigger } =
+      useLectureOrder(courseList);
     const sidebarRef = useRef<HTMLDivElement>(null);
     useClickOutside(
       sidebarRef,
