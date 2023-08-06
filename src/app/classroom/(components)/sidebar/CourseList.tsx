@@ -57,7 +57,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
           <DndProvider backend={HTML5Backend}>
             {currentLectures.map((lecture: ILecture, index: number) => (
               <DndItem
-                key={lecture.id}
+                key={lecture.lectureId}
                 index={index}
                 id={lecture.lectureId}
                 moveItem={(dragIndex, hoverIndex) =>

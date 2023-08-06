@@ -21,6 +21,7 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
   ({ courseList, setCurrentCourse }) => {
     const dispatch = useDispatch();
     const { mutate: createCourse } = useCreateCourseMutation();
+    // 수정 취소했을 시, order 이전 상태 되돌리는 trigger
     const [getBackLectureOrderTrigger, setGetBackLectureOrderTrigger] =
       useState<boolean>(false);
 
