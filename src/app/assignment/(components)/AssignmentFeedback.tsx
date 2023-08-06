@@ -1,14 +1,16 @@
 "use client";
 import { useSelector } from "react-redux";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import { useForm } from "react-hook-form";
+import { RootState } from "@/redux/store";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
-import { RootState } from "@/redux/store";
+import useUserInfo from "@/hooks/user/useUserInfo";
+import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
 
 const user = [
   {
@@ -29,6 +31,8 @@ const user = [
 
 interface IAssignmentFeedbackProps {
   submittedAssignmentId: string;
+  assignmentId?: string;
+  isRead?: boolean;
 }
 
 interface IFeedbackForm {
@@ -37,14 +41,18 @@ interface IFeedbackForm {
 
 const AssignmentFeedback = ({
   submittedAssignmentId,
+  assignmentId,
+  isRead,
 }: IAssignmentFeedbackProps) => {
   const [updateDelete, setUpdateDelete] = useState(false);
 
+  // 현재 로그인 유저 정보
   const loginUserId = useSelector((state: RootState) => {
     return state.userId.uid;
   });
+  const loginUserInfo = useUserInfo(loginUserId);
 
-  const scrollRef = useRef<any>(null);
+  const scrollRef = useRef<HTMLUListElement>(null);
 
   const {
     register,
@@ -55,18 +63,24 @@ const AssignmentFeedback = ({
 
   const {
     data: feedbacks,
-    isLoading,
-    error,
+    isLoading: getLoading,
+    error: getError,
   } = useGetFeedbacks("gZWELALnKoZLzJKjXGUM"); //후에 submittedId로 대체
 
   const {
-    mutate,
-    isLoading: loading,
-    error: err,
+    mutate: createMutate,
+    isLoading: createLoading,
+    error: createError,
   } = useCreateFeedback("gZWELALnKoZLzJKjXGUM", loginUserId); //후에 submittedId로 대체
 
+  const {
+    mutate: updateMutate,
+    isLoading: updateLoading,
+    error: updateError,
+  } = useUpdateSubmittedAssignment(assignmentId!, "gZWELALnKoZLzJKjXGUM"); //후에 submittedId로 대체
+
   const onValid = (textValue: IFeedbackForm) => {
-    mutate({
+    createMutate({
       content: textValue.feedback,
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -77,8 +91,18 @@ const AssignmentFeedback = ({
   // 스크롤 최하단으로 최신피드백 보여주기
   useEffect(() => {
     const element = scrollRef.current;
-    element.scrollTop = element.scrollHeight;
+    // narrowing
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
   }, [feedbacks]);
+
+  // 불필요한 post 요청 방지 useCallback? useMemo?
+  // useEffect(() => {
+  //   if (loginUserInfo?.role === "관리자" && isRead === false) {
+  //     updateMutate({ isRead: true });
+  //   }
+  // }, []);
 
   return (
     <div>
@@ -133,7 +157,7 @@ const AssignmentFeedback = ({
         ref={scrollRef}
         className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll scroll-smooth"
       >
-        {isLoading
+        {getLoading
           ? "Loading..."
           : feedbacks?.map((feedback: any) => {
               return (

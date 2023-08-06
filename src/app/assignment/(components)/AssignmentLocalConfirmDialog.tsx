@@ -8,7 +8,7 @@ type OwnProps = {
   content: string; // 모달 설명
   confirmBtnMsg: string; // 컨펌 확인 버튼 글자
   feedbackId: string;
-  mutate: UseMutateFunction<void, unknown, void, unknown>;
+  deleteMutate: UseMutateFunction<void, unknown, void, unknown>;
   setToastMsg: React.Dispatch<React.SetStateAction<string>>;
 };
 
@@ -20,7 +20,7 @@ const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
   content,
   confirmBtnMsg,
   feedbackId,
-  mutate,
+  deleteMutate,
   setToastMsg,
 }) => {
   return (
@@ -49,7 +49,7 @@ const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
             type="button"
             onClick={() => {
               if (feedbackId) {
-                mutate();
+                deleteMutate();
                 setToastMsg("삭제가 완료되었습니다.");
               }
               onConfirm();

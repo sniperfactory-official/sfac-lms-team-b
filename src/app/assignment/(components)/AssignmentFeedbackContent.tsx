@@ -33,18 +33,19 @@ const AssignmentFeedbackContent = ({
   } = useForm<IUpdateFeedbackForm>({ mode: "onChange" });
 
   const {
-    mutate: mutateFeedback,
+    mutate: updateMutate,
     isLoading: updateLoding,
     error: updateError,
   } = useUpdateFeedback("gZWELALnKoZLzJKjXGUM", id); //후에 submittedId로 대체
 
-  const { mutate, isLoading, error } = useDeleteFeedback(
-    "gZWELALnKoZLzJKjXGUM",
-    id,
-  ); //후에 submittedId로 대체
+  const {
+    mutate: deleteMutate,
+    isLoading: deleteLoading,
+    error: deleteError,
+  } = useDeleteFeedback("gZWELALnKoZLzJKjXGUM", id); //후에 submittedId로 대체
 
   const onValid = (textValue: IUpdateFeedbackForm) => {
-    mutateFeedback({
+    updateMutate({
       content: textValue.updateFeedback,
       updatedAt: new Date(),
     });
@@ -151,7 +152,7 @@ const AssignmentFeedbackContent = ({
           isOpen={isConfirmOpen}
           onCancel={() => setIsConfirmOpen(false)}
           feedbackId={id}
-          mutate={mutate}
+          deleteMutate={deleteMutate}
           setToastMsg={setToastMsg}
         />
       ) : null}
