@@ -41,6 +41,8 @@ const AssignmentLeftNavContent = prop => {
       );
       const length = assignSorted[assignSorted.length - 1].order;
 
+      console.log(length);
+
       for (let i = 0; i < index; i++) {
         const assignCopied = assignSorted[i];
         let assignExtracted = {
@@ -51,6 +53,12 @@ const AssignmentLeftNavContent = prop => {
         };
         htmlcontent.push(assignExtracted);
       }
+
+
+      console.log(
+        "[AssignmentLeftNavContent_FUNC] FetchAssignmentData 데이터 로드 완료!",
+        htmlcontent,
+      );
 
       setHtmlcontent(htmlcontent);
       initialHtml.current = [...htmlcontent];
@@ -105,7 +113,12 @@ const AssignmentLeftNavContent = prop => {
   const modeExecuting = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    console.log(
+      "[AssignmentLeftNavContent_FUNC] modeExecuting 실행!",
+      event.target,
+    );
     const formData = new FormData(event.target);
+    console.log(formData.values());
 
     switch (formData.get("type")) {
       case "EDIT":

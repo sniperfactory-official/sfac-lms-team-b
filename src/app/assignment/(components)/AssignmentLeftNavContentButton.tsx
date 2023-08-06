@@ -43,7 +43,9 @@ const AssignmentLeftNavButton = (prop: Props) => {
             <AssignmentModal
               title="과제만들기"
               isOpen={isOpen}
-              isBottomButton={false}
+
+              isBottomButton={true}
+
               onClose={() => {
                 setIsOpen(false);
               }}
