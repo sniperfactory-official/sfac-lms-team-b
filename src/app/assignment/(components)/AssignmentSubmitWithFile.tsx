@@ -7,17 +7,22 @@ import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 type OwnProps = {
   onClose: () => void;
   assignmentId: string;
+  userId: string;
 };
 
 const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
   onClose,
   assignmentId,
+  userId,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
   const [isDraggedOver, setIsDraggedOver] = useState<boolean>(false);
-  const { mutate, isLoading, error } = useSubmitAssignment(assignmentId);
+  const { mutate, isLoading, error } = useSubmitAssignment(
+    assignmentId,
+    userId,
+  );
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

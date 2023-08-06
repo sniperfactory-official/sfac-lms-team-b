@@ -14,6 +14,7 @@ const Assignment = () => {
 
   const user = useUserInfo(userId.uid) as User;
   const userInfo = { ...user };
+
   return (
     <div>
       <AssignmentListContent userInfo={userInfo} />

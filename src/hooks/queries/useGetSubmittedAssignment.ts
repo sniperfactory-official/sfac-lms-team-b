@@ -27,8 +27,8 @@ const getSubmittedAssignments = async (
     if (loginUserData.role === "수강생") {
       const submittedAssignmentsQuery = query(
         collection(db, "submittedAssignments"),
-        where("assignmentId", "==", assignmentDoc.ref),
-        where("userId", "==", loginUserDoc.ref),
+        where("assignmentId", "==", assignmentRef),
+        where("userId", "==", loginUserRef),
       );
 
       const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
@@ -41,6 +41,7 @@ const getSubmittedAssignments = async (
           submittedAssignmentsDocs.docs[0].ref,
         ),
       );
+
       const attachmentDocs = await getDocs(attachmentQuery);
       const attachment = attachmentDocs.docs[0].data();
 

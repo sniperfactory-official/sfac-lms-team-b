@@ -7,17 +7,13 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
-import { Attachment, User } from "@/types/firebase.types";
-import { getAuth } from "firebase/auth";
 
 const submitAssignment = async (
   assignmentId: string,
   attachmentValue: string[],
+  userId: string,
 ): Promise<DocumentReference> => {
-  const auth = getAuth();
-  const user: any = auth.currentUser; // FIXME: any 말고 ts type 수정 필요함
-  const userId = user.uid;
-  const userRef = doc(db, "user", userId);
+  const userRef = doc(db, "users", userId);
 
   try {
     const createdAtTime = new Date();
@@ -62,11 +58,11 @@ const submitAssignment = async (
   }
 };
 
-const useSubmitAssignment = (assignmentId: string) => {
+const useSubmitAssignment = (assignmentId: string, userId: string) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
     (attachmentValue: string[]) =>
-      submitAssignment(assignmentId, attachmentValue),
+      submitAssignment(assignmentId, attachmentValue, userId),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
