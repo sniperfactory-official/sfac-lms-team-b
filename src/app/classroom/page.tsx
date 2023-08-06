@@ -7,7 +7,6 @@ import LoadingSpinner from "@/components/Loading/Loading";
 const Classroom = () => {
   const { currentCourse, setCurrentCourse, courseList, isCourseListFetch } =
     useContentSyncer();
-  console.log(courseList);
 
   if (isCourseListFetch || currentCourse === undefined)
     return (
