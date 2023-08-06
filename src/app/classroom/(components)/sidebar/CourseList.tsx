@@ -14,7 +14,7 @@ interface IProps {
 
 const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
   const dispatch = useDispatch();
-  
+
   const selectedCourse = useSelector(
     (state: RootState) => state.editCourse.selectedCourse,
   );
@@ -39,7 +39,9 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
         childCount={course.lectureList.length}
       />
       {/* 선택된 lecture만 보이도록 */}
-      {selectedCourse[idx] && <LectureList currentLectures={currentLectures} idx={idx}/>}
+      {selectedCourse[idx] && (
+        <LectureList currentLectures={currentLectures} idx={idx} />
+      )}
     </React.Fragment>
   ));
 };
