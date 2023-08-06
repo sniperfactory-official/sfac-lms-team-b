@@ -1,4 +1,4 @@
-import { useDeleteFeedback } from "@/hooks/mutation/useDeleteFeedback";
+import { UseMutateFunction } from "@tanstack/react-query";
 
 type OwnProps = {
   onConfirm: () => void;
@@ -8,7 +8,8 @@ type OwnProps = {
   content: string; // 모달 설명
   confirmBtnMsg: string; // 컨펌 확인 버튼 글자
   feedbackId: string;
-  submittedAssignmentId: string;
+  deleteMutate: UseMutateFunction<void, unknown, void, unknown>;
+  setToastMsg: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
@@ -19,18 +20,9 @@ const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
   content,
   confirmBtnMsg,
   feedbackId,
-  submittedAssignmentId,
+  deleteMutate,
+  setToastMsg,
 }) => {
-  const { mutate, isLoading, error } = useDeleteFeedback(
-    "gZWELALnKoZLzJKjXGUM",
-    feedbackId,
-  );
-
-  const handleOnClick = () => {
-    onConfirm();
-    mutate();
-  };
-
   return (
     <>
       <div
@@ -55,7 +47,13 @@ const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
           <button
             className="w-[115px] h-[35px] rounded-md bg-primary-80 text-white"
             type="button"
-            onClick={handleOnClick}
+            onClick={() => {
+              if (feedbackId) {
+                deleteMutate();
+                setToastMsg("삭제가 완료되었습니다.");
+              }
+              onConfirm();
+            }}
           >
             {confirmBtnMsg}
           </button>

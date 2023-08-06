@@ -1,23 +1,28 @@
 "use client";
 import { useState } from "react";
+import { User, Attachment, SubmittedAssignment } from "@/types/firebase.types";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentFeedback from "./AssignmentFeedback";
-import { User, Attachment } from "@/types/firebase.types";
 import Image from "next/image";
 import timestampToDate from "@/utils/timestampToDate";
-interface OwnProps {
-  submittedItem: any;
-}
 
-interface submittedItem {
+interface SubmittedItem extends SubmittedAssignment {
   user: User;
   attachment: Attachment;
 }
 
-const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
+interface IAssignmentTeacherViewCardProps {
+  submittedItem: SubmittedItem;
+  assignmentId: string;
+}
+
+const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
+  submittedItem,
+  assignmentId,
+}: IAssignmentTeacherViewCardProps) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const { user, attachment }: submittedItem = submittedItem;
+  const { user, attachment }: SubmittedItem = submittedItem;
   const { attachmentFiles, links } = attachment;
   const { profileImage } = user;
 
@@ -87,18 +92,23 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
         </div>
       ) : null}
 
-      <AssignmentModal
-        title="상세보기"
-        isOpen={isDetailOpen}
-        isBottomButton={true}
-        onClose={() => {
-          setIsDetailOpen(false);
-        }}
-      >
-        {isDetailOpen ? (
-          <AssignmentFeedback submittedAssignmentId={submittedItem.id} />
-        ) : null}
-      </AssignmentModal>
+
+      {isDetailOpen ? (
+        <AssignmentModal
+          title="상세보기"
+          isOpen={isDetailOpen}
+          isBottomButton={false}
+          onClose={() => {
+            setIsDetailOpen(false);
+          }}
+        >
+          <AssignmentFeedback
+            submittedAssignmentId={submittedItem.id}
+            assignmentId={assignmentId}
+            isRead={submittedItem.isRead}
+          />
+        </AssignmentModal>
+      ) : null}
     </>
   );
 };

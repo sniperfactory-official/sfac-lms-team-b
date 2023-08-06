@@ -16,8 +16,6 @@ interface Props {
 
 const AssignmentLeftNavButton = (prop: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  console.log("[AssignmentLeftNavButton] 실행!");
-  console.log("좀돼라", prop);
 
   return (
     <div>
@@ -45,7 +43,9 @@ const AssignmentLeftNavButton = (prop: Props) => {
             <AssignmentModal
               title="과제만들기"
               isOpen={isOpen}
+
               isBottomButton={true}
+
               onClose={() => {
                 setIsOpen(false);
               }}

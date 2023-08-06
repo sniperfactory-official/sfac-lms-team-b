@@ -13,14 +13,15 @@ interface OwnProps {
 }
 
 const AssignmentTeacherViewCardWrapper: FC<OwnProps> = ({ user }) => {
+  const { assignmentId } = useParams();
+
   const userId = useSelector((state: RootState) => {
     return state.userId;
   });
 
-  const { assignmentId } = useParams();
   const { data, isLoading, error } = useGetSubmittedAssignments(
     assignmentId as string,
-    userId.uid as string,
+    userId.uid,
   );
 
   // console.log("studentData", data);
@@ -30,8 +31,9 @@ const AssignmentTeacherViewCardWrapper: FC<OwnProps> = ({ user }) => {
       <div>
         <AssignmentStudentViewCard
           user={user}
+          userId={userId.uid}
           assignmentId={assignmentId as string}
-          submittedAssignment={data as SubmittedAssignment}
+          submittedAssignment={data}
         />
       </div>
     </div>
