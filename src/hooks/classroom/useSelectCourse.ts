@@ -54,6 +54,7 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
         ),
       ),
     );
+    dispatch(setCurrentLecture(courseList[0].lectureList))
   }, [courseList.length]);
 
   return { handleCurrentCourse, currentLectures };
