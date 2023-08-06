@@ -90,7 +90,7 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
       <AssignmentModal
         title="상세보기"
         isOpen={isDetailOpen}
-        isBottomButton={false}
+        isBottomButton={true}
         onClose={() => {
           setIsDetailOpen(false);
         }}

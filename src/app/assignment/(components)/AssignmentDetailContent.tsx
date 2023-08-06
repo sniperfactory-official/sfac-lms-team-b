@@ -97,7 +97,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                 <AssignmentModal
                   title="과제 수정하기"
                   isOpen={isOpen}
-                  isBottomButton={false}
+                  isBottomButton={true}
                   onClose={() => {
                     setIsOpen(false);
                   }}
