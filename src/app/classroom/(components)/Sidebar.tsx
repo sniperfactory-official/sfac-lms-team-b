@@ -7,7 +7,7 @@ import React, { forwardRef, useEffect, useRef, useState } from "react";
 import useClickOutside from "@/hooks/classroom/useClickOutside";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setCurrentLecture } from "@/redux/slice/editCourseIdSlice";
+import { setCurrentLecture, setSelectedCourse } from "@/redux/slice/editCourseIdSlice";
 
 interface IProps {
   courseList: ICourseField[];
@@ -25,10 +25,17 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
     const selectedCourse = useSelector(
       (state: RootState) => state.editCourse.selectedCourse,
     );
-
+    // section 생성 시, 첫 번째 Course 선택
     const handleCreateSection = () => {
       createCourse();
       setCurrentCourse(courseList![0]);
+      dispatch(
+        setSelectedCourse(
+          Array.from({ length: courseList.length }, (_, idx) =>
+            idx === 0 ? true : false,
+          ),
+        ),
+      )
     };
 
     const sidebarRef = useRef<HTMLDivElement>(null);

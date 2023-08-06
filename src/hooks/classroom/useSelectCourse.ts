@@ -45,17 +45,6 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
     }
   };
 
-  // 새로운 섹션 생성 시, useEffect로 업데이트
-  useEffect(() => {
-    dispatch(
-      setSelectedCourse(
-        Array.from({ length: courseList.length }, (_, idx) =>
-          idx === 0 ? true : false,
-        ),
-      ),
-    );
-  }, [courseList.length]);
-
   return { handleCurrentCourse, currentLectures };
 };
 
