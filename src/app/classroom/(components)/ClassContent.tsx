@@ -1,35 +1,13 @@
-import { useDispatch } from "react-redux";
 import ContentCard from "./main/ContentCard";
-import MakeLectureModal from "./modal/createLecture/MakeLectureModal";
-import AddNoteModal from "./modal/createLecture/AddNoteModal";
-import AddLinkModal from "./modal/createLecture/AddLinkModal";
-import AddVideoFileModal from "./modal/createLecture/AddVideoFileModal";
-import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
+import useModalManage from "@/hooks/classroom/useModalManage";
 
 interface IProps {
   currentCourse: ICourseField;
 }
 
 const ClassContent = ({ currentCourse }: IProps) => {
-  const dispatch = useDispatch();
-  const {
-    lectureTypeModalOpen,
-    noteModalOpen,
-    linkModalOpen,
-    videoFileModalOpen,
-  } = useClassroomModal();
-
-  const handleModalOpen = () => {
-    dispatch(
-      setModalVisibility({
-        modalName: "lectureTypeModalOpen",
-        visible: true,
-        modalRole: "create",
-      }),
-    );
-  };
+  const {modal : SelectedModal, handleModalOpen} = useModalManage()
 
   return (
     <div className="w-4/5 h-100 pt-[50px] ml-[50px]">
@@ -50,12 +28,9 @@ const ClassContent = ({ currentCourse }: IProps) => {
         </button>
       </div>
       {currentCourse.lectureList.map((lecture: ILecture) => (
-        <ContentCard key={lecture.title} lecture={lecture} />
+        <ContentCard key={lecture.lectureId} lecture={lecture} />
       ))}
-      {lectureTypeModalOpen && <MakeLectureModal />}
-      {noteModalOpen && <AddNoteModal />}
-      {linkModalOpen && <AddLinkModal />}
-      {videoFileModalOpen && <AddVideoFileModal />}
+      {SelectedModal && <SelectedModal/>}
     </div>
   );
 };
