@@ -5,11 +5,29 @@ import {
   query,
   where,
   getDocs,
-  doc,
   getDoc,
+  doc,
+  DocumentData,
   orderBy,
+  DocumentReference,
 } from "firebase/firestore";
 import { db } from "@/utils/firebase";
+
+async function fetchUsersByRefs(
+  userRefs: DocumentReference<DocumentData, DocumentData>[],
+) {
+  const users: Record<string, User> = {};
+
+  const userDocs = await Promise.all(userRefs.map(userRef => getDoc(userRef)));
+
+  userDocs.forEach((userDoc, index) => {
+    if (userDoc.exists()) {
+      users[userRefs[index].id] = userDoc.data() as User;
+    }
+  });
+
+  return users;
+}
 
 const useGetAllComments = (lectureId: string) => {
   return useQuery<LectureComment[]>(["comments", lectureId], async () => {
@@ -22,25 +40,24 @@ const useGetAllComments = (lectureId: string) => {
     );
 
     const querySnapshot = await getDocs(commentsQuery);
+    const userRefs: DocumentReference<DocumentData, DocumentData>[] = [];
+    const userRefSet = new Set<string>();
 
-    const commentsWithUsers = await Promise.all(
-      querySnapshot.docs.map(async commentDoc => {
-        const data = commentDoc.data() as Omit<LectureComment, "id">;
+    querySnapshot.docs.forEach(commentDoc => {
+      const data = commentDoc.data();
+      if (data.userId && !userRefSet.has(data.userId.id)) {
+        userRefSet.add(data.userId.id);
+        userRefs.push(data.userId);
+      }
+    });
 
-        const userRef = data.userId;
-        const userSnapshot = await getDoc(userRef);
-        if (userSnapshot.exists()) {
-          const user = userSnapshot.data() as User;
-          return { id: commentDoc.id, ...data, user };
-        } else {
-          return null;
-        }
-      }),
-    );
+    const users = await fetchUsersByRefs(userRefs);
 
-    return commentsWithUsers.filter(
-      comment => comment !== null,
-    ) as LectureComment[];
+    return querySnapshot.docs.map(commentDoc => {
+      const data = commentDoc.data() as Omit<LectureComment, "id">;
+      const user = users[data.userId.id];
+      return { id: commentDoc.id, ...data, user };
+    });
   });
 };
 
