@@ -1,40 +1,22 @@
 "use client";
-import { useSelector } from "react-redux";
+
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import { useForm } from "react-hook-form";
-import { RootState } from "@/redux/store";
+import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
+import { User } from "@/types/firebase.types";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
-import useUserInfo from "@/hooks/user/useUserInfo";
-import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
-import { User } from "@/types/firebase.types";
-
-const user = [
-  {
-    id: 1,
-    email: "student@gmail.com",
-    profileImage: "next.svg",
-    role: "ADMIN",
-    username: "이선생",
-  },
-  {
-    id: 2,
-    email: "student@gmail.com",
-    profileImage: "next.svg",
-    role: "USER",
-    username: "이재훈",
-  },
-];
 
 interface IAssignmentFeedbackProps {
   submittedAssignmentId: string;
   assignmentId?: string;
   isRead?: boolean;
   loginUser: User;
+  submittedAssignmentUser: User;
 }
 
 interface IFeedbackForm {
@@ -44,6 +26,7 @@ interface IFeedbackForm {
 const AssignmentFeedback = ({
   submittedAssignmentId,
   assignmentId,
+  submittedAssignmentUser,
   isRead,
   loginUser,
 }: IAssignmentFeedbackProps) => {
@@ -107,14 +90,18 @@ const AssignmentFeedback = ({
       {/* uploaded */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] mb-[12px]">
         <div className="flex mb-[22px] items-center">
-          <AssignmentProfileImage profileImage={user[1].profileImage} />
+          <AssignmentProfileImage
+            profileImage={submittedAssignmentUser.profileImage}
+          />
           <div className="flex items-center ml-[13px] justify-between w-full">
             <div>
               <span className="text-[16px] font-[700] text-grayscale-100">
-                {user[1].username}
+                {submittedAssignmentUser.username}
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
-              <span className="text-grayscale-40 font-[400]">{"수강생"}</span>
+              <span className="text-grayscale-40 font-[400]">
+                {submittedAssignmentUser.role}
+              </span>
             </div>
             <button>삭제</button>
           </div>
