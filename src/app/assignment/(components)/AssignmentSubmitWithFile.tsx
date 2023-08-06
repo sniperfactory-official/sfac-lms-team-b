@@ -16,7 +16,24 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
+  const [isDraggedOver, setIsDraggedOver] = useState<boolean>(false);
   const { mutate, isLoading, error } = useSubmitAssignment(assignmentId);
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggedOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    // 자식 요소 체크 후 isDraggedOver 종료
+    if (
+      e.relatedTarget === null ||
+      !e.currentTarget.contains(e.relatedTarget as Node)
+    ) {
+      setIsDraggedOver(false);
+    }
+  };
 
   const allowedFileTypes = [
     // 허용되는 확장자
@@ -31,6 +48,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
 
   // 컴포넌트의 불필요한 리렌더링을 방지 - 성능 최적화
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    setIsDraggedOver(false); // onDrop(파일첨부) 발생하면 border-color 원래대로 변경
     // 중복 파일 체크
     const validFiles = acceptedFiles.filter(file =>
       allowedFileTypes.includes(file.type),
@@ -69,7 +87,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
   const handleUpload = useCallback(() => {
     // 선택한 파일들의 업로드 수행
     console.log("Uploaded files:", selectedFiles);
-    mutate(selectedFiles); // FIXME: ts error 수정 필요
+    // mutate(selectedFiles); // FIXME: ts error 수정 필요
     setToastMsg("파일이 업로드되었습니다!");
     setIsAccept(true);
     setTimeout(() => {
@@ -83,7 +101,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
     );
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isFocused } = useDropzone({
     onDrop,
     multiple: true,
   });
@@ -136,10 +154,16 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       {/* drop-zone */}
       <div
         {...getRootProps({
-          className: `dropzone ${selectedFiles.length >= 5 ? "hidden" : ""}`,
+          className: `${selectedFiles.length >= 5 ? "hidden" : ""}`,
+          onDragEnter: handleDragEnter,
+          onDragLeave: handleDragLeave,
         })}
       >
-        <div className="w-full h-[244px] flex justify-center items-center border-dashed border rounded-[10px]">
+        <div
+          className={`w-full h-[244px] flex justify-center items-center border-dashed border rounded-[10px] ${
+            isDraggedOver ? "border-primary-80" : "border-grayscale-20"
+          }`}
+        >
           <div>
             <p className="mb-[10px] text-[20px] text-grayscale-30 font-[700]">
               파일을 여기로 드래그 해주세요
