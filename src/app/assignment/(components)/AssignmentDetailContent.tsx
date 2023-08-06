@@ -6,14 +6,16 @@ import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 import { useDeleteRegisteredAssignment } from "@/hooks/mutation/useDeleteRegisteredAssignment";
 import { useParams } from "next/navigation";
-import timestampToDate from "@/utils/timestampToDate";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
 import { Assignment } from "@/types/firebase.types";
+import Image from "next/image";
 
 import AssignmentGlobalConfirmDialog from "./AssignmentGlobalConfirmDialog";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentUpdate from "./AssignmentUpdate";
+import timestampToIntlDate from "@/utils/timestampToIntlDate";
+import emptyArrayCheck from "@/utils/emptyArrayCheck";
 
 interface OwnProps {
   user: User;
@@ -27,7 +29,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   const { assignmentId } = useParams();
   const { data, isLoading, error } = useGetAssignment(assignmentId as string);
 
-  // console.log("data", data);
+  console.log("assignmentDetailData", data);
 
   const deleteAssignmentMutation = useDeleteRegisteredAssignment(
     assignmentId as string,
@@ -74,7 +76,9 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                   {assignment.user?.role}
                 </span>
                 <span className="text-grayscale-40 text-[14px] font-[500]">
-                  {timestampToDate(assignment.createdAt)}
+                  {assignment.createdAt
+                    ? timestampToIntlDate(assignment.createdAt, "/")
+                    : null}
                 </span>
               </div>
             </div>
@@ -127,26 +131,33 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
             <p className="text-grayscale-60 text-[14px] font-[400]">
               {assignment.content}
             </p>
-            {/* {assignment.images.map((image, index) => {
-            return (
-              <Image
-                key={index}
-                src={URL.createObjectURL(image)}
-                alt={"이미지추가"}
-                width={61}
-                height={61}
-              />
-            );
-          })} */}
             <div className="flex justify-end items-center pt-[5px] gap-[7px]">
               <span className="text-grayscale-60 text-[14px] font-[500]">
                 마감일
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
               <span className="text-grayscale-40 text-[14px] font-[500]">
-                {timestampToDate(assignment.endDate)}
+                {timestampToIntlDate(assignment.endDate, "/")}
               </span>
             </div>
+            {!emptyArrayCheck(assignment.images) ? (
+              <div className="pt-[34px]">
+                {assignment.images.map((image, index) => {
+                  return (
+                    <div key={index} className="w-full mb-[10px]">
+                      <Image
+                        src={image}
+                        alt={`과제상세이미지${index}`}
+                        width="0"
+                        height="0"
+                        sizes="100vw"
+                        style={{ width: "auto", height: "auto" }}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
         </div>
       ) : null}

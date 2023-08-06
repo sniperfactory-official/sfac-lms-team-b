@@ -8,13 +8,6 @@ import { useSelector } from "react-redux";
 import useUserInfo from "@/hooks/user/useUserInfo";
 import { RootState } from "@/redux/store";
 
-// const user: User = {
-//   id: "id",
-//   role: "관리자", // 관리자, 수강생
-//   username: "김지은",
-//   profileImage: "user.png",
-// };
-
 const AssignmentDetailPage = () => {
   // FIXME: 임시 유저 정보 처리
   const userId = useSelector((state: RootState) => {
