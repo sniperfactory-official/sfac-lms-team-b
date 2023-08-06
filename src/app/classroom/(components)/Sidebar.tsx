@@ -7,10 +7,7 @@ import React, { forwardRef, useEffect, useRef, useState } from "react";
 import useClickOutside from "@/hooks/classroom/useClickOutside";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import {
-  handleEditMode,
-  setCurrentLecture,
-} from "@/redux/slice/editCourseIdSlice";
+import { setCurrentLecture } from "@/redux/slice/editCourseIdSlice";
 
 interface IProps {
   courseList: ICourseField[];
@@ -25,9 +22,6 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
     const [getBackLectureOrderTrigger, setGetBackLectureOrderTrigger] =
       useState<boolean>(false);
 
-    const isEditMode = useSelector(
-      (state: RootState) => state.editCourse.isEditMode,
-    );
     const selectedCourse = useSelector(
       (state: RootState) => state.editCourse.selectedCourse,
     );
@@ -40,8 +34,6 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
     const sidebarRef = useRef<HTMLDivElement>(null);
     useClickOutside(
       sidebarRef,
-      () => dispatch(handleEditMode()),
-      isEditMode,
       setGetBackLectureOrderTrigger,
       getBackLectureOrderTrigger,
     );
