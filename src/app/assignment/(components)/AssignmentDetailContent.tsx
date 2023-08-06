@@ -6,7 +6,6 @@ import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 import { useDeleteRegisteredAssignment } from "@/hooks/mutation/useDeleteRegisteredAssignment";
 import { useParams } from "next/navigation";
-import timestampToDate from "@/utils/timestampToDate";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
 import { Assignment } from "@/types/firebase.types";
@@ -14,6 +13,7 @@ import { Assignment } from "@/types/firebase.types";
 import AssignmentGlobalConfirmDialog from "./AssignmentGlobalConfirmDialog";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentUpdate from "./AssignmentUpdate";
+import timestampToIntlDate from "@/utils/timestampToIntlDate";
 
 interface OwnProps {
   user: User;
@@ -47,6 +47,8 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   }
   const assignment: Assignment = Array.isArray(data) ? data[0] : data;
 
+  console.log("assignment", assignment.createdAt);
+
   return (
     <div>
       {data ? (
@@ -74,7 +76,9 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                   {assignment.user?.role}
                 </span>
                 <span className="text-grayscale-40 text-[14px] font-[500]">
-                  {timestampToDate(assignment.createdAt)}
+                  {assignment.createdAt
+                    ? timestampToIntlDate(assignment.createdAt, "/")
+                    : null}
                 </span>
               </div>
             </div>
@@ -144,7 +148,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
               <span className="text-grayscale-40 text-[14px] font-[500]">
-                {timestampToDate(assignment.endDate)}
+                {timestampToIntlDate(assignment.endDate, "/")}
               </span>
             </div>
           </div>
