@@ -12,7 +12,10 @@ const ClassContent = ({ currentCourse }: IProps) => {
 
   return (
     <div className="w-4/5 h-100 pt-[50px] ml-[50px]">
-      <CourseInfo currentCourse={currentCourse} handleModalOpen={handleModalOpen}/>
+      <CourseInfo
+        currentCourse={currentCourse}
+        handleModalOpen={handleModalOpen}
+      />
       {currentCourse.lectureList.map((lecture: ILecture) => (
         <ContentCard key={lecture.lectureId} lecture={lecture} />
       ))}

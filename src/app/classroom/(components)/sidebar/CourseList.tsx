@@ -23,8 +23,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
     courseList,
     setCurrentCourse,
   });
-  console.log(currentLectures, '최근 lecture');
-  
+  console.log(currentLectures, "최근 lecture");
 
   return courseList.map((course: ICourseField, idx: number) => (
     <React.Fragment key={idx}>
