@@ -43,6 +43,7 @@ export const useUpdateComment = () => {
           return oldComment;
         },
       );
+      queryClient.invalidateQueries(["comments"]);
     },
   });
 };
