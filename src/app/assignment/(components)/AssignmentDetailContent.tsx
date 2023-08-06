@@ -29,7 +29,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   const { assignmentId } = useParams();
   const { data, isLoading, error } = useGetAssignment(assignmentId as string);
 
-  console.log("assignmentDetailData", data);
+  // console.log("assignmentDetailData", data);
 
   const deleteAssignmentMutation = useDeleteRegisteredAssignment(
     assignmentId as string,
