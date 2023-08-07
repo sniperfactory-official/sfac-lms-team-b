@@ -75,7 +75,7 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
           </div>
           <div className="flex flex-col justify-between items-end">
             <div className="w-[19px] h-[19px]">
-              {submittedItem.isRead ? (
+              {!submittedItem.isRead ? (
                 <div className="w-full h-full">
                   <Image
                     src="/images/icon_new.svg"
