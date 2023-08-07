@@ -26,6 +26,9 @@ const useClassroomModal = () => {
   const modalRole = useSelector(
     (state: RootState) => state.classroomModal.modalRole,
   );
+  const lecture = useSelector(
+    (state: RootState) => state.classroomModal.lecture,
+  );
 
   const handleModalMove = (openModalName: string, closeModalName: string) => {
     dispatch(
@@ -52,6 +55,7 @@ const useClassroomModal = () => {
     commentModalOpen,
     replyCommentModalOpen,
     modalRole,
+    lecture,
     handleModalMove,
   };
 };

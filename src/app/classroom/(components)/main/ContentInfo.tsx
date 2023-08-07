@@ -1,6 +1,9 @@
 import timestampToDate from "@/utils/timestampToDate";
 import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
-import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
+import {
+  setLecture,
+  setModalVisibility,
+} from "@/redux/slice/classroomModalSlice";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { ILecture } from "@/hooks/queries/useGetCourseList";
@@ -53,6 +56,7 @@ const ContentInfo = ({ lecture, setDeleteModal }: IProps) => {
         modalRole: "edit",
       }),
     );
+    dispatch(setLecture(lecture));
   };
 
   return (
