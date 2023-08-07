@@ -64,8 +64,11 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         imageUploadMutation.mutateAsync(file),
       );
       const uploadedUrls = await Promise.all(uploadPromises);
-      assignmentData.images = uploadedUrls;
-      //이미지등록코드
+      // assignmentData.images = uploadedUrls;
+
+      // 새로운 이미지와 기존 이미지를 합쳐서 업데이트할 이미지 데이터 생성
+      const updatedImages = [...imageUrls, ...uploadedUrls];
+      assignmentData.images = updatedImages;
 
       updateAssignmentMutation.mutate(assignmentData);
 
@@ -76,6 +79,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setIsOpen(false);
         reset();
         setChangeFiles([]);
+        console.log(assignmentData);
       }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
     } catch (error) {
       setToastMsg("과제 수정에 실패했습니다. 다시 시도해주세요.");

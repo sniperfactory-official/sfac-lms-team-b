@@ -41,7 +41,7 @@ const createAssignment = async (
     const addAssignment = await addDoc(collection(db, "assignments"), {
       ...assignmentValue,
       createdAt: serverTimestamp(),
-      order: assignmentCount + 1,
+      order: assignmentCount,
       userId: userId,
     });
 
