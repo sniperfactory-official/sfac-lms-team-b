@@ -31,7 +31,7 @@ const CommentsSection: FC<CommentsSectionProps> = ({
     hasNextPage: hasMoreComments,
     fetchNextPage,
   });
-  
+
   useEffect(() => {
     setDisplayedComments(comments.slice(0, PAGE_SIZE));
   }, [comments]);
