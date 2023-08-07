@@ -7,6 +7,7 @@ import {
   query,
   where,
   DocumentData,
+  Timestamp,
 } from "firebase/firestore";
 
 import { db } from "@utils/firebase";
@@ -64,14 +65,8 @@ const getSubmittedAssignments = async (
   );
   const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
 
-  // createdAt 시간순으로 sort
-  const sortSubmittedAssignments = submittedAssignmentsDocs?.docs.sort(
-    (a: DocumentData, b: DocumentData) =>
-      a.date().createdAt.seconds - b.date().createdAt.seconds,
-  );
-
-  const submittedAssignments = await Promise.all(
-    sortSubmittedAssignments.map(async document => {
+  const rawSubmittedAssignments = await Promise.all(
+    submittedAssignmentsDocs?.docs.map(async document => {
       const attachmentQuery = query(
         collection(db, "attachments"),
         where("submittedAssignmentId", "==", document.ref),
@@ -89,6 +84,11 @@ const getSubmittedAssignments = async (
         ...document.data(),
       };
     }),
+  );
+
+  const submittedAssignments = rawSubmittedAssignments.sort(
+    (a: DocumentData, b: DocumentData) =>
+      a.createdAt.seconds - b.createdAt.seconds,
   );
 
   return submittedAssignments;
