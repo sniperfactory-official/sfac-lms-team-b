@@ -3,14 +3,16 @@ import { useDispatch } from "react-redux";
 import Layout from "../common/Layout";
 import ModalHeader from "../common/ModalHeader";
 import ModalMain from "../common/ModalMain";
-import { setExternalLink } from "@/redux/slice/lectureInfoSlice";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
+import useFirebaseLectureSlice from "@/hooks/lecture/useFirebaseLectureSlice";
+import { setExternalLink } from "@/redux/slice/lectureInfoSlice";
 
 const AddLinkModal: React.FC = () => {
   const dispatch = useDispatch();
   const { modalRole, handleModalMove } = useClassroomModal();
   const { externalLink } = useLectureInfo();
+  useFirebaseLectureSlice();
   const MODAL_ROLE_OBJ: { [key: string]: string } = {
     create: "링크 만들기",
     edit: "수정하기",
