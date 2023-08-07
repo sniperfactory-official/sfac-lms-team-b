@@ -1,17 +1,15 @@
 import React, { FC } from "react";
+import { Lecture } from "@/types/firebase.types";
 
-import useGetLectureInfo from "@/hooks/queries/useGetLectureInfo";
 import LectureContent from "./LectureContent";
 import LoadingSpinner from "@/components/Loading/Loading";
 
 interface TypeOfLectureProps {
-  lectureId: string;
+  lectureData: Lecture | undefined;
 }
 
-const TypeOfLecture: FC<TypeOfLectureProps> = ({ lectureId }) => {
-  const { data } = useGetLectureInfo(lectureId);
-
-  if (!data || data.lectureContent === undefined) {
+const TypeOfLecture: FC<TypeOfLectureProps> = ({ lectureData }) => {
+  if (!lectureData || lectureData.lectureContent === undefined) {
     return (
       <div className="w-screen flex justify-center">
         <LoadingSpinner />
@@ -19,7 +17,7 @@ const TypeOfLecture: FC<TypeOfLectureProps> = ({ lectureId }) => {
     );
   }
 
-  const { lectureType: type, lectureContent: content } = data;
+  const { lectureType: type, lectureContent: content } = lectureData;
 
   return <LectureContent type={type} content={content} />;
 };

@@ -2,12 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/utils/firebase";
 import { useDispatch } from "react-redux";
 import {
-  collection,
   doc,
-  query,
+  runTransaction,
+  collection,
   where,
   getDocs,
-  runTransaction,
+  Query,
+  query,
 } from "firebase/firestore";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 
@@ -38,7 +39,7 @@ const deleteCommentFromDB = async (commentId: string) => {
 
     transaction.delete(commentRef);
 
-    const repliesQuery = query(
+    const repliesQuery: Query = query(
       collection(db, "lectureComments"),
       where("parentId", "==", commentId),
     );
@@ -59,20 +60,15 @@ export const useDeleteComment = () => {
     onSuccess: isComment => {
       queryClient.invalidateQueries(["comments"]);
       if (isComment) {
-        dispatch(
-          setModalVisibility({
-            modalName: "commentModalOpen",
-            visible: false,
-            modalRole: "edit",
-          }),
-        );
-        dispatch(
-          setModalVisibility({
-            modalName: "replyCommentModalOpen",
-            visible: false,
-            modalRole: "edit",
-          }),
-        );
+        ["commentModalOpen", "replyCommentModalOpen"].forEach(modalName => {
+          dispatch(
+            setModalVisibility({
+              modalName,
+              visible: false,
+              modalRole: "edit",
+            }),
+          );
+        });
       }
     },
   });
