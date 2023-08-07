@@ -33,12 +33,21 @@ const submitAssignment = async (
       },
     );
 
-    await addDoc(collection(db, "attachments"), {
-      links: [...attachmentValue],
-      submittedAssignmentId: addSubmittedAssignmentData,
-      // createdAt: createdAtTimeStamp,
-      userId: userRef,
-    });
+    if (typeof attachmentValue[0] === "string") {
+      await addDoc(collection(db, "attachments"), {
+        attachmentValue: [],
+        links: [...attachmentValue],
+        submittedAssignmentId: addSubmittedAssignmentData,
+        userId: userRef,
+      });
+    } else {
+      await addDoc(collection(db, "attachments"), {
+        attachmentValue: [...attachmentValue],
+        links: [],
+        submittedAssignmentId: addSubmittedAssignmentData,
+        userId: userRef,
+      });
+    }
 
     return addSubmittedAssignmentData;
   } catch (err) {

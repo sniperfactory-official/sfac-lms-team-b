@@ -7,11 +7,13 @@ import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmitte
 import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmittedAssignment";
 import { Feedback, User } from "@/types/firebase.types";
 import { useForm } from "react-hook-form";
+import { Timestamp } from "firebase/firestore";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
+import { getTime } from "@/utils/getTime";
 
 interface IAssignmentFeedbackProps {
   submittedAssignmentId: string;
@@ -20,6 +22,7 @@ interface IAssignmentFeedbackProps {
   loginUser: User;
   submittedAssignmentUser: User;
   setIsDetailOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  submittedAssignmentDate: Timestamp;
 }
 
 interface IFeedbackForm {
@@ -33,10 +36,11 @@ const AssignmentFeedback = ({
   isRead,
   loginUser,
   setIsDetailOpen,
+  submittedAssignmentDate,
 }: IAssignmentFeedbackProps) => {
   const [updateDelete, setUpdateDelete] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-
+  const createdDate = getTime(submittedAssignmentDate.toDate());
   const scrollRef = useRef<HTMLUListElement>(null);
 
   const {
@@ -161,7 +165,7 @@ const AssignmentFeedback = ({
             </Link>
           </li>
         </ul>
-        <p className="text-[12px] text-end text-grayscale-40">{"3일전"}</p>
+        <p className="text-[12px] text-end text-grayscale-40">{createdDate}</p>
       </div>
       {/* feedback */}
       <ul
@@ -170,7 +174,7 @@ const AssignmentFeedback = ({
       >
         {getLoading
           ? "Loading..."
-          : feedbacks?.map((feedback: any) => {
+          : feedbacks?.map((feedback: Feedback) => {
               return (
                 <AssignmentFeedbackContent
                   key={feedback.id}

@@ -51,6 +51,11 @@ const useDeleteSubmittedAssignment = (assignmentId: string, userId: string) => {
         queryClient.invalidateQueries([
           "getSubmittedAssignment",
           assignmentId,
+          "",
+        ]);
+        queryClient.invalidateQueries([
+          "getSubmittedAssignment",
+          assignmentId,
           userId,
         ]);
       },

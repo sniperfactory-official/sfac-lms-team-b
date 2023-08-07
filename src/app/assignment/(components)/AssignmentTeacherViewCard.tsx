@@ -106,6 +106,7 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
             submittedAssignmentUser={submittedItem.user}
             loginUser={loginUser}
             submittedAssignmentId={submittedItem.id}
+            submittedAssignmentDate={submittedItem.createdAt}
             assignmentId={assignmentId}
             isRead={submittedItem.isRead}
           />

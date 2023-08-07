@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 
 import { db } from "@utils/firebase";
-import { SubmittedAssignment, Attachment, User } from "@/types/firebase.types";
+import { User } from "@/types/firebase.types";
 
 const getSubmittedAssignments = async (
   assignmentId: string,

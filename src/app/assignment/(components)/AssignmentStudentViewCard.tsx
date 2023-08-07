@@ -137,6 +137,7 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
           <AssignmentFeedback
             submittedAssignmentId={submittedAssignment?.id!}
             submittedAssignmentUser={submittedAssignment?.user!}
+            submittedAssignmentDate={submittedAssignment?.createdAt!}
             assignmentId={assignmentId}
             loginUser={user}
             setIsDetailOpen={setIsDetailOpen}
