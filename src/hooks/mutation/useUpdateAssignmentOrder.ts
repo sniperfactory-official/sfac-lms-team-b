@@ -1,22 +1,26 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateDoc, writeBatch, doc, DocumentReference } from "firebase/firestore";
+import {
+  updateDoc,
+  writeBatch,
+  doc,
+  DocumentReference,
+} from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { AssignmentExtracted } from "@/app/assignment/(components)/AssignmentLeftNavContent";
 
 // Firestore 데이터 추가
-const updateAssignment = async (assignmentValue:AssignmentExtracted[]) => {
+const updateAssignment = async (assignmentValue: AssignmentExtracted[]) => {
   try {
     // Get a new write batch
     const batch = writeBatch(db);
 
-    assignmentValue.forEach((assign:AssignmentExtracted)=>{
-      const updateRef = doc(db, "assignments", assign.id)
-      batch.update(updateRef, {"order": assign.index});
-    })
+    assignmentValue.forEach((assign: AssignmentExtracted) => {
+      const updateRef = doc(db, "assignments", assign.id);
+      batch.update(updateRef, { order: assign.index });
+    });
 
     // Commit the batch
     await batch.commit();
-
   } catch (err) {
     console.log(err);
     throw err;

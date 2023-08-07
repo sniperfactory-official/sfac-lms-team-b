@@ -6,9 +6,9 @@ import AssignmentCreate from "./AssignmentCreate";
 import AssignmentModal from "./AssignmentModal";
 import { Props } from "./AssignmentLeftNavContent";
 
-interface Props2 extends Props{
-  UpdateAssignmentOrder: ()=>void;
-  ResetEditting : ()=>void;
+interface Props2 extends Props {
+  UpdateAssignmentOrder: () => void;
+  ResetEditting: () => void;
 }
 
 const AssignmentLeftNavButton = (prop: Props2) => {
@@ -16,27 +16,24 @@ const AssignmentLeftNavButton = (prop: Props2) => {
   const [isActivated, setIsActivated] = useState<boolean>(false);
   console.log("[AssignmentLeftNavButton] 실행!");
 
-
-  const handleKeyPress = (event) => {
+  const handleKeyPress = event => {
     if (event.keyCode === 27) {
-      setIsActivated(false)
+      setIsActivated(false);
       prop.ResetEditting();
     }
   };
 
-  useEffect(()=>{
-    if (isActivated===true){
-      window.addEventListener('keydown', handleKeyPress);
-    }
-    else{
-      window.removeEventListener('keydown', handleKeyPress);
+  useEffect(() => {
+    if (isActivated === true) {
+      window.addEventListener("keydown", handleKeyPress);
+    } else {
+      window.removeEventListener("keydown", handleKeyPress);
     }
 
     return () => {
-      window.removeEventListener('keydown', handleKeyPress);
+      window.removeEventListener("keydown", handleKeyPress);
     };
-  },[isActivated])
-
+  }, [isActivated]);
 
   const executeEditing = () => {
     prop.modeChanger();
@@ -44,9 +41,9 @@ const AssignmentLeftNavButton = (prop: Props2) => {
   };
 
   const updateAndDeactivate = () => {
-    prop.UpdateAssignmentOrder()
+    prop.UpdateAssignmentOrder();
     setIsActivated(false);
-  }
+  };
   return (
     <div>
       {prop.userInfo.role === "관리자" ? (
@@ -83,7 +80,9 @@ const AssignmentLeftNavButton = (prop: Props2) => {
             <div className="flex justify-center items-center w-full h-[46px] mx-0 my-[10px] gap-[6px] flex-shrink-0 bg-white rounded-[10px] ">
               <button
                 type="button"
-                onClick={()=>{updateAndDeactivate()}}
+                onClick={() => {
+                  updateAndDeactivate();
+                }}
                 form="assign"
                 name="assign"
                 className="w-[115px] h-[35px] p-[9px] rounded-lg flex bg-[#337AFF] text-slate-50"
@@ -92,7 +91,11 @@ const AssignmentLeftNavButton = (prop: Props2) => {
               </button>
               <button
                 type="submit"
-                onClick={()=>{setTimeout(()=>{setIsActivated(false),1000})}}
+                onClick={() => {
+                  setTimeout(() => {
+                    setIsActivated(false), 1000;
+                  });
+                }}
                 form="assign"
                 name="assign"
                 className="w-[115px] h-[35px] p-[9px] rounded-lg flex bg-[#FF0000] text-slate-50 "
@@ -104,7 +107,9 @@ const AssignmentLeftNavButton = (prop: Props2) => {
             <div className="flex justify-center items-center w-full h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
               <button
                 type="button"
-                onClick={()=>{executeEditing()}}
+                onClick={() => {
+                  executeEditing();
+                }}
                 className="flex justify-center items-center gap-[6px]"
               >
                 <Image
