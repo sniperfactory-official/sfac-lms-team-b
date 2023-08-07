@@ -45,15 +45,15 @@ const AssignmentLeftNavCard = (props: AssignmentExtracted) => {
         <div
           ref={ref}
           key={id}
-          className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+          className={`list-none w-full p-[10px] order-${index} opacity-${opacity}`}
         >
-          <input type="checkbox" name={id} />
+          <input type="checkbox" name={id} value={index} />
           <Link href={"/assignment/" + id}>{title}</Link>
         </div>
       ) : (
         <div
           key={id}
-          className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+          className={`list-none w-full p-[10px] order-${index} opacity-${opacity}`}
         >
           <Link href={"/assignment/" + id}>{title}</Link>
         </div>

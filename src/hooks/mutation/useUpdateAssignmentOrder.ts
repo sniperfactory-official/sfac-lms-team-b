@@ -1,31 +1,33 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateDoc, doc, DocumentReference } from "firebase/firestore";
+import { updateDoc, writeBatch, doc, DocumentReference } from "firebase/firestore";
 import { db } from "@utils/firebase";
-import { AssignmentExtractedPicked } from "@/app/assignment/(components)/AssignmentLeftNavContent";
+import { AssignmentExtracted } from "@/app/assignment/(components)/AssignmentLeftNavContent";
 
 // Firestore 데이터 추가
-const updateAssignment = async (newOrder: Number, assignmentId: string) => {
+const updateAssignment = async (assignmentValue:AssignmentExtracted[]) => {
   try {
-    const updatedAssignment = await updateDoc(
-      doc(db, "assignments", assignmentId),
-      { order: newOrder },
-    );
-    return updatedAssignment;
+    // Get a new write batch
+    const batch = writeBatch(db);
+
+    assignmentValue.forEach((assign:AssignmentExtracted)=>{
+      const updateRef = doc(db, "assignments", assign.id)
+      batch.update(updateRef, {"order": assign.index});
+    })
+
+    // Commit the batch
+    await batch.commit();
+
   } catch (err) {
     console.log(err);
     throw err;
   }
 };
 
-const useUpdateAssignment = (assignmentValue: AssignmentExtractedPicked[]) => {
+const useUpdateAssignmentOrder = () => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    (assignmentId: string) => {
-      const updatingAssignment = assignmentValue.find(
-        assign => assign.id === assignmentId,
-      );
-      const newOrder = updatingAssignment.order;
-      return updateAssignment(newOrder, assignmentId);
+    (assignmentValue: AssignmentExtracted[]) => {
+      return updateAssignment(assignmentValue);
     },
     {
       onSuccess: () => {
@@ -39,4 +41,4 @@ const useUpdateAssignment = (assignmentValue: AssignmentExtractedPicked[]) => {
   return { mutate, isLoading, error };
 };
 
-export { useUpdateAssignment };
+export { useUpdateAssignmentOrder };
