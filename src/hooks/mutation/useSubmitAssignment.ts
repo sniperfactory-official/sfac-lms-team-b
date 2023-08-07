@@ -40,17 +40,6 @@ const submitAssignment = async (
       userId: userRef,
     });
 
-    // submittedAssignment안에 서브컬렉션으로 feedbacks가 존재하므로 넣어줌
-    await addDoc(
-      collection(
-        db,
-        "submittedAssignments",
-        addSubmittedAssignmentData.id,
-        "feedbacks",
-      ),
-      {},
-    );
-
     return addSubmittedAssignmentData;
   } catch (err) {
     console.log(err);

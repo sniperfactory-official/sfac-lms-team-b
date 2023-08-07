@@ -15,11 +15,13 @@ interface SubmittedItem extends SubmittedAssignment {
 interface IAssignmentTeacherViewCardProps {
   submittedItem: SubmittedItem;
   assignmentId: string;
+  user: User;
 }
 
 const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
   submittedItem,
   assignmentId,
+  user: loginUser,
 }: IAssignmentTeacherViewCardProps) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { user, attachment }: SubmittedItem = submittedItem;
@@ -92,7 +94,6 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
         </div>
       ) : null}
 
-
       {isDetailOpen ? (
         <AssignmentModal
           title="상세보기"
@@ -103,6 +104,8 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
           }}
         >
           <AssignmentFeedback
+            submittedAssignmentUser={submittedItem.user}
+            loginUser={loginUser}
             submittedAssignmentId={submittedItem.id}
             assignmentId={assignmentId}
             isRead={submittedItem.isRead}

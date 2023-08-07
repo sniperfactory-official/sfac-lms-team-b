@@ -54,7 +54,6 @@ const AssignmentLeftNavContent = prop => {
         htmlcontent.push(assignExtracted);
       }
 
-
       console.log(
         "[AssignmentLeftNavContent_FUNC] FetchAssignmentData 데이터 로드 완료!",
         htmlcontent,
