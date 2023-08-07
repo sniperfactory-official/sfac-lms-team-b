@@ -6,6 +6,8 @@ import {
   setLectureType,
   setLectureTitle,
   setExternalLink,
+  setTextContent,
+  setNoteImages,
   setVideoURL,
   setVideoLength,
   setStartDate,
@@ -27,6 +29,8 @@ const useFirebaseLectureSlice = () => {
       dispatch(setLectureType(lecture.lectureType));
       dispatch(setLectureTitle(lecture.title));
       dispatch(setExternalLink(lecture.lectureContent.externalLink));
+      dispatch(setTextContent(lecture.lectureContent.textContent));
+      dispatch(setNoteImages(lecture.lectureContent.images));
       dispatch(setVideoURL(lecture.lectureContent.videoUrl));
       dispatch(setVideoLength(lecture.lectureContent.videoLength));
       dispatch(setStartDate(lecture.startDate));

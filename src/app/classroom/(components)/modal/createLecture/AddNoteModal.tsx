@@ -3,13 +3,16 @@ import Layout from "../common/Layout";
 import ModalHeader from "../common/ModalHeader";
 import ModalMain from "../common/ModalMain";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+import useFirebaseLectureSlice from "@/hooks/lecture/useFirebaseLectureSlice";
 
 const NoSsrEditor = dynamic(() => import("./NoteSection"), {
   ssr: false,
+  loading: () => <div>Loading...</div>,
 });
 
 const AddNoteModal: React.FC = () => {
   const { modalRole, handleModalMove } = useClassroomModal();
+  useFirebaseLectureSlice();
   const MODAL_ROLE_OBJ: { [key: string]: string } = {
     create: "노트 만들기",
     edit: "수정하기",

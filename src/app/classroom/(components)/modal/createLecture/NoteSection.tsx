@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useRef } from "react";
+import { useDispatch } from "react-redux";
 import { Editor } from "@toast-ui/react-editor";
-import { RootState } from "@/redux/store";
 import { setNoteImages, setTextContent } from "@/redux/slice/lectureInfoSlice";
+import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import useUploadImage from "@/hooks/lecture/useUploadImage";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
@@ -11,11 +11,8 @@ type HookCallback = (url: string, text?: string) => void;
 const NoteSction: React.FC = () => {
   const editorRef = useRef<Editor>(null);
   const dispatch = useDispatch();
-  const textContent = useSelector(
-    (state: RootState) => state.lectureInfo.textContent,
-  );
-  const [content, setContent] = useState<string | undefined>(textContent);
   const { onUploadImage } = useUploadImage();
+  const { textContent } = useLectureInfo();
 
   const toolbarItems = [
     ["heading", "bold", "italic", "strike"],
@@ -27,7 +24,6 @@ const NoteSction: React.FC = () => {
     const newContent: string | undefined = editorRef.current
       ?.getInstance()
       .getMarkdown();
-    setContent(newContent);
     dispatch(setTextContent(newContent));
   };
 
@@ -45,7 +41,7 @@ const NoteSction: React.FC = () => {
   return (
     <Editor
       ref={editorRef}
-      initialValue={content}
+      initialValue={textContent}
       placeholder="내용을 입력해주세요."
       hideModeSwitch={true}
       usageStatistics={false}
