@@ -56,10 +56,6 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
       dispatch(setError("강의 제목을 입력해주세요."));
       return;
     }
-    if (!startDate || !endDate) {
-      dispatch(setError("수강 기간을 선택해주세요."));
-      return;
-    }
     if (lectureType === "링크") {
       const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
       if (!externalLink || !externalLink.trim()) {
@@ -78,6 +74,10 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     }
     if (lectureType === "비디오" && !videoURL.trim()) {
       dispatch(setError("비디오 강의가 존재하지 않습니다."));
+      return;
+    }
+    if (!startDate || !endDate) {
+      dispatch(setError("수강 기간을 선택해주세요."));
       return;
     }
 
