@@ -85,6 +85,8 @@ const AssignmentFeedback = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // console.log(feedbacks?.includes({ id: feedbacks[0].id }));
+
   return (
     <div>
       {/* uploaded */}
@@ -103,7 +105,10 @@ const AssignmentFeedback = ({
                 {submittedAssignmentUser.role}
               </span>
             </div>
-            <button>삭제</button>
+            {loginUser.role === "수강생" &&
+            "피드백 배열안에 강사가 한 피드백이 있냐?" ? (
+              <button className="text-grayscale-100">삭제</button>
+            ) : null}
           </div>
         </div>
         <ul className="space-y-[12px] mb-[10px]">
