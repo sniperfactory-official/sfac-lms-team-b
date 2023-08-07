@@ -4,47 +4,58 @@ import React from "react";
 import { useGetAssignment } from "@hooks/queries/useGetAssignment";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import AssignmentLeftNavBlock from "./AssignmentLeftNavContentCard";
+import AssignmentLeftNavCard from "./AssignmentLeftNavContentCard";
 import { useState, useEffect, useCallback, useRef } from "react";
-import { AssignmentExtracted } from "./AssignmentLeftNavContentCard";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import AssignmentLeftNavButton from "./AssignmentLeftNavContentButton";
 import { useDeleteRegisteredAssignment } from "@/hooks/mutation/useDeleteRegisteredAssignment";
-import { User } from "@/types/firebase.types";
+import { v4 as uuidv4 } from 'uuid';
+import { Assignment } from "@/types/firebase.types";
 
-type AssignmentExtractedOmitted = Omit<AssignmentExtracted, "movecard">;
-export type AssignmentExtractedPicked = Pick<
+
+export interface AssignmentExtracted
+  extends Pick<Assignment, "id" | "order" | "title"> {
+  movecard: (dragIndex: Number, hoverIndex: Number) => void;
+  index: number;
+  isEditing? : boolean;
+
+}
+/* export type AssignmentExtractedorder = Pick<
   AssignmentExtracted,
-  "id" | "order"
->; //id가 assignmentId인지 확인필요
+  "id" | "order" 
+>; //id가 assignmentId인지 확인필요 */
 
-const AssignmentLeftNavContent = prop => {
+export interface Props {
+  userInfo: Object;
+  modeChanger: (arg: Event) => void;
+}
+const AssignmentLeftNavContent = (prop:Props) => {
   const assignQueries = useGetAssignment("");
-  const [htmlContent, setHtmlcontent] =
-    useState<AssignmentExtractedOmitted[]>();
   const isLoading = assignQueries.isLoading;
-  const initialHtml = useRef<AssignmentExtractedPicked[]>();
   const [isEditing, setIseiditing] = useState(false);
 
-  //최초 로드시 데이터 fetch(데이터 POST 후의 로드는 고려하지 않음)
-  const FetchAssignmentData = useCallback(() => {
-    let htmlcontent = [];
-    let initialHtml = [];
+  const [htmlContent, setHtmlcontent] = useState<AssignmentExtracted[]>(); //현재 html(미정렬)
+  const [htmlContentAligned,setHcAligned] = useState<AssignmentExtracted[]>(); //정렬된 데이터
+  const initialHtml = useRef<AssignmentExtracted[]>(); //초기 html 
+  
 
+  const alignAssignmentData = (htmlContentAligned:AssignmentExtracted[]) => {
+    const assignSorted = htmlContentAligned?.toSorted(
+      (a:AssignmentExtracted, b:AssignmentExtracted) => a.order - b.order
+    );
+    setHcAligned(assignSorted);
+}
+
+  useEffect(() => { //초기 데이터 fetch 및 추출
     if (isLoading === false) {
+      let htmlcontent = [];
+      console.log("[AssignmentLeftNavContent_FUNC] FetchAssignmentData 데이터 로드 완료!");
       const assignFetched = assignQueries.data;
       let index = assignFetched?.length;
+
       //order 순서대로 데이터 불러오기 및 추출(이후에는 moveCard로 순서보존)
-
-      const assignSorted = assignFetched?.toSorted(
-        (a: Object, b: Object) => a.order - b.order,
-      );
-      const length = assignSorted[assignSorted.length - 1].order;
-
-      console.log(length);
-
       for (let i = 0; i < index; i++) {
-        const assignCopied = assignSorted[i];
+        const assignCopied = assignFetched[i];
         let assignExtracted = {
           id: assignCopied.id,
           index: i,
@@ -53,32 +64,32 @@ const AssignmentLeftNavContent = prop => {
         };
         htmlcontent.push(assignExtracted);
       }
-
-
-      console.log(
-        "[AssignmentLeftNavContent_FUNC] FetchAssignmentData 데이터 로드 완료!",
-        htmlcontent,
-      );
-
-      setHtmlcontent(htmlcontent);
-      initialHtml.current = [...htmlcontent];
+      setHtmlcontent(htmlcontent)
+      initialHtml.current = [...htmlcontent]; //정렬된 데이터 설정(setHmltcontent는 생략)
     }
-  }, [isLoading, assignQueries.data]);
+  }, [isLoading]);
 
-  useEffect(() => {
-    FetchAssignmentData();
-  }, [FetchAssignmentData]);
+  useEffect(() => { //데이터 정렬
+    console.log("데이터 정렬해요!");
+    alignAssignmentData(htmlContent);
 
+  }, [htmlContent]);
+
+ /* #region  */
+  //. 과제 변경 모듈
   //index 서로 바꾸고 컴포넌트 리로드
   const moveCard = (dragIndex, hoverIndex) => {
-    let htmlcontent = [...htmlContent];
-
-    setHtmlcontent(prev => {
-      htmlcontent.splice(dragIndex, 1, htmlcontent[hoverIndex]);
-      htmlcontent.splice(hoverIndex, 1, prev[dragIndex]);
-      return htmlcontent;
+    setHtmlcontent((prev:AssignmentExtracted)=>{
+      let hcSpliced =  prev.toSpliced(dragIndex, 1, prev[hoverIndex]); //dragIndex에 hoverIndex 자리의 값이 들어감
+      let hcDoubleSpliced = hcSpliced.toSpliced(hoverIndex, 1, prev[dragIndex])
+      hcDoubleSpliced[dragIndex].order = prev[dragIndex].order;
+      hcDoubleSpliced[dragIndex].index = dragIndex;
+      hcDoubleSpliced[hoverIndex].order = prev[hoverIndex].order;
+      hcDoubleSpliced[hoverIndex].index = hoverIndex;
+      return hcDoubleSpliced;
     });
-  };
+
+    };
 
   const UpdateAssignmentOrder = () => {
     const assignOrderMutation = useUpdateAssignment(htmlContent);
@@ -105,36 +116,40 @@ const AssignmentLeftNavContent = prop => {
     setIseiditing(false);
   };
 
-  const startEditting = () => {
-    setHtmlcontent(initialHtml);
-    setIseiditing(true);
-  };
 
-  const modeExecuting = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    console.log(
-      "[AssignmentLeftNavContent_FUNC] modeExecuting 실행!",
-      event.target,
-    );
-    const formData = new FormData(event.target);
-    console.log(formData.values());
-
-    switch (formData.get("type")) {
-      case "EDIT":
-        startEditting();
-        break;
-      case "CHANGE":
-        //UpdateAssignmentOrder();
-        break;
-      case "DELETE":
-        const targetId = formData.values();
-        //DeleteAssignment(targetId);
-        break;
-      default:
-        break;
+  const handleKeyPress = (event) => {
+    console.log(event)
+    if (event.key==="Escape") {
+      setIseiditing(false);
+      window.removeEventListener('keypress', handleKeyPress);
     }
+  }
+
+  const StartEditting = () => {
+    console.log("add!")
+    setIseiditing(true);
+    //window.addEventListener('keypress', handleKeyPress);
   };
+
+  
+
+  const modeExecuting = (event) => {
+    console.log(event.target)
+    event.preventDefault();
+    const formElem = event.target;
+    let formData = new FormData()
+    for (let k=0; k<formElem.length; k++){
+      const deleteTargetName = formElem[k].name;
+      const deleteTargetValue = formElem[k].value;
+      formData.set(deleteTargetName,deleteTargetValue);
+    }
+    // Display the values
+    for (const value of formData.values()) {
+      console.log(value);
+    }
+    
+  }
+ /* #endregion */
 
   return (
     <div>
@@ -149,10 +164,11 @@ const AssignmentLeftNavContent = prop => {
           {isLoading ? (
             <span>`none`</span>
           ) : (
-            htmlContent?.map(assignExtracted => {
+            htmlContentAligned?.map((assignExtracted:AssignmentExtracted) => {
+              console.log("데이터 맵핑 시작!");
               return (
-                <AssignmentLeftNavBlock
-                  key={assignExtracted.id + "1"}
+                <AssignmentLeftNavCard
+                  key={uuidv4()}
                   index={assignExtracted.index}
                   order={assignExtracted.order}
                   id={assignExtracted.id}
@@ -166,11 +182,11 @@ const AssignmentLeftNavContent = prop => {
         </form>
       </DndProvider>
       <AssignmentLeftNavButton
-        modeChanger={event => modeExecuting(event)}
-        userInfo={prop.userId}
+        modeChanger={StartEditting}
+        userInfo={prop.userInfo}
       />
     </div>
-  );
-};
+    );
+  }
 
 export default AssignmentLeftNavContent;

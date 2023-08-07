@@ -1,19 +1,13 @@
 import Link from "next/link";
-import { Assignment } from "@/types/firebase.types";
+
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
+import { AssignmentExtracted } from "./AssignmentLeftNavContent"; 
 
-export interface AssignmentExtracted
-  extends Pick<Assignment, "id" | "order" | "title"> {
-  movecard: (dragIndex: Number, hoverIndex: Number) => void;
-  index: number;
-  isEditing: boolean;
-}
 
-const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
+const AssignmentLeftNavCard = (props: AssignmentExtracted) => {
   const ref = useRef<HTMLDivElement>(null);
   const { id, order, title, movecard, index, isEditing } = props;
-  const isediting = true;
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     item: () => {
@@ -35,27 +29,32 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
+        console.log("똑같!")
         return;
       }
       movecard(dragIndex, hoverIndex);
-      console.log(dragIndex, hoverIndex);
-      item.index = hoverIndex;
+      item.index = hoverIndex
+      console.log("dragIndex:",dragIndex, "hoverIndex",hoverIndex)
     },
   }));
   const opacity = isDragging ? 0 : 100;
   drag(drop(ref));
 
+  
+
   return (
     <div>
-      {isDragging ? (
-        <div
-          ref={ref}
-          key={id}
-          className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
-        >
-          <input type="checkbox" name="assign" value={id} />
-          <Link href={"/assignment/" + id}>{title}</Link>
-        </div>
+      { isEditing? (
+          <div
+            ref={ref}
+            key={id}
+            className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+          >
+            <input type="checkbox" name={id}/>
+            <Link href={"/assignment/" + id}>
+              {title}
+              </Link>
+          </div>
       ) : (
         <div
           key={id}
@@ -68,4 +67,4 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
   );
 };
 
-export default AssignmentLeftNavBlock;
+export default AssignmentLeftNavCard;
