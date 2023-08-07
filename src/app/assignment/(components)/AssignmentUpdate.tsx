@@ -261,7 +261,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         </div>
       </div>
 
-      <div className="flex absolute w-[720px] h-[50px] bottom-[33px] items-center justify-evenly">
+      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-evenly">
         <div className="flex items-center">
           <label
             htmlFor="submit-period"
