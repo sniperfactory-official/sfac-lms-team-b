@@ -10,14 +10,12 @@ import { User, SubmittedAssignment } from "@/types/firebase.types";
 
 interface OwnProps {
   user: User;
-  userId: string;
   assignmentId: string;
   submittedAssignment?: SubmittedAssignment;
 }
 
 const AssignmentStudentViewCard: React.FC<OwnProps> = ({
   user,
-  userId,
   assignmentId,
   submittedAssignment,
 }) => {
@@ -102,13 +100,12 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
       >
         <AssignmentSubmitWithLink
           assignmentId={assignmentId}
-          userId={userId}
+          userId={user.id}
           onClose={() => {
             setIsLinkOpen(false);
           }}
         />
       </AssignmentModal>
-
       {/* 과제: 파일 제출 */}
       <AssignmentModal
         title="과제 제출"
@@ -120,7 +117,7 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
       >
         <AssignmentSubmitWithFile
           assignmentId={assignmentId}
-          userId={userId}
+          userId={user.id}
           onClose={() => {
             setIsFileOpen(false);
           }}
@@ -128,21 +125,24 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
       </AssignmentModal>
 
       {/* 과제: 과제 상세 */}
-
-      {isDetailOpen ? (
-        <AssignmentModal
-          title="상세보기"
-          isOpen={isDetailOpen}
-          isBottomButton={false}
-          onClose={() => {
-            setIsDetailOpen(false);
-          }}
-        >
+      <AssignmentModal
+        title="상세보기"
+        isOpen={isDetailOpen}
+        isBottomButton={false}
+        onClose={() => {
+          setIsDetailOpen(false);
+        }}
+      >
+        {isDetailOpen ? (
           <AssignmentFeedback
             submittedAssignmentId={submittedAssignment?.id!}
+            submittedAssignmentUser={submittedAssignment?.user!}
+            assignmentId={assignmentId}
+            loginUser={user}
+            setIsDetailOpen={setIsDetailOpen}
           />
-        </AssignmentModal>
-      ) : null}
+        ) : null}
+      </AssignmentModal>
     </>
   );
 };
