@@ -54,7 +54,11 @@ const useSubmitAssignment = (assignmentId: string, userId: string) => {
       submitAssignment(assignmentId, attachmentValue, userId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["getSubmittedAssignment", assignmentId]);
+        queryClient.invalidateQueries([
+          "getSubmittedAssignment",
+          assignmentId,
+          userId,
+        ]);
       },
       onError: err => {
         console.log(err);

@@ -11,8 +11,6 @@ const updateSubmittedAssignment = async (
   submittedAssignmentId: string,
   updateValue: IUpdateValue,
 ) => {
-  console.log("잘 호출됩니까?");
-
   try {
     await updateDoc(
       doc(db, `submittedAssignments`, submittedAssignmentId),

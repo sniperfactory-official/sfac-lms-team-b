@@ -69,6 +69,7 @@ const getSubmittedAssignments = async (
     (a: DocumentData, b: DocumentData) =>
       a.date().createdAt.seconds - b.date().createdAt.seconds,
   );
+
   const submittedAssignments = await Promise.all(
     sortSubmittedAssignments.map(async document => {
       const attachmentQuery = query(
@@ -95,7 +96,7 @@ const getSubmittedAssignments = async (
 
 const useGetSubmittedAssignments = (assignmentId: string, uid?: string) => {
   const { data, isLoading, error } = useQuery(
-    ["getSubmittedAssignment", assignmentId, uid],
+    ["getSubmittedAssignment", assignmentId, uid || ""],
     () => getSubmittedAssignments(assignmentId, uid),
     {
       refetchOnWindowFocus: false,
