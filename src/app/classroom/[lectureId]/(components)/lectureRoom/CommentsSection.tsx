@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { LectureComment } from "@/types/firebase.types";
 import Comment from "../../../(components)/modal/comment/Comment";
 import useObserver from "@/hooks/lecture/useObserver";
@@ -31,6 +31,10 @@ const CommentsSection: FC<CommentsSectionProps> = ({
     hasNextPage: hasMoreComments,
     fetchNextPage,
   });
+  
+  useEffect(() => {
+    setDisplayedComments(comments.slice(0, PAGE_SIZE));
+  }, [comments]);
 
   return (
     <ul>
