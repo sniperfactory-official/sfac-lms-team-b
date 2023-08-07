@@ -10,7 +10,7 @@ import { db } from "@utils/firebase";
 
 const submitAssignment = async (
   assignmentId: string,
-  attachmentValue: string[],
+  attachmentValue: (string | { name: string; url: string })[],
   userId: string,
 ): Promise<DocumentReference> => {
   const userRef = doc(db, "users", userId);
@@ -33,12 +33,21 @@ const submitAssignment = async (
       },
     );
 
-    await addDoc(collection(db, "attachments"), {
-      links: [...attachmentValue],
-      submittedAssignmentId: addSubmittedAssignmentData,
-      // createdAt: createdAtTimeStamp,
-      userId: userRef,
-    });
+    if (typeof attachmentValue[0] === "string") {
+      await addDoc(collection(db, "attachments"), {
+        attachmentFiles: [{ name: "", url: "" }],
+        links: [...attachmentValue],
+        submittedAssignmentId: addSubmittedAssignmentData,
+        userId: userRef,
+      });
+    } else {
+      await addDoc(collection(db, "attachments"), {
+        attachmentFiles: [...attachmentValue],
+        links: [""],
+        submittedAssignmentId: addSubmittedAssignmentData,
+        userId: userRef,
+      });
+    }
 
     return addSubmittedAssignmentData;
   } catch (err) {
@@ -50,7 +59,7 @@ const submitAssignment = async (
 const useSubmitAssignment = (assignmentId: string, userId: string) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    (attachmentValue: string[]) =>
+    (attachmentValue: (string | { name: string; url: string })[]) =>
       submitAssignment(assignmentId, attachmentValue, userId),
     {
       onSuccess: () => {

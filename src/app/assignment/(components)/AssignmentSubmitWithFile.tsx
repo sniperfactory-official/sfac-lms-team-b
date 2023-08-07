@@ -3,6 +3,8 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
+import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
+import { Attachment } from "@/types/firebase.types";
 
 type OwnProps = {
   onClose: () => void;
@@ -23,6 +25,8 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
     assignmentId,
     userId,
   );
+
+  const filesUploadMutation = useFilesUpload();
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -87,18 +91,42 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       setSelectedFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
       // handleUpload(selectedFiles);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleUpload = useCallback(() => {
+  const handleUpload = async () => {
     // 선택한 파일들의 업로드 수행
     console.log("Uploaded files:", selectedFiles);
-    // mutate(selectedFiles); // FIXME: ts error 수정 필요
-    setToastMsg("파일이 업로드되었습니다!");
-    setIsAccept(true);
+
+    let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
+
+    try {
+      const uploadPromises = selectedFiles.map(file =>
+        filesUploadMutation.mutateAsync(file),
+      );
+      const uploadedUrls = await Promise.all(uploadPromises);
+      newFiles = uploadedUrls;
+      const newAttachmentArray: { name: string; url: string }[] = [];
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const newObj = {
+          name: selectedFiles[i].name,
+          url: newFiles[i],
+        };
+        newAttachmentArray.push(newObj);
+      }
+
+      mutate(newAttachmentArray);
+      setToastMsg("파일이 업로드되었습니다!");
+      setIsAccept(true);
+    } catch (error) {
+      setToastMsg("과제 제출에 실패했습니다. 다시 시도해주세요.");
+      setIsAccept(false);
+    }
+
     setTimeout(() => {
       onClose();
     }, 2000);
-  }, [selectedFiles]);
+  };
 
   const handleRemoveFile = (file: File) => {
     setSelectedFiles(prevFiles =>
