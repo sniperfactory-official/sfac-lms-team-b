@@ -5,7 +5,7 @@ import AssignmentModal from "./AssignmentModal";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentFeedback from "./AssignmentFeedback";
 import Image from "next/image";
-import timestampToDate from "@/utils/timestampToDate";
+import timestampToIntlDate from "@/utils/timestampToIntlDate";
 
 interface SubmittedItem extends SubmittedAssignment {
   user: User;
@@ -32,7 +32,7 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
     <>
       {submittedItem ? (
         <div
-          className="flex justify-between items-start px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]"
+          className="flex justify-between items-stretch px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]"
           onClick={() => {
             setIsDetailOpen(true);
           }}
@@ -75,7 +75,7 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
           </div>
           <div className="flex flex-col justify-between items-end">
             <div className="w-[19px] h-[19px]">
-              {!submittedItem.isRead ? (
+              {submittedItem.isRead ? (
                 <div className="w-full h-full">
                   <Image
                     src="/images/icon_new.svg"
@@ -88,7 +88,9 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
               ) : null}
             </div>
             <p className="text-grayscale-40 text-[14px] font-[500] mt-[5px]">
-              {timestampToDate(submittedItem.createdAt)}
+              {submittedItem.createdAt
+                ? timestampToIntlDate(submittedItem.createdAt, "/")
+                : null}
             </p>
           </div>
         </div>
