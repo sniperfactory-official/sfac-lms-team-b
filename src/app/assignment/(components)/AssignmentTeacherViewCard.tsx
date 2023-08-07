@@ -93,16 +93,15 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
           </div>
         </div>
       ) : null}
-
-      {isDetailOpen ? (
-        <AssignmentModal
-          title="상세보기"
-          isOpen={isDetailOpen}
-          isBottomButton={false}
-          onClose={() => {
-            setIsDetailOpen(false);
-          }}
-        >
+      <AssignmentModal
+        title="상세보기"
+        isOpen={isDetailOpen}
+        isBottomButton={false}
+        onClose={() => {
+          setIsDetailOpen(false);
+        }}
+      >
+        {isDetailOpen ? (
           <AssignmentFeedback
             submittedAssignmentUser={submittedItem.user}
             loginUser={loginUser}
@@ -110,8 +109,8 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
             assignmentId={assignmentId}
             isRead={submittedItem.isRead}
           />
-        </AssignmentModal>
-      ) : null}
+        ) : null}
+      </AssignmentModal>
     </>
   );
 };

@@ -3,20 +3,23 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
-import { useForm } from "react-hook-form";
 import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
-import { User } from "@/types/firebase.types";
+import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmittedAssignment";
+import { Feedback, User } from "@/types/firebase.types";
+import { useForm } from "react-hook-form";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
+import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 
 interface IAssignmentFeedbackProps {
   submittedAssignmentId: string;
-  assignmentId?: string;
+  assignmentId: string;
   isRead?: boolean;
   loginUser: User;
   submittedAssignmentUser: User;
+  setIsDetailOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface IFeedbackForm {
@@ -29,8 +32,10 @@ const AssignmentFeedback = ({
   submittedAssignmentUser,
   isRead,
   loginUser,
+  setIsDetailOpen,
 }: IAssignmentFeedbackProps) => {
   const [updateDelete, setUpdateDelete] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
 
   const scrollRef = useRef<HTMLUListElement>(null);
 
@@ -59,6 +64,12 @@ const AssignmentFeedback = ({
     error: updateError,
   } = useUpdateSubmittedAssignment(assignmentId!, submittedAssignmentId);
 
+  const {
+    mutate: deleteMutate,
+    isLoading: deleteLoading,
+    error: deleteError,
+  } = useDeleteSubmittedAssignment(assignmentId, loginUser.id);
+
   const onValid = (textValue: IFeedbackForm) => {
     createMutate({
       content: textValue.feedback,
@@ -66,6 +77,10 @@ const AssignmentFeedback = ({
       updatedAt: new Date(),
     });
     reset();
+  };
+
+  const handleDeleteSubmittedAssignment = () => {
+    setIsConfirmOpen(prev => !prev);
   };
 
   // 스크롤 최하단으로 최신피드백 보여주기
@@ -84,8 +99,6 @@ const AssignmentFeedback = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // console.log(feedbacks?.includes({ id: feedbacks[0].id }));
 
   return (
     <div>
@@ -106,8 +119,16 @@ const AssignmentFeedback = ({
               </span>
             </div>
             {loginUser.role === "수강생" &&
-            "피드백 배열안에 강사가 한 피드백이 있냐?" ? (
-              <button className="text-grayscale-100">삭제</button>
+            !feedbacks?.find(
+              (feedback: Feedback) => feedback?.user?.role === "관리자",
+            ) &&
+            !isConfirmOpen ? (
+              <button
+                onClick={handleDeleteSubmittedAssignment}
+                className="text-grayscale-100"
+              >
+                삭제
+              </button>
             ) : null}
           </div>
         </div>
@@ -201,6 +222,18 @@ const AssignmentFeedback = ({
           </div>
         </div>
       </div>
+      <AssignmentLocalConfirmDialog
+        title="삭제하시겠습니까?"
+        content="한번 삭제하시면 다시 복구가 불가능합니다."
+        confirmBtnMsg="확인"
+        onConfirm={() => {
+          deleteMutate(submittedAssignmentId);
+          setIsDetailOpen!((prev: boolean) => !prev);
+          setIsConfirmOpen(prev => !prev);
+        }}
+        isOpen={isConfirmOpen}
+        onCancel={() => setIsConfirmOpen(prev => !prev)}
+      />
     </div>
   );
 };

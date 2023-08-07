@@ -143,19 +143,18 @@ const AssignmentFeedbackContent = ({
           </div>
         </div>
       </li>
-      {isConfirmOpen ? (
-        <AssignmentLocalConfirmDialog
-          title="삭제하시겠습니까?"
-          content="한번 삭제하시면 다시 복구가 불가능합니다."
-          confirmBtnMsg="확인"
-          onConfirm={() => setIsConfirmOpen(false)}
-          isOpen={isConfirmOpen}
-          onCancel={() => setIsConfirmOpen(false)}
-          feedbackId={id}
-          deleteMutate={deleteMutate}
-          setToastMsg={setToastMsg}
-        />
-      ) : null}
+      <AssignmentLocalConfirmDialog
+        title="삭제하시겠습니까?"
+        content="한번 삭제하시면 다시 복구가 불가능합니다."
+        confirmBtnMsg="확인"
+        onConfirm={() => {
+          deleteMutate();
+          setToastMsg("삭제가 완료되었습니다.");
+          setIsConfirmOpen(false);
+        }}
+        isOpen={isConfirmOpen}
+        onCancel={() => setIsConfirmOpen(false)}
+      />
       {toastMsg ? (
         <div className="absolute left-12 bottom-16">
           <PageToast
