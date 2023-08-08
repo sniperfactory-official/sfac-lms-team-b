@@ -16,15 +16,18 @@ interface Props {
 const AssignmentLeftNavButton = (props: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isActivated, setIsActivated] = useState<boolean>(false);
+  const resetEditting = props.ResetEditting;
 
-  const handleKeyPress = event => {
-    if (event.keyCode === 27) {
-      setIsActivated(false);
-      props.ResetEditting();
-    }
-  };
+
 
   useEffect(() => {
+    const handleKeyPress = (event:any) => {
+      if (event.key === "Escape") {
+        setIsActivated(false);
+        resetEditting();
+      }
+    };
+
     if (isActivated === true) {
       window.addEventListener("keydown", handleKeyPress);
     } else {
@@ -34,7 +37,7 @@ const AssignmentLeftNavButton = (props: Props) => {
     return () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
-  }, [isActivated]);
+  }, [isActivated, resetEditting]);
 
   const executeEditing = () => {
     props.modeChanger();
@@ -70,7 +73,7 @@ const AssignmentLeftNavButton = (props: Props) => {
           <AssignmentModal
             title="과제만들기"
             isOpen={isOpen}
-            isBottomButton={false}
+            isBottomButton={true}
             onClose={() => {
               setIsOpen(false);
             }}
