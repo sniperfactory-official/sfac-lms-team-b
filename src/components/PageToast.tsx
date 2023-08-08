@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Toast } from "sfac-designkit-react";
 
 type OwnProps = {
   toastMsg: string; // 토스트메세지
@@ -26,14 +27,19 @@ const PageToast: React.FC<OwnProps> = ({ toastMsg, isAccept, onClose }) => {
 
   return (
     <div>
-      {/* FIXME: 임시 element: 추후 디자인시스템 완료 시 element 및 style 교체 */}
-      <span
+      {isAccept ? (
+        <Toast type="Success" text={toastMsg}></Toast>
+      ) : (
+        <Toast type="Error" text={toastMsg}></Toast>
+      )}
+      {/* 기존 작업본 */}
+      {/* <span
         className={`border-2 transition-opacity duration-300 ${
           visible ? "opacity-100" : "opacity-0 pointer-events-none"
         } ${isAccept ? "border-green text-green" : "border-red text-red"}`}
       >
         {toastMsg}
-      </span>
+      </span> */}
     </div>
   );
 };

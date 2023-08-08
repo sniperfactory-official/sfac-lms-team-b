@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Provider from "./Provider";
 import "sfac-designkit-react/style.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",

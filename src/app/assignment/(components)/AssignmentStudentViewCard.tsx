@@ -7,6 +7,9 @@ import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
 import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
 import AssignmentFeedback from "./AssignmentFeedback";
 import { User, SubmittedAssignment } from "@/types/firebase.types";
+import { Button } from "sfac-designkit-react";
+import { Text } from "sfac-designkit-react";
+import "sfac-designkit-react/style.css";
 
 interface OwnProps {
   user: User;
@@ -23,8 +26,6 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  // console.log("submittedAssignment", submittedAssignment);
-
   return (
     <>
       <div className="flex justify-between items-center px-[21px] py-[24px] border rounded-[10px]">
@@ -32,13 +33,21 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
           <AssignmentProfileImage profileImage={user.profileImage} />
           <div>
             <div className="mb-[5px] flex justify-start items-center gap-[6px]">
-              <span className="text-grayscale-100 text-[16px] font-[700]">
+              <Text
+                size="base"
+                weight="bold"
+                className="text-grayscale-100 text-color-Grayscale-100"
+              >
                 {user.username}
-              </span>
+              </Text>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full" />
-              <span className="text-grayscale-40 text-[14px] font-[400]">
+              <Text
+                size="base"
+                weight="bold"
+                className="text-color-Grayscale-40 text-grayscale-40"
+              >
                 {user.role}
-              </span>
+              </Text>
             </div>
             <span className="py-[4px] px-[10px] text-[10px] font-[500] text-grayscale-60 rounded-[4px] bg-grayscale-5">
               {submittedAssignment ? "제출 완료" : "제출 전"}
@@ -49,24 +58,26 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
           {/* 제출 전 */}
           {!submittedAssignment ? (
             <div className="flex justify-end items-center gap-[14px]">
-              <button
-                type="button"
-                className="border"
+              <Button
+                variant="secondary"
+                text="파일 첨부"
+                textSize="sm"
+                textWeight="semibold"
+                asChild
                 onClick={() => {
                   setIsFileOpen(true);
                 }}
-              >
-                파일 첨부
-              </button>
-              <button
-                type="button"
-                className="border"
+              />
+              <Button
+                variant="secondary"
+                text="링크"
+                textSize="sm"
+                textWeight="semibold"
+                asChild
                 onClick={() => {
                   setIsLinkOpen(true);
                 }}
-              >
-                링크
-              </button>
+              />
             </div>
           ) : null}
           {/* END 제출 전 */}
@@ -74,15 +85,15 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
           {/* 제출 후 */}
           {submittedAssignment ? (
             <div>
-              <button
-                type="button"
-                className="border"
+              <Button
+                variant="primary"
+                text="확인하기"
+                textSize="sm"
+                asChild
                 onClick={() => {
                   setIsDetailOpen(true);
                 }}
-              >
-                확인하기
-              </button>
+              />
             </div>
           ) : null}
 

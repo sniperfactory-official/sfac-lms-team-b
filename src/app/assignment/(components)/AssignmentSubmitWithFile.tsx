@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
 import { Attachment } from "@/types/firebase.types";
+import { Button, Text } from "sfac-designkit-react";
 
 type OwnProps = {
   onClose: () => void;
@@ -163,9 +164,13 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
                         className="w-full h-full"
                       />
                     </div>
-                    <p className="text-[16px] text-primary-80 font-[700]">
+                    <Text
+                      size="base"
+                      weight="bold"
+                      className="text-primary-80 text-color-Primary-80"
+                    >
                       {file.name}
-                    </p>
+                    </Text>
                   </div>
                   <div>
                     <button
@@ -198,9 +203,16 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
           }`}
         >
           <div>
-            <p className="mb-[10px] text-[20px] text-grayscale-30 font-[700]">
-              파일을 여기로 드래그 해주세요
-            </p>
+            <div className="mb-[10px]">
+              <Text
+                size="xl"
+                weight="bold"
+                className="text-grayscale-30 text-color-Grayscale-30 mb-[10px]"
+              >
+                파일을 여기로 드래그 해주세요
+              </Text>
+            </div>
+
             <div className="flex justify-center items-center">
               <input
                 {...getInputProps()}
@@ -209,7 +221,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
                 type="text"
               />
               <label
-                className="py-[9.5px] px-[35.5px] bg-grayscale-5 text-grayscale-50 rounded-[10px] font-[700]"
+                className="py-[9.5px] px-[35.5px] bg-primary-80 text-white rounded-[10px] font-[700]"
                 htmlFor="assignmentFile"
               >
                 컴퓨터에서 파일 선택
@@ -223,18 +235,24 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       {/* bottom-button */}
       <div className="absolute left-0 bottom-0 w-full min-h-[97px] p-[20px_31px_42px]">
         <div className="flex justify-end items-center gap-[12px]">
-          <button className="border" type="button" onClick={onClose}>
+          <Button
+            variant="secondary"
+            text="취소"
+            asChild
+            onClick={onClose}
+          />
+
+          {/* <button className="border" type="button" onClick={onClose}>
             취소
-          </button>
-          <button
-            className="border"
-            type="button"
+          </button> */}
+          <Button
+            variant="primary"
+            text="업로드"
+            asChild
             onClick={() => {
               handleUpload();
             }}
-          >
-            업로드
-          </button>
+          />
         </div>
       </div>
       {/* 토스트메세지 */}
