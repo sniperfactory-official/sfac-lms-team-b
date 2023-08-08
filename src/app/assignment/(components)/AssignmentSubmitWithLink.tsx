@@ -2,6 +2,7 @@ import PageToast from "@/components/PageToast";
 import { useState } from "react";
 import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
+import { Button } from "sfac-designkit-react";
 
 type OwnProps = {
   onClose: () => void;
@@ -64,7 +65,7 @@ const AssignmentSubmitWithLink: React.FC<OwnProps> = ({
         return;
       }
     }
-    // FIXME: hook 완성되면 firebase로 처리/빈 문자열 제거해서 전송
+
     let filterValue: string[] = inputValues.filter(url => url !== "");
     if (filterValue.length > 0) {
       // 여기서 firebase 처리
@@ -134,18 +135,22 @@ const AssignmentSubmitWithLink: React.FC<OwnProps> = ({
       </div>
       <div className="absolute left-0 bottom-0 w-full min-h-[97px] p-[20px_31px_42px]">
         <div className="flex justify-end items-center gap-[12px]">
-          <button className="border" type="button" onClick={onClose}>
-            취소
-          </button>
-          <button
-            className="border"
-            type="button"
+          <Button
+            variant="secondary"
+            text="취소"
+            asChild
+            className="max-w-[115px]"
+            onClick={onClose}
+          />
+          <Button
+            variant="primary"
+            text="업로드"
+            asChild
+            className="max-w-[115px]"
             onClick={() => {
               handleSubmit();
             }}
-          >
-            업로드
-          </button>
+          />
         </div>
       </div>
       <div className="absolute left-[33px] bottom-[33px]">

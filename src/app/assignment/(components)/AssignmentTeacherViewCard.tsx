@@ -6,6 +6,7 @@ import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentFeedback from "./AssignmentFeedback";
 import Image from "next/image";
 import timestampToIntlDate from "@/utils/timestampToIntlDate";
+import { Text } from "sfac-designkit-react";
 
 interface SubmittedItem extends SubmittedAssignment {
   user: User;
@@ -26,7 +27,6 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const { user, attachment }: SubmittedItem = submittedItem;
   const { attachmentFiles, links } = attachment;
-  const { profileImage } = user;
 
   return (
     <>
@@ -41,34 +41,46 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
             <AssignmentProfileImage profileImage={user.profileImage} />
             <div>
               <div className="mb-[5px] flex justify-start items-center gap-[6px]">
-                <span className="text-grayscale-100 text-[16px] font-[700]">
+                <Text
+                  size="base"
+                  weight="bold"
+                  className="text-grayscale-100 text-color-Grayscale-100"
+                >
                   {user.username}
-                </span>
+                </Text>
                 <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full" />
-                <span className="text-grayscale-40 text-[14px] font-[400]">
+                <Text
+                  size="base"
+                  weight="medium"
+                  className="text-grayscale-40 text-color-Grayscale-40"
+                >
                   {user.role}
-                </span>
+                </Text>
               </div>
               {attachmentFiles &&
                 attachmentFiles.map((item, index) => {
                   return (
-                    <p
+                    <Text
                       key={index}
-                      className="text-grayscale-40 text-[14px] font-[400] line-clamp-1"
+                      size="sm"
+                      weight="medium"
+                      className="text-grayscale-40 text-color-Grayscale-40 line-clamp-1"
                     >
                       {item.name}
-                    </p>
+                    </Text>
                   );
                 })}
               {links.length > 0 &&
                 links.map((item, index) => {
                   return (
-                    <p
+                    <Text
                       key={index}
-                      className="text-grayscale-40 text-[14px] font-[400] line-clamp-1"
+                      size="sm"
+                      weight="medium"
+                      className="text-grayscale-40 text-color-Grayscale-40 line-clamp-1"
                     >
                       {item}
-                    </p>
+                    </Text>
                   );
                 })}
             </div>
@@ -87,11 +99,15 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
                 </div>
               ) : null}
             </div>
-            <p className="text-grayscale-40 text-[14px] font-[500] mt-[5px]">
+            <Text
+              size="sm"
+              weight="medium"
+              className="text-grayscale-40 text-color-Grayscale-40 mt-[5px]"
+            >
               {submittedItem.createdAt
                 ? timestampToIntlDate(submittedItem.createdAt, "/")
                 : null}
-            </p>
+            </Text>
           </div>
         </div>
       ) : null}

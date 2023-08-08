@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { ReactNode } from "react";
+import { Text, Title } from "sfac-designkit-react";
 
 type OwnProps = {
   title: string;
@@ -32,7 +33,12 @@ const AssignmentModal: React.FC<OwnProps> = ({
         }`}
       >
         <div className="flex justify-between items-center mb-[20px] px-[33px]">
-          <h2 className="text-[20px] font-[700] text-grayscale-100">{title}</h2>
+          <Title
+            size="xl"
+            className="text-grayscale-100 text-color-Grayscale-100"
+          >
+            {title}
+          </Title>
           <button className="w-[24px] h-[24px]" type="button" onClick={onClose}>
             <Image
               src="/images/close.svg"
