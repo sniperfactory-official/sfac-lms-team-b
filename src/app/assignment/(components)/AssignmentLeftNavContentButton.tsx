@@ -2,22 +2,52 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { User } from "@/types/firebase.types";
 import AssignmentCreate from "./AssignmentCreate";
 import AssignmentModal from "./AssignmentModal";
-import { Props } from "./AssignmentLeftNavContent";
 
-const AssignmentLeftNavButton = (prop: Props) => {
+interface Props {
+  userInfo: User;
+  UpdateAssignmentOrder: () => void;
+  ResetEditting: () => void;
+  modeChanger: () => void;
+}
+
+const AssignmentLeftNavButton = (props: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isActivated, setIsActivated] = useState<boolean>(false);
-  console.log("[AssignmentLeftNavButton] 실행!");
+
+  const handleKeyPress = event => {
+    if (event.keyCode === 27) {
+      setIsActivated(false);
+      props.ResetEditting();
+    }
+  };
+
+  useEffect(() => {
+    if (isActivated === true) {
+      window.addEventListener("keydown", handleKeyPress);
+    } else {
+      window.removeEventListener("keydown", handleKeyPress);
+    }
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isActivated]);
 
   const executeEditing = () => {
+    props.modeChanger();
     setIsActivated(true);
-    prop.modeChanger();
+  };
+
+  const updateAndDeactivate = () => {
+    props.UpdateAssignmentOrder();
+    setIsActivated(false);
   };
   return (
     <div>
-      {prop.userInfo.role === "관리자" ? (
+      {props.userInfo.role === "관리자" ? (
         <div className="w-full">
           <div className="flex justify-center items-center w-full h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
             <button
@@ -50,15 +80,21 @@ const AssignmentLeftNavButton = (prop: Props) => {
           {isActivated ? (
             <div className="flex justify-center items-center w-full h-[46px] mx-0 my-[10px] gap-[6px] flex-shrink-0 bg-white rounded-[10px] ">
               <button
-                type="submit"
-                form="assign"
-                name="assign"
+                type="button"
+                onClick={() => {
+                  updateAndDeactivate();
+                }}
                 className="w-[115px] h-[35px] p-[9px] rounded-lg flex bg-[#337AFF] text-slate-50"
               >
                 <span className="m-auto">적용</span>
               </button>
               <button
                 type="submit"
+                onClick={() => {
+                  setTimeout(() => {
+                    setIsActivated(false), 1000;
+                  });
+                }}
                 form="assign"
                 name="assign"
                 className="w-[115px] h-[35px] p-[9px] rounded-lg flex bg-[#FF0000] text-slate-50 "
@@ -68,24 +104,11 @@ const AssignmentLeftNavButton = (prop: Props) => {
             </div>
           ) : (
             <div className="flex justify-center items-center w-full h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
-              <form
-                onSubmit={() => {
+              <button
+                type="button"
+                onClick={() => {
                   executeEditing();
                 }}
-                id="type"
-                name="type"
-              >
-                <input
-                  type="checkbox"
-                  name="type"
-                  value="EDIT"
-                  className="hidden"
-                ></input>
-              </form>
-              <button
-                type="submit"
-                form="type"
-                name="type"
                 className="flex justify-center items-center gap-[6px]"
               >
                 <Image
