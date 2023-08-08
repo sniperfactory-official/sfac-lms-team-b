@@ -7,7 +7,7 @@ import AssignmentCreate from "./AssignmentCreate";
 import AssignmentModal from "./AssignmentModal";
 
 interface Props {
-  userInfo:User;
+  userInfo: User;
   UpdateAssignmentOrder: () => void;
   ResetEditting: () => void;
   modeChanger: () => void;
@@ -17,7 +17,7 @@ const AssignmentLeftNavButton = (props: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isActivated, setIsActivated] = useState<boolean>(false);
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = event => {
     if (event.keyCode === 27) {
       setIsActivated(false);
       props.ResetEditting();

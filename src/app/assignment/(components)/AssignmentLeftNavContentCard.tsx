@@ -4,12 +4,12 @@ import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
 import { AssignmentExtracted } from "./AssignmentLeftNavContent";
 
-interface Props extends AssignmentExtracted{
+interface Props extends AssignmentExtracted {
   movecard: (dragIndex: number, hoverIndex: number) => void;
   isEditting: boolean;
 }
 
-const AssignmentLeftNavCard = (props:Props) => {
+const AssignmentLeftNavCard = (props: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const { id, title, movecard, index, isEditting } = props;
 
@@ -40,7 +40,7 @@ const AssignmentLeftNavCard = (props:Props) => {
       item.index = hoverIndex;
     },
   }));
-  
+
   const opacity = isDragging ? 0 : 100;
   drag(drop(ref));
 

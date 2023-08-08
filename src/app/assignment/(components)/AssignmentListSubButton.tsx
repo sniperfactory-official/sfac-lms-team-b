@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssignment";
 import { useRouter } from "next/navigation";
 
@@ -12,15 +12,16 @@ interface Props {
 //추후 userinfo도 넣어야함
 const AssignmentListSubButton = ({ refId, userId }: Props) => {
   const submittionHooks = useGetSubmittedAssignments(refId, userId);
-  const isLoading = submittionHooks.isLoading
+  const isLoading = submittionHooks.isLoading;
   const router = useRouter();
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  useEffect(()=>{
-      if (!isLoading) {
-        const issubmitted = (submittionHooks.data?.length >0)
-        setIsSubmitted(issubmitted);
-      }},[isLoading, submittionHooks.data])
+  useEffect(() => {
+    if (!isLoading) {
+      const issubmitted = submittionHooks.data?.length > 0;
+      setIsSubmitted(issubmitted);
+    }
+  }, [isLoading, submittionHooks.data]);
 
   return (
     <div>

@@ -13,7 +13,7 @@ interface AssignmentNumberAdded extends Assignment {
 
 type Props = {
   userInfo: User;
-  userId : string;
+  userId: string;
 };
 
 const AssignmentListContent = (prop: Props) => {

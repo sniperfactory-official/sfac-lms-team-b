@@ -39,7 +39,7 @@ const AssignmentLeftNavContent = (props: Props) => {
     setHcAligned(assignSorted);
   };
 
-  const fetchAssignmentData = (assignQueriesdata:Assignment[]) => {
+  const fetchAssignmentData = (assignQueriesdata: Assignment[]) => {
     let htmlcontent = [];
     let initialhtml = [];
     const assignFetched = assignQueriesdata;
@@ -82,7 +82,7 @@ const AssignmentLeftNavContent = (props: Props) => {
   //index 서로 바꾸고 컴포넌트 리로드
   const moveCard = (dragIndex: number, hoverIndex: number) => {
     editingCount.current += 1;
-    setHtmlcontent((prev) => {
+    setHtmlcontent(prev => {
       let hcSpliced = prev.toSpliced(dragIndex, 1, prev[hoverIndex]); //dragIndex에 hoverIndex 자리의 값이 들어감
       let hcDoubleSpliced = hcSpliced.toSpliced(hoverIndex, 1, prev[dragIndex]);
       hcDoubleSpliced[dragIndex].order = prev[dragIndex].order;
@@ -105,13 +105,13 @@ const AssignmentLeftNavContent = (props: Props) => {
     setHtmlcontent(initialHtml.current);
     setIsEditting(false);
   };
-  
+
   const StartEditting = () => {
     setIsEditting(true);
   };
 
-  const deleteAssignmentElems = (event) => {
-    console.log(event)
+  const deleteAssignmentElems = event => {
+    console.log(event);
     event.preventDefault();
     const formElem = event.target;
     let formData = new FormData();
