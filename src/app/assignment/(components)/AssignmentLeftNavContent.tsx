@@ -33,7 +33,7 @@ const AssignmentLeftNavContent = (props: Props) => {
   const editingCount = useRef(0);
 
   const alignAssignmentData = (htmlContent: AssignmentExtracted[]) => {
-    const assignSorted = htmlContent?.toSorted(
+    const assignSorted = htmlContent?.sort(
       (a: AssignmentExtracted, b: AssignmentExtracted) => a.index - b.index,
     );
     setHcAligned(assignSorted);
@@ -70,19 +70,19 @@ const AssignmentLeftNavContent = (props: Props) => {
   useEffect(() => {
     //초기 데이터 fetch 및 추출
     if (isLoading === false) {
-      fetchAssignmentData(assignQueries.data);
+      fetchAssignmentData(assignQueries.data as Assignment[]);
     }
   }, [isLoading, assignQueries.data]);
 
   useEffect(() => {
     //데이터 정렬
-    alignAssignmentData(htmlContent);
+    alignAssignmentData(htmlContent as AssignmentExtracted[]);
   }, [htmlContent]);
 
   //index 서로 바꾸고 컴포넌트 리로드
   const moveCard = (dragIndex: number, hoverIndex: number) => {
     editingCount.current += 1;
-    setHtmlcontent(prev => {
+    setHtmlcontent((prev: any) => {
       let hcSpliced = prev.toSpliced(dragIndex, 1, prev[hoverIndex]); //dragIndex에 hoverIndex 자리의 값이 들어감
       let hcDoubleSpliced = hcSpliced.toSpliced(hoverIndex, 1, prev[dragIndex]);
       hcDoubleSpliced[dragIndex].order = prev[dragIndex].order;
@@ -96,7 +96,7 @@ const AssignmentLeftNavContent = (props: Props) => {
   const UpdateAssignmentOrder = () => {
     if (!assignOrderMutation.isLoading && editingCount.current !== 0) {
       editingCount.current = 0;
-      assignOrderMutation.mutate(htmlContentAligned);
+      assignOrderMutation.mutate(htmlContentAligned as AssignmentExtracted[]);
     }
     setIsEditting(false);
   };
@@ -110,25 +110,26 @@ const AssignmentLeftNavContent = (props: Props) => {
     setIsEditting(true);
   };
 
-  const deleteAssignmentElems = event => {
-    console.log(event);
+  const deleteAssignmentElems = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formElem = event.target;
-    let formData = new FormData();
-    for (let k = 0; k < formElem.length; k++) {
-      if (formElem[k].checked) {
-        const deleteTargetName = formElem[k].name;
-        const deleteTargetValue = formElem[k].value;
+    const formElem = event.target as HTMLElement;
+    const length = formElem.childElementCount;
+
+    let formData = new FormData() as FormData;
+    const formArray = Array(event.target) as Array<any>;
+    for (let len = 0; len < length; len++) {
+      if (formArray[0][len].checked === true) {
+        const deleteTargetName = formArray[0][len].name;
+        const deleteTargetValue = formArray[0][len].value;
         formData.set(deleteTargetName, deleteTargetValue);
       }
     }
     let deletingAssignmentId = [];
-    if (!(formData.keys().length === 0)) {
-      for (const key of formData.keys()) {
-        deletingAssignmentId.push(key);
-      }
-      assignDeletingMutation.mutate(deletingAssignmentId);
+    const formKeys = Array.from(formData.keys());
+    for (const key of formKeys) {
+      deletingAssignmentId.push(key);
     }
+    assignDeletingMutation.mutate(deletingAssignmentId);
     editingCount.current = 0;
     setIsEditting(false);
   };
@@ -137,7 +138,7 @@ const AssignmentLeftNavContent = (props: Props) => {
     <div>
       <DndProvider backend={HTML5Backend}>
         <form
-          onSubmit={event => {
+          onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             deleteAssignmentElems(event);
           }}
           id="assign"
@@ -160,6 +161,7 @@ const AssignmentLeftNavContent = (props: Props) => {
               );
             })
           )}
+          00
         </form>
       </DndProvider>
       <AssignmentLeftNavButton
