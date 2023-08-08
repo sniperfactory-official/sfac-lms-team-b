@@ -106,11 +106,9 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
       >
         {isDetailOpen ? (
           <AssignmentFeedback
-            submittedAssignmentUser={submittedItem.user}
+            submittedAssignment={submittedItem}
             loginUser={loginUser}
-            submittedAssignmentId={submittedItem.id}
             assignmentId={assignmentId}
-            isRead={submittedItem.isRead}
           />
         ) : null}
       </AssignmentModal>
