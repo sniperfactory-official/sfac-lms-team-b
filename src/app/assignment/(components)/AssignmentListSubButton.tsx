@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssignment";
 import { useRouter } from "next/navigation";
-import {Button} from "sfac-designkit-react"
+import { Button } from "sfac-designkit-react";
 
 interface Props {
   refId: string;
@@ -28,19 +28,18 @@ const AssignmentListSubButton = ({ refId, userId }: Props) => {
     <div>
       {isSubmitted ? (
         <Button
-          variant="secondary" 
-          text="제출완료" 
+          variant="secondary"
+          text="제출완료"
           onClick={() => {
             router.push("/assignment/" + refId);
           }}
           type="button"
           asChild
           className="flex-shrink-0"
-        >
-        </Button>
+        ></Button>
       ) : (
         <Button
-          variant="primary" 
+          variant="primary"
           text="제출하기"
           onClick={() => {
             router.push("/assignment/" + refId);

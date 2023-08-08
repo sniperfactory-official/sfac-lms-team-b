@@ -7,7 +7,7 @@ import AssignmentListSubButton from "./AssignmentListSubButton";
 import { useRouter } from "next/navigation";
 import { User } from "@/types/firebase.types";
 import { Badge } from "sfac-designkit-react";
-import {Button} from "sfac-designkit-react"
+import { Button } from "sfac-designkit-react";
 
 interface AssignmentNumberAdded extends Assignment {
   assignmentNumber: number;
@@ -33,18 +33,13 @@ const AssignmentListContent = (prop: Props) => {
         className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 flex justify-between items-center"
       >
         <div className="flex w-[244px] flex-col items-start gap-[10px]">
-          <Badge color="Outline">
-            {assign.level}
-          </Badge>
+          <Badge color="Outline">{assign.level}</Badge>
           <span className="text-grayscale-80 font-bold text-[16px]">
             {assign.title}
           </span>
         </div>
         {userinfo?.role === "관리자" ? (
-          <Button
-          variant="primary" 
-          text="확인하기" 
-            />
+          <Button variant="primary" text="확인하기" />
         ) : (
           <AssignmentListSubButton refId={assign.id} userId={prop.userId} />
         )}

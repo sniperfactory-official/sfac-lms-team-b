@@ -18,10 +18,8 @@ const AssignmentLeftNavButton = (props: Props) => {
   const [isActivated, setIsActivated] = useState<boolean>(false);
   const resetEditting = props.ResetEditting;
 
-
-
   useEffect(() => {
-    const handleKeyPress = (event:any) => {
+    const handleKeyPress = (event: any) => {
       if (event.key === "Escape") {
         setIsActivated(false);
         resetEditting();

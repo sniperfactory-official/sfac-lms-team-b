@@ -2,7 +2,7 @@
 
 import React from "react";
 import { DndProvider } from "react-dnd";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useState, useEffect, useRef } from "react";
 import { useGetAssignment } from "@hooks/queries/useGetAssignment";
@@ -70,7 +70,7 @@ const AssignmentLeftNavContent = (props: Props) => {
   useEffect(() => {
     //초기 데이터 fetch 및 추출
     if (isLoading === false) {
-        fetchAssignmentData(assignQueries.data as Assignment[]);
+      fetchAssignmentData(assignQueries.data as Assignment[]);
     }
   }, [isLoading, assignQueries.data]);
 
@@ -82,7 +82,7 @@ const AssignmentLeftNavContent = (props: Props) => {
   //index 서로 바꾸고 컴포넌트 리로드
   const moveCard = (dragIndex: number, hoverIndex: number) => {
     editingCount.current += 1;
-    setHtmlcontent((prev:any) => {
+    setHtmlcontent((prev: any) => {
       let hcSpliced = prev.toSpliced(dragIndex, 1, prev[hoverIndex]); //dragIndex에 hoverIndex 자리의 값이 들어감
       let hcDoubleSpliced = hcSpliced.toSpliced(hoverIndex, 1, prev[dragIndex]);
       hcDoubleSpliced[dragIndex].order = prev[dragIndex].order;
@@ -110,22 +110,22 @@ const AssignmentLeftNavContent = (props: Props) => {
     setIsEditting(true);
   };
 
-  const deleteAssignmentElems = (event:React.FormEvent<HTMLFormElement>) => {
+  const deleteAssignmentElems = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formElem = event.target as HTMLElement;
     const length = formElem.childElementCount;
 
     let formData = new FormData() as FormData;
-    const formArray = Array(event.target) as Array<any>
-    for (let len = 0; len<length; len++) {
-        if (formArray[0][len].checked===true){
-          const deleteTargetName = formArray[0][len].name;
-          const deleteTargetValue = formArray[0][len].value;
-          formData.set(deleteTargetName, deleteTargetValue); 
+    const formArray = Array(event.target) as Array<any>;
+    for (let len = 0; len < length; len++) {
+      if (formArray[0][len].checked === true) {
+        const deleteTargetName = formArray[0][len].name;
+        const deleteTargetValue = formArray[0][len].value;
+        formData.set(deleteTargetName, deleteTargetValue);
       }
     }
     let deletingAssignmentId = [];
-    const formKeys = Array.from(formData.keys())
+    const formKeys = Array.from(formData.keys());
     for (const key of formKeys) {
       deletingAssignmentId.push(key);
     }
@@ -138,7 +138,7 @@ const AssignmentLeftNavContent = (props: Props) => {
     <div>
       <DndProvider backend={HTML5Backend}>
         <form
-          onSubmit={(event:React.FormEvent<HTMLFormElement>) => {
+          onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             deleteAssignmentElems(event);
           }}
           id="assign"
@@ -160,7 +160,8 @@ const AssignmentLeftNavContent = (props: Props) => {
                 />
               );
             })
-          )}00
+          )}
+          00
         </form>
       </DndProvider>
       <AssignmentLeftNavButton
