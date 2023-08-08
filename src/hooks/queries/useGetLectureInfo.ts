@@ -19,10 +19,10 @@ const fetchLectureInfo = async (docId: string) => {
       throw new Error(`User for lecture ID ${docId} doesn't exist.`);
     }
     const user = userSnap.data() as User;
-    return { ...lectureData, user } as Lecture;
+    return { id: docId, ...lectureData, user } as Lecture;
   }
 
-  return lectureData as Lecture;
+  return { id: docId, ...lectureData } as Lecture;
 };
 
 const useGetLectureInfo = (docId: string) => {
