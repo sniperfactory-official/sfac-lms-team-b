@@ -37,7 +37,7 @@ const createProgress = async (
     };
 
     if (lectureType === "비디오") {
-      progressDoc.playTimes = [];
+      progressDoc.playTimes = [{ start: "", end: "" }];
     }
 
     const newProgressRef = await addDoc(progressRef, progressDoc);
