@@ -6,8 +6,8 @@ interface UserState {
   uid: string;
 }
 
-const initialState: UserState = { 
-  uid: "", 
+const initialState: UserState = {
+  uid: "",
 };
 
 const userSlice = createSlice({

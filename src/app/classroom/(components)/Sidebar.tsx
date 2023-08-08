@@ -12,7 +12,7 @@ import { IUser } from "../page";
 interface IProps {
   courseList: ICourseField[];
   setCurrentCourse: React.Dispatch<React.SetStateAction<any>>;
-  user : IUser;
+  user: IUser;
 }
 
 const Sidebar = forwardRef<HTMLDivElement, IProps>(
@@ -36,16 +36,16 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
           courseList={courseList}
           setCurrentCourse={setCurrentCourse}
         />
-        {user.role === '관리자' &&
-        <>
-          <SectionHandlerButton
-            text="섹션 추가"
-            src="/images/plus.svg"
-            onClick={handleCreateSection}
-          />
-          <EditButton />
-        </>
-        }
+        {user.role === "관리자" && (
+          <>
+            <SectionHandlerButton
+              text="섹션 추가"
+              src="/images/plus.svg"
+              onClick={handleCreateSection}
+            />
+            <EditButton />
+          </>
+        )}
       </aside>
     );
   },
