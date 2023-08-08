@@ -38,7 +38,7 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
         return;
       }
       movecard(dragIndex, hoverIndex);
-      console.log(dragIndex,hoverIndex)
+      console.log(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
   }));
@@ -48,16 +48,14 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
   return (
     <div>
       {isDragging ? (
-          <div
-            ref={ref}
-            key={id}
-            className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
-          >
-            <input type="checkbox" name="assign" value={id}/>
-            <Link href={"/assignment/" + id}>
-              {title}
-              </Link>
-          </div>
+        <div
+          ref={ref}
+          key={id}
+          className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+        >
+          <input type="checkbox" name="assign" value={id} />
+          <Link href={"/assignment/" + id}>{title}</Link>
+        </div>
       ) : (
         <div
           key={id}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentLeftNavContent from "./AssignmentLeftNavContent";
@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import useUserInfo from "@/hooks/user/useUserInfo";
 import { User } from "@/types/firebase.types";
-
 
 const AssignmentLeftNav = () => {
   const userId = useSelector((state: RootState) => {

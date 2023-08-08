@@ -62,7 +62,7 @@ export default function Layout() {
           modalTitle="상세보기"
           onCloseModal={onCloseCommunityModal}
         >
-        <CommunityModal />
+          <CommunityModal />
         </ModalWrapper>
       )}
     </div>

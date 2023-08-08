@@ -58,7 +58,6 @@ const CommunityCard: React.FC<Post> = ({
     // 삭제하기 위해서 배열에 이미지, 썸네일을 같이 담는다.
     const pathsToDelete = [...postImages, ...thumbnailImages];
 
-
     // 함수 호출해서 이미지 삭제
     deleteStorageImages(pathsToDelete);
 

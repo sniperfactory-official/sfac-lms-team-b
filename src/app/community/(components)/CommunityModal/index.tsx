@@ -11,11 +11,8 @@ export default function CommunityPage() {
   return (
     <div>
       {isModalOpen && (
-        <ModalWrapper
-          modalTitle="상세보기"
-          onCloseModal={onCloseModal}
-        >
-        <CommunityModal />
+        <ModalWrapper modalTitle="상세보기" onCloseModal={onCloseModal}>
+          <CommunityModal />
         </ModalWrapper>
       )}
     </div>
