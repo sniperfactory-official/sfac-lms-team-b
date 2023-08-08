@@ -12,6 +12,7 @@ import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import { RootState } from "@/redux/store";
 import { resetDropzone } from "@/redux/slice/dropzoneFileSlice";
+import PageToast from "@/components/PageToast";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -56,6 +57,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
       dispatch(setError("강의 제목을 입력해주세요."));
       return;
     }
+
     if (lectureType === "링크") {
       const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
       if (!externalLink || !externalLink.trim()) {
@@ -103,8 +105,14 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <LectureTitle />
       {children}
-      {errorMessage && <span className="text-red">{errorMessage}</span>}
       <ModalFooter />
+      {errorMessage && (
+        <PageToast
+          toastMsg={errorMessage}
+          isAccept={false}
+          onClose={() => dispatch(clearError())}
+        />
+      )}
     </form>
   );
 };
