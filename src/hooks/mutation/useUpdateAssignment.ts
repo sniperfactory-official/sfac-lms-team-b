@@ -9,17 +9,6 @@ const updateAssignment = async (
   assignmentId: string,
 ) => {
   try {
-    if (typeof assignmentValue.startDate === "string") {
-      assignmentValue.startDate = Timestamp.fromDate(
-        new Date(assignmentValue.startDate),
-      );
-    }
-    if (typeof assignmentValue.endDate === "string") {
-      assignmentValue.endDate = Timestamp.fromDate(
-        new Date(assignmentValue.endDate),
-      );
-    }
-
     const updateAssignment = await updateDoc(
       doc(db, "assignments", assignmentId),
       {

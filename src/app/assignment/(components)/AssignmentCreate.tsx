@@ -5,10 +5,22 @@ import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
 import useImageUpload from "@/hooks/mutation/useUpdateImage";
+import { DateSelector } from "sfac-designkit-react";
+import { Button } from "sfac-designkit-react";
+import { Timestamp } from "firebase/firestore";
+
+import "sfac-designkit-react/style.css";
 
 interface AssignmentCreateProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface AssignmentWithDates extends Assignment {
+  dates: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
 }
 
 const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
@@ -18,29 +30,40 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
+  const [dates, setDates] = useState({
+    startDate: null as Date | null,
+    endDate: null as Date | null,
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Assignment>();
+  } = useForm<AssignmentWithDates>();
 
   const createAssignmentMutation = useCreateAssignment();
   const imageUploadMutation = useImageUpload();
 
-  const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
+  const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
     assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
     assignmentData.readStudents = [];
 
+    if (dates.startDate && typeof dates.startDate !== "string") {
+      assignmentData.startDate = Timestamp.fromDate(dates.startDate);
+    }
+    if (dates.endDate && typeof dates.endDate !== "string") {
+      assignmentData.endDate = Timestamp.fromDate(dates.endDate);
+    }
+
     try {
-      //이미지등록코드
       const uploadPromises = imageFiles.map(file =>
         imageUploadMutation.mutateAsync(file),
       );
       const uploadedUrls = await Promise.all(uploadPromises);
       assignmentData.images = uploadedUrls;
+
       //이미지등록코드
 
       createAssignmentMutation.mutate(assignmentData);
@@ -57,6 +80,14 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
       setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
     }
+  };
+  const setChangeDate = (select: [Date | null, Date | null]) => {
+    const [start, end] = select;
+
+    setDates({
+      startDate: start || null,
+      endDate: end || null,
+    });
   };
 
   const MAX_FILE_SIZE_MB = 5;
@@ -206,33 +237,31 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         </div>
       </div>
 
-      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-evenly">
-        <div className="items-center">
+      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-between px-[33px]">
+        <div className="flex justify-start items-center">
           <label
             htmlFor="submit-period"
             className="font-bold text-base mr-[12px]"
           >
             제출 기간
           </label>
-          <input
-            type="date"
-            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-            {...register("startDate", { required: true })}
-          />
-          <input
-            type="date"
-            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-            {...register("endDate", { required: true })}
-          />
+          <div>
+            <DateSelector
+              selected={dates.startDate} // 선택일
+              startDate={dates.startDate} // 시작일
+              endDate={dates.endDate} // 종료일
+              ChangeDate={setChangeDate} // 기간을 정하는 함수
+            />
+          </div>
         </div>
         <div className="flex items-center">
-          <button
+          <Button
             type="submit"
-            className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
+            variant="primary"
+            text="업로드"
+            asChild
             onClick={handleFormValidation}
-          >
-            업로드
-          </button>
+          />
         </div>
 
         <div className="absolute left-[33px] bottom-[33px]">
