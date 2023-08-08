@@ -5,6 +5,7 @@ import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
 import { User } from "@/types/firebase.types";
 import { useParams } from "next/navigation";
 import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
+import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmittedAssignment";
 
 interface OwnProps {
   user: User;

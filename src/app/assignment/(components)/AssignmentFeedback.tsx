@@ -5,24 +5,30 @@ import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
 import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmittedAssignment";
-import { Feedback, User } from "@/types/firebase.types";
+import {
+  Attachment,
+  Feedback,
+  SubmittedAssignment,
+  User,
+} from "@/types/firebase.types";
 import { useForm } from "react-hook-form";
-import { Timestamp } from "firebase/firestore";
+import { getTime } from "@/utils/getTime";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
-import { getTime } from "@/utils/getTime";
+
+// interface ISubmittedAssignment extends SubmittedAssignment {
+//   attachment: Attachment;
+//   user: User;
+// }
 
 interface IAssignmentFeedbackProps {
-  submittedAssignmentId: string;
+  submittedAssignment: any;
   assignmentId: string;
-  isRead?: boolean;
   loginUser: User;
-  submittedAssignmentUser: User;
   setIsDetailOpen?: React.Dispatch<React.SetStateAction<boolean>>;
-  submittedAssignmentDate: Timestamp;
 }
 
 interface IFeedbackForm {
@@ -30,18 +36,23 @@ interface IFeedbackForm {
 }
 
 const AssignmentFeedback = ({
-  submittedAssignmentId,
+  submittedAssignment,
   assignmentId,
-  submittedAssignmentUser,
-  isRead,
   loginUser,
   setIsDetailOpen,
-  submittedAssignmentDate,
 }: IAssignmentFeedbackProps) => {
+  const {
+    id,
+    attachment: { attachmentFiles, links },
+    user,
+    createdAt,
+    isRead,
+  } = submittedAssignment;
   const [updateDelete, setUpdateDelete] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const createdDate = getTime(submittedAssignmentDate.toDate());
+  const createdDate = getTime(createdAt.toDate());
   const scrollRef = useRef<HTMLUListElement>(null);
+  console.log({ attachmentFiles, links });
 
   const {
     register,
@@ -54,19 +65,19 @@ const AssignmentFeedback = ({
     data: feedbacks,
     isLoading: getLoading,
     error: getError,
-  } = useGetFeedbacks(submittedAssignmentId);
+  } = useGetFeedbacks(id);
 
   const {
     mutate: createMutate,
     isLoading: createLoading,
     error: createError,
-  } = useCreateFeedback(submittedAssignmentId, loginUser.id);
+  } = useCreateFeedback(id, loginUser.id);
 
   const {
     mutate: updateMutate,
     isLoading: updateLoading,
     error: updateError,
-  } = useUpdateSubmittedAssignment(assignmentId!, submittedAssignmentId);
+  } = useUpdateSubmittedAssignment(assignmentId!, id);
 
   const {
     mutate: deleteMutate,
@@ -109,18 +120,14 @@ const AssignmentFeedback = ({
       {/* uploaded */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] mb-[12px]">
         <div className="flex mb-[22px] items-center">
-          <AssignmentProfileImage
-            profileImage={submittedAssignmentUser.profileImage}
-          />
+          <AssignmentProfileImage profileImage={user.profileImage} />
           <div className="flex items-center ml-[13px] justify-between w-full">
             <div>
               <span className="text-[16px] font-[700] text-grayscale-100">
-                {submittedAssignmentUser.username}
+                {user.username}
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
-              <span className="text-grayscale-40 font-[400]">
-                {submittedAssignmentUser.role}
-              </span>
+              <span className="text-grayscale-40 font-[400]">{user.role}</span>
             </div>
             {loginUser.role === "수강생" &&
             !feedbacks?.find(
@@ -137,33 +144,45 @@ const AssignmentFeedback = ({
           </div>
         </div>
         <ul className="space-y-[12px] mb-[10px]">
-          <li>
-            {/* 파일의 경우 */}
-            <div className="flex justify-start items-center gap-[13px] mb-[8px]">
-              <div className="w-[36.5px] h-[39.5px]">
-                <Image
-                  src="/images/fileIcon.svg"
-                  alt=""
-                  width="0"
-                  height="0"
-                  className="w-full h-full"
-                />
-              </div>
-              <p className="text-[16px] text-primary-80 font-[700]">
-                {"김스팩_과제제출_20221231.pdf"}
-              </p>
-            </div>
-          </li>
-          <li>
-            {/* 링크의 경우 */}
-            <Link
-              className="block text-[14px] text-primary-100 font-[400] mb-[3px]"
-              href="https://github.com/sniperfactory-official/sfac-lms-team-b"
-              target="_blank"
-            >
-              https://github.com/sniperfactory-official/sfac-lms-team-b
-            </Link>
-          </li>
+          {/* 링크 & 파일 */}
+          {links.includes("")
+            ? attachmentFiles.map(({ name, url }: any) => {
+                return (
+                  <li key={url}>
+                    <div className="flex justify-start items-center gap-[13px] mb-[8px]">
+                      <div className="w-[36.5px] h-[39.5px]">
+                        <Image
+                          src="/images/fileIcon.svg"
+                          alt=""
+                          width="0"
+                          height="0"
+                          className="w-full h-full"
+                        />
+                      </div>
+                      <Link
+                        className="text-[16px] text-primary-80 font-[700]"
+                        href={url}
+                        download
+                      >
+                        {name}
+                      </Link>
+                    </div>
+                  </li>
+                );
+              })
+            : links.map((link: string) => {
+                return (
+                  <li key={link}>
+                    <Link
+                      className="block text-[14px] text-primary-100 font-[400] mb-[3px]"
+                      href={link}
+                      target="_blank"
+                    >
+                      {link}
+                    </Link>
+                  </li>
+                );
+              })}
         </ul>
         <p className="text-[12px] text-end text-grayscale-40">{createdDate}</p>
       </div>
@@ -184,7 +203,7 @@ const AssignmentFeedback = ({
                   updatedAt={feedback.updatedAt}
                   user={feedback.user}
                   userId={feedback.userId}
-                  submittedAssignmentId={submittedAssignmentId}
+                  submittedAssignmentId={id}
                   loginUserId={loginUser.id}
                   updateDelete={updateDelete}
                   setUpdateDelete={setUpdateDelete}
@@ -231,7 +250,7 @@ const AssignmentFeedback = ({
         content="한번 삭제하시면 다시 복구가 불가능합니다."
         confirmBtnMsg="확인"
         onConfirm={() => {
-          deleteMutate(submittedAssignmentId);
+          deleteMutate(id);
           setIsDetailOpen!((prev: boolean) => !prev);
           setIsConfirmOpen(prev => !prev);
         }}

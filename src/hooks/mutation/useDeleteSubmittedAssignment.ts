@@ -29,12 +29,11 @@ const deleteSubmittedAssignment = async (
 
     const submittedAssignmentsDocs = await getDocs(attachmentsQuery);
 
+    await deleteDoc(doc(db, "submittedAssignments", submittedAssignmentId));
+
     await deleteDoc(
       doc(db, "attachments", submittedAssignmentsDocs.docs[0].id),
     );
-
-    // 관리자의 feedback 없을때 해당과제만 삭제
-    await deleteDoc(doc(db, "submittedAssignments", submittedAssignmentId));
   } catch (err) {
     console.log(err);
     throw err;
@@ -51,12 +50,12 @@ const useDeleteSubmittedAssignment = (assignmentId: string, userId: string) => {
         queryClient.invalidateQueries([
           "getSubmittedAssignment",
           assignmentId,
-          "",
+          userId,
         ]);
         queryClient.invalidateQueries([
           "getSubmittedAssignment",
           assignmentId,
-          userId,
+          "",
         ]);
       },
       onError: err => {
