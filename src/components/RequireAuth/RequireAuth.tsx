@@ -1,21 +1,21 @@
-import { LectureCommentProvider } from "@/app/classroom/(components)/contexts/LectureCommentProvider";
+"use client";
 import Navbar from "@/components/Header/Navbar";
 import Tab from "@/components/Header/Tab";
 import Footer from "@/components/Footer/Footer";
-import { useAppSelector } from "@/redux/store";
-import { useParams } from "next/navigation";
+import { usePathname } from "next/navigation";
+function RequireAuth({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
 
-export default function RequireAuth({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const uid = useAppSelector(state => state.userId.uid);
-  const isLecturePage = useParams().lectureId?.length > 0;
+  const isTargetRoute = [
+    "/classroom",
+    "/community",
+    "/assignment",
+    "/mypage",
+  ].includes(pathname);
 
   return (
     <>
-      {uid && !isLecturePage ? (
+      {isTargetRoute ? (
         <>
           <Navbar />
           <Tab />
@@ -23,8 +23,10 @@ export default function RequireAuth({
           <Footer />
         </>
       ) : (
-        <LectureCommentProvider>{children}</LectureCommentProvider>
+        <>{children}</>
       )}
     </>
   );
 }
+
+export default RequireAuth;
