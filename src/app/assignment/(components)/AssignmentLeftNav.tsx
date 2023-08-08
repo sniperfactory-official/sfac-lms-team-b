@@ -1,12 +1,11 @@
-"use client"
+"use client";
+import { useSelector } from "react-redux";
 import Image from "next/image";
 import Link from "next/link";
-import AssignmentLeftNavContent from "./AssignmentLeftNavContent";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import useUserInfo from "@/hooks/user/useUserInfo";
+import { RootState } from "@/redux/store";
 import { User } from "@/types/firebase.types";
-
+import AssignmentLeftNavContent from "./AssignmentLeftNavContent";
 
 const AssignmentLeftNav = () => {
   const userId = useSelector((state: RootState) => {
@@ -16,7 +15,6 @@ const AssignmentLeftNav = () => {
   const user = useUserInfo(userId.uid) as User;
   const userInfo = { ...user };
 
-  console.log("[AssignmentLeftNav] 실행!");
   return (
     <div className="w-full flex flex-col items-center justify-start">
       <div className="w-full p-[13px] rounded-[10px] bg-[#f5f8ff] ">

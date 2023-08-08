@@ -6,17 +6,22 @@ import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 type OwnProps = {
   onClose: () => void;
   assignmentId: string;
+  userId: string;
 };
 
 const AssignmentSubmitWithLink: React.FC<OwnProps> = ({
   onClose,
+  userId,
   assignmentId,
 }) => {
   const [inputValues, setInputValues] = useState<string[]>([""]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
 
-  const { mutate, isLoading, error } = useSubmitAssignment(assignmentId);
+  const { mutate, isLoading, error } = useSubmitAssignment(
+    assignmentId,
+    userId,
+  );
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>,

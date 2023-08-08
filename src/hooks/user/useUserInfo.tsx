@@ -20,7 +20,7 @@ const useUserInfo = (uid: string) => {
     }
   }, [db, uid]);
 
-  return userInfo;
+  return { id: uid, ...userInfo };
 };
 
 export default useUserInfo;

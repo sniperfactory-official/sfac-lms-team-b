@@ -5,6 +5,7 @@ import { Assignment } from "@/types/firebase.types";
 import PageToast from "@/components/PageToast";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
+import useImageUpload from "@/hooks/mutation/useUpdateImage";
 
 interface AssignmentUpdateProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   const [changeFiles, setChangeFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const {
     register,
@@ -39,7 +41,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setValue("level", data.level);
         setValue("title", data.title);
         setValue("content", data.content);
-
+        setImageUrls(data.images || []);
         // 시간을 yyyy.mm.dd 로 불러오는 것 추후에 해야합니다.
 
         // setValue("startDate", data.startDate);
@@ -50,12 +52,24 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   // 일단 isOpen으로 해놓았지만 추후 변경해보자
 
   const updateAssignmentMutation = useUpdateAssignment(assignmentId);
+  const imageUploadMutation = useImageUpload();
 
   const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
     assignmentData.images = changeFiles.map(file => URL.createObjectURL(file));
 
     try {
+      //이미지등록코드
+      const uploadPromises = changeFiles.map(file =>
+        imageUploadMutation.mutateAsync(file),
+      );
+      const uploadedUrls = await Promise.all(uploadPromises);
+      // assignmentData.images = uploadedUrls;
+
+      // 새로운 이미지와 기존 이미지를 합쳐서 업데이트할 이미지 데이터 생성
+      const updatedImages = [...imageUrls, ...uploadedUrls];
+      assignmentData.images = updatedImages;
+
       updateAssignmentMutation.mutate(assignmentData);
 
       setToastMsg("과제가 성공적으로 수정되었습니다.");
@@ -65,6 +79,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setIsOpen(false);
         reset();
         setChangeFiles([]);
+        console.log(assignmentData);
       }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
     } catch (error) {
       setToastMsg("과제 수정에 실패했습니다. 다시 시도해주세요.");
@@ -101,12 +116,14 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
     }
   };
 
-  useEffect(() => {
-    console.log("After setChangeFiles:", changeFiles);
-  }, [changeFiles]);
-
   const closeToast = () => {
     setToastMsg("");
+  };
+
+  const handleImageRemoveUrls = (index: number) => {
+    const newImageUrls = [...imageUrls];
+    newImageUrls.splice(index, 1);
+    setImageUrls(newImageUrls);
   };
 
   const handleImageRemove = (index: number) => {
@@ -126,8 +143,9 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
       setToastMsg("필수 항목을 모두 입력해주세요.");
       setIsAccept(false);
       return;
+    } else {
+      handleSubmit(onSubmit);
     }
-    handleSubmit(onSubmit);
   };
 
   return (
@@ -186,48 +204,70 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
               height={61}
             />
           </label>
-          <div className="flex justify-start items-center">
-            {changeFiles.map((file, index) => {
-              console.log(file);
 
-              return (
-                <div
-                  key={index}
-                  className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+          <div className="flex justify-start items-center">
+            {imageUrls.map((imageUrl, index) => (
+              <div
+                key={index}
+                className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+              >
+                <Image
+                  src={imageUrl}
+                  alt="assignment"
+                  layout="fill"
+                  className="w-full h-full object-cover"
+                />
+                <button
+                  onClick={() => handleImageRemoveUrls(index)}
+                  className="absolute top-1 right-1"
                 >
-                  {file ? (
-                    <>
+                  <Image
+                    src={"/images/image_delete.svg"}
+                    alt={"이미지 삭제"}
+                    width={14}
+                    height={14}
+                  />
+                </button>
+              </div>
+            ))}
+
+            {changeFiles.map((file, index) => (
+              <div
+                key={index}
+                className="relative ml-[8px] w-[60px] h-[60px] overflow-hidden rounded-[10px]"
+              >
+                {file ? (
+                  <>
+                    <Image
+                      src={URL.createObjectURL(file)}
+                      alt="assignment"
+                      width="0"
+                      height="0"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      onClick={() => handleImageRemove(index)}
+                      className="absolute top-1 right-1"
+                    >
                       <Image
-                        src={URL.createObjectURL(file)}
-                        alt="assignment"
-                        width="0"
-                        height="0"
-                        className="w-full h-full object-cover"
+                        src={"/images/image_delete.svg"}
+                        alt={"이미지 삭제"}
+                        width={14}
+                        height={14}
                       />
-                      <button
-                        onClick={() => handleImageRemove(index)}
-                        className="absolute top-1 right-1"
-                      >
-                        <Image
-                          src={"/images/image_delete.svg"}
-                          alt={"이미지 삭제"}
-                          width={14}
-                          height={14}
-                        />
-                      </button>
-                    </>
-                  ) : (
-                    ""
-                  )}
-                </div>
-              );
-            })}
+                    </button>
+                  </>
+                ) : (
+                  ""
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex justify-start items-center">
+      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-evenly">
+        <div className="flex items-center">
           <label
             htmlFor="submit-period"
             className="font-bold text-base mr-[12px]"
@@ -245,7 +285,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
             {...register("endDate", { required: true })}
           />
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center">
           <button
             type="submit"
             className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"

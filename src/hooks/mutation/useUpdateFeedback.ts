@@ -1,21 +1,30 @@
 // useUpdateFeedback
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateDoc, doc } from "firebase/firestore";
+import { updateDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Feedback } from "@/types/firebase.types";
 
+interface IUpdateFeedbackValue {
+  content: string;
+  updatedAt: Date;
+}
+
 const updateFeedback = async (
   submittedAssignmentId: string,
-  feedbackId: Feedback,
+  feedbackId: string,
+  updateFeedbackValue: IUpdateFeedbackValue,
 ) => {
   try {
     await updateDoc(
       doc(
         db,
         `submittedAssignments/${submittedAssignmentId}/feedbacks`,
-        "feedbackId",
+        feedbackId,
       ),
-      { content: "ㅂㅇ" },
+      {
+        ...updateFeedbackValue,
+        updatedAt: Timestamp.fromDate(updateFeedbackValue.updatedAt),
+      },
     );
   } catch (err) {
     throw err;
@@ -24,11 +33,12 @@ const updateFeedback = async (
 
 const useUpdateFeedback = (
   submittedAssignmentId: string,
-  feedbackId: Feedback,
+  feedbackId: string,
 ) => {
   const queryClient = useQueryClient();
   const { mutate, isLoading, error } = useMutation(
-    () => updateFeedback(submittedAssignmentId, feedbackId),
+    (updateFeedbackValue: IUpdateFeedbackValue) =>
+      updateFeedback(submittedAssignmentId, feedbackId, updateFeedbackValue),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getFeedbacks", submittedAssignmentId]);
