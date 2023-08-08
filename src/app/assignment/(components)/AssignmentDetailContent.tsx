@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
@@ -16,6 +16,8 @@ import AssignmentModal from "./AssignmentModal";
 import AssignmentUpdate from "./AssignmentUpdate";
 import timestampToIntlDate from "@/utils/timestampToIntlDate";
 import emptyArrayCheck from "@/utils/emptyArrayCheck";
+import { useUpdateReadStudents } from "@/hooks/mutation/useUpdateReadStudents";
+import useGetStudents from "@/hooks/queries/useGetStudents";
 
 interface OwnProps {
   user: User;
@@ -28,19 +30,54 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { assignmentId } = useParams();
   const { data, isLoading, error } = useGetAssignment(assignmentId as string);
+  const updateReadStudents = useUpdateReadStudents(assignmentId as string);
+  const [totalStudentList, setTotalStudentList] = useState<User[]>([]);
+  const [readPercentage, setReadPercentage] = useState<number>();
+  const currentReadStudents = data?.readStudents;
 
-  // console.log("assignmentDetailData", data);
+  const fetchStudentsData = async () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const studentData = await useGetStudents();
+    setTotalStudentList(studentData);
+  };
+
+  useEffect(() => {
+    fetchStudentsData();
+
+    if (user.role === "수강생" && currentReadStudents) {
+      if (!currentReadStudents?.includes(user.id)) {
+        changeReadStudents();
+      }
+    }
+
+    if (totalStudentList && currentReadStudents) {
+      const percentage = calculateReadPercentage();
+      setReadPercentage(percentage);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, currentReadStudents]);
+
+  const changeReadStudents = () => {
+    // fs readStudent 업데이트
+    if (currentReadStudents) {
+      const updatedReadStudents = Array.from(
+        new Set([...currentReadStudents, user.id]),
+      );
+      updateReadStudents.mutate(updatedReadStudents);
+    }
+  };
+
+  const calculateReadPercentage = () => {
+    const totalStudentCount = totalStudentList.length;
+    const currentReadStudentsCount = currentReadStudents.length;
+    const percentage = (currentReadStudentsCount / totalStudentCount) * 100;
+    const roundedPercentage = Math.round(percentage); // 소수점 반올림
+    return roundedPercentage;
+  };
 
   const deleteAssignmentMutation = useDeleteRegisteredAssignment(
     assignmentId as string,
   );
-  // const blob = data?.images; // FIXME: blob 이미지 호출 체크
-  // console.log(blob);
-
-  // if (blob) {
-  //   const url = URL.createObjectURL(blob);
-  //   console.log(url);
-  // }
 
   // 데이터가 배열인지 아닌지에 따라 처리 -> 타입스크립트 오류수정
   if (isLoading) return <LoadingSpinner />;
@@ -66,20 +103,23 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                   {/* 강사만 확인 가능한 영역 */}
                   {user?.role === "관리자" ? (
                     <span className="border border-primary-90 rounded-[4px] text-primary-100 font-[500] text-[10px] px-[3.5px] py-[1px]">
-                      {"63%"} 읽음
+                      {readPercentage}% 읽음
                     </span>
                   ) : null}
 
                   {/* END 강사만 확인 가능한 영역 */}
                 </div>
-                <span className="mr-[15px] text-grayscale-40 text-[16px] font-[400]">
-                  {assignment.user?.role}
-                </span>
-                <span className="text-grayscale-40 text-[14px] font-[500]">
-                  {assignment.createdAt
-                    ? timestampToIntlDate(assignment.createdAt, "/")
-                    : null}
-                </span>
+                <div className="flex justify-start items-center gap-[7px]">
+                  <span className="text-grayscale-40 text-[16px] font-[400]">
+                    {assignment.user?.role}
+                  </span>
+                  <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
+                  <span className="text-grayscale-40 text-[14px] font-[500]">
+                    {assignment.createdAt
+                      ? timestampToIntlDate(assignment.createdAt, "/")
+                      : null}
+                  </span>
+                </div>
               </div>
             </div>
             {/* 강사만 확인 가능 영역 */}
@@ -137,7 +177,9 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
               <span className="text-grayscale-40 text-[14px] font-[500]">
-                {assignment.endDate ? timestampToIntlDate(assignment.endDate, "/") : null}
+                {assignment.endDate
+                  ? timestampToIntlDate(assignment.endDate, "/")
+                  : null}
               </span>
             </div>
             {!emptyArrayCheck(assignment.images) ? (
