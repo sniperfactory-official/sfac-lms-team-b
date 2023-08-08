@@ -6,11 +6,23 @@ import PageToast from "@/components/PageToast";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 import useImageUpload from "@/hooks/mutation/useUpdateImage";
+import { DateSelector } from "sfac-designkit-react";
+import { Button } from "sfac-designkit-react";
+import { Timestamp } from "firebase/firestore";
+
+import "sfac-designkit-react/style.css";
 
 interface AssignmentUpdateProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   assignmentId: string;
+}
+
+interface AssignmentWithDates extends Assignment {
+  dates: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
 }
 
 const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
@@ -22,6 +34,10 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [dates, setDates] = useState({
+    startDate: null as Date | null,
+    endDate: null as Date | null,
+  });
 
   const {
     register,
@@ -29,7 +45,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
     setValue,
     formState: { errors },
     reset,
-  } = useForm<Assignment>();
+  } = useForm<AssignmentWithDates>();
 
   const { data, isLoading, error } = useGetAssignment(assignmentId);
 
@@ -54,19 +70,22 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   const updateAssignmentMutation = useUpdateAssignment(assignmentId);
   const imageUploadMutation = useImageUpload();
 
-  const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
+  const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
     // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
     assignmentData.images = changeFiles.map(file => URL.createObjectURL(file));
 
+    if (dates.startDate && typeof dates.startDate !== "string") {
+      assignmentData.startDate = Timestamp.fromDate(dates.startDate);
+    }
+    if (dates.endDate && typeof dates.endDate !== "string") {
+      assignmentData.endDate = Timestamp.fromDate(dates.endDate);
+    }
     try {
-      //이미지등록코드
       const uploadPromises = changeFiles.map(file =>
         imageUploadMutation.mutateAsync(file),
       );
       const uploadedUrls = await Promise.all(uploadPromises);
-      // assignmentData.images = uploadedUrls;
 
-      // 새로운 이미지와 기존 이미지를 합쳐서 업데이트할 이미지 데이터 생성
       const updatedImages = [...imageUrls, ...uploadedUrls];
       assignmentData.images = updatedImages;
 
@@ -85,6 +104,14 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
       setToastMsg("과제 수정에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
     }
+  };
+  const setChangeDate = (select: [Date | null, Date | null]) => {
+    const [start, end] = select;
+
+    setDates({
+      startDate: start || null,
+      endDate: end || null,
+    });
   };
 
   const MAX_FILE_SIZE_MB = 5;
@@ -266,33 +293,31 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         </div>
       </div>
 
-      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-evenly">
-        <div className="flex items-center">
+      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-between px-[33px]">
+        <div className="flex justify-start items-center">
           <label
             htmlFor="submit-period"
             className="font-bold text-base mr-[12px]"
           >
             제출 기간
           </label>
-          <input
-            type="date"
-            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-            {...register("startDate", { required: true })}
-          />
-          <input
-            type="date"
-            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-            {...register("endDate", { required: true })}
-          />
+          <div>
+            <DateSelector
+              selected={dates.startDate} // 선택일
+              startDate={dates.startDate} // 시작일
+              endDate={dates.endDate} // 종료일
+              ChangeDate={setChangeDate} // 기간을 정하는 함수
+            />
+          </div>
         </div>
         <div className="flex items-center">
-          <button
+          <Button
             type="submit"
-            className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
+            variant="primary"
+            text="수정하기"
+            asChild
             onClick={handleFormValidation}
-          >
-            수정하기
-          </button>
+          />
         </div>
 
         <div className="absolute left-[33px] bottom-[33px]">
