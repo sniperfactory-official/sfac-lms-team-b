@@ -29,7 +29,7 @@ const createProgress = async (
       userId: DocumentReference;
       lectureId: DocumentReference;
       isCompleted: boolean;
-      playTimes?: [];
+      playTimes?: { start: string; end: string }[];
     } = {
       userId: doc(db, "users", userId),
       lectureId: doc(db, "lectures", lectureId),
