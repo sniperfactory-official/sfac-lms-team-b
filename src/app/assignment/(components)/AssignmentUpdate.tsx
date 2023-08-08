@@ -143,8 +143,9 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
       setToastMsg("필수 항목을 모두 입력해주세요.");
       setIsAccept(false);
       return;
+    } else {
+      handleSubmit(onSubmit);
     }
-    handleSubmit(onSubmit);
   };
 
   return (
