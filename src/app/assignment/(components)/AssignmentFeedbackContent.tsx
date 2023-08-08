@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDeleteFeedback } from "@/hooks/mutation/useDeleteFeedback";
 import { useUpdateFeedback } from "@/hooks/mutation/useUpdateFeedback";
 import { useForm } from "react-hook-form";
@@ -15,13 +15,14 @@ const AssignmentFeedbackContent = ({
   content,
   createdAt,
   updatedAt,
-  user: { username, role },
+  user: { username, role, profileImage },
   userId,
   submittedAssignmentId,
   loginUserId,
   updateDelete,
   setUpdateDelete,
 }: any) => {
+  const [feedbackAnimation, setFeedbackAnimation] = useState(true);
   const [updateMode, setUpdateMode] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isAccept] = useState(true);
@@ -30,6 +31,7 @@ const AssignmentFeedbackContent = ({
     register,
     handleSubmit,
     formState: { isValid },
+    setFocus,
   } = useForm<IUpdateFeedbackForm>({ mode: "onChange" });
 
   const {
@@ -63,23 +65,35 @@ const AssignmentFeedbackContent = ({
     setUpdateDelete((prev: boolean) => !prev);
   };
 
+  useEffect(() => {
+    setFeedbackAnimation(prev => !prev);
+  }, []);
+
+  useEffect(() => {
+    setFocus("updateFeedback");
+  }, [setFocus, updateMode]);
+
   return (
     <>
-      <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
+      <li
+        className={`${
+          feedbackAnimation
+            ? "transition-all duration-500 opacity-0"
+            : "rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] transition-all duration-500 opacity-1"
+        }`}
+      >
         <div className="flex justify-start items-start gap-[13px]">
           <div className="pt-[3px]">
-            <AssignmentProfileImage profileImage={"profileImage"} />
+            <AssignmentProfileImage profileImage={profileImage} />
           </div>
           <div className="grow">
             <div className="flex justify-between items-center mb-[9px]">
-              <div>
+              <div className="flex justify-start items-center">
                 <span className="font-[700] text-grayscale-100">
                   {username}
                 </span>
-                <span className="text-grayscale-20 font-[400]">
-                  {" "}
-                  &middot; {role}
-                </span>
+                <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
+                <span className="text-grayscale-20 font-[400]">{role}</span>
               </div>
               {userId.id === loginUserId && !updateDelete ? (
                 <div>

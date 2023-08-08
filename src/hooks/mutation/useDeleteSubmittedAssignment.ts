@@ -7,7 +7,8 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
-import { db } from "@utils/firebase";
+import { db, storage } from "@utils/firebase";
+import { deleteObject, ref } from "firebase/storage";
 
 const deleteSubmittedAssignment = async (
   submittedAssignmentId: string,
@@ -27,13 +28,33 @@ const deleteSubmittedAssignment = async (
       where("userId", "==", userRef),
     );
 
-    const submittedAssignmentsDocs = await getDocs(attachmentsQuery);
+    const attachmentDocs = (await getDocs(attachmentsQuery)).docs[0];
+
+    if (attachmentDocs.data().links.includes("")) {
+      await Promise.all(
+        attachmentDocs.data().attachmentFiles.map(async (file: any) => {
+          const storageRef = ref(storage, `attachments/${file.name}`);
+          await deleteObject(storageRef);
+        }),
+      );
+    }
+
+    const feedbackDocs = await getDocs(
+      collection(
+        db,
+        "submittedAssignments",
+        submittedAssignmentId,
+        "feedbacks",
+      ),
+    );
+
+    feedbackDocs.forEach(async feedbackDoc => {
+      await deleteDoc(feedbackDoc.ref);
+    });
 
     await deleteDoc(doc(db, "submittedAssignments", submittedAssignmentId));
 
-    await deleteDoc(
-      doc(db, "attachments", submittedAssignmentsDocs.docs[0].id),
-    );
+    await deleteDoc(doc(db, "attachments", attachmentDocs.id));
   } catch (err) {
     console.log(err);
     throw err;

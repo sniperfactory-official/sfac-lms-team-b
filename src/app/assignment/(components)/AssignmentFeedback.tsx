@@ -52,7 +52,6 @@ const AssignmentFeedback = ({
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const createdDate = getTime(createdAt.toDate());
   const scrollRef = useRef<HTMLUListElement>(null);
-  console.log({ attachmentFiles, links });
 
   const {
     register,
@@ -102,9 +101,12 @@ const AssignmentFeedback = ({
   useEffect(() => {
     const element = scrollRef.current;
     // narrowing
-    if (element) {
-      element.scrollTop = element.scrollHeight;
-    }
+    const timer = setTimeout(() => {
+      if (element) {
+        element.scrollTop = element.scrollHeight;
+      }
+    }, 350);
+    return () => clearTimeout(timer);
   }, [feedbacks]);
 
   // 불필요한 post 요청 방지 useCallback? useMemo?
@@ -112,6 +114,7 @@ const AssignmentFeedback = ({
     if (loginUser?.role === "관리자" && isRead === false) {
       updateMutate({ isRead: true });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -122,7 +125,7 @@ const AssignmentFeedback = ({
         <div className="flex mb-[22px] items-center">
           <AssignmentProfileImage profileImage={user.profileImage} />
           <div className="flex items-center ml-[13px] justify-between w-full">
-            <div>
+            <div className="flex justify-start items-center">
               <span className="text-[16px] font-[700] text-grayscale-100">
                 {user.username}
               </span>

@@ -77,6 +77,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
 
   const deleteAssignmentMutation = useDeleteRegisteredAssignment(
     assignmentId as string,
+    data?.images,
   );
 
   // 데이터가 배열인지 아닌지에 따라 처리 -> 타입스크립트 오류수정
@@ -209,7 +210,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
         title="강의를 삭제하시겠습니까?"
         confirmBtnMsg="삭제"
         onConfirm={() => {
-          deleteAssignmentMutation.mutate(assignmentId as string);
+          deleteAssignmentMutation.mutate();
           setIsConfirmOpen(false);
           router.push("/assignment");
         }}
