@@ -1,23 +1,30 @@
 "use client";
 import { useState } from "react";
+import { User, Attachment, SubmittedAssignment } from "@/types/firebase.types";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentFeedback from "./AssignmentFeedback";
-import { User, Attachment } from "@/types/firebase.types";
 import Image from "next/image";
-import timestampToDate from "@/utils/timestampToDate";
-interface OwnProps {
-  submittedItem: any;
-}
+import timestampToIntlDate from "@/utils/timestampToIntlDate";
 
-interface submittedItem {
+interface SubmittedItem extends SubmittedAssignment {
   user: User;
   attachment: Attachment;
 }
 
-const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
+interface IAssignmentTeacherViewCardProps {
+  submittedItem: SubmittedItem;
+  assignmentId: string;
+  user: User;
+}
+
+const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
+  submittedItem,
+  assignmentId,
+  user: loginUser,
+}: IAssignmentTeacherViewCardProps) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const { user, attachment }: submittedItem = submittedItem;
+  const { user, attachment }: SubmittedItem = submittedItem;
   const { attachmentFiles, links } = attachment;
   const { profileImage } = user;
 
@@ -25,7 +32,7 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
     <>
       {submittedItem ? (
         <div
-          className="flex justify-between items-start px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]"
+          className="flex justify-between items-stretch px-[21px] py-[24px] border rounded-[10px] gap-[5px] mb-[15px]"
           onClick={() => {
             setIsDetailOpen(true);
           }}
@@ -81,7 +88,9 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
               ) : null}
             </div>
             <p className="text-grayscale-40 text-[14px] font-[500] mt-[5px]">
-              {timestampToDate(submittedItem.createdAt)}
+              {submittedItem.createdAt
+                ? timestampToIntlDate(submittedItem.createdAt, "/")
+                : null}
             </p>
           </div>
         </div>
@@ -96,7 +105,11 @@ const AssignmentTeacherViewCard: React.FC<OwnProps> = ({ submittedItem }) => {
         }}
       >
         {isDetailOpen ? (
-          <AssignmentFeedback submittedAssignmentId={submittedItem.id} />
+          <AssignmentFeedback
+            submittedAssignment={submittedItem}
+            loginUser={loginUser}
+            assignmentId={assignmentId}
+          />
         ) : null}
       </AssignmentModal>
     </>

@@ -7,10 +7,11 @@ import {
   query,
   where,
   DocumentData,
+  Timestamp,
 } from "firebase/firestore";
 
 import { db } from "@utils/firebase";
-import { SubmittedAssignment, Attachment, User } from "@/types/firebase.types";
+import { User } from "@/types/firebase.types";
 
 const getSubmittedAssignments = async (
   assignmentId: string,
@@ -27,8 +28,8 @@ const getSubmittedAssignments = async (
     if (loginUserData.role === "수강생") {
       const submittedAssignmentsQuery = query(
         collection(db, "submittedAssignments"),
-        where("assignmentId", "==", assignmentDoc.ref),
-        where("userId", "==", loginUserDoc.ref),
+        where("assignmentId", "==", assignmentRef),
+        where("userId", "==", loginUserRef),
       );
 
       const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
@@ -41,6 +42,7 @@ const getSubmittedAssignments = async (
           submittedAssignmentsDocs.docs[0].ref,
         ),
       );
+
       const attachmentDocs = await getDocs(attachmentQuery);
       const attachment = attachmentDocs.docs[0].data();
 
@@ -53,7 +55,7 @@ const getSubmittedAssignments = async (
         };
       });
 
-      return submittedAssignments;
+      return { ...submittedAssignments[0] };
     }
   }
   // 관리자일때
@@ -63,13 +65,8 @@ const getSubmittedAssignments = async (
   );
   const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
 
-  // createdAt 시간순으로 sort
-  const sortSubmittedAssignments = submittedAssignmentsDocs?.docs.sort(
-    (a: DocumentData, b: DocumentData) =>
-      a.date().createdAt.seconds - b.date().createdAt.seconds,
-  );
-  const submittedAssignments = await Promise.all(
-    sortSubmittedAssignments.map(async document => {
+  const rawSubmittedAssignments = await Promise.all(
+    submittedAssignmentsDocs?.docs.map(async document => {
       const attachmentQuery = query(
         collection(db, "attachments"),
         where("submittedAssignmentId", "==", document.ref),
@@ -89,12 +86,17 @@ const getSubmittedAssignments = async (
     }),
   );
 
+  const submittedAssignments = rawSubmittedAssignments.sort(
+    (a: DocumentData, b: DocumentData) =>
+      a.createdAt.seconds - b.createdAt.seconds,
+  );
+
   return submittedAssignments;
 };
 
 const useGetSubmittedAssignments = (assignmentId: string, uid?: string) => {
   const { data, isLoading, error } = useQuery(
-    ["getSubmittedAssignment", assignmentId, uid],
+    ["getSubmittedAssignment", assignmentId, uid || ""],
     () => getSubmittedAssignments(assignmentId, uid),
     {
       refetchOnWindowFocus: false,

@@ -1,32 +1,34 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import React, { useEffect, useState } from "react";
 import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssignment";
 import { useRouter } from "next/navigation";
-import { User } from "@/types/firebase.types";
 
 interface Props {
-  targetId: string;
-  userInfo: User;
+  refId: string;
+  userId: string;
 }
 
 //추후 userinfo도 넣어야함
-const AssignmentListSubButton = ({ targetId, userInfo }: Props) => {
-  const submittionHooks = useGetSubmittedAssignments(targetId);
+const AssignmentListSubButton = ({ refId, userId }: Props) => {
+  const submittionHooks = useGetSubmittedAssignments(refId, userId);
+  const isLoading = submittionHooks.isLoading;
   const router = useRouter();
-  let isSubmitted;
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  if (!submittionHooks.isLoading) {
-    isSubmitted = submittionHooks.data?.length > 0;
-  }
+  useEffect(() => {
+    if (!isLoading) {
+      const issubmitted = submittionHooks.data !== undefined;
+      setIsSubmitted(issubmitted);
+    }
+  }, [isLoading, submittionHooks.data]);
 
   return (
     <div>
       {isSubmitted ? (
         <button
           onClick={() => {
-            router.push("/assignment/" + targetId);
+            router.push("/assignment/" + refId);
           }}
           type="button"
           className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-zinc-100 font-bold text-zinc-500	border-none"
@@ -36,7 +38,7 @@ const AssignmentListSubButton = ({ targetId, userInfo }: Props) => {
       ) : (
         <button
           onClick={() => {
-            router.push("/assignment/" + targetId);
+            router.push("/assignment/" + refId);
           }}
           type="button"
           className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 font-bold text-slate-50 border-none"

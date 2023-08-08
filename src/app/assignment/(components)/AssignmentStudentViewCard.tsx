@@ -11,7 +11,7 @@ import { User, SubmittedAssignment } from "@/types/firebase.types";
 interface OwnProps {
   user: User;
   assignmentId: string;
-  submittedAssignment: SubmittedAssignment;
+  submittedAssignment?: SubmittedAssignment;
 }
 
 const AssignmentStudentViewCard: React.FC<OwnProps> = ({
@@ -100,12 +100,12 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
       >
         <AssignmentSubmitWithLink
           assignmentId={assignmentId}
+          userId={user.id}
           onClose={() => {
             setIsLinkOpen(false);
           }}
         />
       </AssignmentModal>
-
       {/* 과제: 파일 제출 */}
       <AssignmentModal
         title="과제 제출"
@@ -117,6 +117,7 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
       >
         <AssignmentSubmitWithFile
           assignmentId={assignmentId}
+          userId={user.id}
           onClose={() => {
             setIsFileOpen(false);
           }}
@@ -132,7 +133,14 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
           setIsDetailOpen(false);
         }}
       >
-        <AssignmentFeedback />
+        {isDetailOpen ? (
+          <AssignmentFeedback
+            submittedAssignment={submittedAssignment}
+            assignmentId={assignmentId}
+            loginUser={user}
+            setIsDetailOpen={setIsDetailOpen}
+          />
+        ) : null}
       </AssignmentModal>
     </>
   );

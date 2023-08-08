@@ -1,19 +1,18 @@
 import Link from "next/link";
-import { Assignment } from "@/types/firebase.types";
+
 import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
+import { AssignmentExtracted } from "./AssignmentLeftNavContent";
 
-export interface AssignmentExtracted
-  extends Pick<Assignment, "id" | "order" | "title"> {
-  movecard: (dragIndex: Number, hoverIndex: Number) => void;
-  index: number;
-  isEditing: boolean;
+interface Props extends AssignmentExtracted {
+  movecard: (dragIndex: number, hoverIndex: number) => void;
+  isEditting: boolean;
 }
 
-const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
+const AssignmentLeftNavCard = (props: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { id, order, title, movecard, index, isEditing } = props;
-  const isediting = true;
+  const { id, title, movecard, index, isEditting } = props;
+
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     item: () => {
@@ -38,28 +37,35 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
         return;
       }
       movecard(dragIndex, hoverIndex);
-      console.log(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
   }));
+
   const opacity = isDragging ? 0 : 100;
   drag(drop(ref));
 
   return (
     <div>
-      {isDragging ? (
+      {isEditting ? (
         <div
           ref={ref}
           key={id}
-          className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+          className={`list-none w-full p-[10px] order-${index} opacity-${opacity}`}
         >
-          <input type="checkbox" name="assign" value={id} />
-          <Link href={"/assignment/" + id}>{title}</Link>
+          <label className="hover:cursor-pointer">
+            <input
+              type="checkbox"
+              name={id}
+              value={index}
+              className="mr-[5px]"
+            />
+            {title}
+          </label>
         </div>
       ) : (
         <div
           key={id}
-          className={`list-none w-full p-[10px] order-${id} opacity-${opacity}`}
+          className={`list-none w-full p-[10px] order-${index} opacity-${opacity}`}
         >
           <Link href={"/assignment/" + id}>{title}</Link>
         </div>
@@ -68,4 +74,4 @@ const AssignmentLeftNavBlock = (props: AssignmentExtracted) => {
   );
 };
 
-export default AssignmentLeftNavBlock;
+export default AssignmentLeftNavCard;

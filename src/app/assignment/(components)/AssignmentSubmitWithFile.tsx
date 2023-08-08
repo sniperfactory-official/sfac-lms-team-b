@@ -3,20 +3,46 @@ import { useCallback, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
+import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
+import { Attachment } from "@/types/firebase.types";
 
 type OwnProps = {
   onClose: () => void;
   assignmentId: string;
+  userId: string;
 };
 
 const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
   onClose,
   assignmentId,
+  userId,
 }) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
-  const { mutate, isLoading, error } = useSubmitAssignment(assignmentId);
+  const [isDraggedOver, setIsDraggedOver] = useState<boolean>(false);
+  const { mutate, isLoading, error } = useSubmitAssignment(
+    assignmentId,
+    userId,
+  );
+
+  const filesUploadMutation = useFilesUpload();
+
+  const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggedOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    // 자식 요소 체크 후 isDraggedOver 종료
+    if (
+      e.relatedTarget === null ||
+      !e.currentTarget.contains(e.relatedTarget as Node)
+    ) {
+      setIsDraggedOver(false);
+    }
+  };
 
   const allowedFileTypes = [
     // 허용되는 확장자
@@ -31,6 +57,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
 
   // 컴포넌트의 불필요한 리렌더링을 방지 - 성능 최적화
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    setIsDraggedOver(false); // onDrop(파일첨부) 발생하면 border-color 원래대로 변경
     // 중복 파일 체크
     const validFiles = acceptedFiles.filter(file =>
       allowedFileTypes.includes(file.type),
@@ -64,18 +91,42 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       setSelectedFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
       // handleUpload(selectedFiles);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleUpload = useCallback(() => {
+  const handleUpload = async () => {
     // 선택한 파일들의 업로드 수행
     console.log("Uploaded files:", selectedFiles);
-    mutate(selectedFiles); // FIXME: ts error 수정 필요
-    setToastMsg("파일이 업로드되었습니다!");
-    setIsAccept(true);
+
+    let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
+
+    try {
+      const uploadPromises = selectedFiles.map(file =>
+        filesUploadMutation.mutateAsync(file),
+      );
+      const uploadedUrls = await Promise.all(uploadPromises);
+      newFiles = uploadedUrls;
+      const newAttachmentArray: { name: string; url: string }[] = [];
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const newObj = {
+          name: selectedFiles[i].name,
+          url: newFiles[i],
+        };
+        newAttachmentArray.push(newObj);
+      }
+
+      mutate(newAttachmentArray);
+      setToastMsg("파일이 업로드되었습니다!");
+      setIsAccept(true);
+    } catch (error) {
+      setToastMsg("과제 제출에 실패했습니다. 다시 시도해주세요.");
+      setIsAccept(false);
+    }
+
     setTimeout(() => {
       onClose();
     }, 2000);
-  }, [selectedFiles]);
+  };
 
   const handleRemoveFile = (file: File) => {
     setSelectedFiles(prevFiles =>
@@ -83,7 +134,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
     );
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, isFocused } = useDropzone({
     onDrop,
     multiple: true,
   });
@@ -136,10 +187,16 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       {/* drop-zone */}
       <div
         {...getRootProps({
-          className: `dropzone ${selectedFiles.length >= 5 ? "hidden" : ""}`,
+          className: `${selectedFiles.length >= 5 ? "hidden" : ""}`,
+          onDragEnter: handleDragEnter,
+          onDragLeave: handleDragLeave,
         })}
       >
-        <div className="w-full h-[244px] flex justify-center items-center border-dashed border rounded-[10px]">
+        <div
+          className={`w-full h-[244px] flex justify-center items-center border-dashed border rounded-[10px] ${
+            isDraggedOver ? "border-primary-80" : "border-grayscale-20"
+          }`}
+        >
           <div>
             <p className="mb-[10px] text-[20px] text-grayscale-30 font-[700]">
               파일을 여기로 드래그 해주세요
