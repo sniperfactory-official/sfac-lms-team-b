@@ -2,7 +2,11 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Editor } from "@toast-ui/react-editor";
 import { RootState } from "@/redux/store";
-import { setNoteImages, setTextContent } from "@/redux/slice/lectureInfoSlice";
+import {
+  clearError,
+  setNoteImages,
+  setTextContent,
+} from "@/redux/slice/lectureInfoSlice";
 import useUploadImage from "@/hooks/lecture/useUploadImage";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
@@ -29,6 +33,10 @@ const NoteSction: React.FC = () => {
       .getMarkdown();
     setContent(newContent);
     dispatch(setTextContent(newContent));
+
+    if (textContent) {
+      dispatch(clearError());
+    }
   };
 
   const handleUploadImage = async (
