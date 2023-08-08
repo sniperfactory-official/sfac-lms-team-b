@@ -137,7 +137,9 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
               </span>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
               <span className="text-grayscale-40 text-[14px] font-[500]">
-                {assignment.endDate ? timestampToIntlDate(assignment.endDate, "/") : null}
+                {assignment.endDate
+                  ? timestampToIntlDate(assignment.endDate, "/")
+                  : null}
               </span>
             </div>
             {!emptyArrayCheck(assignment.images) ? (

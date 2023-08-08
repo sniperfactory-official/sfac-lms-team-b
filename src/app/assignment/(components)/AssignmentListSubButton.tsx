@@ -18,7 +18,7 @@ const AssignmentListSubButton = ({ refId, userId }: Props) => {
 
   useEffect(() => {
     if (!isLoading) {
-      const issubmitted = submittionHooks.data?.length > 0;
+      const issubmitted = submittionHooks.data !== undefined;
       setIsSubmitted(issubmitted);
     }
   }, [isLoading, submittionHooks.data]);

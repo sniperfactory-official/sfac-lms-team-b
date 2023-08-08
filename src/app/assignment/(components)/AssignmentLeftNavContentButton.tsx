@@ -78,13 +78,13 @@ const AssignmentLeftNavButton = (props: Props) => {
             <AssignmentCreate isOpen={isOpen} setIsOpen={setIsOpen} />
           </AssignmentModal>
           {isActivated ? (
-            <div className="flex justify-center items-center w-full h-[46px] mx-0 my-[10px] gap-[6px] flex-shrink-0 bg-white rounded-[10px] ">
+            <div className="flex justify-center items-center h-[46px] mx-0 my-[10px] gap-[6px] flex-shrink-0 bg-white rounded-[10px] ">
               <button
                 type="button"
                 onClick={() => {
                   updateAndDeactivate();
                 }}
-                className="w-[115px] h-[35px] p-[9px] rounded-lg flex bg-[#337AFF] text-slate-50"
+                className="w-full h-[35px] rounded-lg bg-[#337AFF] text-slate-50"
               >
                 <span className="m-auto">적용</span>
               </button>
@@ -97,7 +97,7 @@ const AssignmentLeftNavButton = (props: Props) => {
                 }}
                 form="assign"
                 name="assign"
-                className="w-[115px] h-[35px] p-[9px] rounded-lg flex bg-[#FF0000] text-slate-50 "
+                className="w-full h-[35px] rounded-lg  bg-[#FF0000] text-slate-50 "
               >
                 <span className="m-auto">선택 삭제</span>
               </button>
