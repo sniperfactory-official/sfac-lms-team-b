@@ -2,8 +2,8 @@ import { useDispatch } from "react-redux";
 import { toggleDeletionId } from "@/redux/slice/editCourseIdSlice";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useEffect } from "react";
-import { setLectureCount } from "@/redux/slice/editCourseIdSlice";
+import { useEffect, useState } from "react";
+import { setLectureCount, setNewTitle, setNewTitleId } from "@/redux/slice/editCourseIdSlice";
 
 interface IProp {
   type: "course" | "lecture";
@@ -27,11 +27,19 @@ const Element = ({
     (state: RootState) => state.editCourse.isEditMode,
   );
 
+  const [isTitleEditMode, setIsTitleEditMode] = useState<boolean>(false)
+  const [titleValue, setTitleValue] = useState<string>(title)
+  const onChangeTitle = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setTitleValue(e.target.value)
+    dispatch(setNewTitle(e.target.value))
+  }
   useEffect(() => {
     // 선택된 course의 하위 lecture를 전역변수로 관리,
     if (type === "course" && isSelected) {
       dispatch(setLectureCount(childCount!));
+      dispatch((setNewTitleId(uniqueId)))
     }
+    
   }, [isSelected]);
 
   const type_obj = {
@@ -47,12 +55,21 @@ const Element = ({
     },
   };
 
+  const handleTitleEdit = () => {
+    if(isTitleEditMode){
+      setTitleValue(title)
+    }
+    setIsTitleEditMode(!isTitleEditMode)
+    
+  }
+
   return (
     <div
       className={`flex justify-center items-center w-[245px] h-[46px] ${
         isSelected ? type_obj[type].bg : "bg-white"
       } rounded-lg ${type_obj[type].margin}`}
       onClick={clickFn}
+      onDoubleClick={() => handleTitleEdit()}
     >
       {isEditMode && isSelected ? (
         <input
@@ -69,7 +86,7 @@ const Element = ({
       ) : (
         <div className="w-[15px] h-[15px] flex justify-center items-center"></div>
       )}
-      <label className={`${type_obj[type].text} ml-[10px]`}>{title}</label>
+      {isEditMode && isTitleEditMode ? <label className={`${type_obj[type].text} ml-[10px]`}><input value={titleValue} onChange={onChangeTitle}/></label> : <label className={`${type_obj[type].text} ml-[10px]`}>{title}</label>}
     </div>
   );
 };
