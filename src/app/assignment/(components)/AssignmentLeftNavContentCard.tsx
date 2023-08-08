@@ -52,8 +52,10 @@ const AssignmentLeftNavCard = (props: Props) => {
           key={id}
           className={`list-none w-full p-[10px] order-${index} opacity-${opacity}`}
         >
-          <input type="checkbox" name={id} value={index} />
-          <Link href={"/assignment/" + id}>{title}</Link>
+          <label className="hover:cursor-pointer">
+            <input type="checkbox" name={id} value={index} className="mr-[5px]"/>
+            {title}
+          </label>
         </div>
       ) : (
         <div
