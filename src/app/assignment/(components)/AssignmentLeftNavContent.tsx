@@ -1,40 +1,32 @@
 "use client";
 
 import React from "react";
-import { useGetAssignment } from "@hooks/queries/useGetAssignment";
 import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import AssignmentLeftNavCard from "./AssignmentLeftNavContentCard";
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useUpdateAssignmentOrder } from "@/hooks/mutation/useUpdateAssignmentOrder";
-import AssignmentLeftNavButton from "./AssignmentLeftNavContentButton";
-import { useDeleteRegisteredAssignmentByAssignmentId } from "@/hooks/mutation/useDeleteRegisteredAssignmentByAssignmentId";
 import { v4 as uuidv4 } from "uuid";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useState, useEffect, useRef } from "react";
+import { useGetAssignment } from "@hooks/queries/useGetAssignment";
+import { useUpdateAssignmentOrder } from "@/hooks/mutation/useUpdateAssignmentOrder";
+import { useDeleteRegisteredAssignmentByAssignmentId } from "@/hooks/mutation/useDeleteRegisteredAssignmentByAssignmentId";
 import { Assignment } from "@/types/firebase.types";
+import { User } from "@/types/firebase.types";
+import AssignmentLeftNavCard from "./AssignmentLeftNavContentCard";
+import AssignmentLeftNavButton from "./AssignmentLeftNavContentButton";
 
 export interface AssignmentExtracted
   extends Pick<Assignment, "id" | "order" | "title"> {
-  movecard: (dragIndex: Number, hoverIndex: Number) => void;
   index: number;
-  isEditing?: boolean;
 }
-/* export type AssignmentExtractedorder = Pick<
-  AssignmentExtracted,
-  "id" | "order" 
->; //id가 assignmentId인지 확인필요 */
 
-export interface Props {
-  userInfo: Object;
-  modeChanger: () => void;
+interface Props {
+  userInfo: User;
 }
-const AssignmentLeftNavContent = (prop: Props) => {
+const AssignmentLeftNavContent = (props: Props) => {
   const assignQueries = useGetAssignment("");
   const assignOrderMutation = useUpdateAssignmentOrder();
   const assignDeletingMutation = useDeleteRegisteredAssignmentByAssignmentId();
-
   const isLoading = assignQueries.isLoading;
-  const [isEditing, setIseiditing] = useState(false);
-
+  const [isEditting, setIsEditting] = useState(false);
   const [htmlContent, setHtmlcontent] = useState<AssignmentExtracted[]>(); //현재 html(미정렬)
   const [htmlContentAligned, setHcAligned] = useState<AssignmentExtracted[]>(); //정렬된 데이터
   const initialHtml = useRef<AssignmentExtracted[]>(); //초기 html
@@ -47,7 +39,7 @@ const AssignmentLeftNavContent = (prop: Props) => {
     setHcAligned(assignSorted);
   };
 
-  const fetchAssignmentData = assignQueriesdata => {
+  const fetchAssignmentData = (assignQueriesdata:Assignment[]) => {
     let htmlcontent = [];
     let initialhtml = [];
     const assignFetched = assignQueriesdata;
@@ -71,9 +63,6 @@ const AssignmentLeftNavContent = (prop: Props) => {
       htmlcontent.push(assignExtracted);
       initialhtml.push(initialAssign);
     }
-    console.log(
-      "[AssignmentLeftNavContent_FUNC] FetchAssignmentData 데이터 로드 완료!",
-    );
     initialHtml.current = [...initialhtml];
     setHtmlcontent(htmlcontent);
   };
@@ -87,16 +76,13 @@ const AssignmentLeftNavContent = (prop: Props) => {
 
   useEffect(() => {
     //데이터 정렬
-    console.log("데이터 정렬해요!");
     alignAssignmentData(htmlContent);
   }, [htmlContent]);
 
-  /* #region  */
-  //. 과제 변경 모듈
   //index 서로 바꾸고 컴포넌트 리로드
-  const moveCard = (dragIndex: Number, hoverIndex: Number) => {
+  const moveCard = (dragIndex: number, hoverIndex: number) => {
     editingCount.current += 1;
-    setHtmlcontent((prev: AssignmentExtracted) => {
+    setHtmlcontent((prev) => {
       let hcSpliced = prev.toSpliced(dragIndex, 1, prev[hoverIndex]); //dragIndex에 hoverIndex 자리의 값이 들어감
       let hcDoubleSpliced = hcSpliced.toSpliced(hoverIndex, 1, prev[dragIndex]);
       hcDoubleSpliced[dragIndex].order = prev[dragIndex].order;
@@ -109,23 +95,23 @@ const AssignmentLeftNavContent = (prop: Props) => {
 
   const UpdateAssignmentOrder = () => {
     if (!assignOrderMutation.isLoading && editingCount.current !== 0) {
-      console.log("실행!");
       editingCount.current = 0;
       assignOrderMutation.mutate(htmlContentAligned);
     }
-    setIseiditing(false);
+    setIsEditting(false);
   };
 
   const resetEditting = () => {
     setHtmlcontent(initialHtml.current);
-    setIseiditing(false);
+    setIsEditting(false);
   };
+  
   const StartEditting = () => {
-    console.log("add!");
-    setIseiditing(true);
+    setIsEditting(true);
   };
 
-  const modeExecuting = event => {
+  const deleteAssignmentElems = (event) => {
+    console.log(event)
     event.preventDefault();
     const formElem = event.target;
     let formData = new FormData();
@@ -144,16 +130,15 @@ const AssignmentLeftNavContent = (prop: Props) => {
       assignDeletingMutation.mutate(deletingAssignmentId);
     }
     editingCount.current = 0;
-    setIseiditing(false);
+    setIsEditting(false);
   };
-  /* #endregion */
 
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
         <form
           onSubmit={event => {
-            modeExecuting(event);
+            deleteAssignmentElems(event);
           }}
           id="assign"
           name="assign"
@@ -162,7 +147,6 @@ const AssignmentLeftNavContent = (prop: Props) => {
             <span>`none`</span>
           ) : (
             htmlContentAligned?.map((assignExtracted: AssignmentExtracted) => {
-              console.log("데이터 맵핑 시작!");
               return (
                 <AssignmentLeftNavCard
                   key={uuidv4()}
@@ -171,7 +155,7 @@ const AssignmentLeftNavContent = (prop: Props) => {
                   id={assignExtracted.id}
                   title={assignExtracted.title}
                   movecard={moveCard}
-                  isEditing={isEditing}
+                  isEditting={isEditting}
                 />
               );
             })
@@ -180,7 +164,7 @@ const AssignmentLeftNavContent = (prop: Props) => {
       </DndProvider>
       <AssignmentLeftNavButton
         modeChanger={StartEditting}
-        userInfo={prop.userInfo}
+        userInfo={props.userInfo}
         UpdateAssignmentOrder={UpdateAssignmentOrder}
         ResetEditting={resetEditting}
       />

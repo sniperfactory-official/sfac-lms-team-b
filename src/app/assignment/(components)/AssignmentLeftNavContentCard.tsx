@@ -4,9 +4,15 @@ import { useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
 import { AssignmentExtracted } from "./AssignmentLeftNavContent";
 
-const AssignmentLeftNavCard = (props: AssignmentExtracted) => {
+interface Props extends AssignmentExtracted{
+  movecard: (dragIndex: number, hoverIndex: number) => void;
+  isEditting: boolean;
+}
+
+const AssignmentLeftNavCard = (props:Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const { id, order, title, movecard, index, isEditing } = props;
+  const { id, title, movecard, index, isEditting } = props;
+
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     item: () => {
@@ -28,20 +34,19 @@ const AssignmentLeftNavCard = (props: AssignmentExtracted) => {
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
-        console.log("똑같!");
         return;
       }
       movecard(dragIndex, hoverIndex);
       item.index = hoverIndex;
-      console.log("dragIndex:", dragIndex, "hoverIndex", hoverIndex);
     },
   }));
+  
   const opacity = isDragging ? 0 : 100;
   drag(drop(ref));
 
   return (
     <div>
-      {isEditing ? (
+      {isEditting ? (
         <div
           ref={ref}
           key={id}

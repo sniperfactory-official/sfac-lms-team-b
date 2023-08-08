@@ -2,24 +2,25 @@
 
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { User } from "@/types/firebase.types";
 import AssignmentCreate from "./AssignmentCreate";
 import AssignmentModal from "./AssignmentModal";
-import { Props } from "./AssignmentLeftNavContent";
 
-interface Props2 extends Props {
+interface Props {
+  userInfo:User;
   UpdateAssignmentOrder: () => void;
   ResetEditting: () => void;
+  modeChanger: () => void;
 }
 
-const AssignmentLeftNavButton = (prop: Props2) => {
+const AssignmentLeftNavButton = (props: Props) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isActivated, setIsActivated] = useState<boolean>(false);
-  console.log("[AssignmentLeftNavButton] 실행!");
 
-  const handleKeyPress = event => {
+  const handleKeyPress = (event) => {
     if (event.keyCode === 27) {
       setIsActivated(false);
-      prop.ResetEditting();
+      props.ResetEditting();
     }
   };
 
@@ -36,17 +37,17 @@ const AssignmentLeftNavButton = (prop: Props2) => {
   }, [isActivated]);
 
   const executeEditing = () => {
-    prop.modeChanger();
+    props.modeChanger();
     setIsActivated(true);
   };
 
   const updateAndDeactivate = () => {
-    prop.UpdateAssignmentOrder();
+    props.UpdateAssignmentOrder();
     setIsActivated(false);
   };
   return (
     <div>
-      {prop.userInfo.role === "관리자" ? (
+      {props.userInfo.role === "관리자" ? (
         <div className="w-full">
           <div className="flex justify-center items-center w-full h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
             <button
@@ -83,8 +84,6 @@ const AssignmentLeftNavButton = (prop: Props2) => {
                 onClick={() => {
                   updateAndDeactivate();
                 }}
-                form="assign"
-                name="assign"
                 className="w-[115px] h-[35px] p-[9px] rounded-lg flex bg-[#337AFF] text-slate-50"
               >
                 <span className="m-auto">적용</span>

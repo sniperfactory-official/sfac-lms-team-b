@@ -13,7 +13,9 @@ interface AssignmentNumberAdded extends Assignment {
 
 type Props = {
   userInfo: User;
+  userId : string;
 };
+
 const AssignmentListContent = (prop: Props) => {
   const assignmentData = useGetAssignment("");
   const router = useRouter();
@@ -36,7 +38,7 @@ const AssignmentListContent = (prop: Props) => {
             {assign.title}
           </span>
         </div>
-        {userinfo.role === "관리자" ? (
+        {userinfo?.role === "관리자" ? (
           <button
             type="button"
             onClick={() => {
@@ -47,7 +49,7 @@ const AssignmentListContent = (prop: Props) => {
             확인하기
           </button>
         ) : (
-          <AssignmentListSubButton targetId={assign.id} userInfo={userinfo} />
+          <AssignmentListSubButton refId={assign.id} userId={prop.userId} />
         )}
       </div>
     ));

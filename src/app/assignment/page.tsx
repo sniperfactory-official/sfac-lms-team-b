@@ -1,11 +1,11 @@
 "use client";
 
 import React from "react";
-import AssignmentListContent from "./(components)/AssignmentListContent";
 import { useSelector } from "react-redux";
 import useUserInfo from "@/hooks/user/useUserInfo";
 import { RootState } from "@/redux/store";
 import { User } from "@/types/firebase.types";
+import AssignmentListContent from "./(components)/AssignmentListContent";
 
 const Assignment = () => {
   const userId = useSelector((state: RootState) => {
@@ -17,7 +17,7 @@ const Assignment = () => {
 
   return (
     <div>
-      <AssignmentListContent userInfo={userInfo} />
+      <AssignmentListContent userInfo={userInfo} userId={userId.uid} />
     </div>
   );
 };
