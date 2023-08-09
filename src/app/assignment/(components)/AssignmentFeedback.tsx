@@ -9,6 +9,7 @@ import { Feedback, User } from "@/types/firebase.types";
 import { useForm } from "react-hook-form";
 import { getTime } from "@/utils/getTime";
 import { Avatar, Button, Card, Text } from "sfac-designkit-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
@@ -16,11 +17,6 @@ import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 import PageToast from "@/components/PageToast";
-
-// interface ISubmittedAssignment extends SubmittedAssignment {
-//   attachment: Attachment;
-//   user: User;
-// }
 
 interface IAssignmentFeedbackProps {
   submittedAssignment: any;
@@ -52,7 +48,7 @@ const AssignmentFeedback = ({
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const createdDate = getTime(createdAt.toDate());
   const scrollRef = useRef<HTMLUListElement>(null);
-  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -111,7 +107,7 @@ const AssignmentFeedback = ({
       }
     }, 350);
     return () => clearTimeout(timer);
-  }, [feedbacks]);
+  }, [feedbacks?.length]);
 
   // 불필요한 post 요청 방지 useCallback? useMemo?
   useEffect(() => {
@@ -129,14 +125,14 @@ const AssignmentFeedback = ({
     }, 350);
     const modalTimer = setTimeout(() => {
       setIsDetailOpen!((prev: boolean) => !prev);
-      router.push("/assignment");
+      window.location.reload();
     }, 3000);
 
     return () => {
       clearTimeout(dialogTimer);
       clearTimeout(modalTimer);
     };
-  }, [router, setIsDetailOpen, toastMsg]);
+  }, [setIsDetailOpen, toastMsg]);
 
   return (
     <div>
@@ -308,5 +304,3 @@ const AssignmentFeedback = ({
 };
 
 export default AssignmentFeedback;
-
-// className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0  disabled:bg-grayscale-10 disabled:text-grayscale-20"

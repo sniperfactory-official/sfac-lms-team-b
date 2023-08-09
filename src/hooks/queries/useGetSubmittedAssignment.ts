@@ -19,6 +19,7 @@ const getSubmittedAssignments = async (
 ): Promise<any> => {
   const assignmentRef = doc(db, "assignments", assignmentId);
   const assignmentDoc = await getDoc(assignmentRef);
+
   if (uid) {
     const loginUserRef = doc(db, "users", uid);
     const loginUserDoc = await getDoc(loginUserRef);
@@ -33,6 +34,7 @@ const getSubmittedAssignments = async (
 
       const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
 
+      // if (submittedAssignmentsDocs.docs.length > 0) {
       const attachmentQuery = query(
         collection(db, "attachments"),
         where(
@@ -55,6 +57,9 @@ const getSubmittedAssignments = async (
       });
 
       return { ...submittedAssignments[0] };
+      // } else {
+      //   return "삭제완료";
+      // }
     }
   }
   // 관리자일때

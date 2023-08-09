@@ -27,7 +27,6 @@ const deleteSubmittedAssignment = async (
       where("submittedAssignmentId", "==", submittedAssignmentRef),
       where("userId", "==", userRef),
     );
-
     const attachmentDocs = (await getDocs(attachmentsQuery)).docs[0];
 
     if (attachmentDocs.data().links.includes("")) {
@@ -38,7 +37,6 @@ const deleteSubmittedAssignment = async (
         }),
       );
     }
-
     const feedbackDocs = await getDocs(
       collection(
         db,
@@ -72,11 +70,6 @@ const useDeleteSubmittedAssignment = (assignmentId: string, userId: string) => {
           assignmentId,
           userId,
         ]);
-        queryClient.invalidateQueries([
-          "getSubmittedAssignment",
-          assignmentId,
-          "",
-        ]);
       },
       onError: err => {
         console.log(err);
@@ -87,5 +80,3 @@ const useDeleteSubmittedAssignment = (assignmentId: string, userId: string) => {
 };
 
 export { useDeleteSubmittedAssignment };
-
-// 시간순으로 정렬하기.
