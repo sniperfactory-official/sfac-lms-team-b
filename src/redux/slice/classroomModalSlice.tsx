@@ -9,7 +9,7 @@ interface ModalState {
   commentModalOpen: boolean;
   replyCommentModalOpen: boolean;
   modalRole: string;
-  lecture: ILecture | null;
+  lectureInfo: ILecture | null;
   [key: string]: boolean | string | ILecture | null;
 }
 
@@ -21,7 +21,7 @@ const initialState: ModalState = {
   commentModalOpen: false,
   replyCommentModalOpen: false,
   modalRole: "",
-  lecture: null,
+  lectureInfo: null,
 };
 
 const classroomModalSlice = createSlice({
@@ -41,7 +41,7 @@ const classroomModalSlice = createSlice({
       state.modalRole = modalRole;
     },
     setLecture: (state, action: PayloadAction<ILecture | null>) => {
-      state.lecture = action.payload;
+      state.lectureInfo = action.payload;
     },
     closeModal: () => initialState,
   },

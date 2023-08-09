@@ -21,24 +21,22 @@ import {
 
 const useFirebaseLectureSlice = () => {
   const dispatch = useDispatch();
-  const { lecture } = useClassroomModal();
+  const { lectureInfo } = useClassroomModal();
 
   useEffect(() => {
-    if (lecture) {
-      dispatch(setCourseId(lecture.courseId));
-      dispatch(setLectureType(lecture.lectureType));
-      dispatch(setLectureTitle(lecture.title));
-      dispatch(setExternalLink(lecture.lectureContent.externalLink));
-      dispatch(setTextContent(lecture.lectureContent.textContent));
-      dispatch(setNoteImages(lecture.lectureContent.images));
-      dispatch(setVideoURL(lecture.lectureContent.videoUrl));
-      dispatch(setVideoLength(lecture.lectureContent.videoLength));
-      dispatch(setStartDate(lecture.startDate));
-      dispatch(setEndDate(lecture.endDate));
-      dispatch(setIsLecturePrivate(lecture.isPrivate));
+    if (lectureInfo) {
+      dispatch(setLectureTitle(lectureInfo.title));
+      dispatch(setExternalLink(lectureInfo.lectureContent.externalLink));
+      dispatch(setTextContent(lectureInfo.lectureContent.textContent));
+      dispatch(setNoteImages(lectureInfo.lectureContent.images));
+      dispatch(setVideoURL(lectureInfo.lectureContent.videoUrl));
+      dispatch(setVideoLength(lectureInfo.lectureContent.videoLength));
+      dispatch(setStartDate(lectureInfo.startDate));
+      dispatch(setEndDate(lectureInfo.endDate));
+      dispatch(setIsLecturePrivate(lectureInfo.isPrivate));
 
-      if (lecture.lectureContent.videoUrl) {
-        const urlParts = lecture.lectureContent.videoUrl
+      if (lectureInfo.lectureContent.videoUrl) {
+        const urlParts = lectureInfo.lectureContent.videoUrl
           .split("?")[0]
           .split("/");
         const filePath = decodeURIComponent(urlParts[urlParts.length - 1]);
@@ -51,7 +49,7 @@ const useFirebaseLectureSlice = () => {
         );
       }
     }
-  }, [dispatch, lecture]);
+  }, [dispatch, lectureInfo]);
 };
 
 export default useFirebaseLectureSlice;
