@@ -12,12 +12,11 @@ import { IUser } from "../page";
 interface IProps {
   courseList: ICourseField[];
   setCurrentCourse: React.Dispatch<React.SetStateAction<any>>;
-  user: IUser;
+  role: string;
 }
 
 const Sidebar = forwardRef<HTMLDivElement, IProps>(
-  ({ courseList, setCurrentCourse, user }) => {
-    console.log(user);
+  ({ courseList, setCurrentCourse, role }) => {
     const { handleCreateSection } = useCreateSection();
     const { getBackLectureOrderTrigger, setGetBackLectureOrderTrigger } =
       useLectureOrder(courseList);
@@ -36,8 +35,9 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
         <CourseList
           courseList={courseList}
           setCurrentCourse={setCurrentCourse}
+          role={role}
         />
-        {user.role === "관리자" && (
+        {role === "관리자" && (
           <>
             <SectionHandlerButton
               text="섹션 추가"

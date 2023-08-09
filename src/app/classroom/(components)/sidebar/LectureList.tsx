@@ -11,9 +11,10 @@ import useEditMode from "@/hooks/classroom/useEditMode";
 interface IProps {
   currentLectures: ILecture[];
   idx: number;
+  role: string;
 }
 
-const LectureList = ({ currentLectures, idx }: IProps) => {
+const LectureList = ({ currentLectures, idx, role }: IProps) => {
   const dispatch = useDispatch();
   const { isEditMode } = useEditMode();
   const selectedCourse = useSelector(
@@ -30,33 +31,45 @@ const LectureList = ({ currentLectures, idx }: IProps) => {
 
   return isEditMode ? (
     <DndProvider backend={HTML5Backend}>
-      {currentLectures.map((lecture: ILecture, index: number) => (
-        <DndItem
-          key={lecture.lectureId}
-          index={index}
-          id={lecture.lectureId}
-          moveItem={(dragIndex, hoverIndex) => moveItem(dragIndex, hoverIndex)}
-          child={
-            <Element
-              type="lecture"
-              title={lecture.title}
-              isSelected={selectedCourse[idx]}
-              uniqueId={lecture.lectureId}
-            />
-          }
-        />
-      ))}
+      {currentLectures.map((lecture: ILecture, index: number) => {
+        if (role === "수강생" && lecture.isPrivate) {
+          return null; // 수강생이면서 강의가 비공개인 경우 렌더링하지 않습니다.
+        }
+        return (
+          <DndItem
+            key={lecture.lectureId}
+            index={index}
+            id={lecture.lectureId}
+            moveItem={(dragIndex, hoverIndex) =>
+              moveItem(dragIndex, hoverIndex)
+            }
+            child={
+              <Element
+                type="lecture"
+                title={lecture.title}
+                isSelected={selectedCourse[idx]}
+                uniqueId={lecture.lectureId}
+              />
+            }
+          />
+        );
+      })}
     </DndProvider>
   ) : (
-    currentLectures.map((lecture: ILecture) => (
-      <Element
-        key={lecture.lectureId}
-        type="lecture"
-        title={lecture.title}
-        isSelected={selectedCourse[idx]}
-        uniqueId={lecture.lectureId}
-      />
-    ))
+    currentLectures.map((lecture: ILecture) => {
+      if (role === "수강생" && lecture.isPrivate) {
+        return null; // 수강생이면서 강의가 비공개인 경우 렌더링하지 않습니다.
+      }
+      return (
+        <Element
+          key={lecture.lectureId}
+          type="lecture"
+          title={lecture.title}
+          isSelected={selectedCourse[idx]}
+          uniqueId={lecture.lectureId}
+        />
+      );
+    })
   );
 };
 

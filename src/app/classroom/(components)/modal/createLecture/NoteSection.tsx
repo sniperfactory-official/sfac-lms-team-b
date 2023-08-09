@@ -11,7 +11,6 @@ import {
 } from "@/redux/slice/lectureInfoSlice";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-
 type HookCallback = (url: string, text?: string) => void;
 
 const NoteSction: React.FC = () => {
