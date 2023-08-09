@@ -2,7 +2,6 @@
 import { useState } from "react";
 import { User, Attachment, SubmittedAssignment } from "@/types/firebase.types";
 import AssignmentModal from "./AssignmentModal";
-import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentFeedback from "./AssignmentFeedback";
 import Image from "next/image";
 import timestampToIntlDate from "@/utils/timestampToIntlDate";
@@ -37,14 +36,17 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
             setIsDetailOpen(true);
           }}
         >
-          <div className="flex justify-start items-start gap-[14px]">
+          <div
+            className="flex justify-start items-start gap-[14px]"
+            style={{ width: "calc(100% - 137px)" }}
+          >
             <Avatar
               src={user.profileImage}
               ringColor="ring-grayscale-10"
               className="ring-1"
             />
-            <div>
-              <div className="mb-[5px] flex justify-start items-center gap-[6px]">
+            <div className="w-full">
+              <div className="-w-full mb-[5px] flex justify-start items-center gap-[6px]">
                 <Text
                   size="base"
                   weight="bold"
@@ -89,7 +91,7 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
                 })}
             </div>
           </div>
-          <div className="flex flex-col justify-between items-end">
+          <div className="flex basis-[80px] shrink-0 flex-col justify-between items-end">
             <div className="w-[19px] h-[19px]">
               {!submittedItem.isRead ? (
                 <div className="w-full h-full">

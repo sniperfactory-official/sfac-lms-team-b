@@ -11,7 +11,6 @@ import { getTime } from "@/utils/getTime";
 import { Avatar, Button, Card, Text } from "sfac-designkit-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
@@ -247,12 +246,11 @@ const AssignmentFeedback = ({
       {/* feedback_upload */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
         <div className="flex justify-start items-start gap-[11px]">
-          {/* <Avatar
+          <Avatar
             ringColor="ring-grayscale-10"
             className="ring-1"
-            src={"profileImage"}
-          /> */}
-          <AssignmentProfileImage profileImage={"profileImage"} />
+            src={loginUser.profileImage}
+          />
           <div className="grow space-y-[9px]">
             <Text size="base" weight="medium" className=" text-grayscale-60 ">
               {loginUser.username}

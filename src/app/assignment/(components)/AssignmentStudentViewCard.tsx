@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
 import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
