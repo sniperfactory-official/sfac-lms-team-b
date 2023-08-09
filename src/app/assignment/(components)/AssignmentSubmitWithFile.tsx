@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
 import { Attachment } from "@/types/firebase.types";
-import { Button, Text } from "sfac-designkit-react";
+import { Button, Text, Icon } from "sfac-designkit-react";
 
 type OwnProps = {
   onClose: () => void;
@@ -235,12 +235,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       {/* bottom-button */}
       <div className="absolute left-0 bottom-0 w-full min-h-[97px] p-[20px_31px_42px]">
         <div className="flex justify-end items-center gap-[12px]">
-          <Button
-            variant="secondary"
-            text="취소"
-            asChild
-            onClick={onClose}
-          />
+          <Button variant="secondary" text="취소" asChild onClick={onClose} />
 
           {/* <button className="border" type="button" onClick={onClose}>
             취소
