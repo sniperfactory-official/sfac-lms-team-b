@@ -17,9 +17,6 @@ const AddLinkModal: React.FC = () => {
   };
   const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setExternalLink(e.target.value));
-    if (e.target.value.trim()) {
-      dispatch(clearError());
-    }
   };
   useFirebaseLectureSlice();
 

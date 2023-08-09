@@ -15,6 +15,8 @@ import {
   resetInput,
   setError,
 } from "@/redux/slice/lectureInfoSlice";
+import "sfac-designkit-react/style.css";
+import { Input, Toast } from "sfac-designkit-react";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -129,10 +131,10 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
       {children}
       <ModalFooter />
       {errorMessage && (
-        <PageToast
-          toastMsg={errorMessage}
-          isAccept={false}
-          onClose={() => dispatch(clearError())}
+        <Toast
+          type="Error"
+          text={errorMessage}
+          className="mt-[100px] h-[45px]"
         />
       )}
     </form>
