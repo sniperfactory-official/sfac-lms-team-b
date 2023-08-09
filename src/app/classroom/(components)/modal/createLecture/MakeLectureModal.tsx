@@ -70,8 +70,7 @@ const MakeLectureModal: React.FC = () => {
             />
             영상 강의 만들기
           </button>
-          <button
-            type="button"
+          <div
             className={`flex flex-col items-center justify-center border-2 border-grayscale-10 rounded-md w-[222px] h-[153px] text-[18px] cursor-pointer ${
               selectedModal === "링크" ? "bg-primary-5 border-primary-60" : ""
             }`}
@@ -85,13 +84,15 @@ const MakeLectureModal: React.FC = () => {
               className="pb-[12px]"
             />
             링크 만들기
-          </button>
+          </div>
         </div>
         <Button
           variant="primary"
           text="다음"
           asChild
-          className="mb-[-20px] ml-auto"
+          textSize="base"
+          textWeight="bold"
+          className="mb-[-20px] ml-auto w-[112px] h-[35px]"
           onClick={() => onNextButtonClick(selectedModal)}
         />
       </div>

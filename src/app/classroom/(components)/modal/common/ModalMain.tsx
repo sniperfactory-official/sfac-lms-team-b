@@ -17,7 +17,7 @@ import {
   setError,
 } from "@/redux/slice/lectureInfoSlice";
 import "sfac-designkit-react/style.css";
-import { Input, Toast } from "sfac-designkit-react";
+import { Toast } from "sfac-designkit-react";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -61,14 +61,11 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     videoUrl: videoURL,
     videoLength,
   };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const isSubmitButtonDisabled = () => {
     if (!lectureTitle) {
       dispatch(setError("강의 제목을 입력해주세요."));
       return;
     }
-
     if (lectureType === "링크") {
       const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
       if (!externalLink || !externalLink.trim()) {
@@ -93,7 +90,12 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
       dispatch(setError("수강 기간을 선택해주세요."));
       return;
     }
+    return false;
+  };
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
+    isSubmitButtonDisabled();
     if (user && lectureType && startDate && endDate) {
       CreateMutation.mutate({
         userId: user.uid,
