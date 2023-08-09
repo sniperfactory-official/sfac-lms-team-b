@@ -7,6 +7,7 @@ import {
   setStartDate,
   setEndDate,
   setIsLecturePrivate,
+  clearError,
 } from "@/redux/slice/lectureInfoSlice";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 
@@ -20,6 +21,7 @@ const LectureSetting: React.FC = () => {
 
   const handleChangeDate = (ranges: [Date, Date]) => {
     const [startDate, endDate] = ranges;
+
     dispatch(
       setStartDate(
         startDate ? new Timestamp(startDate.getTime() / 1000, 0) : null,
@@ -28,6 +30,10 @@ const LectureSetting: React.FC = () => {
     dispatch(
       setEndDate(endDate ? new Timestamp(endDate.getTime() / 1000, 0) : null),
     );
+
+    if (startDate && endDate) {
+      dispatch(clearError());
+    }
   };
 
   const timestampToDate = (timestamp: Timestamp | null): Date | null => {

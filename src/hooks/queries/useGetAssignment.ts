@@ -7,32 +7,18 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
-import { Assignment, User } from "@/types/firebase.types";
+import { Assignment } from "@/types/firebase.types";
 
 // Firestore 데이터 return
 const getAssignments = async (assignmentId?: string): Promise<any> => {
   if (assignmentId) {
     const assignmentRef = doc(db, "assignments", assignmentId);
-    // const assignment = (await getDoc(assignmentRef)).data() as Assignment;
-    // return assignment;
+    const assignment = (await getDoc(assignmentRef)).data() as Assignment;
 
-    const docSnap = await getDoc(assignmentRef);
-    if (docSnap.exists()) {
-      const assignmentData = docSnap.data() as Assignment;
-      const userSnap = await getDoc(doc(db, assignmentData.userId.path)); // userId의 path로 해당 user 문서 가져오기
-      const user = userSnap.data() as User;
-      return { ...docSnap.data(), user } as Assignment; // user정보 포함해서 return
-    }
-    return docSnap.data() as Assignment;
+    return assignment;
   }
   const assignmentsDocs = await getDocs(collection(db, "assignments"));
-
-  // order number로 sort
-  const sortAssignments = assignmentsDocs?.docs.sort(
-    (a: DocumentData, b: DocumentData) => a.data().order - b.data().order,
-  );
-
-  const assignments = sortAssignments.map((doc: DocumentData) => {
+  const assignments = assignmentsDocs?.docs.map((doc: DocumentData) => {
     return { id: doc.id, ...doc.data() };
   });
 
@@ -48,6 +34,10 @@ const useGetAssignment = (assignmentId?: string) => {
       refetchOnWindowFocus: false,
     },
   );
+
+  // if (data === undefined) {
+  //   refetch();
+  // }
 
   return { data, isLoading, error };
 };

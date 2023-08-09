@@ -1,61 +1,35 @@
-import { useDispatch } from "react-redux";
 import ContentCard from "./main/ContentCard";
-import MakeLectureModal from "./modal/createLecture/MakeLectureModal";
-import AddNoteModal from "./modal/createLecture/AddNoteModal";
-import AddLinkModal from "./modal/createLecture/AddLinkModal";
-import AddVideoFileModal from "./modal/createLecture/AddVideoFileModal";
-import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
+import useModalManage from "@/hooks/classroom/useModalManage";
+import CourseInfo from "./main/CourseInfo";
+import { IUser } from "../page";
+import EmptyContents from "@/components/EmptyContents";
 
 interface IProps {
   currentCourse: ICourseField;
+  role: string;
 }
-
-const ClassContent = ({ currentCourse }: IProps) => {
-  const dispatch = useDispatch();
-  const {
-    lectureTypeModalOpen,
-    noteModalOpen,
-    linkModalOpen,
-    videoFileModalOpen,
-  } = useClassroomModal();
-
-  const handleModalOpen = () => {
-    dispatch(
-      setModalVisibility({
-        modalName: "lectureTypeModalOpen",
-        visible: true,
-        modalRole: "create",
-      }),
-    );
-  };
+const ClassContent = ({ currentCourse, role }: IProps) => {
+  const { modal: SelectedModal, handleModalOpen } = useModalManage();
 
   return (
     <div className="w-4/5 h-100 pt-[50px] ml-[50px]">
-      <div className="flex justify-between w-100">
-        <div className="flex flex-col w-[150px] mb-[20px]">
-          <div className="text-lg font-bold">
-            {currentCourse.courseData.title}
-          </div>
-          <div className="font-thin text-sm">
-            강의 {currentCourse.lectureList.length}개
-          </div>
-        </div>
-        <button
-          onClick={handleModalOpen}
-          className="w-[109px] h-[35px] bg-primary-80 rounded-lg text-white text-sm"
-        >
-          강의 만들기
-        </button>
-      </div>
-      {currentCourse.lectureList.map((lecture: ILecture) => (
-        <ContentCard key={lecture.title} lecture={lecture} />
-      ))}
-      {lectureTypeModalOpen && <MakeLectureModal />}
-      {noteModalOpen && <AddNoteModal />}
-      {linkModalOpen && <AddLinkModal />}
-      {videoFileModalOpen && <AddVideoFileModal />}
+      <CourseInfo
+        currentCourse={currentCourse}
+        handleModalOpen={handleModalOpen}
+        role={role}
+      />
+      {currentCourse.lectureList.length === 0 ? (
+        <EmptyContents emptyTxt={"강의가 아직 존재하지 않습니다."} />
+      ) : (
+        currentCourse.lectureList.map((lecture: ILecture) => {
+          if (role === "수강생" && lecture.isPrivate) {
+            return null; // 수강생이면서 강의가 비공개인 경우 렌더링하지 않습니다.
+          }
+          return <ContentCard key={lecture.lectureId} lecture={lecture} />;
+        })
+      )}
+      {SelectedModal && <SelectedModal />}
     </div>
   );
 };

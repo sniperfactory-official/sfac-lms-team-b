@@ -1,10 +1,6 @@
 import React, { FC, useState, ChangeEvent, FormEvent, useEffect } from "react";
-import useAuth from "@/hooks/user/useAuth";
-import useUsername from "@/hooks/user/useUserName";
-import useUserProfileImage from "@/hooks/user/useUserProfileImage";
-import { useDispatch } from "react-redux";
-import { useAddComment } from "@/hooks/mutation/useAddComment";
-import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
+import useUser from "@/hooks/user/useUser";
+import { useSubmitComment } from "@/hooks/lecture/useSubmitComment";
 import UserImage from "./UserImage";
 import UserInfo from "./UserInfo";
 
@@ -24,11 +20,8 @@ const CommentForm: FC<CommentFormProps> = ({
   modalOpen,
 }) => {
   const [comment, setComment] = useState(initialContent);
-  const user = useAuth();
-  const username = useUsername(user?.uid ?? null);
-  const profileImage = useUserProfileImage(user?.uid ?? null);
-  const mutation = useAddComment();
-  const dispatch = useDispatch();
+  const { user, username, profileImage } = useUser();
+  const handleSubmit = useSubmitComment();
 
   useEffect(() => {
     setComment(initialContent);
@@ -40,26 +33,25 @@ const CommentForm: FC<CommentFormProps> = ({
     }
   }, [modalOpen]);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (user && lectureId) {
-      mutation.mutate({
-        content: comment,
-        lectureId: lectureId,
-        parentId: parentId,
-        userId: user.uid,
-      });
-      setComment("");
-      if (!isReply) {
-        dispatch(
-          setModalVisibility({ modalName: "commentModalOpen", visible: false }),
-        );
-      }
-    }
-  };
-
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value);
+  };
+
+  const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (user) {
+      handleSubmit(
+        {
+          content: comment,
+          lectureId: lectureId,
+          parentId: parentId,
+          userId: user.uid,
+          isReply: isReply,
+        },
+        e,
+      );
+      setComment("");
+    }
   };
 
   return (
@@ -69,7 +61,7 @@ const CommentForm: FC<CommentFormProps> = ({
         <div className="flex flex-col w-full">
           {username && <UserInfo username={username} isForm={true} />}
           <div className="w-full flex justify-between items-start">
-            <form onSubmit={handleSubmit} className="w-full flex flex-col">
+            <form onSubmit={handleFormSubmit} className="w-full flex flex-col">
               <textarea
                 value={comment}
                 onChange={handleInputChange}

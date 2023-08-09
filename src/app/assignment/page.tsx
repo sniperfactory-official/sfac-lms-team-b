@@ -9,15 +9,15 @@ import AssignmentListContent from "./(components)/AssignmentListContent";
 
 const Assignment = () => {
   const userId = useSelector((state: RootState) => {
-    return state.userId;
+    return state.userInfo;
   });
 
-  const user = useUserInfo(userId.uid) as User;
+  const user = useUserInfo(userId.id) as User;
   const userInfo = { ...user };
 
   return (
     <div>
-      <AssignmentListContent userInfo={userInfo} userId={userId.uid} />
+      <AssignmentListContent userInfo={userInfo} userId={userId.id} />
     </div>
   );
 };

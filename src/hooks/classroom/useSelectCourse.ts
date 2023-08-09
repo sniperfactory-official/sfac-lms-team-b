@@ -45,7 +45,7 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
     }
   };
 
-  // 새로운 섹션 생성 시, useEffect로 업데이트
+  // 새로운 섹션 생성 및 삭제 시, useEffect로 업데이트
   useEffect(() => {
     dispatch(
       setSelectedCourse(
@@ -54,6 +54,7 @@ const useSelectCourse = ({ courseList, setCurrentCourse }: IArg) => {
         ),
       ),
     );
+    dispatch(setCurrentLecture(courseList[0].lectureList));
   }, [courseList.length]);
 
   return { handleCurrentCourse, currentLectures };

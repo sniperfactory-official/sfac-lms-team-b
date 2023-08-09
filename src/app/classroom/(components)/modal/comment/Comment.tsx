@@ -2,7 +2,7 @@ import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
 import React, { useState } from "react";
 import { getTime } from "@/utils/getTime";
-import useAuth from "@/hooks/user/useAuth";
+import useUser from "@/hooks/user/useUser";
 import { useDeleteComment } from "@/hooks/mutation/useDeleteComment";
 import { useUpdateComment } from "@/hooks/mutation/useUpdateComment";
 import { useDisplayedComment } from "@/hooks/lecture/useDisplayedComment";
@@ -31,7 +31,7 @@ const Comment: React.FC<CommentProps> = ({
   const { username, role, profileImage } = comment.user;
   const userId = comment.userId;
 
-  const user = useAuth();
+  const { user } = useUser();
 
   const deleteMutation = useDeleteComment();
   const updateMutation = useUpdateComment();

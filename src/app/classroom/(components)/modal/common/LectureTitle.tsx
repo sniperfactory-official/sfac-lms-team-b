@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setLectureTitle } from "@/redux/slice/lectureInfoSlice";
+import { setLectureTitle, clearError } from "@/redux/slice/lectureInfoSlice";
 import { RootState } from "@/redux/store";
 
 const LectureTitle: React.FC = () => {
@@ -10,6 +10,9 @@ const LectureTitle: React.FC = () => {
 
   const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setLectureTitle(e.target.value));
+    if (e.target.value.trim()) {
+      dispatch(clearError());
+    }
   };
 
   return (

@@ -9,10 +9,10 @@ import AssignmentLeftNavContent from "./AssignmentLeftNavContent";
 
 const AssignmentLeftNav = () => {
   const userId = useSelector((state: RootState) => {
-    return state.userId;
+    return state.userInfo;
   });
 
-  const user = useUserInfo(userId.uid) as User;
+  const user = useUserInfo(userId.id) as User;
   const userInfo = { ...user };
 
   return (
