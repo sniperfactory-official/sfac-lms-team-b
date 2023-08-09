@@ -1,9 +1,7 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useClassroomModal from "./useClassroomModal";
 import {
-  setCourseId,
-  setLectureType,
   setLectureTitle,
   setExternalLink,
   setTextContent,
