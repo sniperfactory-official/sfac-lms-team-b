@@ -1,30 +1,36 @@
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import timestampToDate from "@/utils/timestampToDate";
 import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
+import { ILecture } from "@/hooks/queries/useGetCourseList";
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+import { resetInput } from "@/redux/slice/lectureInfoSlice";
 import {
   setLecture,
   setModalVisibility,
 } from "@/redux/slice/classroomModalSlice";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { ILecture } from "@/hooks/queries/useGetCourseList";
-import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { resetInput } from "@/redux/slice/lectureInfoSlice";
 
 interface IProps {
-  setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   lecture: ILecture;
 }
 
-const ContentInfo = ({ lecture, setDeleteModal }: IProps) => {
+const ContentInfo = ({ lecture }: IProps) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
   const { title, lectureType, startDate, endDate, lectureContent } = lecture;
   const { lectureInfo } = useClassroomModal();
-  const router = useRouter();
-  const dispatch = useDispatch();
   const handleMovePage = () => {
     router.push(`/classroom/${lecture.lectureId}`);
   };
   const handleDeleteModal = () => {
-    setDeleteModal(true);
+    dispatch(setLecture(lecture));
+    dispatch(
+      setModalVisibility({
+        modalName: "lectureDeleteModalOpen",
+        visible: true,
+        modalRole: "delete",
+      }),
+    );
   };
 
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
