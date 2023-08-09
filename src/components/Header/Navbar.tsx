@@ -20,7 +20,7 @@ export default function Navbar() {
   const userId = useAppSelector(state => state.userInfo.id);
   const user = useAppSelector(state => state.userInfo);
   console.log(userId, user);
-  
+
   const dispatch = useAppDispatch();
   const { mutateAsync } = useLogoutMutation();
 
