@@ -12,6 +12,8 @@ export interface IEditCourse {
   lectureCount: number;
   selectedCourse: boolean[];
   currentLectures: ILecture[];
+  newTitle: string;
+  newTitleId: string;
 }
 
 const initialState: IEditCourse = {
@@ -20,6 +22,8 @@ const initialState: IEditCourse = {
   lectureCount: 0,
   selectedCourse: [],
   currentLectures: [],
+  newTitle: '',
+  newTitleId: '',
 };
 
 const editCourseSlice = createSlice({
@@ -61,6 +65,13 @@ const editCourseSlice = createSlice({
     setCurrentLecture: (state, action) => {
       state.currentLectures = action.payload;
     },
+    setNewTitleId: (state, action) => {
+      state.newTitleId = action.payload;
+    },
+    setNewTitle: (state, action) => {
+      state.newTitle = action.payload;
+    },
+    
   },
 });
 
@@ -70,5 +81,7 @@ export const {
   setLectureCount,
   setSelectedCourse,
   setCurrentLecture,
+  setNewTitleId,
+  setNewTitle,
 } = editCourseSlice.actions;
 export default editCourseSlice.reducer;

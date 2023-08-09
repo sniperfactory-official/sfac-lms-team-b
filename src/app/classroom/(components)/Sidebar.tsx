@@ -17,6 +17,7 @@ interface IProps {
 
 const Sidebar = forwardRef<HTMLDivElement, IProps>(
   ({ courseList, setCurrentCourse, user }) => {
+    console.log(user);
     const { handleCreateSection } = useCreateSection();
     const { getBackLectureOrderTrigger, setGetBackLectureOrderTrigger } =
       useLectureOrder(courseList);

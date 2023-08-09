@@ -18,12 +18,12 @@ const SectionButton = ({ type }: IProp) => {
   const currentLectures = useSelector(
     (state: RootState) => state.editCourse.currentLectures,
   );
-  const docId = useSelector((state:RootState) => state.editCourse.newTitleId)
-  const newTitle = useSelector((state:RootState) => state.editCourse.newTitle)
+  const docId = useSelector((state: RootState) => state.editCourse.newTitleId);
+  const newTitle = useSelector((state: RootState) => state.editCourse.newTitle);
 
   const { mutate: deleteCourse } = useDeleteCourse();
   const { mutate: updateLectureOrder } = useUpdateLectureOrder(currentLectures);
-  const { mutate: updateSectionTitle } = useUpdateSectionTitle()
+  const { mutate: updateSectionTitle } = useUpdateSectionTitle();
   const deleteIdArray = useSelector(
     (state: RootState) => state.editCourse.deleteIdArray,
   );
@@ -32,7 +32,7 @@ const SectionButton = ({ type }: IProp) => {
       text: "적용",
       bg: "bg-primary-80",
       onClick: () => {
-        updateSectionTitle({docId, newTitle})
+        updateSectionTitle({ docId, newTitle });
         updateLectureOrder(
           {},
           {

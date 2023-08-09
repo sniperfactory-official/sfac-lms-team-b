@@ -13,7 +13,7 @@ async function updateCourseTitle({ docId, newTitle }: UpdateTitleParams) {
   const courseRef = doc(db, "courses", docId);
 
   // Update title field
-  await updateDoc(courseRef, {title: newTitle});
+  await updateDoc(courseRef, { title: newTitle });
 }
 
 const useUpdateSectionTitle = () => {
@@ -24,6 +24,6 @@ const useUpdateSectionTitle = () => {
       queryClient.invalidateQueries([QUERY_KEY.COURSE]);
     },
   });
-}
+};
 
 export default useUpdateSectionTitle;
