@@ -1,9 +1,14 @@
 import timestampToDate from "@/utils/timestampToDate";
 import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
-import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
+import {
+  setLecture,
+  setModalVisibility,
+} from "@/redux/slice/classroomModalSlice";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { ILecture } from "@/hooks/queries/useGetCourseList";
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+import { resetInput } from "@/redux/slice/lectureInfoSlice";
 
 interface IProps {
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,7 +17,7 @@ interface IProps {
 
 const ContentInfo = ({ lecture, setDeleteModal }: IProps) => {
   const { title, lectureType, startDate, endDate, lectureContent } = lecture;
-
+  const { lectureInfo } = useClassroomModal();
   const router = useRouter();
   const dispatch = useDispatch();
   const handleMovePage = () => {
@@ -53,6 +58,8 @@ const ContentInfo = ({ lecture, setDeleteModal }: IProps) => {
         modalRole: "edit",
       }),
     );
+    lectureInfo?.lectureId !== lecture.lectureId && dispatch(resetInput());
+    dispatch(setLecture(lecture));
   };
 
   return (
