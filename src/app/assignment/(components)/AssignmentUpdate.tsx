@@ -170,7 +170,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         <Text
           size="base"
           weight="medium"
-          className="text-color-Grayscale-100 mr-[20px]"
+          className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
         >
           과제 난이도
         </Text>

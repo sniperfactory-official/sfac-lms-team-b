@@ -38,12 +38,14 @@ const AssignmentGlobalConfirmDialog: React.FC<OwnProps> = ({
             </Title>
             <div className="flex justify-center item-center gap-[8px]">
               <Button
+                className="min-w-[115px]"
                 variant="secondary"
                 text="취소"
                 asChild
                 onClick={onCancel}
               />
               <Button
+                className="min-w-[115px]"
                 variant="destructive"
                 text={confirmBtnMsg}
                 asChild

@@ -47,7 +47,6 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
 
   const createAssignmentMutation = useCreateAssignment();
   const imageUploadMutation = useImageUpload();
-  console.log(dates);
 
   const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
     if (dates.startDate === null || dates.endDate === null) return onInValid();
@@ -104,7 +103,6 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         file => file.size > MAX_FILE_SIZE_MB * 1024 * 1024,
       );
       if (oversizedFiles.length > 0) {
-        console.log(oversizedFiles);
         setToastMsg(`파일 용량이 너무 큽니다. (최대 ${MAX_FILE_SIZE_MB}MB).`);
         setIsAccept(false);
         return;
@@ -144,7 +142,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         <Text
           size="base"
           weight="medium"
-          className="text-color-Grayscale-100 mr-[20px]"
+          className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
         >
           과제 난이도
         </Text>

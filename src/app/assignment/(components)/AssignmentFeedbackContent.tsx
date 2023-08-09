@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useDeleteFeedback } from "@/hooks/mutation/useDeleteFeedback";
 import { useUpdateFeedback } from "@/hooks/mutation/useUpdateFeedback";
 import { useForm } from "react-hook-form";
-import { Button, Text } from "sfac-designkit-react";
+import { Button, Text, Avatar } from "sfac-designkit-react";
 import PageToast from "@/components/PageToast";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
+
 interface IUpdateFeedbackForm {
   updateFeedback: string;
 }
@@ -84,7 +85,11 @@ const AssignmentFeedbackContent = ({
       >
         <div className="flex justify-start items-start gap-[13px]">
           <div className="pt-[3px]">
-            <AssignmentProfileImage profileImage={profileImage} />
+            <Avatar
+              ringColor="ring-grayscale-10"
+              className="ring-1"
+              src={profileImage}
+            />
           </div>
           <div className="grow">
             <div className="flex justify-between items-center mb-[9px]">
