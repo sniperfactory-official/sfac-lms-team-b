@@ -28,7 +28,7 @@ const ContentCard = ({ lecture }: { lecture: ILecture }) => {
     <>
       <div className="w-[775px] h-[200px] border rounded-lg p-[10px] flex flex-row items-center mb-[15px]">
         <ContentImg isPrivate={lecture.isPrivate} />
-        <ContentInfo lecture={lecture} />
+        <ContentInfo lecture={lecture} role={role}/>
       </div>
       {lectureDeleteModalOpen && (
         <LectureDeleteModal

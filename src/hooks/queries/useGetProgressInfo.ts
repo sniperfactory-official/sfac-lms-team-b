@@ -1,9 +1,15 @@
-import { db } from "@/utils/firebase";
+import { db } from "@utils/firebase";
 import { useQuery } from "@tanstack/react-query";
-import { getDocs, query, where, collection, doc } from "firebase/firestore";
-import type { Progress } from "@/types/firebase.types";
-
-const fetchProgressInfo = async (userId: string, lectureId: string) => {
+import {
+  getDocs,
+  collection,
+  query,
+  where,
+  doc,
+  DocumentData,
+} from "firebase/firestore";
+const fetchUserLectures = async (userId: string) => {
+  console.log(1);
   const userRef = doc(db, "users", userId);
   const lectureRef = doc(db, "lectures", lectureId);
 
@@ -16,19 +22,24 @@ const fetchProgressInfo = async (userId: string, lectureId: string) => {
   const progressSnap = await getDocs(progressQuery);
 
   if (progressSnap.empty) {
-    return { hasData: false, data: null };
+    return { hasData: false, data: null, id: null };
   }
 
-  return { hasData: true, data: progressSnap.docs[0].data() as Progress };
+  const progressDoc = progressSnap.docs[0];
+  return {
+    hasData: true,
+    data: {
+      ...progressDoc.data(),
+      id: progressDoc.id,
+    } as Progress,
+  };
 };
 
-const useGetProgressInfo = (userId: string, lectureId: string) => {
-  return useQuery<{ hasData: boolean; data: Progress | null }>(
-    ["progress", userId, lectureId],
-    () => fetchProgressInfo(userId, lectureId),
-    {
-      refetchOnWindowFocus: false,
-    },
+const useGetProgressInfo = (userId: string) => {
+  return useQuery(
+    ["userLectures", userId],
+    async () => await fetchUserLectures(userId),
+    { refetchOnWindowFocus: false },
   );
 };
 

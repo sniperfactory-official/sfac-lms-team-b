@@ -10,9 +10,10 @@ import LectureList from "./LectureList";
 interface IProps {
   courseList: ICourseField[];
   setCurrentCourse: React.Dispatch<React.SetStateAction<ICourseField>>;
+  role: string;
 }
 
-const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
+const CourseList = ({ courseList, setCurrentCourse, role }: IProps) => {
   const dispatch = useDispatch();
 
   const selectedCourse = useSelector(
@@ -40,7 +41,7 @@ const CourseList = ({ courseList, setCurrentCourse }: IProps) => {
       />
       {/* 선택된 lecture만 보이도록 */}
       {selectedCourse[idx] && (
-        <LectureList currentLectures={currentLectures} idx={idx} />
+        <LectureList currentLectures={currentLectures} idx={idx} role={role} />
       )}
     </React.Fragment>
   ));

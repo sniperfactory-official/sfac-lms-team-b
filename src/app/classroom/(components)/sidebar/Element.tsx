@@ -66,6 +66,7 @@ const Element = ({
   };
 
   const handleTitleEdit = () => {
+    if (type === "lecture") return;
     if (isTitleEditMode) {
       setTitleValue(title);
     }

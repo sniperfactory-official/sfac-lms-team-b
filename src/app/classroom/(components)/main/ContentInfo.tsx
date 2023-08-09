@@ -12,14 +12,18 @@ import {
 
 interface IProps {
   lecture: ILecture;
+  role: string
 }
 
-const ContentInfo = ({ lecture }: IProps) => {
+const ContentInfo = ({ lecture, role }: IProps) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { title, lectureType, startDate, endDate, lectureContent } = lecture;
   const { lectureInfo } = useClassroomModal();
   const handleMovePage = () => {
+    if(lecture.lectureType === "링크"){
+      return window.open(`${lecture.lectureContent.externalLink}`)
+    }
     router.push(`/classroom/${lecture.lectureId}`);
   };
   const handleDeleteModal = () => {
@@ -71,13 +75,18 @@ const ContentInfo = ({ lecture }: IProps) => {
   return (
     <div className="w-2/3 h-5/6 ml-20px flex flex-col">
       <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
-        <button className="text-xs" onClick={handleEditLectureModal}>
-          수정
-        </button>
-        <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
-        <button className="text-xs" onClick={() => handleDeleteModal()}>
-          삭제
-        </button>
+        {
+          role === '관리자' &&
+          <>
+            <button className="text-xs" onClick={handleEditLectureModal}>
+              수정
+            </button>
+            <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
+            <button className="text-xs" onClick={() => handleDeleteModal()}>
+              삭제
+            </button>
+          </>
+        }
       </div>
       {lectureType === "비디오" && (
         <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">

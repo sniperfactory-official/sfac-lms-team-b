@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
-import React, { useState } from "react";
+import { VideoRefContext } from "@/app/classroom/(components)/contexts/VideoContext";
+import React, { useState, useContext } from "react";
 import { getTime } from "@/utils/getTime";
 import useUser from "@/hooks/user/useUser";
 import { useDeleteComment } from "@/hooks/mutation/useDeleteComment";
@@ -32,11 +33,16 @@ const Comment: React.FC<CommentProps> = ({
   const userId = comment.userId;
 
   const { user } = useUser();
+  const { videoRef } = useContext(VideoRefContext);
 
   const deleteMutation = useDeleteComment();
   const updateMutation = useUpdateComment();
 
-  const displayedComment = useDisplayedComment(showFullComment, content);
+  const displayedComment = useDisplayedComment(
+    showFullComment,
+    content,
+    videoRef,
+  );
 
   const { handleCommentClick, handleDeleteClick } = useHandleClicks(
     onCommentClick,
