@@ -21,7 +21,11 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
   const { lectureInfo } = useClassroomModal();
   const router = useRouter();
   const dispatch = useDispatch();
+  console.log(lecture);
   const handleMovePage = () => {
+    if(lecture.lectureType === "링크"){
+      return window.open(`${lecture.lectureContent.externalLink}`)
+    }
     router.push(`/classroom/${lecture.lectureId}`);
   };
   const handleDeleteModal = () => {
@@ -62,7 +66,6 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
     lectureInfo?.lectureId !== lecture.lectureId && dispatch(resetInput());
     dispatch(setLecture(lecture));
   };
-  console.log(role);
 
   return (
     <div className="w-2/3 h-5/6 ml-20px flex flex-col">

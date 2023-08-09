@@ -54,7 +54,7 @@ export default function RequireAuth({
 
   // 로딩 상태면 Loading Spinner 사용
   if (loading) {
-    <LoadingSpinner />;
+    return <LoadingSpinner />; // <- 수정된 부분
   } else {
     if (authenticated && isTargetRoute) {
       return (
@@ -64,11 +64,13 @@ export default function RequireAuth({
           {children}
           <Footer />
         </>
-      ) : (
+      );
+    } else {
+      return (
         <LectureCommentProvider>
           <VideoRefProvider>{children}</VideoRefProvider>
         </LectureCommentProvider>
-      )}
-    </>
-  )
+      );
+    }
+  }
 }
