@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Layout from "../common/Layout";
 import ModalHeader from "../common/ModalHeader";
 import ModalMain from "../common/ModalMain";
+import { clearError, setExternalLink } from "@/redux/slice/lectureInfoSlice";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import useFirebaseLectureSlice from "@/hooks/lecture/useFirebaseLectureSlice";
@@ -12,33 +13,17 @@ const AddLinkModal: React.FC = () => {
   const dispatch = useDispatch();
   const { modalRole, handleModalMove } = useClassroomModal();
   const { externalLink } = useLectureInfo();
-  useFirebaseLectureSlice();
   const MODAL_ROLE_OBJ: { [key: string]: string } = {
     create: "링크 만들기",
     edit: "수정하기",
   };
 
-  const [errorMessage, setErrorMessage] = useState("");
-
   const handleInputContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setExternalLink(e.target.value));
+    if (e.target.value.trim()) {
+      dispatch(clearError());
+    }
   };
-
-  useEffect(() => {
-    // 키보드 입력이 종료될 때마다 유효성 검사 실행
-    const handleKeyUp = () => {
-      const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
-      if (!linkRegex.test(externalLink)) {
-        setErrorMessage("올바른 URL 형식이 아닙니다.");
-      } else {
-        setErrorMessage("");
-      }
-    };
-    const timer = setTimeout(handleKeyUp, 500); // 1초 후에 실행
-    return () => {
-      clearTimeout(timer); // 타이머 제거 (1초 내에 입력이 다시 시작되면 타이머 리셋)
-    };
-  }, [externalLink]);
 
   return (
     <Layout>
@@ -66,7 +51,6 @@ const AddLinkModal: React.FC = () => {
           value={externalLink}
           onChange={handleInputContent}
         />
-        {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       </ModalMain>
     </Layout>
   );

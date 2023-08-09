@@ -3,6 +3,12 @@ import { useDispatch } from "react-redux";
 import { Editor } from "@toast-ui/react-editor";
 import { setNoteImages, setTextContent } from "@/redux/slice/lectureInfoSlice";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
+import { RootState } from "@/redux/store";
+import {
+  clearError,
+  setNoteImages,
+  setTextContent,
+} from "@/redux/slice/lectureInfoSlice";
 import useUploadImage from "@/hooks/lecture/useUploadImage";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import "@toast-ui/editor/dist/toastui-editor.css";
@@ -30,6 +36,10 @@ const NoteSction: React.FC = () => {
       ?.getInstance()
       .getMarkdown();
     dispatch(setTextContent(newContent));
+
+    if (textContent) {
+      dispatch(clearError());
+    }
   };
 
   const handleUploadImage = async (

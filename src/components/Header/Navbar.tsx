@@ -5,43 +5,49 @@ import avatar from "/public/images/avatar.svg";
 import logo from "/public/images/logo.svg";
 import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
 import { useLogoutMutation } from "@/hooks/reactQuery/logout/useLogoutQuery";
 import { update } from "@/redux/userSlice";
 import fetchUserInfo from "@/hooks/reactQuery/navbar/useGetUserQuery";
 import useGetLectureInfoQuery from "@/hooks/reactQuery/navbar/useGetLectureQuery";
-import MiniLoadingSpinner from "../Loading/MiniLoadingSpinner";
+import { deleteCookies, getCookies } from "@/app/api/cookie";
 
 export default function Navbar() {
+  const [user, setUser] = useState(null);
   const router = useRouter();
   const userId = useAppSelector(state => state.userId.uid);
   const dispatch = useAppDispatch();
   const { mutateAsync } = useLogoutMutation();
 
+  // 컴포넌트나 useEffect 내에서
+
+  useEffect(() => {
+    const loadData = async () => {
+      const userData = await getCookies();
+      if (userData) {
+        setUser(userData);
+      }
+    };
+    loadData();
+  }, []);
+
+  // 함수 호출
   const onLogout = async () => {
     try {
       await mutateAsync();
       dispatch(update(""));
+      deleteCookies();
       setTimeout(() => purge(), 200);
     } catch {
       alert("로그아웃 실패했습니다. 다시 시도해주세요");
     }
   };
 
-  const {
-    data: userData,
-    isLoading: userLoading,
-    isError: userError,
-    error: userFetchError,
-  } = fetchUserInfo(userId);
+  const { data: userData, isLoading: userLoading } = fetchUserInfo(userId);
 
-  const {
-    data: lectureData,
-    isLoading: lectureLoading,
-    isError: lectureError,
-    error: lectureFetchError,
-  } = useGetLectureInfoQuery("FWj3XW7DwytoAOgoefUd");
+  const { data: lectureData, isLoading: lectureLoading } =
+    useGetLectureInfoQuery("FWj3XW7DwytoAOgoefUd");
 
   const getTime = (time: Date) => {
     const today = new Date();
@@ -54,19 +60,12 @@ export default function Navbar() {
 
   const purge = async () => {
     await persistor.purge();
-    router.push("/");
+    window.location.href = "http://localhost:3000/";
+    // router.push("/");
   };
 
-  if (userLoading && lectureLoading) {
+  if (userLoading) {
     return <div></div>;
-  }
-
-  if (userError && lectureError) {
-    return (
-      <span>
-        Error: {((userFetchError || lectureFetchError) as Error).message}
-      </span>
-    );
   }
 
   return (
@@ -86,7 +85,7 @@ export default function Navbar() {
             <div className="flex items-center">
               <p>
                 안녕하세요
-                <span className="font-bold ml-1">{userData?.username}님</span>,
+                <span className="font-bold ml-1">{userData.username}님</span>,
                 강의
                 <span className="font-bold ml-1">{day}일째</span>입니다.
               </p>

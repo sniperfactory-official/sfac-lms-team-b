@@ -2,12 +2,14 @@ import ContentCard from "./main/ContentCard";
 import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
 import useModalManage from "@/hooks/classroom/useModalManage";
 import CourseInfo from "./main/CourseInfo";
+import { IUser } from "../page";
 
 interface IProps {
   currentCourse: ICourseField;
+  user: IUser;
 }
 
-const ClassContent = ({ currentCourse }: IProps) => {
+const ClassContent = ({ currentCourse, user }: IProps) => {
   const { modal: SelectedModal, handleModalOpen } = useModalManage();
 
   return (
@@ -15,6 +17,7 @@ const ClassContent = ({ currentCourse }: IProps) => {
       <CourseInfo
         currentCourse={currentCourse}
         handleModalOpen={handleModalOpen}
+        user={user}
       />
       {currentCourse.lectureList.map((lecture: ILecture) => (
         <ContentCard key={lecture.lectureId} lecture={lecture} />
