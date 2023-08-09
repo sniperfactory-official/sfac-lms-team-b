@@ -136,13 +136,13 @@ export default function UserActivityList() {
             }
             width="748px"
             modalTitle="제출한 과제"
-            >
-              <Category
-                title=""
-                targetData={filteredAssignments}
-                handleClick={handleAssignmentsModalClick}
-                handleDetailModalClick={handleAssignmentsDetailModalClick}
-              />
+          >
+            <Category
+              title=""
+              targetData={filteredAssignments}
+              handleClick={handleAssignmentsModalClick}
+              handleDetailModalClick={handleAssignmentsDetailModalClick}
+            />
           </ModalWrapper>
         )}
         <Category
@@ -156,12 +156,12 @@ export default function UserActivityList() {
             width="748px"
             modalTitle="나의 게시글"
           >
-              <Category
-                title=""
-                targetData={filteredPosts}
-                handleClick={handlePostModalClick}
-                handleDetailModalClick={handlePostDetailModalClick}
-              />
+            <Category
+              title=""
+              targetData={filteredPosts}
+              handleClick={handlePostModalClick}
+              handleDetailModalClick={handlePostDetailModalClick}
+            />
           </ModalWrapper>
         )}
         <Category
@@ -192,13 +192,12 @@ export default function UserActivityList() {
             }}
             width="748px"
             modalTitle="제출한 과제"
-            >
+          >
             <AssignmentsDetailModal
               id={selectedId}
               filteredAssignments={filteredAssignments}
               filteredComments={filteredComments}
             />
-
           </ModalWrapper>
         )}
         {isPostDetailModalOpen && (
@@ -210,7 +209,6 @@ export default function UserActivityList() {
             width="748px"
           >
             <PostDetailModal id={selectedId} />
-
           </ModalWrapper>
         )}
         {isCommentsDetailModalOpen && (
@@ -220,7 +218,7 @@ export default function UserActivityList() {
               setSelectedCommentId("");
             }}
             width="748px"
-            >
+          >
             <CommentsDetailModal id={selectedCommentId} />
           </ModalWrapper>
         )}

@@ -92,7 +92,7 @@ export default function Navbar() {
                   className="rounded-[50%] object-cover object-center"
                 />
               </div>
-              <div className="flex items-center">
+              <div className="flex items-center text-base">
                 <p>
                   안녕하세요
                   <span className="font-bold ml-1">{user.username}님</span>,
@@ -101,7 +101,7 @@ export default function Navbar() {
                 </p>
               </div>
             </div>
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center ml-[9.5%]">
               <Image
                 src={logo}
                 alt="스나이퍼 팩토리 로고"
