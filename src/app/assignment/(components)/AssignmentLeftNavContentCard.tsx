@@ -7,6 +7,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { XYCoord, useDrag, useDrop } from "react-dnd";
 import { AssignmentExtracted } from "./AssignmentLeftNavContent";
+import { Text } from "sfac-designkit-react";
 
 interface Props extends AssignmentExtracted {
   movecard: (dragIndex: number, hoverIndex: number) => void;
@@ -94,9 +95,9 @@ const AssignmentLeftNavCard = (props: Props) => {
         <div
           ref={ref}
           key={id}
-          className={`list-none w-full p-[10px] order-${index} opacity-${opacity}`}
+          className={`list-none w-full p-[10px] mb-[5px] order-${index} opacity-${opacity}`}
         >
-          <label className="hover:cursor-pointer">
+          <label className="hover:cursor-pointer break-all">
             <input
               type="checkbox"
               name={id}
@@ -111,14 +112,29 @@ const AssignmentLeftNavCard = (props: Props) => {
               src="/images/icon_target.svg"
               alt=""
             />
-            {title}
+            <Text
+              size="sm"
+              weight="medium"
+              className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
+            >
+              {title}
+            </Text>
           </label>
         </div>
       ) : (
-        <div key={id} className={`list-none w-full p-[10px] order-${index}`}>
-          <Link href={`/assignment/${id}`}>
+        <div
+          key={id}
+          className={`list-none w-full p-[10px] mb-[5px] order-${index}`}
+        >
+          <Link className="break-all" href={`/assignment/${id}`}>
             <span className={`${isFocused ? "text-[#2563eb]" : "text-black"}`}>
-              {title}
+              <Text
+                size="sm"
+                weight="medium"
+                className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
+              >
+                {title}
+              </Text>
             </span>
           </Link>
         </div>

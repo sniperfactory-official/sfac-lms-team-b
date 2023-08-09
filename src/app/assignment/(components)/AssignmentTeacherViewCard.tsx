@@ -6,7 +6,7 @@ import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentFeedback from "./AssignmentFeedback";
 import Image from "next/image";
 import timestampToIntlDate from "@/utils/timestampToIntlDate";
-import { Text } from "sfac-designkit-react";
+import { Avatar, Text, Button } from "sfac-designkit-react";
 
 interface SubmittedItem extends SubmittedAssignment {
   user: User;
@@ -38,7 +38,11 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
           }}
         >
           <div className="flex justify-start items-start gap-[14px]">
-            <AssignmentProfileImage profileImage={user.profileImage} />
+            <Avatar
+              src={user.profileImage}
+              ringColor="ring-grayscale-10"
+              className="ring-1"
+            />
             <div>
               <div className="mb-[5px] flex justify-start items-center gap-[6px]">
                 <Text

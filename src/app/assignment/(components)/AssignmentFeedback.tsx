@@ -139,12 +139,14 @@ const AssignmentFeedback = ({
       {/* uploaded */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] mb-[12px]">
         <div className="flex mb-[22px] items-center">
-          {/* <Avatar src={user.profileImage} /> */}
-          <AssignmentProfileImage profileImage={user.profileImage} />
+          <Avatar
+            ringColor="ring-grayscale-10"
+            className="ring-1"
+            src={user.profileImage}
+          />
           <div className="flex items-center ml-[13px] justify-between w-full">
             <div className="flex justify-start items-center">
               <Text size="base" weight="bold" className="text-grayscale-100">
-                {/* className="text-[16px] font-[700] text-grayscale-100" */}
                 {user.username}
               </Text>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
@@ -245,6 +247,11 @@ const AssignmentFeedback = ({
       {/* feedback_upload */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
         <div className="flex justify-start items-start gap-[11px]">
+          {/* <Avatar
+            ringColor="ring-grayscale-10"
+            className="ring-1"
+            src={"profileImage"}
+          /> */}
           <AssignmentProfileImage profileImage={"profileImage"} />
           <div className="grow space-y-[9px]">
             <Text size="base" weight="medium" className=" text-grayscale-60 ">

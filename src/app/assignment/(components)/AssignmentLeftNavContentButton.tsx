@@ -1,7 +1,7 @@
 "use client";
 
 import "sfac-designkit-react/style.css";
-import { Button } from "sfac-designkit-react";
+import { Button, Text } from "sfac-designkit-react";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { User } from "@/types/firebase.types";
@@ -58,7 +58,7 @@ const AssignmentLeftNavButton = (props: Props) => {
         <div className="w-full">
           <div className="flex justify-center items-center h-[46px] mt-[10px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
             <button
-              className="flex justify-center items-center gap-[6px]"
+              className="w-full flex justify-center items-center gap-[6px]"
               type="button"
               onClick={() => {
                 setIsOpen(true);
@@ -71,7 +71,13 @@ const AssignmentLeftNavButton = (props: Props) => {
                 width={23}
                 height={22}
               />
-              <span>과제 만들기</span>
+              <Text
+                size="base"
+                weight="bold"
+                className="text-color-Primary-80 text-primary-80"
+              >
+                과제 만들기
+              </Text>
             </button>
           </div>
           <AssignmentModal
@@ -86,13 +92,13 @@ const AssignmentLeftNavButton = (props: Props) => {
           </AssignmentModal>
           {isActivated ? (
             <div>
-              <div className="flex h-[46px] gap-[15px] mx-0 my-[10px] flex-shrink-0">
+              <div className="flex gap-[15px] mx-0 mt-[20px] flex-shrink-0">
                 <Button
                   variant="primary"
                   text="적용"
                   type="button"
                   asChild
-                  className="w-full h-full"
+                  className="w-1/2"
                   onClick={() => {
                     updateAndDeactivate();
                   }}
@@ -101,7 +107,7 @@ const AssignmentLeftNavButton = (props: Props) => {
                   variant="destructive"
                   text="선택삭제"
                   type="button"
-                  className="w-full h-full"
+                  className="whitespace-nowrap w-1/2"
                   asChild
                   onClick={() => {
                     setIsConfirmed(true);
@@ -117,13 +123,17 @@ const AssignmentLeftNavButton = (props: Props) => {
                   <Button
                     variant="secondary"
                     text="취소"
+                    asChild
+                    className="w-[115px]"
                     onClick={() => {
                       setIsConfirmed(false);
                     }}
                   />
                   <Button
+                    asChild
                     variant="destructive"
                     text="삭제"
+                    className="w-[115px]"
                     type="submit"
                     onClick={() => {
                       setTimeout(() => {
@@ -136,8 +146,15 @@ const AssignmentLeftNavButton = (props: Props) => {
                   />
                 </AssignmentGlobalConfirmPopup>
               </div>
-              <p className="w-full h-[46px] rounded-[10px] mt-[36px] bg-primary-5 text-center text-primary-50 leading-[46px]">
-                이 작업은 실시간으로 반영됩니다.
+
+              <p className="w-full py-[11px] rounded-[10px] mt-[36px] bg-primary-5 text-center">
+                <Text
+                  size="base"
+                  weight="semibold"
+                  className="text-primary-50 tracking-[-2px]"
+                >
+                  이 작업은 실시간으로 반영됩니다.
+                </Text>
               </p>
             </div>
           ) : (
@@ -147,7 +164,7 @@ const AssignmentLeftNavButton = (props: Props) => {
                 onClick={() => {
                   executeEditing();
                 }}
-                className="flex gap-[6px]"
+                className="w-full flex justify-center items-center gap-[6px]"
               >
                 <Image
                   className="inline"
@@ -156,7 +173,13 @@ const AssignmentLeftNavButton = (props: Props) => {
                   width={23}
                   height={22}
                 />
-                과제수정
+                <Text
+                  size="base"
+                  weight="bold"
+                  className="text-color-Primary-80 text-primary-80"
+                >
+                  과제 수정
+                </Text>
               </button>
             </div>
           )}

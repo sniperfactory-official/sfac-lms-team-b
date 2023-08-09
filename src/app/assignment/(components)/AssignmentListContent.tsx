@@ -1,7 +1,7 @@
 "use client";
 
 import "sfac-designkit-react/style.css";
-import { Button } from "sfac-designkit-react";
+import { Button, Text } from "sfac-designkit-react";
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Assignment } from "@/types/firebase.types";
@@ -25,29 +25,35 @@ const AssignmentListContent = (props: Props) => {
     htmlContent = assignmentInfo?.map((assign: Assignment) => (
       <div
         key={assign.id}
-        className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 flex justify-between items-center"
+        className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 flex justify-between items-center gap-[15px]"
       >
-        <div className="flex w-[244px] flex-col items-start gap-[10px]">
-          <span className="p-[4px] px-[10px] rounded-[4px] bg-grayscale-5">
+        <div className="flex flex-col items-start gap-[10px]">
+          <span className="flex justify-center items-center py-[4px] px-[10px] rounded-[4px] bg-grayscale-5 text-[10px] text-grayscale-60">
             {assign.level}
           </span>
-          <span className="text-grayscale-80 font-bold text-[16px]">
+          <Text
+            size="base"
+            weight="bold"
+            className="text-grayscale-80 break-all"
+          >
             {assign.title}
-          </span>
+          </Text>
         </div>
-        {userinfo?.role === "관리자" ? (
-          <Button
-            variant="primary"
-            text="확인하기"
-            asChild
-            type="button"
-            onClick={() => {
-              router.push(`/assignment/${assign.id}`);
-            }}
-          />
-        ) : (
-          <AssignmentListSubButton refId={assign.id} userId={props.userId} />
-        )}
+        <div className="shrink-0">
+          {userinfo?.role === "관리자" ? (
+            <Button
+              variant="primary"
+              text="확인하기"
+              asChild
+              type="button"
+              onClick={() => {
+                router.push(`/assignment/${assign.id}`);
+              }}
+            />
+          ) : (
+            <AssignmentListSubButton refId={assign.id} userId={props.userId} />
+          )}
+        </div>
       </div>
     ));
   }
