@@ -83,20 +83,18 @@ const AssignmentLeftNavButton = (props: Props) => {
           {isActivated ? (
             <div className="flex justify-center items-center h-[46px] mx-0 my-[10px] gap-[15px] flex-shrink-0 rounded-[10px] ">
               <Button
-                variant="primary" 
-                text="적용" 
+                variant="primary"
+                text="적용"
                 type="button"
                 asChild
                 className="w-full h-full"
                 onClick={() => {
                   updateAndDeactivate();
-                }
-              }
-              >
-              </Button>
+                }}
+              ></Button>
               <Button
-                variant="destructive" 
-                text="선택삭제" 
+                variant="destructive"
+                text="선택삭제"
                 type="submit"
                 className="w-full h-full "
                 asChild
@@ -107,12 +105,11 @@ const AssignmentLeftNavButton = (props: Props) => {
                 }}
                 form="assign"
                 name="assign"
-              >
-              </Button>
+              ></Button>
             </div>
           ) : (
             <div className="flex justify-center items-center w-full h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
-            <button
+              <button
                 type="button"
                 onClick={() => {
                   executeEditing();
@@ -125,7 +122,8 @@ const AssignmentLeftNavButton = (props: Props) => {
                   alt=""
                   width={22}
                   height={22}
-                />과제수정
+                />
+                과제수정
               </button>
             </div>
           )}
