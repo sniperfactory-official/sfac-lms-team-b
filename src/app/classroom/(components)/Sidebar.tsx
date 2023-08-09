@@ -7,14 +7,17 @@ import useClickOutside from "@/hooks/classroom/useClickOutside";
 import { useDispatch } from "react-redux";
 import useCreateSection from "@/hooks/classroom/useCreateSection";
 import useLectureOrder from "@/hooks/classroom/useLectureOrder";
+import { IUser } from "../page";
 
 interface IProps {
   courseList: ICourseField[];
   setCurrentCourse: React.Dispatch<React.SetStateAction<any>>;
+  user: IUser;
 }
 
 const Sidebar = forwardRef<HTMLDivElement, IProps>(
-  ({ courseList, setCurrentCourse }) => {
+  ({ courseList, setCurrentCourse, user }) => {
+    console.log(user);
     const { handleCreateSection } = useCreateSection();
     const { getBackLectureOrderTrigger, setGetBackLectureOrderTrigger } =
       useLectureOrder(courseList);
@@ -34,12 +37,16 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
           courseList={courseList}
           setCurrentCourse={setCurrentCourse}
         />
-        <SectionHandlerButton
-          text="섹션 추가"
-          src="/images/plus.svg"
-          onClick={handleCreateSection}
-        />
-        <EditButton />
+        {user.role === "관리자" && (
+          <>
+            <SectionHandlerButton
+              text="섹션 추가"
+              src="/images/plus.svg"
+              onClick={handleCreateSection}
+            />
+            <EditButton />
+          </>
+        )}
       </aside>
     );
   },

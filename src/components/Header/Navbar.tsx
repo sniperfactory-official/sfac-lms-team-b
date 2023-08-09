@@ -45,7 +45,6 @@ export default function Navbar() {
   };
 
   const { data: userData, isLoading: userLoading } = fetchUserInfo(userId);
-  console.log(userData, userId);
 
   const { data: lectureData, isLoading: lectureLoading } =
     useGetLectureInfoQuery("FWj3XW7DwytoAOgoefUd");

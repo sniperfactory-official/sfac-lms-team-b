@@ -5,13 +5,10 @@ export async function GET(request: NextRequest, response: NextResponse) {
   const userCookies = cookies(); // 쿠키 정보 가져오기
   // 쿠키 정보를 JSON 형태로 반환
 
-  const res = {
-    uid: userCookies.get("uid"),
-    name: userCookies.get("name"),
-  };
   return NextResponse.json({
     uid: userCookies.get("uid"),
     name: userCookies.get("name"),
+    role: userCookies.get("role"),
   });
 
   // Do something with the cookies...
