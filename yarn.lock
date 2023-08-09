@@ -3928,6 +3928,11 @@ husky@^8.0.0:
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
   integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
 
+i@^0.3.7:
+  version "0.3.7"
+  resolved "https://registry.yarnpkg.com/i/-/i-0.3.7.tgz#2a7437a923d59c14b17243dc63a549af24d85799"
+  integrity sha512-FYz4wlXgkQwIPqhzC5TdNMLSE5+GS1IIDJZY/1ZiEPCT2S3COUVZeT5OW4BmW4r5LHLQuOosSwsvnroG9GR59Q==
+
 iconv-lite@0.6, iconv-lite@0.6.3, iconv-lite@^0.6.2:
   version "0.6.3"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.6.3.tgz#a52f80bf38da1952eb5c681790719871a1a72501"
@@ -6207,10 +6212,10 @@ semver@^7.3.7, semver@^7.5.3, semver@^7.5.4:
   dependencies:
     lru-cache "^6.0.0"
 
-sfac-designkit-react@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/sfac-designkit-react/-/sfac-designkit-react-1.0.1.tgz#7f1dab0e7a8f2f6ed735259ccbb28c7de330abd8"
-  integrity sha512-mg7z829C8/JK/Uz26rmfjDdmHEurdXfIHw8HL+ZbrGpRW7Fdg93impdZIE1Ts0GzVczy+vRW0UKAW5HtJOVu2w==
+sfac-designkit-react@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/sfac-designkit-react/-/sfac-designkit-react-1.0.2.tgz#f24ccbfdc26950158ee3c6a7ebbee225f135adaf"
+  integrity sha512-RGoOuLNCM15D7tbO/6vVqDeBbI12INf8uoHwnoVvyRQzpDekEtLWaycIjUE08r1075Es5rTjBm8x+xTZ6WdddQ==
   dependencies:
     date-fns "^2.30.0"
     next "^13.4.12"

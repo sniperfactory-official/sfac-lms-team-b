@@ -17,12 +17,12 @@ const AssignmentProfileImage: React.FC<OwnProps> = profileImage => {
       <div className="relative rounded-full overflow-hidden border border-grayscale-10 w-[43px] h-[43px]">
         {profileImage && (
           <Image
-            src={`${profileImage} || ${defaultImagePath}`}
+            src={`${profileImage.profileImage} || ${defaultImagePath}`}
             alt="profile-img"
             width="0"
             height="0"
             sizes="100vw"
-            className="w-full h-auto"
+            className="w-full h-full"
             onError={handleError}
           />
         )}
