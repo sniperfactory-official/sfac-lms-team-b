@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import UserImage from "./UserImage";
 import UserInfo from "./UserInfo";
+import { Text, Button } from "sfac-designkit-react";
 
 interface EditCommentProps {
   content: string;
@@ -39,19 +40,19 @@ const EditComment: React.FC<EditCommentProps> = ({
               className="w-full h-8 text-sm resize-none border-none rounded text-black outline-none"
             />
             <div className="flex justify-end space-x-4 mt-2">
-              <button
+              <Button
+                variant="secondary"
+                text="취소하기"
                 type="button"
-                className="w-28 h-8 text-sm rounded-lg bg-gray-100 text-gray-500"
+                className="p-1 w-28 h-8 text-sm rounded-lg bg-gray-100 text-gray-500"
                 onClick={onCancel}
-              >
-                취소하기
-              </button>
-              <button
+              />
+              <Button
+                variant="primary"
+                text="수정하기"
                 type="submit"
-                className="w-28 h-8 text-sm rounded-lg bg-blue-500 text-white hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"
-              >
-                수정하기
-              </button>
+                className="p-1 w-28 h-8 text-sm rounded-lg bg-blue-500 text-white hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"
+              />
             </div>
           </form>
         </div>

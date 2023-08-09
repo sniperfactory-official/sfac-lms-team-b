@@ -1,13 +1,14 @@
 import React, { ReactNode } from "react";
+import { Text } from "sfac-designkit-react";
 
 interface CommentTextProps {
   displayedComment: ReactNode;
 }
 const CommentText: React.FC<CommentTextProps> = ({ displayedComment }) => (
   <div className="max-w-full">
-    <p className=" text-sm text-gray-800 break-all whitespace-pre-wrap">
+    <Text size="sm" weight="medium">
       {displayedComment}
-    </p>
+    </Text>
   </div>
 );
 

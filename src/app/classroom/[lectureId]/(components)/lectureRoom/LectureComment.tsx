@@ -12,6 +12,7 @@ import CommentForm from "@/app/classroom/(components)/modal/comment/CommentForm"
 import Layout from "@/app/classroom/(components)/modal/common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { useLectureCommentContext } from "@/app/classroom/(components)/contexts/LectureCommentContext";
+import { Text } from "sfac-designkit-react";
 
 interface LectureCommentProps {
   lectureId: string;
@@ -71,7 +72,9 @@ const LectureComment: FC<LectureCommentProps> = ({ lectureId }) => {
         )}
         {commentModalOpen && (
           <Layout>
-            <h2 className="text-xl font-bold">댓글 달기</h2>
+            <Text size="xl" weight="semibold">
+              댓글 달기
+            </Text>
             <CommentForm lectureId={lectureId} isReply={false} />
           </Layout>
         )}

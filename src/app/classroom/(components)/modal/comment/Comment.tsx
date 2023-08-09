@@ -12,6 +12,7 @@ import EditDeleteButtons from "./EditDeleteButtons";
 import ReplyCount from "./ReplyCount";
 import EditComment from "./EditComment";
 import ReadComment from "./ReadComment";
+import { Text } from "sfac-designkit-react";
 
 interface CommentProps {
   comment: DocumentData;
@@ -118,7 +119,9 @@ const Comment: React.FC<CommentProps> = ({
               </div>
             )}
             <div className="text-gray-400 space-x-2">
-              <span className="float-right text-xs">{time}</span>
+              <Text size="xs" weight="medium" className="float-right">
+                {time}
+              </Text>
             </div>
           </div>
         )}
