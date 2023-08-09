@@ -5,24 +5,18 @@ import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
 import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmittedAssignment";
-import {
-  Attachment,
-  Feedback,
-  SubmittedAssignment,
-  User,
-} from "@/types/firebase.types";
+import { Feedback, User } from "@/types/firebase.types";
 import { useForm } from "react-hook-form";
 import { getTime } from "@/utils/getTime";
+import { Avatar, Button, Card, Text } from "sfac-designkit-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
-
-// interface ISubmittedAssignment extends SubmittedAssignment {
-//   attachment: Attachment;
-//   user: User;
-// }
+import PageToast from "@/components/PageToast";
 
 interface IAssignmentFeedbackProps {
   submittedAssignment: any;
@@ -48,11 +42,12 @@ const AssignmentFeedback = ({
     createdAt,
     isRead,
   } = submittedAssignment;
+  const [toastMsg, setToastMsg] = useState("");
+  const [isAccept] = useState(true);
   const [updateDelete, setUpdateDelete] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const createdDate = getTime(createdAt.toDate());
   const scrollRef = useRef<HTMLUListElement>(null);
-  console.log({ attachmentFiles, links });
 
   const {
     register,
@@ -98,36 +93,66 @@ const AssignmentFeedback = ({
     setIsConfirmOpen(prev => !prev);
   };
 
+  const onClose = () => {
+    setToastMsg("");
+  };
+
   // 스크롤 최하단으로 최신피드백 보여주기
   useEffect(() => {
     const element = scrollRef.current;
     // narrowing
-    if (element) {
-      element.scrollTop = element.scrollHeight;
-    }
-  }, [feedbacks]);
+    const timer = setTimeout(() => {
+      if (element) {
+        element.scrollTop = element.scrollHeight;
+      }
+    }, 350);
+    return () => clearTimeout(timer);
+  }, [feedbacks?.length]);
 
   // 불필요한 post 요청 방지 useCallback? useMemo?
   useEffect(() => {
     if (loginUser?.role === "관리자" && isRead === false) {
       updateMutate({ isRead: true });
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (!toastMsg) return;
+    const dialogTimer = setTimeout(() => {
+      setIsConfirmOpen(prev => !prev);
+    }, 350);
+    const modalTimer = setTimeout(() => {
+      setIsDetailOpen!((prev: boolean) => !prev);
+      window.location.reload();
+    }, 3000);
+
+    return () => {
+      clearTimeout(dialogTimer);
+      clearTimeout(modalTimer);
+    };
+  }, [setIsDetailOpen, toastMsg]);
 
   return (
     <div>
       {/* uploaded */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] mb-[12px]">
         <div className="flex mb-[22px] items-center">
-          <AssignmentProfileImage profileImage={user.profileImage} />
+          <Avatar
+            ringColor="ring-grayscale-10"
+            className="ring-1"
+            src={user.profileImage}
+          />
           <div className="flex items-center ml-[13px] justify-between w-full">
-            <div>
-              <span className="text-[16px] font-[700] text-grayscale-100">
+            <div className="flex justify-start items-center">
+              <Text size="base" weight="bold" className="text-grayscale-100">
                 {user.username}
-              </span>
+              </Text>
               <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
-              <span className="text-grayscale-40 font-[400]">{user.role}</span>
+              <Text size="base" weight="medium" className="text-grayscale-40">
+                {user.role}
+              </Text>
             </div>
             {loginUser.role === "수강생" &&
             !feedbacks?.find(
@@ -159,13 +184,16 @@ const AssignmentFeedback = ({
                           className="w-full h-full"
                         />
                       </div>
-                      <Link
-                        className="text-[16px] text-primary-80 font-[700]"
-                        href={url}
-                        download
+
+                      <Text
+                        size="base"
+                        weight="bold"
+                        className=" text-primary-80 "
                       >
-                        {name}
-                      </Link>
+                        <Link href={url} download>
+                          {name}
+                        </Link>
+                      </Text>
                     </div>
                   </li>
                 );
@@ -174,7 +202,7 @@ const AssignmentFeedback = ({
                 return (
                   <li key={link}>
                     <Link
-                      className="block text-[14px] text-primary-100 font-[400] mb-[3px]"
+                      className="block text-[14px] text-primary-100 font-[400] mb-[3px] break-all"
                       href={link}
                       target="_blank"
                     >
@@ -184,8 +212,13 @@ const AssignmentFeedback = ({
                 );
               })}
         </ul>
-        <p className="text-[12px] text-end text-grayscale-40">{createdDate}</p>
+        <div className="text-end">
+          <Text size="xs" weight="medium" className=" text-grayscale-40">
+            {createdDate}
+          </Text>
+        </div>
       </div>
+
       {/* feedback */}
       <ul
         ref={scrollRef}
@@ -214,11 +247,16 @@ const AssignmentFeedback = ({
       {/* feedback_upload */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
         <div className="flex justify-start items-start gap-[11px]">
+          {/* <Avatar
+            ringColor="ring-grayscale-10"
+            className="ring-1"
+            src={"profileImage"}
+          /> */}
           <AssignmentProfileImage profileImage={"profileImage"} />
-          <div className="grow">
-            <p className="font-[500] text-grayscale-60 text-[16px] mb-[9px]">
-              {"이름"}
-            </p>
+          <div className="grow space-y-[9px]">
+            <Text size="base" weight="medium" className=" text-grayscale-60 ">
+              {loginUser.username}
+            </Text>
             <form onSubmit={handleSubmit(onValid)} className="w-full">
               <textarea
                 {...register("feedback", {
@@ -233,26 +271,37 @@ const AssignmentFeedback = ({
                 disabled={updateDelete}
               />
               <div className="flex justify-end items-center mt-[16px]">
-                <button
+                <Button
                   type="submit"
+                  className="max-w-[115px]"
+                  variant="primary"
                   disabled={!isValid}
-                  className="bg-primary-80 w-[115px] h-[35px] text-white text-[14px] font-[500] rounded-md shrink-0 disabled:bg-grayscale-10 disabled:text-grayscale-20"
-                >
-                  업로드
-                </button>
+                  asChild
+                  text=" 업로드 "
+                  textSize="base"
+                  textWeight="bold"
+                />
               </div>
             </form>
           </div>
         </div>
       </div>
+      {toastMsg ? (
+        <div className="absolute left-12 bottom-16">
+          <PageToast
+            toastMsg={toastMsg}
+            isAccept={isAccept}
+            onClose={onClose}
+          />
+        </div>
+      ) : null}
       <AssignmentLocalConfirmDialog
         title="삭제하시겠습니까?"
         content="한번 삭제하시면 다시 복구가 불가능합니다."
         confirmBtnMsg="확인"
         onConfirm={() => {
           deleteMutate(id);
-          setIsDetailOpen!((prev: boolean) => !prev);
-          setIsConfirmOpen(prev => !prev);
+          setToastMsg("삭제가 완료되었습니다.");
         }}
         isOpen={isConfirmOpen}
         onCancel={() => setIsConfirmOpen(prev => !prev)}

@@ -5,7 +5,8 @@ import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
 import { User } from "@/types/firebase.types";
 import { useParams } from "next/navigation";
 import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
-import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmittedAssignment";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface OwnProps {
   user: User;
@@ -18,8 +19,6 @@ const AssignmentTeacherViewCardWrapper: FC<OwnProps> = ({ user }) => {
     assignmentId as string,
     user.id,
   );
-
-  // console.log("studentData", data);
 
   return (
     <div>
