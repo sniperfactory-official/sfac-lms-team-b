@@ -5,14 +5,14 @@ import LectureDeleteModal from "../modal/createLecture/LectureDeleteModal";
 import { useState } from "react";
 import useDeleteLecture from "@/hooks/mutation/useDeleteLecture";
 
-const ContentCard = ({ lecture }: { lecture: ILecture }) => {
+const ContentCard = ({ lecture, role }: { lecture: ILecture, role:string }) => {
   const [deleteModal, setDeleteModal] = useState(false);
   const { mutate: deleteLecture } = useDeleteLecture(lecture.lectureId);
   return (
     <>
       <div className="w-[775px] h-[200px] border rounded-lg p-[10px] flex flex-row items-center mb-[15px]">
         <ContentImg isPrivate={lecture.isPrivate} />
-        <ContentInfo lecture={lecture} setDeleteModal={setDeleteModal} />
+        <ContentInfo lecture={lecture} setDeleteModal={setDeleteModal} role={role}/>
       </div>
       {deleteModal && (
         <LectureDeleteModal
