@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Timestamp } from "firebase/firestore";
-
 interface LectureInfoState {
   courseId: string;
   lectureType: string;
@@ -13,6 +12,7 @@ interface LectureInfoState {
   startDate: Timestamp | null;
   endDate: Timestamp | null;
   isLecturePrivate: boolean;
+  errorMessage: string;
 }
 
 const initialState: LectureInfoState = {
@@ -27,6 +27,7 @@ const initialState: LectureInfoState = {
   startDate: null,
   endDate: null,
   isLecturePrivate: true,
+  errorMessage: "",
 };
 
 const LectureInfoSlice = createSlice({
@@ -71,6 +72,12 @@ const LectureInfoSlice = createSlice({
       Object.assign(state, initialState);
       state.courseId = courseId;
     },
+    setError: (state, action) => {
+      state.errorMessage = action.payload;
+    },
+    clearError: state => {
+      state.errorMessage = "";
+    },
   },
 });
 
@@ -87,5 +94,7 @@ export const {
   setEndDate,
   setIsLecturePrivate,
   resetInput,
+  setError,
+  clearError,
 } = LectureInfoSlice.actions;
 export default LectureInfoSlice.reducer;

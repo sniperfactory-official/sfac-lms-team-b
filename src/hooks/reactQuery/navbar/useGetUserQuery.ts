@@ -2,7 +2,7 @@ import { doc, getDoc } from "@firebase/firestore";
 import { db } from "@/utils/firebase";
 import { useQuery } from "@tanstack/react-query";
 
-const getUser = async (userId: string) => {
+export const getUser = async (userId: string) => {
   const userRef = doc(db, "users", userId);
   const userSnap = await getDoc(userRef);
 

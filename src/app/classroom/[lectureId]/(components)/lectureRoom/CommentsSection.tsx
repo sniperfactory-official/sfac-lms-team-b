@@ -1,59 +1,49 @@
-import React, { FC, useRef, useEffect, useState } from "react";
-import CommentForm from "../../../(components)/modal/comment/CommentForm";
+import React, { FC, useState, useEffect } from "react";
+import { LectureComment } from "@/types/firebase.types";
 import Comment from "../../../(components)/modal/comment/Comment";
-import Layout from "../../../(components)/modal/common/Layout";
-import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import useGetComment from "@/hooks/queries/useGetComment";
-import MiniLoadingSpinner from "@/components/Loading/MiniLoadingSpinner";
 import useObserver from "@/hooks/lecture/useObserver";
 
 interface CommentsSectionProps {
   onCommentClick: (id: string) => void;
-  lectureId: string;
+  comments: LectureComment[];
 }
 
 const CommentsSection: FC<CommentsSectionProps> = ({
-  lectureId,
+  comments,
   onCommentClick,
-}: CommentsSectionProps) => {
-  const { commentModalOpen } = useClassroomModal();
-  const {
-    data: comments,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useGetComment(lectureId);
+}) => {
+  const PAGE_SIZE = 6;
+  const [displayedComments, setDisplayedComments] = useState<LectureComment[]>(
+    comments.slice(0, PAGE_SIZE),
+  );
+  const hasMoreComments = comments.length > displayedComments.length;
+
+  const fetchNextPage = () => {
+    const newComments = comments.slice(
+      displayedComments.length,
+      displayedComments.length + PAGE_SIZE,
+    );
+    setDisplayedComments(prevComments => [...prevComments, ...newComments]);
+  };
+
   const { observerElement } = useObserver({
+    isFetchingNextPage: false,
+    hasNextPage: hasMoreComments,
     fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
   });
 
-  if (isLoading) return <div></div>;
+  useEffect(() => {
+    setDisplayedComments(comments.slice(0, PAGE_SIZE));
+  }, [comments]);
 
   return (
     <ul>
-      {comments?.pages
-        .flatMap(data => data.comments)
-        .map(comment => (
-          <li key={comment.id} className="cursor-pointer rounded-md m-3">
-            <Comment comment={comment} onCommentClick={onCommentClick} />
-          </li>
-        ))}
-      {isFetchingNextPage ? (
-        <div className="w-full flex justify-center items-center">
-          <MiniLoadingSpinner />
-        </div>
-      ) : (
-        <li ref={observerElement}></li>
-      )}
-      {commentModalOpen && (
-        <Layout>
-          <h2 className="text-xl font-bold">댓글 달기</h2>
-          <CommentForm lectureId={lectureId} isReply={false} />
-        </Layout>
-      )}
+      {displayedComments.map(comment => (
+        <li key={comment.id} className="cursor-pointer rounded-md m-3">
+          <Comment comment={comment} onCommentClick={onCommentClick} />
+        </li>
+      ))}
+      {hasMoreComments ? <li ref={observerElement}></li> : null}
     </ul>
   );
 };

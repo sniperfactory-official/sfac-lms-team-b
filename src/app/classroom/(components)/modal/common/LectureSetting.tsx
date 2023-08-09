@@ -7,8 +7,10 @@ import {
   setStartDate,
   setEndDate,
   setIsLecturePrivate,
+  clearError,
 } from "@/redux/slice/lectureInfoSlice";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
+import { DateSelector, Text } from "sfac-designkit-react";
 
 const LectureSetting: React.FC = () => {
   const dispatch = useDispatch();
@@ -18,8 +20,9 @@ const LectureSetting: React.FC = () => {
     dispatch(setIsLecturePrivate(!isLecturePrivate));
   };
 
-  const handleChangeDate = (ranges: [Date, Date]) => {
+  const handleChangeDate = (ranges: [Date | null, Date | null]) => {
     const [startDate, endDate] = ranges;
+
     dispatch(
       setStartDate(
         startDate ? new Timestamp(startDate.getTime() / 1000, 0) : null,
@@ -37,26 +40,20 @@ const LectureSetting: React.FC = () => {
   return (
     <div className="flex relative gap-[69px]">
       <div className="flex gap-[12px] items-center ">
-        <span className="text-black font-inter text-base font-semibold tracking-tighter leading-normal">
+        <Text size="base" weight="medium">
           수강 기간
-        </span>
-        <DatePicker
-          placeholderText="Pick a date"
-          locale={ko}
+        </Text>
+        <DateSelector
           selected={startDate ? timestampToDate(startDate) : null}
           startDate={startDate ? timestampToDate(startDate) : null}
           endDate={endDate ? timestampToDate(endDate) : null}
-          onChange={handleChangeDate}
-          minDate={new Date()}
-          selectsRange
-          className="bg-white border-2 border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 cursor-pointer"
-          dateFormat="yyyy.MM.dd"
+          ChangeDate={handleChangeDate}
         />
       </div>
       <div className="flex gap-[12px] items-center">
-        <span className="text-black font-inter text-base font-semibold tracking-tighter leading-normal">
+        <Text size="base" weight="medium">
           강의 공개
-        </span>
+        </Text>
         <label htmlFor="toggle" className="relative block w-[51px] h-[26px]">
           <input
             type="checkbox"

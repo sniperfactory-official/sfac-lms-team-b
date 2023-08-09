@@ -1,15 +1,9 @@
 import React from "react";
 import SectionButton from "./SectionButton";
 import SectionHandlerButton from "./SectionHandlerButton";
-import { useDispatch, useSelector } from "react-redux";
-import { handleEditMode } from "@/redux/slice/editCourseIdSlice";
-import { RootState } from "@/redux/store";
-
+import useEditMode from "@/hooks/classroom/useEditMode";
 const EditButton = () => {
-  const dispatch = useDispatch();
-  const isEditMode = useSelector(
-    (state: RootState) => state.editCourse.isEditMode,
-  );
+  const { isEditMode, handleEditStatus } = useEditMode();
 
   return (
     // isEditMode ? '적용', '선택 삭제' : '섹션 수정'
@@ -23,7 +17,7 @@ const EditButton = () => {
         <SectionHandlerButton
           text="섹션 수정"
           src="/images/edit.svg"
-          onClick={() => dispatch(handleEditMode())}
+          onClick={handleEditStatus}
         />
       )}
     </React.Fragment>

@@ -26,7 +26,13 @@ const EditComment: React.FC<EditCommentProps> = ({
       <div className="flex flex-col w-full">
         <UserInfo username={username} role={role} />
         <div className="w-full flex justify-between items-start">
-          <form className="w-full flex flex-col">
+          <form
+            className="w-full flex flex-col"
+            onSubmit={event => {
+              event.preventDefault();
+              onEdit(textareaValue);
+            }}
+          >
             <textarea
               value={textareaValue}
               onChange={e => setTextareaValue(e.target.value)}
@@ -34,14 +40,15 @@ const EditComment: React.FC<EditCommentProps> = ({
             />
             <div className="flex justify-end space-x-4 mt-2">
               <button
+                type="button"
                 className="w-28 h-8 text-sm rounded-lg bg-gray-100 text-gray-500"
                 onClick={onCancel}
               >
                 취소하기
               </button>
               <button
+                type="submit"
                 className="w-28 h-8 text-sm rounded-lg bg-blue-500 text-white hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"
-                onClick={() => onEdit(textareaValue)}
               >
                 수정하기
               </button>
