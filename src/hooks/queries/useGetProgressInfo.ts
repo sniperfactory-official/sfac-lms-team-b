@@ -16,10 +16,17 @@ const fetchProgressInfo = async (userId: string, lectureId: string) => {
   const progressSnap = await getDocs(progressQuery);
 
   if (progressSnap.empty) {
-    return { hasData: false, data: null };
+    return { hasData: false, data: null, id: null };
   }
 
-  return { hasData: true, data: progressSnap.docs[0].data() as Progress };
+  const progressDoc = progressSnap.docs[0];
+  return {
+    hasData: true,
+    data: {
+      ...progressDoc.data(),
+      id: progressDoc.id,
+    } as Progress,
+  };
 };
 
 const useGetProgressInfo = (userId: string, lectureId: string) => {

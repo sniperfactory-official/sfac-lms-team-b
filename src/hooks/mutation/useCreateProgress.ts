@@ -15,6 +15,7 @@ interface CreateProgressInput {
   lectureId: string;
   lectureType: "노트" | "비디오" | "링크" | undefined;
   playTimes?: playTime[];
+  onSuccess?: (progress: Progress) => void;
 }
 
 const createProgress = async (
@@ -60,7 +61,9 @@ const createProgress = async (
   }
 };
 
-const useCreateProgress = () => {
+const useCreateProgress = (
+  onSuccessCallback?: (progress: Progress) => void,
+) => {
   const [isMutationSuccessful, setIsMutationSuccessful] = useState(false);
 
   const createProgressMutation = useMutation<
@@ -71,8 +74,11 @@ const useCreateProgress = () => {
     onError: error => {
       console.error("수강률 추가에 실패했습니다: ", error);
     },
-    onSuccess: () => {
+    onSuccess: data => {
       setIsMutationSuccessful(true);
+      if (data && onSuccessCallback) {
+        onSuccessCallback(data);
+      }
     },
   });
 
