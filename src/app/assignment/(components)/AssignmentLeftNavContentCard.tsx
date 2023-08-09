@@ -1,8 +1,13 @@
-import Link from "next/link";
+'use client'
 
-import { XYCoord, useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from 'next/navigation';
+import { XYCoord, useDrag, useDrop } from "react-dnd";
 import { AssignmentExtracted } from "./AssignmentLeftNavContent";
+
 
 interface Props extends AssignmentExtracted {
   movecard: (dragIndex: number, hoverIndex: number) => void;
@@ -12,15 +17,31 @@ interface Props extends AssignmentExtracted {
 const AssignmentLeftNavCard = (props: Props) => {
   const ref = useRef<HTMLDivElement>(null);
   const { id, title, movecard, index, isEditting } = props;
+  const [isFocused, setIsFocused] = useState(false);
+  const pathname = usePathname();
+  const [isHoverred, setIsHoverred] = useState(false);
+
+  useEffect(()=>{
+    const assignId = String(pathname).replace("/assignment/","");
+    if (assignId==id){
+      setIsFocused(true);
+    }
+    else{
+      setIsFocused(false);
+    }
+  } ,[pathname, id])
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "card",
     item: () => {
-      return { index };
+      return { index, isHoverred };
     },
-    collect: (monitor: any) => ({
+    collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    end:() => {
+      setIsHoverred(false);
+    }
   }));
 
   const [, drop] = useDrop(() => ({
@@ -29,34 +50,45 @@ const AssignmentLeftNavCard = (props: Props) => {
       if (!ref.current) {
         return;
       }
+
       const dragIndex = item.index;
       const hoverIndex = index;
 
-      // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
+        setIsHoverred(true);
+        setTimeout(()=>{
+          setIsHoverred(false)
+        },1000)
         return;
       }
-
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset() as XYCoord;
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        setIsHoverred(false);
         return;
       }
 
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        setIsHoverred(false);
         return;
       }
 
       movecard(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
+    
   }));
 
-  const opacity = isDragging ? 0 : 100;
+  let opacity;
+  if (isDragging===true || isHoverred===true){
+    opacity = 0; 
+  }
+  else if (isDragging===false || isHoverred===false){
+    opacity = 100;
+  }
   drag(drop(ref));
 
   return (
@@ -72,17 +104,19 @@ const AssignmentLeftNavCard = (props: Props) => {
               type="checkbox"
               name={id}
               value={index}
-              className="mr-[5px]"
+              className="hidden peer/inputBox"
             />
+            <div className="inline-block border w-[15px] h-[15px] mr-[5px] border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:hidden"></div>
+            <Image className="hidden peer-checked/inputBox:inline-block mr-[5px]" width="20" height="20" src="/images/icon_target.svg" alt=""/>
             {title}
           </label>
         </div>
       ) : (
         <div
           key={id}
-          className={`list-none w-full p-[10px] order-${index} opacity-${opacity}`}
+          className={`list-none w-full p-[10px] order-${index}`}
         >
-          <Link href={"/assignment/" + id}>{title}</Link>
+          <Link href={`/assignment/${id}`}><span className={`${isFocused? "text-[#2563eb]" : "text-black"}`}>{title}</span></Link>
         </div>
       )}
     </div>
