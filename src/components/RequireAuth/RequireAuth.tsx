@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "../Loading/Loading";
 import { usePathname } from "next/navigation";
-import { useAppSelector } from "@/redux/store";
+
 export default function RequireAuth({
   children,
 }: {

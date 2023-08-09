@@ -3,6 +3,7 @@ import useUser from "@/hooks/user/useUser";
 import { useSubmitComment } from "@/hooks/lecture/useSubmitComment";
 import UserImage from "./UserImage";
 import UserInfo from "./UserInfo";
+import { Button, Text } from "sfac-designkit-react";
 
 interface CommentFormProps {
   parentId?: string;
@@ -69,17 +70,16 @@ const CommentForm: FC<CommentFormProps> = ({
                 placeholder="댓글을 입력해주세요."
               />
               <div className="flex justify-end space-x-4 mt-2">
-                <button
+                <Button
+                  text="업로드"
                   type="submit"
                   disabled={!comment}
-                  className={`w-28 h-8 text-sm rounded-lg ${
+                  className={`p-1 w-28 h-8 text-sm rounded-lg ${
                     comment
                       ? "bg-blue-500 text-white hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"
                       : "bg-gray-100 text-gray-500"
                   }`}
-                >
-                  업로드
-                </button>
+                />
               </div>
             </form>
           </div>

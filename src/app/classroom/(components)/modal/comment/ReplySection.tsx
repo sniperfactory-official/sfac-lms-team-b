@@ -4,6 +4,7 @@ import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import Layout from "../common/Layout";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+import { Text } from "sfac-designkit-react";
 
 interface ReplySectionProps {
   comment: LectureComment | null;
@@ -32,7 +33,9 @@ const ReplySection: FC<ReplySectionProps> = ({
   return (
     replyCommentModalOpen && (
       <Layout>
-        <h2 className="text-2xl font-bold">상세보기</h2>
+        <Text size="xl" weight="bold">
+          상세보기
+        </Text>
         {comment && (
           <Comment
             comment={comment}
