@@ -1,5 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./userSlice";
+import postSlice from "./slice/postSlice";
 import type { TypedUseSelectorHook } from "react-redux";
 import { useDispatch, useSelector } from "react-redux";
 import storageSession from "redux-persist/lib/storage/session";
@@ -18,6 +19,7 @@ const persistedReducer = persistReducer(persistConfig, userSlice);
 export const store = configureStore({
   reducer: {
     userInfo: persistedReducer,
+    postInfo: postSlice,
     classroomModal: classroomModalReducer,
     lectureInfo: lectureInfoSliceReducer,
     dropzoneFile: dropzoneFileReducer,

@@ -4,12 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import avatar from "/public/images/avatar.svg";
 import logo from "/public/images/logo.svg";
-import { RootState, persistor } from "@/redux/store";
+import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
 import React from "react";
 import LoadingSpinner from "@/components/Loading/Loading";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
-import { useLogoutMutation } from "@/hooks/reactQuery/logout/useLogoutQuery";
+import { useLogoutMutation } from "@/hooks/mypage/useLogoutMutation";
 import { logoutUser } from "@/redux/userSlice";
 import useGetUserQuery from "@/hooks/reactQuery/navbar/useGetUserQuery";
 import useGetLectureInfoQuery from "@/hooks/reactQuery/navbar/useGetLectureQuery";
@@ -19,7 +19,6 @@ export default function Navbar() {
   const router = useRouter();
   const userId = useAppSelector(state => state.userInfo.id);
   const user = useAppSelector(state => state.userInfo);
-
   const dispatch = useAppDispatch();
   const { mutateAsync } = useLogoutMutation();
 
@@ -82,7 +81,7 @@ export default function Navbar() {
   return (
     <div>
       <div className="fixed top-0 z-50 w-full">
-        <div className="flex justify-center bg-blue-50 h-[30px] items-center">
+        <div className="flex justify-center bg-blue-50 h-[60px] items-center">
           <div className="flex justify-between w-3/4">
             <div className="flex">
               <div className="w-[40px] h-[40px] relative mr-2">
