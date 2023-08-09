@@ -161,7 +161,6 @@ const AssignmentLeftNavContent = (props: Props) => {
               );
             })
           )}
-          00
         </form>
       </DndProvider>
       <AssignmentLeftNavButton
