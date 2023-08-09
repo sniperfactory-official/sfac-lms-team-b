@@ -53,7 +53,6 @@ const deleteSubmittedAssignment = async (
     });
 
     await deleteDoc(doc(db, "submittedAssignments", submittedAssignmentId));
-
     await deleteDoc(doc(db, "attachments", attachmentDocs.id));
   } catch (err) {
     console.log(err);

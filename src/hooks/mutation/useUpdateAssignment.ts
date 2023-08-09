@@ -31,7 +31,8 @@ const useUpdateAssignment = (assignmentId: string) => {
       updateAssignment(assignmentValue, assignmentId),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(["getAssignment", assignmentId || ""]);
+        queryClient.invalidateQueries(["getAssignment", assignmentId]);
+        queryClient.invalidateQueries(["getAssignment", ""]);
       },
       onError: err => {
         console.log(err);
