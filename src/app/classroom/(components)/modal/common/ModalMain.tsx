@@ -138,13 +138,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
       <LectureTitle />
       {children}
       <ModalFooter />
-      {errorMessage && (
-        <Toast
-          type="Error"
-          text={errorMessage}
-          className="mt-[100px] h-[45px]"
-        />
-      )}
+      {errorMessage && <Toast type="Error" text={errorMessage} />}
     </form>
   );
 };
