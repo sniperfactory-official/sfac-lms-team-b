@@ -92,6 +92,7 @@ const useDeleteRegisteredAssignment = (
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getAssignment", assignmentId]);
+        queryClient.invalidateQueries(["getAssignment", ""]);
       },
       onError: err => {
         console.log(err);

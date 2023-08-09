@@ -9,7 +9,7 @@ import {
   orderBy,
   Timestamp,
   doc,
-  DocumentData,
+  limit,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Assignment } from "@/types/firebase.types";
@@ -31,14 +31,22 @@ const createAssignment = async (
     const assignmentsQuery = query(
       collection(db, "assignments"),
       orderBy("order", "desc"),
+      limit(1),
     );
     const querySnapshot = await getDocs(assignmentsQuery);
-    const assignmentCount = querySnapshot.size;
+    // const assignmentCount = querySnapshot.size;
+    let assignmentOrder = 1; // 기본값
+
+    if (!querySnapshot.empty) {
+      // 마지막으로 생성된 데이터가 있다면 그 다음 순서값 설정
+      const lastAssignment = querySnapshot.docs[0].data();
+      assignmentOrder = lastAssignment.order + 1;
+    }
 
     const addAssignment = await addDoc(collection(db, "assignments"), {
       ...assignmentValue,
       createdAt: serverTimestamp(),
-      order: assignmentCount,
+      order: assignmentOrder,
       userId: userId,
     });
 
@@ -61,7 +69,6 @@ const useCreateAssignment = () => {
       return createAssignment(assignmentValue, userDocRef); // userId를 createAssignment 함수로 전달
     },
 
-    // createAssignment,
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getAssignment", ""]);
