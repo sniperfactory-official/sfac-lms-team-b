@@ -1,25 +1,27 @@
 import React, { FC } from "react";
-import VideoLecture from "./VideoLecture";
-import NoteLecture from "./NoteLecture";
-import LinkLecture from "./LinkLecture";
-import type { LectureContent } from "@/types/firebase.types";
+
+import useGetLectureInfo from "@/hooks/queries/useGetLectureInfo";
+import LectureContent from "./LectureContent";
+import LoadingSpinner from "@/components/Loading/Loading";
 
 interface TypeOfLectureProps {
-  type: string;
-  content: LectureContent;
+  lectureId: string;
 }
 
-const TypeOfLecture: FC<TypeOfLectureProps> = ({ type, content }) => {
-  switch (type) {
-    case "비디오":
-      return <VideoLecture content={content} />;
-    case "노트":
-      return <NoteLecture content={content} />;
-    case "링크":
-      return <LinkLecture content={content} />;
-    default:
-      return <div>Invalid lecture type</div>;
+const TypeOfLecture: FC<TypeOfLectureProps> = ({ lectureId }) => {
+  const { data } = useGetLectureInfo(lectureId);
+
+  if (!data || data.lectureContent === undefined) {
+    return (
+      <div className="w-screen flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
+
+  const { lectureType: type, lectureContent: content } = data;
+
+  return <LectureContent type={type} content={content} />;
 };
 
 export default TypeOfLecture;

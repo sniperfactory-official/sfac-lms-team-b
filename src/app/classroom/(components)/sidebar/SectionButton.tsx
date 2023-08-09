@@ -3,6 +3,7 @@ import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { handleEditMode } from "@/redux/slice/editCourseIdSlice";
+import useUpdateLectureOrder from "@/hooks/mutation/useUpdateLectureOrder";
 
 interface IProp {
   type: "set" | "remove";
@@ -13,8 +14,12 @@ const SectionButton = ({ type }: IProp) => {
   const lectureCount = useSelector(
     (state: RootState) => state.editCourse.lectureCount,
   );
+  const currentLectures = useSelector(
+    (state: RootState) => state.editCourse.currentLectures,
+  );
 
   const { mutate: deleteCourse, isLoading } = useDeleteCourse();
+  const { mutate: updateLectureOrder } = useUpdateLectureOrder(currentLectures);
   const deleteIdArray = useSelector(
     (state: RootState) => state.editCourse.deleteIdArray,
   );
@@ -22,14 +27,23 @@ const SectionButton = ({ type }: IProp) => {
     set: {
       text: "적용",
       bg: "bg-primary-80",
-      onClick: () => dispatch(handleEditMode()),
+      onClick: () => {
+        updateLectureOrder(
+          {},
+          {
+            onSuccess: () => {
+              dispatch(handleEditMode());
+            },
+          },
+        );
+      },
     },
     remove: {
       text: "선택 삭제",
       bg: "bg-red",
       onClick: () =>
         deleteCourse(
-          { deleteIdArray, lectureCount },
+          { deleteIdArray, lectureCount, currentLectures },
           {
             onSuccess: () => {
               dispatch(handleEditMode());

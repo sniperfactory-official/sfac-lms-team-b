@@ -13,7 +13,7 @@ interface CommentFormProps {
   lectureId: string;
   isReply?: boolean;
   initialContent?: string;
-  modalOpen: boolean;
+  modalOpen?: boolean;
 }
 
 const CommentForm: FC<CommentFormProps> = ({
@@ -65,7 +65,7 @@ const CommentForm: FC<CommentFormProps> = ({
   return (
     <div className="flex w-full h-25 flex-col space-x-4 items-start rounded-lg border text-gray-500 p-5">
       <div className="flex items-start space-x-4 w-full">
-        {profileImage && <UserImage profileImage={profileImage} size="large" />}
+        <UserImage profileImage={profileImage} size="large" />
         <div className="flex flex-col w-full">
           {username && <UserInfo username={username} isForm={true} />}
           <div className="w-full flex justify-between items-start">

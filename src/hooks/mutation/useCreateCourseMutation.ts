@@ -5,8 +5,8 @@ import { db } from "@utils/firebase";
 
 const createCourse = async () => {
   const courseData = {
-    createAt: serverTimestamp(),
-    updateAt: serverTimestamp(),
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
     title: "새로운 섹션",
   };
 

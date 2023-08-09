@@ -119,11 +119,11 @@ export interface LectureComment {
 }
 
 export interface LectureContent {
-  images: string[];
-  textContent: string;
-  externalLink: string;
-  videoUrl: string;
-  videoLength: number;
+  images?: string[];
+  textContent?: string;
+  externalLink?: string;
+  videoUrl?: string;
+  videoLength?: number;
 }
 
 export interface AttachmentFile {
