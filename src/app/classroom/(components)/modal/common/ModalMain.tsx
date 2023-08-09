@@ -10,6 +10,7 @@ import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
 import { useUpdateLecture } from "@/hooks/mutation/useUpdateLecture";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
+import useDeleteFile from "@/hooks/lecture/useDeleteFile";
 import {
   clearError,
   resetInput,
@@ -25,8 +26,12 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const { lectureInfo, modalRole } = useClassroomModal();
   const CreateMutation = useCreateLecture();
   const UpdateMutation = useUpdateLecture();
+  const { onDeleteFile } = useDeleteFile();
   const lectureCount = useSelector(
     (state: RootState) => state.editCourse.lectureCount,
+  );
+  const videoToDeleteOnEdit = useSelector(
+    (state: RootState) => state.dropzoneFile.videoToDeleteOnEdit,
   );
   const errorMessage = useSelector(
     (state: RootState) => state.lectureInfo.errorMessage,
@@ -118,6 +123,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
         endDate,
         isPrivate: isLecturePrivate,
       });
+      videoToDeleteOnEdit && onDeleteFile(videoToDeleteOnEdit);
     }
     dispatch(closeModal());
     dispatch(resetInput());
