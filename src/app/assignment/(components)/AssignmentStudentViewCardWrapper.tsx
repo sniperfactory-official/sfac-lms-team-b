@@ -5,6 +5,8 @@ import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
 import { User } from "@/types/firebase.types";
 import { useParams } from "next/navigation";
 import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 interface OwnProps {
   user: User;

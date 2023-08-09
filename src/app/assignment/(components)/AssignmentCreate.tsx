@@ -47,8 +47,11 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
 
   const createAssignmentMutation = useCreateAssignment();
   const imageUploadMutation = useImageUpload();
+  console.log(dates);
 
   const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
+    if (dates.startDate === null || dates.endDate === null) return onInValid();
+
     assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
     assignmentData.readStudents = [];
 
@@ -65,8 +68,6 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
       );
       const uploadedUrls = await Promise.all(uploadPromises);
       assignmentData.images = uploadedUrls;
-
-      //이미지등록코드
 
       createAssignmentMutation.mutate(assignmentData);
 
@@ -129,22 +130,16 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
   };
 
   const handleFormValidation = () => {
-    if (
-      !errors.level ||
-      !errors.title ||
-      !errors.content ||
-      !errors.startDate ||
-      !errors.endDate
-    ) {
-      setToastMsg("필수 항목을 모두 입력해주세요.");
-      setIsAccept(false);
-    } else {
-      handleSubmit(onSubmit);
-    }
+    handleSubmit(onSubmit);
+  };
+
+  const onInValid = () => {
+    setToastMsg("필수 항목을 모두 입력해주세요.");
+    setIsAccept(false);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit, onInValid)}>
       <div>
         <Text
           size="base"

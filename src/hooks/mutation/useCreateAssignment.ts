@@ -60,7 +60,6 @@ const useCreateAssignment = () => {
       return createAssignment(assignmentValue, userDocRef); // userId를 createAssignment 함수로 전달
     },
 
-    // createAssignment,
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getAssignment", ""]);
