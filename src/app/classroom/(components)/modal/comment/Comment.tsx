@@ -34,7 +34,7 @@ const Comment: React.FC<CommentProps> = ({
 
   const { user } = useUser();
   const { videoRef } = useContext(VideoRefContext);
-  
+
   const deleteMutation = useDeleteComment();
   const updateMutation = useUpdateComment();
 

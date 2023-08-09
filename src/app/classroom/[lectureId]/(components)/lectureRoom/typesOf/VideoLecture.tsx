@@ -44,20 +44,20 @@ const VideoLecture: FC<VideoLectureProps> = ({ content, progressInfo }) => {
 
   return (
     <div className="videoContainer h-full w-full">
-        {videoUrl ? (
-          <ReactPlayer
-            ref={videoRef}
-            url={videoUrl}
-            width="100%"
-            height="100%"
-            controls
-            onProgress={handleProgress}
-            onDuration={handleDuration}
-            onEnded={handleEnded}
-          />
-        ) : (
-          <div>비디오를 불러올 수 없습니다.</div>
-        )}
+      {videoUrl ? (
+        <ReactPlayer
+          ref={videoRef}
+          url={videoUrl}
+          width="100%"
+          height="100%"
+          controls
+          onProgress={handleProgress}
+          onDuration={handleDuration}
+          onEnded={handleEnded}
+        />
+      ) : (
+        <div>비디오를 불러올 수 없습니다.</div>
+      )}
     </div>
   );
 };
