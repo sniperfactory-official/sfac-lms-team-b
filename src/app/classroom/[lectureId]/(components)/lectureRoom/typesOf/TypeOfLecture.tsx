@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from "react";
-import { Lecture } from "@/types/firebase.types";
+import React, { FC, useEffect, useState } from "react";
+import { Lecture, Progress } from "@/types/firebase.types";
 import useGetProgressInfo from "@/hooks/queries/useGetProgressInfo";
 import useCreateProgress from "@/hooks/mutation/useCreateProgress";
 import useUser from "@/hooks/user/useUser";
@@ -17,34 +17,30 @@ const TypeOfLecture: FC<TypeOfLectureProps> = ({ lectureData }) => {
   const lectureId = lectureData?.id || "";
   const { data: progressData, isLoading: isLoadingProgress } =
     useGetProgressInfo(userId, lectureId);
-  const { mutate, isMutationSuccessful } = useCreateProgress();
+  const [progressInfo, setProgressInfo] = useState<Progress | null | undefined>(
+    undefined,
+  );
 
-  const progressInfo = progressData?.data;
+  const { mutate, isMutationSuccessful } = useCreateProgress(progress => {
+    setProgressInfo(progress);
+  });
+
   const hasData = progressData?.hasData || false;
 
   useEffect(() => {
-    if (
-      !userId ||
-      !lectureId ||
-      isLoadingProgress ||
-      hasData ||
-      isMutationSuccessful
-    )
+    if (!userId || !lectureId || isLoadingProgress || isMutationSuccessful)
       return;
 
-    mutate({
-      userId,
-      lectureId,
-      lectureType: lectureData?.lectureType,
-    });
-  }, [
-    progressData,
-    lectureData,
-    userId,
-    isLoadingProgress,
-    lectureId,
-    isMutationSuccessful,
-  ]);
+    if (hasData) {
+      setProgressInfo(progressData?.data);
+    } else {
+      mutate({
+        userId,
+        lectureId,
+        lectureType: lectureData?.lectureType,
+      });
+    }
+  }, [progressData, lectureData, userId, isLoadingProgress, lectureId]);
 
   if (
     !lectureData ||

@@ -1,4 +1,5 @@
-"use client";
+import { LectureCommentProvider } from "@/app/classroom/(components)/contexts/LectureCommentProvider";
+import { VideoRefProvider } from "@/app/classroom/(components)/contexts/VideoContextProvider";
 import Navbar from "@/components/Header/Navbar";
 import Tab from "@/components/Header/Tab";
 import Footer from "@/components/Footer/Footer";
@@ -63,9 +64,11 @@ export default function RequireAuth({
           {children}
           <Footer />
         </>
-      );
-    } else {
-      return <>{children}</>;
-    }
-  }
+      ) : (
+        <LectureCommentProvider>
+          <VideoRefProvider>{children}</VideoRefProvider>
+        </LectureCommentProvider>
+      )}
+    </>
+  )
 }

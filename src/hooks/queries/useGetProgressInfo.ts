@@ -11,17 +11,28 @@ import {
 const fetchUserLectures = async (userId: string) => {
   console.log(1);
   const userRef = doc(db, "users", userId);
-  const q = query(collection(db, "progress"), where("userId", "==", userRef));
-  const querySnapshot = await getDocs(q);
-  let progress: DocumentData[] = [];
-  for (const doc of querySnapshot.docs) {
-    progress.push(doc.data());
+  const lectureRef = doc(db, "lectures", lectureId);
+
+  const progressQuery = query(
+    collection(db, "progress"),
+    where("userId", "==", userRef),
+    where("lectureId", "==", lectureRef),
+  );
+
+  const progressSnap = await getDocs(progressQuery);
+
+  if (progressSnap.empty) {
+    return { hasData: false, data: null, id: null };
   }
 
-  const completedLectures = progress.filter(
-    lecture => lecture.isCompleted === true,
-  ).length;
-  return { total: progress.length, completedLectures: completedLectures };
+  const progressDoc = progressSnap.docs[0];
+  return {
+    hasData: true,
+    data: {
+      ...progressDoc.data(),
+      id: progressDoc.id,
+    } as Progress,
+  };
 };
 
 const useGetProgressInfo = (userId: string) => {
