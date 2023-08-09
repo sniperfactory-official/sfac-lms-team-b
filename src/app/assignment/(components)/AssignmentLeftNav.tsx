@@ -8,7 +8,6 @@ import { RootState } from "@/redux/store";
 import { User } from "@/types/firebase.types";
 import AssignmentLeftNavContent from "./AssignmentLeftNavContent";
 
-
 const AssignmentLeftNav = () => {
   const userInfo = useSelector((state: RootState) => {
     return state.userInfo;

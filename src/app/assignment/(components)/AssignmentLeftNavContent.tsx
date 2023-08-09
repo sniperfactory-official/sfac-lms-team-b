@@ -12,7 +12,6 @@ import { User } from "@/types/firebase.types";
 import AssignmentLeftNavCard from "./AssignmentLeftNavContentCard";
 import AssignmentLeftNavButton from "./AssignmentLeftNavContentButton";
 
-
 export interface AssignmentExtracted
   extends Pick<Assignment, "id" | "order" | "title"> {
   index: number;
@@ -92,7 +91,7 @@ const AssignmentLeftNavContent = (props: Props) => {
 
   const resetEditting = () => {
     editingCount.current = 0;
-    fetchAssignmentData(assignQueries.data as Assignment[])    
+    fetchAssignmentData(assignQueries.data as Assignment[]);
     setIsEditting(false);
   };
 
@@ -102,7 +101,7 @@ const AssignmentLeftNavContent = (props: Props) => {
     const length = formElem.childElementCount;
     const formArray = Array(event.target) as Array<any>;
     let formData = new FormData() as FormData;
-    
+
     for (let len = 0; len < length; len++) {
       if (formArray[0][len].checked === true) {
         const deleteTargetName = formArray[0][len].name;
@@ -130,22 +129,23 @@ const AssignmentLeftNavContent = (props: Props) => {
           id="assign"
           name="assign"
         >
-          {isLoading ? (""
-          ) : (
-            htmlContentAligned?.map((assignExtracted: AssignmentExtracted) => {
-              return (
-                <AssignmentLeftNavCard
-                  key={uuidv4()}
-                  index={assignExtracted.index}
-                  order={assignExtracted.order}
-                  id={assignExtracted.id}
-                  title={assignExtracted.title}
-                  movecard={moveCard}
-                  isEditting={isEditting}
-                />
-              );
-            })
-          )}
+          {isLoading
+            ? ""
+            : htmlContentAligned?.map(
+                (assignExtracted: AssignmentExtracted) => {
+                  return (
+                    <AssignmentLeftNavCard
+                      key={uuidv4()}
+                      index={assignExtracted.index}
+                      order={assignExtracted.order}
+                      id={assignExtracted.id}
+                      title={assignExtracted.title}
+                      movecard={moveCard}
+                      isEditting={isEditting}
+                    />
+                  );
+                },
+              )}
         </form>
       </DndProvider>
       <AssignmentLeftNavButton

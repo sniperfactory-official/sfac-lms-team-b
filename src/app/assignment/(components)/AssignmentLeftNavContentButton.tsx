@@ -84,7 +84,7 @@ const AssignmentLeftNavButton = (props: Props) => {
           >
             <AssignmentCreate isOpen={isOpen} setIsOpen={setIsOpen} />
           </AssignmentModal>
-          { isActivated ? (
+          {isActivated ? (
             <div>
               <div className="flex h-[46px] gap-[15px] mx-0 my-[10px] flex-shrink-0">
                 <Button
@@ -103,58 +103,62 @@ const AssignmentLeftNavButton = (props: Props) => {
                   type="button"
                   className="w-full h-full"
                   asChild
-                  onClick={() => {setIsConfirmed(true)}}
-                ></Button>
-                  <AssignmentGlobalConfirmPopup
-                    isOpen={isConfirmed}
-                    title="강의를 삭제하시겠습니까?"
-                    onCancel={()=>{setIsConfirmed(false)}}
-                  >
-                    <Button
-                      variant="secondary"
-                      text="취소"
-                      onClick={() => {
-                        setIsConfirmed(false)
-                      }}
-                    />             
-                    <Button
-                      variant="destructive"
-                      text="삭제"
-                      type="submit"
-                      onClick={() => {
-                        setTimeout(() =>{
-                          setIsConfirmed(false)
-                          setIsActivated(false)}, 1000);
-                      }}
-                      form="assign"
-                      name="assign"
-                    />
-                  </AssignmentGlobalConfirmPopup>
-              </div>
-                  <p className="w-full h-[46px] rounded-[10px] mt-[36px] bg-primary-5 text-center text-primary-50 leading-[46px]"  
-                  >
-                    이 작업은 실시간으로 반영됩니다.
-                  </p>
-              </div>
-          ) : (
-              <div className="flex justify-center items-center w-full h-[46px] mt-[10px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
-                <button
-                  type="button"
                   onClick={() => {
-                    executeEditing();
+                    setIsConfirmed(true);
                   }}
-                  className="flex gap-[6px]"
+                ></Button>
+                <AssignmentGlobalConfirmPopup
+                  isOpen={isConfirmed}
+                  title="강의를 삭제하시겠습니까?"
+                  onCancel={() => {
+                    setIsConfirmed(false);
+                  }}
                 >
-                  <Image
-                    className="inline"
-                    src="/images/edit.svg"
-                    alt=""
-                    width={23}
-                    height={22}
+                  <Button
+                    variant="secondary"
+                    text="취소"
+                    onClick={() => {
+                      setIsConfirmed(false);
+                    }}
                   />
-                  과제수정
-                </button>
+                  <Button
+                    variant="destructive"
+                    text="삭제"
+                    type="submit"
+                    onClick={() => {
+                      setTimeout(() => {
+                        setIsConfirmed(false);
+                        setIsActivated(false);
+                      }, 1000);
+                    }}
+                    form="assign"
+                    name="assign"
+                  />
+                </AssignmentGlobalConfirmPopup>
               </div>
+              <p className="w-full h-[46px] rounded-[10px] mt-[36px] bg-primary-5 text-center text-primary-50 leading-[46px]">
+                이 작업은 실시간으로 반영됩니다.
+              </p>
+            </div>
+          ) : (
+            <div className="flex justify-center items-center w-full h-[46px] mt-[10px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
+              <button
+                type="button"
+                onClick={() => {
+                  executeEditing();
+                }}
+                className="flex gap-[6px]"
+              >
+                <Image
+                  className="inline"
+                  src="/images/edit.svg"
+                  alt=""
+                  width={23}
+                  height={22}
+                />
+                과제수정
+              </button>
+            </div>
           )}
         </div>
       ) : (

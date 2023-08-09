@@ -1,6 +1,6 @@
 "use client";
 
-import "sfac-designkit-react/style.css"
+import "sfac-designkit-react/style.css";
 import { Button } from "sfac-designkit-react";
 import React from "react";
 import { useRouter } from "next/navigation";
@@ -8,7 +8,6 @@ import { Assignment } from "@/types/firebase.types";
 import { useGetAssignment } from "@hooks/queries/useGetAssignment";
 import { User } from "@/types/firebase.types";
 import AssignmentListSubButton from "./AssignmentListSubButton";
-
 
 type Props = {
   userInfo: User;

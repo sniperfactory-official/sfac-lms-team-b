@@ -1,11 +1,10 @@
 "use client";
 
-import "sfac-designkit-react/style.css"
+import "sfac-designkit-react/style.css";
 import { Button } from "sfac-designkit-react";
 import React, { useEffect, useState } from "react";
 import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssignment";
 import { useRouter } from "next/navigation";
-
 
 interface Props {
   refId: string;

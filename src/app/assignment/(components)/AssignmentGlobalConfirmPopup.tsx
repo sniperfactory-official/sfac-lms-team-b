@@ -32,7 +32,7 @@ const AssignmentGlobalConfirmPopup: React.FC<OwnProps> = ({
               {title}
             </h2>
             <div className="flex justify-center item-center gap-[22px]">
-                {children}
+              {children}
             </div>
           </div>
         </div>
