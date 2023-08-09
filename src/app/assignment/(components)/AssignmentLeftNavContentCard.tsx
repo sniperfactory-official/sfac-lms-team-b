@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { useDrag, useDrop } from "react-dnd";
+import { XYCoord, useDrag, useDrop } from "react-dnd";
 import { useRef } from "react";
 import { AssignmentExtracted } from "./AssignmentLeftNavContent";
 
@@ -25,7 +25,7 @@ const AssignmentLeftNavCard = (props: Props) => {
 
   const [, drop] = useDrop(() => ({
     accept: "card",
-    hover(item: AssignmentExtracted) {
+    hover(item: AssignmentExtracted, monitor) {
       if (!ref.current) {
         return;
       }
@@ -36,6 +36,21 @@ const AssignmentLeftNavCard = (props: Props) => {
       if (dragIndex === hoverIndex) {
         return;
       }
+
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset() as XYCoord;
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+
       movecard(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },

@@ -1,5 +1,7 @@
 "use client";
 
+import "sfac-designkit-react/style.css";
+import { Button } from "sfac-designkit-react";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { User } from "@/types/firebase.types";
@@ -79,18 +81,23 @@ const AssignmentLeftNavButton = (props: Props) => {
             <AssignmentCreate isOpen={isOpen} setIsOpen={setIsOpen} />
           </AssignmentModal>
           {isActivated ? (
-            <div className="flex justify-center items-center h-[46px] mx-0 my-[10px] gap-[6px] flex-shrink-0 bg-white rounded-[10px] ">
-              <button
+            <div className="flex justify-center items-center h-[46px] mx-0 my-[10px] gap-[15px] flex-shrink-0 rounded-[10px] ">
+              <Button
+                variant="primary"
+                text="적용"
                 type="button"
+                asChild
+                className="w-full h-full"
                 onClick={() => {
                   updateAndDeactivate();
                 }}
-                className="w-full h-[35px] rounded-lg bg-[#337AFF] text-slate-50"
-              >
-                <span className="m-auto">적용</span>
-              </button>
-              <button
+              ></Button>
+              <Button
+                variant="destructive"
+                text="선택삭제"
                 type="submit"
+                className="w-full h-full "
+                asChild
                 onClick={() => {
                   setTimeout(() => {
                     setIsActivated(false), 1000;
@@ -98,10 +105,7 @@ const AssignmentLeftNavButton = (props: Props) => {
                 }}
                 form="assign"
                 name="assign"
-                className="w-full h-[35px] rounded-lg  bg-[#FF0000] text-slate-50 "
-              >
-                <span className="m-auto">선택 삭제</span>
-              </button>
+              ></Button>
             </div>
           ) : (
             <div className="flex justify-center items-center w-full h-[46px] mt-[10px] gap-[6px] flex-shrink-0 border border-primary-40 bg-white rounded-[10px]">
@@ -119,7 +123,7 @@ const AssignmentLeftNavButton = (props: Props) => {
                   width={22}
                   height={22}
                 />
-                <span>과제 수정</span>
+                과제수정
               </button>
             </div>
           )}
