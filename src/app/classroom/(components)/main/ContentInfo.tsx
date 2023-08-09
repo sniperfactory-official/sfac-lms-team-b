@@ -11,25 +11,32 @@ import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { resetInput } from "@/redux/slice/lectureInfoSlice";
 
 interface IProps {
-  setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   lecture: ILecture;
   role: string;
 }
 
-const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
-  const { title, lectureType, startDate, endDate, lectureContent } = lecture;
-  const { lectureInfo } = useClassroomModal();
-  const router = useRouter();
+const ContentInfo = ({ lecture, role }: IProps) => {
   const dispatch = useDispatch();
-  console.log(lecture);
+  const router = useRouter();
+  const { lectureInfo } = useClassroomModal();
+  const { title, lectureType, startDate, endDate, lectureContent } = lecture;
+
   const handleMovePage = () => {
     if (lecture.lectureType === "링크") {
       return window.open(`${lecture.lectureContent.externalLink}`);
     }
     router.push(`/classroom/${lecture.lectureId}`);
   };
+
   const handleDeleteModal = () => {
-    setDeleteModal(true);
+    dispatch(setLecture(lecture));
+    dispatch(
+      setModalVisibility({
+        modalName: "lectureDeleteModalOpen",
+        visible: true,
+        modalRole: "delete",
+      }),
+    );
   };
 
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
