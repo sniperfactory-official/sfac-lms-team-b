@@ -19,7 +19,6 @@ const getSubmittedAssignments = async (
 ): Promise<any> => {
   const assignmentRef = doc(db, "assignments", assignmentId);
   const assignmentDoc = await getDoc(assignmentRef);
-
   if (uid) {
     const loginUserRef = doc(db, "users", uid);
     const loginUserDoc = await getDoc(loginUserRef);
