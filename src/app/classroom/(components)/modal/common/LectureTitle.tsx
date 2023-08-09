@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setLectureTitle, clearError } from "@/redux/slice/lectureInfoSlice";
+import { setLectureTitle } from "@/redux/slice/lectureInfoSlice";
 import { RootState } from "@/redux/store";
 
 const LectureTitle: React.FC = () => {
@@ -10,9 +10,6 @@ const LectureTitle: React.FC = () => {
 
   const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setLectureTitle(e.target.value));
-    if (e.target.value.trim()) {
-      dispatch(clearError());
-    }
   };
 
   return (
@@ -22,9 +19,9 @@ const LectureTitle: React.FC = () => {
         name="lectureTitle"
         id="lectureTitle"
         placeholder="제목을 입력해주세요. (필수)"
-        className="text-grayscale-80 outline-none text-xl font-medium placeholder-grayscale-40"
-        value={lectureTitle}
+        className="text-grayscale-80 outline-none text-xl font-medium placeholder-grayscale-40 w-full"
         onChange={handleInputTitle}
+        value={lectureTitle}
       />
     </label>
   );
