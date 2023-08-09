@@ -4,7 +4,6 @@ import { useUpdateFeedback } from "@/hooks/mutation/useUpdateFeedback";
 import { useForm } from "react-hook-form";
 import { Button, Text, Avatar } from "sfac-designkit-react";
 import PageToast from "@/components/PageToast";
-import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 
 interface IUpdateFeedbackForm {

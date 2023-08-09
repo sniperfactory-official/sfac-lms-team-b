@@ -97,7 +97,6 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
 
   const handleUpload = async () => {
     // 선택한 파일들의 업로드 수행
-    console.log("Uploaded files:", selectedFiles);
 
     let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
 

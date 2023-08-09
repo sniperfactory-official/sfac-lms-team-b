@@ -27,7 +27,7 @@ const AssignmentLeftNav = () => {
             width={20}
             height={20}
           />
-          <Text size="base" weight="semibold">
+          <Text size="base" weight="semibold" className="text-grayscale-80">
             전체과제
           </Text>
         </div>
