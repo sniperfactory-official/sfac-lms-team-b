@@ -13,7 +13,7 @@ import { resetInput } from "@/redux/slice/lectureInfoSlice";
 interface IProps {
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   lecture: ILecture;
-  role: string
+  role: string;
 }
 
 const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
@@ -23,8 +23,8 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
   const dispatch = useDispatch();
   console.log(lecture);
   const handleMovePage = () => {
-    if(lecture.lectureType === "링크"){
-      return window.open(`${lecture.lectureContent.externalLink}`)
+    if (lecture.lectureType === "링크") {
+      return window.open(`${lecture.lectureContent.externalLink}`);
     }
     router.push(`/classroom/${lecture.lectureId}`);
   };
@@ -70,8 +70,7 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
   return (
     <div className="w-2/3 h-5/6 ml-20px flex flex-col">
       <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
-        {
-          role === '관리자' &&
+        {role === "관리자" && (
           <>
             <button className="text-xs" onClick={handleEditLectureModal}>
               수정
@@ -81,7 +80,7 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
               삭제
             </button>
           </>
-        }
+        )}
       </div>
       {lectureType === "비디오" && (
         <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">
