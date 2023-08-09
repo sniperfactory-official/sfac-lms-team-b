@@ -6207,10 +6207,10 @@ semver@^7.3.7, semver@^7.5.3, semver@^7.5.4:
   dependencies:
     lru-cache "^6.0.0"
 
-sfac-designkit-react@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/sfac-designkit-react/-/sfac-designkit-react-0.7.1.tgz#851aa22ed443a1a273026943a334a86d7f0a4bd8"
-  integrity sha512-oxqBTn3unOiXFnk/59FkABURywtZcsRS1imyKMWj3igE40nyrodxv73qLjg4XIEh0/IvBYrudbJSBGR5V82zaA==
+sfac-designkit-react@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/sfac-designkit-react/-/sfac-designkit-react-1.0.1.tgz#7f1dab0e7a8f2f6ed735259ccbb28c7de330abd8"
+  integrity sha512-mg7z829C8/JK/Uz26rmfjDdmHEurdXfIHw8HL+ZbrGpRW7Fdg93impdZIE1Ts0GzVczy+vRW0UKAW5HtJOVu2w==
   dependencies:
     date-fns "^2.30.0"
     next "^13.4.12"
