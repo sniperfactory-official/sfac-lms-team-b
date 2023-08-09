@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
 import { Attachment } from "@/types/firebase.types";
-import { Button, Text } from "sfac-designkit-react";
+import { Button, Text, Icon } from "sfac-designkit-react";
 
 type OwnProps = {
   onClose: () => void;
