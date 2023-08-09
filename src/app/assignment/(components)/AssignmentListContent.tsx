@@ -1,32 +1,28 @@
 "use client";
 
-import React from "react";
-import { useGetAssignment } from "@hooks/queries/useGetAssignment";
-import { Assignment } from "@/types/firebase.types";
-import AssignmentListSubButton from "./AssignmentListSubButton";
-import { useRouter } from "next/navigation";
-import { User } from "@/types/firebase.types";
+import "sfac-designkit-react/style.css";
 import { Button } from "sfac-designkit-react";
-
-interface AssignmentNumberAdded extends Assignment {
-  assignmentNumber: number;
-}
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Assignment } from "@/types/firebase.types";
+import { useGetAssignment } from "@hooks/queries/useGetAssignment";
+import { User } from "@/types/firebase.types";
+import AssignmentListSubButton from "./AssignmentListSubButton";
 
 type Props = {
   userInfo: User;
   userId: string;
 };
 
-const AssignmentListContent = (prop: Props) => {
+const AssignmentListContent = (props: Props) => {
   const assignmentData = useGetAssignment("");
   const router = useRouter();
-  const userinfo = { ...prop.userInfo };
+  const userinfo = { ...props.userInfo };
   let htmlContent;
 
   if (assignmentData.isLoading === false) {
-    const assignmentInfo = assignmentData.data as AssignmentNumberAdded[];
-    // map이 assignmentInfo의 property로 인식되어 경고문구가 뜸
-    htmlContent = assignmentInfo?.map((assign: AssignmentNumberAdded) => (
+    const assignmentInfo = assignmentData.data as Assignment[];
+    htmlContent = assignmentInfo?.map((assign: Assignment) => (
       <div
         key={assign.id}
         className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 flex justify-between items-center"
@@ -46,11 +42,11 @@ const AssignmentListContent = (prop: Props) => {
             asChild
             type="button"
             onClick={() => {
-              router.push("/assignment/" + assign.id);
+              router.push(`/assignment/${assign.id}`);
             }}
           />
         ) : (
-          <AssignmentListSubButton refId={assign.id} userId={prop.userId} />
+          <AssignmentListSubButton refId={assign.id} userId={props.userId} />
         )}
       </div>
     ));
