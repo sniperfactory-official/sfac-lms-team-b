@@ -22,8 +22,8 @@ const initialState: IEditCourse = {
   lectureCount: 0,
   selectedCourse: [],
   currentLectures: [],
-  newTitle: '',
-  newTitleId: '',
+  newTitle: "",
+  newTitleId: "",
 };
 
 const editCourseSlice = createSlice({
@@ -71,7 +71,6 @@ const editCourseSlice = createSlice({
     setNewTitle: (state, action) => {
       state.newTitle = action.payload;
     },
-    
   },
 });
 

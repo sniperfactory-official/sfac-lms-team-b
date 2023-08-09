@@ -46,11 +46,11 @@ const Element = ({
   }, [isSelected]);
 
   useEffect(() => {
-    if(!isEditMode){
-      setTitleValue(title)
-      setIsTitleEditMode(false)
+    if (!isEditMode) {
+      setTitleValue(title);
+      setIsTitleEditMode(false);
     }
-  }, [isEditMode])
+  }, [isEditMode]);
 
   const type_obj = {
     course: {
