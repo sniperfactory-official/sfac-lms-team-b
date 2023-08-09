@@ -1,23 +1,20 @@
-import React, { FormEvent, ReactNode, useState } from "react";
+import React, { FormEvent, ReactNode } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import LectureTitle from "./LectureTitle";
 import ModalFooter from "./ModalFooter";
+import PageToast from "@/components/PageToast";
 import { closeModal } from "@/redux/slice/classroomModalSlice";
-import { resetInput } from "@/redux/slice/lectureInfoSlice";
 import { resetDropzone } from "@/redux/slice/dropzoneFileSlice";
+import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
+import { useUpdateLecture } from "@/hooks/mutation/useUpdateLecture";
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import {
   clearError,
   resetInput,
   setError,
 } from "@/redux/slice/lectureInfoSlice";
-import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
-import { useUpdateLecture } from "@/hooks/mutation/useUpdateLecture";
-import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import useLectureInfo from "@/hooks/lecture/useLectureInfo";
-import { RootState } from "@/redux/store";
-import { resetDropzone } from "@/redux/slice/dropzoneFileSlice";
-import PageToast from "@/components/PageToast";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -91,7 +88,7 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     }
 
     if (user && lectureType && startDate && endDate) {
-      mutation.mutate({
+      CreateMutation.mutate({
         userId: user.uid,
         courseId: courseId,
         lectureType,
