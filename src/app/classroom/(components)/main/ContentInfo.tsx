@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { ILecture } from "@/hooks/queries/useGetCourseList";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { resetInput } from "@/redux/slice/lectureInfoSlice";
+import { Button } from "sfac-designkit-react";
 
 interface IProps {
   setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,7 +22,7 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
   const { lectureInfo } = useClassroomModal();
   const router = useRouter();
   const dispatch = useDispatch();
-  console.log(lecture);
+
   const handleMovePage = () => {
     if(lecture.lectureType === "링크"){
       return window.open(`${lecture.lectureContent.externalLink}`)
@@ -98,12 +99,14 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
             {start}-{end}
           </div>
         </div>
-        <button
-          className="w-[140px] h-[35px] bg-grayscale-5 text-center leading-[35px] text-sm rounded-lg"
+        <Button
+          variant="ghost" 
+          textSize="sm"
+          text={LECTURE_OBJ[lectureType].text+'보기'}
+          asChild
+          className="w-[140px] h-[35px] bg-grayscale-5 text-center leading-[35px]rounded-lg"
           onClick={() => handleMovePage()}
-        >
-          {LECTURE_OBJ[lectureType].text}보기
-        </button>
+        />
       </div>
     </div>
   );

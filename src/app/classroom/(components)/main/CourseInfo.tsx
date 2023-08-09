@@ -1,6 +1,5 @@
 import { ICourseField } from "@/hooks/queries/useGetCourseList";
-import { IUser } from "../../page";
-
+import { Button } from "sfac-designkit-react";
 interface IProps {
   handleModalOpen: () => void;
   currentCourse: ICourseField;
@@ -11,7 +10,7 @@ const CourseInfo = ({ currentCourse, handleModalOpen, role }: IProps) => {
   return (
     <div className="flex justify-between w-100">
       <div className="flex flex-col w-[150px] mb-[20px]">
-        <div className="text-lg font-bold">
+        <div className="text-lg font-bold w-[250px]">
           {currentCourse.courseData.title}
         </div>
         <div className="font-thin text-sm">
@@ -19,12 +18,13 @@ const CourseInfo = ({ currentCourse, handleModalOpen, role }: IProps) => {
         </div>
       </div>
       {role === "관리자" && (
-        <button
+        <Button
           onClick={handleModalOpen}
-          className="w-[109px] h-[35px] bg-primary-80 rounded-lg text-white text-sm"
-        >
-          강의 만들기
-        </button>
+          text="강의 만들기"
+          asChild
+          textSize="xs"
+          className="w-[125px] h-[35px]"
+        />
       )}
     </div>
   );

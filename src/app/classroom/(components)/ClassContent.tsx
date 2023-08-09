@@ -2,7 +2,6 @@ import ContentCard from "./main/ContentCard";
 import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
 import useModalManage from "@/hooks/classroom/useModalManage";
 import CourseInfo from "./main/CourseInfo";
-import { IUser } from "../page";
 import EmptyContents from "@/components/EmptyContents";
 
 interface IProps {
