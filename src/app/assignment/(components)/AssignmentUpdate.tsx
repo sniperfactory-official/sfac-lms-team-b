@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
+import { Timestamp } from "firebase/firestore";
 import PageToast from "@/components/PageToast";
 import { useUpdateAssignment } from "@/hooks/mutation/useUpdateAssignment";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 import useImageUpload from "@/hooks/mutation/useUpdateImage";
+import "sfac-designkit-react/style.css";
 import { DateSelector } from "sfac-designkit-react";
 import { Button } from "sfac-designkit-react";
-import { Timestamp } from "firebase/firestore";
-
-import "sfac-designkit-react/style.css";
+import { Text } from "sfac-designkit-react";
 
 interface AssignmentUpdateProps {
   isOpen: boolean;
@@ -65,7 +65,6 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
       }
     }
   }, [isOpen]);
-  // 일단 isOpen으로 해놓았지만 추후 변경해보자
 
   const updateAssignmentMutation = useUpdateAssignment(assignmentId);
   const imageUploadMutation = useImageUpload();
@@ -98,8 +97,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setIsOpen(false);
         reset();
         setChangeFiles([]);
-        console.log(assignmentData);
-      }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
+      }, 1000);
     } catch (error) {
       setToastMsg("과제 수정에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
@@ -107,7 +105,8 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   };
   const setChangeDate = (select: [Date | null, Date | null]) => {
     const [start, end] = select;
-
+    console.log("Selected start date:", start);
+    console.log("Selected end date:", end);
     setDates({
       startDate: start || null,
       endDate: end || null,
@@ -132,7 +131,6 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         return;
       }
 
-      // 이미지 개수를 확인하여 5개 이상인 경우 토스트 메시지 표시
       if (changeFiles.length + fileList.length > MAX_IMAGES) {
         setToastMsg(`이미지는 최대 ${MAX_IMAGES}개까지 등록 가능합니다.`);
         setIsAccept(false);
@@ -169,7 +167,6 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
     ) {
       setToastMsg("필수 항목을 모두 입력해주세요.");
       setIsAccept(false);
-      return;
     } else {
       handleSubmit(onSubmit);
     }
@@ -178,12 +175,13 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div>
-        <label
-          htmlFor="level-select"
-          className="text-base font-medium mr-[20px]"
+        <Text
+          size="base"
+          weight="medium"
+          className="text-color-Grayscale-100 mr-[20px]"
         >
           과제 난이도
-        </label>
+        </Text>
         <select
           id="level-select"
           {...register("level", { required: true })}
@@ -200,7 +198,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
       </div>
 
       <input
-        className="w-full focus:outline-none text-xl text-grayscale-40 mb-[13px]"
+        className="w-full focus:outline-none text-lg text-grayscale-40 mb-[13px]"
         placeholder="제목을 입력해주세요"
         type="text"
         {...register("title", { required: true })}
@@ -295,18 +293,19 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
 
       <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-between px-[33px]">
         <div className="flex justify-start items-center">
-          <label
-            htmlFor="submit-period"
-            className="font-bold text-base mr-[12px]"
+          <Text
+            size="base"
+            weight="bold"
+            className="text-color-Grayscale-100 mr-[12px]"
           >
             제출 기간
-          </label>
+          </Text>
           <div>
             <DateSelector
               selected={dates.startDate} // 선택일
               startDate={dates.startDate} // 시작일
               endDate={dates.endDate} // 종료일
-              ChangeDate={setChangeDate} // 기간을 정하는 함수
+              ChangeDate={setChangeDate}
             />
           </div>
         </div>
@@ -320,7 +319,7 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
           />
         </div>
 
-        <div className="absolute left-[33px] bottom-[33px]">
+        <div className="absolute left-[33px]">
           {toastMsg && (
             <PageToast
               toastMsg={toastMsg}
