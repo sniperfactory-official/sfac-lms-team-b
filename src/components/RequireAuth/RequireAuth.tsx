@@ -6,6 +6,7 @@ import { auth } from "@/utils/firebase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "../Loading/Loading";
+import { usePathname } from "next/navigation";
 import { useAppSelector } from "@/redux/store";
 export default function RequireAuth({
   children,
@@ -41,12 +42,20 @@ export default function RequireAuth({
       router.push("/community");
     }
   }, [loading, authenticated]);
+  const pathname = usePathname();
+
+  const isTargetRoute = [
+    "/classroom",
+    "/community",
+    "/assignment",
+    "/mypage",
+  ].includes(pathname);
 
   // 로딩 상태면 Loading Spinner 사용
   if (loading) {
     <LoadingSpinner />;
   } else {
-    if (authenticated) {
+    if (authenticated && isTargetRoute) {
       return (
         <>
           <Navbar />
