@@ -8,6 +8,7 @@ interface ModalState {
   videoFileModalOpen: boolean;
   commentModalOpen: boolean;
   replyCommentModalOpen: boolean;
+  lectureDeleteModalOpen: boolean;
   modalRole: string;
   lectureInfo: ILecture | null;
   [key: string]: boolean | string | ILecture | null;
@@ -20,6 +21,7 @@ const initialState: ModalState = {
   videoFileModalOpen: false,
   commentModalOpen: false,
   replyCommentModalOpen: false,
+  lectureDeleteModalOpen: false,
   modalRole: "",
   lectureInfo: null,
 };
