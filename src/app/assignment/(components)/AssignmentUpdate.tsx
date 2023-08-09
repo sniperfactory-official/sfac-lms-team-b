@@ -58,10 +58,11 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         setValue("title", data.title);
         setValue("content", data.content);
         setImageUrls(data.images || []);
-        // 시간을 yyyy.mm.dd 로 불러오는 것 추후에 해야합니다.
 
-        // setValue("startDate", data.startDate);
-        // setValue("endDate", data.endDate);
+        setDates({
+          startDate: data.startDate.toDate(),
+          endDate: data.endDate.toDate(),
+        });
       }
     }
   }, [isOpen]);
@@ -70,9 +71,9 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   const imageUploadMutation = useImageUpload();
 
   const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
-    // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
-    assignmentData.images = changeFiles.map(file => URL.createObjectURL(file));
+    if (dates.startDate === null || dates.endDate === null) return onInValid();
 
+    assignmentData.images = changeFiles.map(file => URL.createObjectURL(file));
     if (dates.startDate && typeof dates.startDate !== "string") {
       assignmentData.startDate = Timestamp.fromDate(dates.startDate);
     }
@@ -105,8 +106,6 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   };
   const setChangeDate = (select: [Date | null, Date | null]) => {
     const [start, end] = select;
-    console.log("Selected start date:", start);
-    console.log("Selected end date:", end);
     setDates({
       startDate: start || null,
       endDate: end || null,
@@ -125,7 +124,6 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
         file => file.size > MAX_FILE_SIZE_MB * 1024 * 1024,
       );
       if (oversizedFiles.length > 0) {
-        console.log(oversizedFiles);
         setToastMsg(`파일 용량이 너무 큽니다. (최대 ${MAX_FILE_SIZE_MB}MB).`);
         setIsAccept(false);
         return;
@@ -158,22 +156,16 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
   };
 
   const handleFormValidation = () => {
-    if (
-      !errors.level ||
-      !errors.title ||
-      !errors.content ||
-      !errors.startDate ||
-      !errors.endDate
-    ) {
-      setToastMsg("필수 항목을 모두 입력해주세요.");
-      setIsAccept(false);
-    } else {
-      handleSubmit(onSubmit);
-    }
+    handleSubmit(onSubmit);
+  };
+
+  const onInValid = () => {
+    setToastMsg("필수 항목을 모두 입력해주세요.");
+    setIsAccept(false);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit, onInValid)}>
       <div>
         <Text
           size="base"
@@ -302,9 +294,9 @@ const AssignmentUpdate: React.FC<AssignmentUpdateProps> = ({
           </Text>
           <div>
             <DateSelector
-              selected={dates.startDate} // 선택일
-              startDate={dates.startDate} // 시작일
-              endDate={dates.endDate} // 종료일
+              selected={dates.startDate}
+              startDate={dates.startDate}
+              endDate={dates.endDate}
               ChangeDate={setChangeDate}
             />
           </div>
