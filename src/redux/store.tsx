@@ -17,7 +17,7 @@ const persistedReducer = persistReducer(persistConfig, userSlice);
 
 export const store = configureStore({
   reducer: {
-    userId: persistedReducer,
+    userInfo: persistedReducer,
     classroomModal: classroomModalReducer,
     lectureInfo: lectureInfoSliceReducer,
     dropzoneFile: dropzoneFileReducer,

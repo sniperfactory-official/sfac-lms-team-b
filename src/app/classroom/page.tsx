@@ -3,8 +3,8 @@ import Sidebar from "@/app/classroom/(components)/Sidebar";
 import ClassContent from "@/app/classroom/(components)/ClassContent";
 import useContentSyncer from "@/hooks/classroom/useContentSyncer";
 import LoadingSpinner from "@/components/Loading/Loading";
-import { getCookies } from "../api/cookie";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 export interface IUser {
   role: string | null;
@@ -13,28 +13,11 @@ export interface IUser {
 }
 
 export default function Classroom() {
-  const [user, setUser] = useState<IUser>({
-    role: null,
-    uid: null,
-    name: null,
-  });
-  useEffect(() => {
-    const test = async () => {
-      const res = await getCookies();
-      setUser({
-        role: res.role.value,
-        uid: res.uid.value,
-        name: res.name.value,
-      });
-    };
-    test();
-  }, []);
-  console.log(user);
-
+  const role = useSelector((state: RootState) => state.userInfo.role);
   const { currentCourse, setCurrentCourse, courseList, isCourseListFetch } =
     useContentSyncer();
 
-  if (isCourseListFetch || currentCourse === undefined || user === null)
+  if (isCourseListFetch || currentCourse === undefined || role === undefined)
     return (
       <div className="w-screen flex justify-center">
         <LoadingSpinner />
@@ -47,9 +30,9 @@ export default function Classroom() {
         <Sidebar
           courseList={courseList!}
           setCurrentCourse={setCurrentCourse}
-          user={user}
+          role={role}
         />
-        <ClassContent currentCourse={currentCourse!} user={user} />
+        <ClassContent currentCourse={currentCourse!} role={role} />
       </section>
     </div>
   );
