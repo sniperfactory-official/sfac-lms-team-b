@@ -9,6 +9,7 @@ import {
   orderBy,
   Timestamp,
   doc,
+  DocumentData,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Assignment } from "@/types/firebase.types";

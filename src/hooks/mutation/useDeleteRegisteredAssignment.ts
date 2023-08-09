@@ -17,6 +17,7 @@ const deleteRegisteredAssignment = async (
   try {
     const assignmentRef = doc(db, "assignments", assignmentId);
 
+    // storage Image 삭제
     if (imageValue.length > 0) {
       await Promise.all(
         imageValue.map(async url => {
@@ -33,7 +34,7 @@ const deleteRegisteredAssignment = async (
         }),
       );
     }
-
+    // 과제삭제
     await deleteDoc(assignmentRef);
 
     const submittedAssignmentsQuery = query(
@@ -43,6 +44,7 @@ const deleteRegisteredAssignment = async (
 
     const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
 
+    // 제출과제 삭제 및 제출한 과제 첨부파일 삭제
     await Promise.all(
       submittedAssignmentsDocs.docs.map(async document => {
         const feedbackDocs = await getDocs(
