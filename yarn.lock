@@ -1034,11 +1034,6 @@
   resolved "https://registry.yarnpkg.com/@next/env/-/env-13.4.10.tgz#8b17783d2c09be126bbde9ff1164566517131bff"
   integrity sha512-3G1yD/XKTSLdihyDSa8JEsaWOELY+OWe08o0LUYzfuHp1zHDA8SObQlzKt+v+wrkkPcnPweoLH1ImZeUa0A1NQ==
 
-"@next/env@13.4.13":
-  version "13.4.13"
-  resolved "https://registry.yarnpkg.com/@next/env/-/env-13.4.13.tgz#50250cec7626904b93a4a934933d6a747763259d"
-  integrity sha512-fwz2QgVg08v7ZL7KmbQBLF2PubR/6zQdKBgmHEl3BCyWTEDsAQEijjw2gbFhI1tcKfLdOOJUXntz5vZ4S0Polg==
-
 "@next/eslint-plugin-next@13.4.10":
   version "13.4.10"
   resolved "https://registry.yarnpkg.com/@next/eslint-plugin-next/-/eslint-plugin-next-13.4.10.tgz#ff19867396a7709ff75986645f2223787fbb2d9b"
@@ -6222,16 +6217,6 @@ semver@^7.3.7, semver@^7.5.3, semver@^7.5.4:
   integrity sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==
   dependencies:
     lru-cache "^6.0.0"
-
-sfac-designkit-react@^0.7.1:
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/sfac-designkit-react/-/sfac-designkit-react-0.7.1.tgz#851aa22ed443a1a273026943a334a86d7f0a4bd8"
-  integrity sha512-oxqBTn3unOiXFnk/59FkABURywtZcsRS1imyKMWj3igE40nyrodxv73qLjg4XIEh0/IvBYrudbJSBGR5V82zaA==
-  dependencies:
-    date-fns "^2.30.0"
-    next "^13.4.12"
-    react-datepicker "^4.16.0"
-    tailwind-merge "^1.14.0"
 
 shebang-command@^2.0.0:
   version "2.0.0"
