@@ -45,7 +45,7 @@
     "react-markdown": "^8.0.7",
     "react-redux": "^8.1.1",
     "redux-persist": "^6.0.0",
-    "sfac-designkit-react": "^0.6.9",
+    "sfac-designkit-react": "^0.7.0",
     "tailwindcss": "3.3.3",
     "typescript": "5.1.6",
     "uuid": "^9.0.0",

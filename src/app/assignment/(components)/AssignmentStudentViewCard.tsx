@@ -23,8 +23,6 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  // console.log("submittedAssignment", submittedAssignment);
-
   return (
     <>
       <div className="flex justify-between items-center px-[21px] py-[24px] border rounded-[10px]">

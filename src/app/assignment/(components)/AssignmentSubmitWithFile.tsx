@@ -235,12 +235,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       {/* bottom-button */}
       <div className="absolute left-0 bottom-0 w-full min-h-[97px] p-[20px_31px_42px]">
         <div className="flex justify-end items-center gap-[12px]">
-          <Button
-            variant="secondary"
-            text="취소"
-            asChild
-            onClick={onClose}
-          />
+          <Button variant="secondary" text="취소" asChild onClick={onClose} />
 
           {/* <button className="border" type="button" onClick={onClose}>
             취소

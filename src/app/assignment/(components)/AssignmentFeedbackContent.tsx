@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useDeleteFeedback } from "@/hooks/mutation/useDeleteFeedback";
 import { useUpdateFeedback } from "@/hooks/mutation/useUpdateFeedback";
 import { useForm } from "react-hook-form";
+import { Button, Text } from "sfac-designkit-react";
 import PageToast from "@/components/PageToast";
 import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
-
 interface IUpdateFeedbackForm {
   updateFeedback: string;
 }
@@ -89,11 +89,13 @@ const AssignmentFeedbackContent = ({
           <div className="grow">
             <div className="flex justify-between items-center mb-[9px]">
               <div className="flex justify-start items-center">
-                <span className="font-[700] text-grayscale-100">
+                <Text size="base" weight="bold" className=" text-grayscale-100">
                   {username}
-                </span>
+                </Text>
                 <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
-                <span className="text-grayscale-20 font-[400]">{role}</span>
+                <Text size="base" weight="medium" className="text-grayscale-40">
+                  {role}
+                </Text>
               </div>
               {userId.id === loginUserId && !updateDelete ? (
                 <div>
@@ -133,25 +135,36 @@ const AssignmentFeedbackContent = ({
               </div>
               {updateMode ? (
                 <div className="flex justify-end item-center gap-[8px]">
-                  <button
-                    className="w-[115px] h-[35px]  rounded-md bg-grayscale-5 text-grayscale-60"
+                  <Button
+                    variant="secondary"
+                    asChild
+                    text="취소하기"
+                    textSize="base"
+                    textWeight="medium"
+                    // className="w-[115px] h-[35px]  rounded-md bg-grayscale-5 text-grayscale-60"
                     type="button"
                     onClick={handleUpdateDelete}
-                  >
-                    취소하기
-                  </button>
-                  <button
-                    className="w-[115px] h-[35px] rounded-md bg-primary-80 text-white disabled:bg-grayscale-10 disabled:text-grayscale-20"
+                  />
+                  <Button
+                    variant="primary"
+                    asChild
+                    text="수정하기"
+                    textSize="base"
+                    textWeight="medium"
                     type="submit"
                     disabled={!isValid}
-                  >
-                    수정하기
-                  </button>
+                  />
                 </div>
               ) : (
-                <p className="text-[12px] text-end text-grayscale-40 h-[35px]">
-                  {createdAt === updatedAt ? createdAt : updatedAt}
-                </p>
+                <div className="text-end">
+                  <Text
+                    size="xs"
+                    weight="medium"
+                    className=" text-grayscale-40"
+                  >
+                    {createdAt === updatedAt ? createdAt : updatedAt}
+                  </Text>
+                </div>
               )}
             </form>
           </div>
