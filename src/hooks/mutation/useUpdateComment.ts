@@ -22,34 +22,9 @@ const updateCommentInDB = async (data: { id: string; newContent: string }) => {
 
 export const useUpdateComment = () => {
   const queryClient = useQueryClient();
-
   return useMutation(updateCommentInDB, {
-    onMutate: async updatedComment => {
-      await queryClient.cancelQueries(["comments"]);
-      const previousComments = queryClient.getQueryData<DocumentData[]>([
-        "comments",
-      ]);
-
-      queryClient.setQueryData(
-        ["comments"],
-        (old: DocumentData[] | undefined) => {
-          return old?.map(comment =>
-            comment.id === updatedComment.id
-              ? { ...comment, ...updatedComment }
-              : comment,
-          );
-        },
-      );
-
-      return { previousComments };
-    },
-    onSettled: () => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["comments"]);
-    },
-    onError: (_err, _newComment, context) => {
-      if (context?.previousComments) {
-        queryClient.setQueryData(["comments"], context.previousComments);
-      }
     },
   });
 };

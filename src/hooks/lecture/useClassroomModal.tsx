@@ -23,10 +23,25 @@ const useClassroomModal = () => {
   const replyCommentModalOpen = useSelector(
     (state: RootState) => state.classroomModal.replyCommentModalOpen,
   );
+  const modalRole = useSelector(
+    (state: RootState) => state.classroomModal.modalRole,
+  );
 
   const handleModalMove = (openModalName: string, closeModalName: string) => {
-    dispatch(setModalVisibility({ modalName: openModalName, visible: true }));
-    dispatch(setModalVisibility({ modalName: closeModalName, visible: false }));
+    dispatch(
+      setModalVisibility({
+        modalName: openModalName,
+        visible: true,
+        modalRole: "create",
+      }),
+    );
+    dispatch(
+      setModalVisibility({
+        modalName: closeModalName,
+        visible: false,
+        modalRole: "create",
+      }),
+    );
   };
 
   return {
@@ -36,6 +51,7 @@ const useClassroomModal = () => {
     videoFileModalOpen,
     commentModalOpen,
     replyCommentModalOpen,
+    modalRole,
     handleModalMove,
   };
 };

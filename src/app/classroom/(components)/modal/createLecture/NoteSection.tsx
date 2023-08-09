@@ -2,8 +2,8 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Editor } from "@toast-ui/react-editor";
 import { RootState } from "@/redux/store";
-import { setLectureContent } from "@/redux/slice/lectureInfoSlice";
-import useUploadNoteImage from "@/hooks/lecture/useUploadNoteImage";
+import { setNoteImages, setTextContent } from "@/redux/slice/lectureInfoSlice";
+import useUploadImage from "@/hooks/lecture/useUploadImage";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
 type HookCallback = (url: string, text?: string) => void;
@@ -11,11 +11,11 @@ type HookCallback = (url: string, text?: string) => void;
 const NoteSction: React.FC = () => {
   const editorRef = useRef<Editor>(null);
   const dispatch = useDispatch();
-  const lectureContent = useSelector(
-    (state: RootState) => state.lectureInfo.lectureContent,
+  const textContent = useSelector(
+    (state: RootState) => state.lectureInfo.textContent,
   );
-  const [content, setContent] = useState<string | undefined>(lectureContent);
-  const { onUploadImage } = useUploadNoteImage();
+  const [content, setContent] = useState<string | undefined>(textContent);
+  const { onUploadImage } = useUploadImage();
 
   const toolbarItems = [
     ["heading", "bold", "italic", "strike"],
@@ -28,7 +28,7 @@ const NoteSction: React.FC = () => {
       ?.getInstance()
       .getMarkdown();
     setContent(newContent);
-    dispatch(setLectureContent(newContent));
+    dispatch(setTextContent(newContent));
   };
 
   const handleUploadImage = async (
@@ -37,6 +37,7 @@ const NoteSction: React.FC = () => {
   ) => {
     if (imageFile instanceof File) {
       const imageURL: string | undefined = await onUploadImage(imageFile);
+      dispatch(setNoteImages(imageURL));
       imageURL && callback(imageURL);
     }
   };

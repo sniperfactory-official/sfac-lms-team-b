@@ -98,7 +98,7 @@ const Comment: React.FC<CommentProps> = ({
                 <ReplyCount replyCount={replyCount} />
               )}
             </div>
-            {showFullComment && (
+            {showFullComment && userId.id !== user?.uid && (
               <div className="space-x-2 text-black">
                 <button
                   className="float-right text-xs hover:text-blue-500 cursor-pointer"

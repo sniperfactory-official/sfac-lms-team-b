@@ -5,8 +5,11 @@ interface LectureInfoState {
   courseId: string;
   lectureType: string;
   lectureTitle: string;
-  lectureContent: string;
+  externalLink: string;
+  textContent: string;
   noteImages: string[];
+  videoURL: string;
+  videoLength: number;
   startDate: Timestamp | null;
   endDate: Timestamp | null;
   isLecturePrivate: boolean;
@@ -16,8 +19,11 @@ const initialState: LectureInfoState = {
   courseId: "",
   lectureType: "",
   lectureTitle: "",
-  lectureContent: "",
+  externalLink: "",
+  textContent: "",
   noteImages: [],
+  videoURL: "",
+  videoLength: 0,
   startDate: null,
   endDate: null,
   isLecturePrivate: true,
@@ -36,11 +42,20 @@ const LectureInfoSlice = createSlice({
     setLectureTitle: (state, action) => {
       state.lectureTitle = action.payload;
     },
-    setLectureContent: (state, action) => {
-      state.lectureContent = action.payload;
+    setExternalLink: (state, action) => {
+      state.externalLink = action.payload;
+    },
+    setTextContent: (state, action) => {
+      state.textContent = action.payload;
     },
     setNoteImages: (state, action) => {
       state.noteImages.push(action.payload);
+    },
+    setVideoURL: (state, action) => {
+      state.videoURL = action.payload;
+    },
+    setVideoLength: (state, action) => {
+      state.videoLength = action.payload;
     },
     setStartDate: (state, action) => {
       state.startDate = action.payload;
@@ -53,7 +68,7 @@ const LectureInfoSlice = createSlice({
     },
     resetInput: state => {
       const { courseId } = state;
-      initialState;
+      Object.assign(state, initialState);
       state.courseId = courseId;
     },
   },
@@ -63,8 +78,11 @@ export const {
   setCourseId,
   setLectureType,
   setLectureTitle,
-  setLectureContent,
+  setExternalLink,
+  setTextContent,
   setNoteImages,
+  setVideoURL,
+  setVideoLength,
   setStartDate,
   setEndDate,
   setIsLecturePrivate,

@@ -2,31 +2,30 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { FileRejection, useDropzone } from "react-dropzone";
-import {
-  setVideoFile,
-  setErrorMessage,
-  setSuccessMessage,
-  reset,
-} from "@/redux/slice/dropzoneFileSlice";
+import { setErrorMessage } from "@/redux/slice/dropzoneFileSlice";
+import useUploadVideo from "./useUploadVideo";
+import useDeleteFile from "./useDeleteFile";
+import useLectureInfo from "./useLectureInfo";
 
 const useVideoFileDrop = () => {
   const dispatch = useDispatch();
-  const videoFile = useSelector(
-    (state: RootState) => state.dropzoneFile.videoFile,
+  const videoFileName = useSelector(
+    (state: RootState) => state.dropzoneFile.videoFileName,
   );
+  const { onUploadVideo } = useUploadVideo();
+  const { onDeleteFile } = useDeleteFile();
+  const { videoURL } = useLectureInfo();
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
-      if (videoFile) {
+      if (videoFileName) {
         dispatch(
           setErrorMessage(
             "이미 사용 중인 파일이 있습니다. 기존의 파일을 삭제하고 진행해주세요.",
           ),
         );
-      } else if (acceptedFiles.length !== 0) {
-        const file: File = acceptedFiles[0];
-        dispatch(setVideoFile(file));
-        dispatch(setSuccessMessage("파일이 업로드되었습니다!"));
+      } else if (acceptedFiles.length > 0) {
+        onUploadVideo(acceptedFiles[0]);
       } else if (fileRejections.length > 0) {
         if (
           fileRejections[0].errors[0].message ===
@@ -44,11 +43,11 @@ const useVideoFileDrop = () => {
         }
       }
     },
-    [dispatch, videoFile],
+    [dispatch, videoFileName, onUploadVideo],
   );
 
   const handleRemoveVideoFile = () => {
-    dispatch(reset());
+    onDeleteFile(videoURL);
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

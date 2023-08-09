@@ -8,6 +8,7 @@ interface ModalState {
   commentModalOpen: boolean;
   replyCommentModalOpen: boolean;
   lectureId: string | null;
+  modalRole: string;
   [key: string]: boolean | string | null;
 }
 
@@ -19,6 +20,7 @@ const initialState: ModalState = {
   commentModalOpen: false,
   replyCommentModalOpen: false,
   lectureId: null,
+  modalRole: "",
 };
 
 const classroomModalSlice = createSlice({
@@ -27,10 +29,15 @@ const classroomModalSlice = createSlice({
   reducers: {
     setModalVisibility: (
       state,
-      action: PayloadAction<{ modalName: string; visible: boolean }>,
+      action: PayloadAction<{
+        modalName: string;
+        visible: boolean;
+        modalRole: string;
+      }>,
     ) => {
-      const { modalName, visible } = action.payload;
+      const { modalName, visible, modalRole } = action.payload;
       state[modalName] = visible;
+      state.modalRole = modalRole;
     },
     closeModal: () => initialState,
   },

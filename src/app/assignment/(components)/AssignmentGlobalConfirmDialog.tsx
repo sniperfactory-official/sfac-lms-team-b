@@ -1,3 +1,5 @@
+import { Button, Title } from "sfac-designkit-react";
+
 type OwnProps = {
   onConfirm: () => void;
   onCancel: () => void;
@@ -28,24 +30,25 @@ const AssignmentGlobalConfirmDialog: React.FC<OwnProps> = ({
           className={`modal relative z-1 bg-white p-[10px] rounded-[10px] max-w-[80vw] w-[477px] shadow-24dp h-[168px]`}
         >
           <div className="h-full flex flex-col justify-center gap-[27px]">
-            <h2 className="text-[20px] font-[700] text-grayscale-100 text-center">
+            <Title
+              size="xl"
+              className="text-center text-grayscale-100 text-color-Grayscale-100"
+            >
               {title}
-            </h2>
-            <div className="flex justify-center item-center gap-[22px]">
-              <button
-                className="w-[115px] h-[35px] border"
-                type="button"
+            </Title>
+            <div className="flex justify-center item-center gap-[8px]">
+              <Button
+                variant="secondary"
+                text="취소"
+                asChild
                 onClick={onCancel}
-              >
-                취소
-              </button>
-              <button
-                className="w-[115px] h-[35px] border"
-                type="button"
+              />
+              <Button
+                variant="destructive"
+                text={confirmBtnMsg}
+                asChild
                 onClick={onConfirm}
-              >
-                {confirmBtnMsg}
-              </button>
+              />
             </div>
           </div>
         </div>

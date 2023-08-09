@@ -30,6 +30,8 @@ const fetchCourseList = async () => {
         lectureList.push(lectureData as ILecture);
       }
     });
+    // lectureList order 키값으로 정렬
+    lectureList.sort((a, b) => a.order - b.order);
     courseField.push({
       courseData: courseDoc.data() as Course,
       lectureList,
