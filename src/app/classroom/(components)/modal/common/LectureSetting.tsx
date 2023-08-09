@@ -10,7 +10,6 @@ import {
   clearError,
 } from "@/redux/slice/lectureInfoSlice";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
-import { DateSelector, Text } from "sfac-designkit-react";
 
 const LectureSetting: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,7 +19,7 @@ const LectureSetting: React.FC = () => {
     dispatch(setIsLecturePrivate(!isLecturePrivate));
   };
 
-  const handleChangeDate = (ranges: [Date | null, Date | null]) => {
+  const handleChangeDate = (ranges: [Date, Date]) => {
     const [startDate, endDate] = ranges;
 
     dispatch(
@@ -31,6 +30,10 @@ const LectureSetting: React.FC = () => {
     dispatch(
       setEndDate(endDate ? new Timestamp(endDate.getTime() / 1000, 0) : null),
     );
+
+    if (startDate && endDate) {
+      dispatch(clearError());
+    }
   };
 
   const timestampToDate = (timestamp: Timestamp | null): Date | null => {
@@ -40,20 +43,26 @@ const LectureSetting: React.FC = () => {
   return (
     <div className="flex relative gap-[69px]">
       <div className="flex gap-[12px] items-center ">
-        <Text size="base" weight="medium">
+        <span className="text-black font-inter text-base font-semibold tracking-tighter leading-normal">
           수강 기간
-        </Text>
-        <DateSelector
+        </span>
+        <DatePicker
+          placeholderText="Pick a date"
+          locale={ko}
           selected={startDate ? timestampToDate(startDate) : null}
           startDate={startDate ? timestampToDate(startDate) : null}
           endDate={endDate ? timestampToDate(endDate) : null}
-          ChangeDate={handleChangeDate}
+          onChange={handleChangeDate}
+          minDate={new Date()}
+          selectsRange
+          className="bg-white border-2 border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2 cursor-pointer"
+          dateFormat="yyyy.MM.dd"
         />
       </div>
       <div className="flex gap-[12px] items-center">
-        <Text size="base" weight="medium">
+        <span className="text-black font-inter text-base font-semibold tracking-tighter leading-normal">
           강의 공개
-        </Text>
+        </span>
         <label htmlFor="toggle" className="relative block w-[51px] h-[26px]">
           <input
             type="checkbox"

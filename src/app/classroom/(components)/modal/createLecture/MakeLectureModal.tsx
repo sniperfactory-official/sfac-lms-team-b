@@ -6,8 +6,6 @@ import Image from "next/image";
 import Layout from "../common/Layout";
 import ModalHeader from "../common/ModalHeader";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import { Button, Icon } from "sfac-designkit-react";
-import "sfac-designkit-react/style.css";
 
 const MakeLectureModal: React.FC = () => {
   const { handleModalMove } = useClassroomModal();
@@ -45,8 +43,8 @@ const MakeLectureModal: React.FC = () => {
             }`}
             onClick={() => setSelectedModal("노트")}
           >
-            <Icon
-              name="Note"
+            <Image
+              src="images/note.svg"
               alt="note"
               width={60}
               height={60}
@@ -77,8 +75,8 @@ const MakeLectureModal: React.FC = () => {
             }`}
             onClick={() => setSelectedModal("링크")}
           >
-            <Icon
-              name="Link"
+            <Image
+              src="images/link.svg"
               alt="link"
               width={60}
               height={60}
@@ -87,13 +85,13 @@ const MakeLectureModal: React.FC = () => {
             링크 만들기
           </button>
         </div>
-        <Button
-          variant="primary"
-          text="다음"
-          asChild
-          className="mb-[-20px] ml-auto"
+        <button
+          type="button"
+          className="rounded-md text-white bg-primary-80 w-[107px] h-[45px] mb-[-20px] ml-auto"
           onClick={() => onNextButtonClick(selectedModal)}
-        />
+        >
+          다음
+        </button>
       </div>
     </Layout>
   );

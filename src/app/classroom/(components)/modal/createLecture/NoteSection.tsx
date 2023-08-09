@@ -34,6 +34,10 @@ const NoteSction: React.FC = () => {
       ?.getInstance()
       .getMarkdown();
     dispatch(setTextContent(newContent));
+
+    if (textContent) {
+      dispatch(clearError());
+    }
   };
 
   const handleUploadImage = async (
