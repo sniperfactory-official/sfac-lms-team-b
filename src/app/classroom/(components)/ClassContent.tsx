@@ -26,7 +26,7 @@ const ClassContent = ({ currentCourse, role }: IProps) => {
           if (role === "수강생" && lecture.isPrivate) {
             return null; // 수강생이면서 강의가 비공개인 경우 렌더링하지 않습니다.
           }
-          return <ContentCard key={lecture.lectureId} lecture={lecture} />;
+          return <ContentCard key={lecture.lectureId} lecture={lecture} role={role}/>;
         })
       )}
       {SelectedModal && <SelectedModal />}
