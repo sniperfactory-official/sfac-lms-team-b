@@ -4,6 +4,7 @@ import { Editor } from "@toast-ui/react-editor";
 import { setNoteImages, setTextContent } from "@/redux/slice/lectureInfoSlice";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import useUploadImage from "@/hooks/lecture/useUploadImage";
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
 type HookCallback = (url: string, text?: string) => void;
@@ -11,9 +12,13 @@ type HookCallback = (url: string, text?: string) => void;
 const NoteSction: React.FC = () => {
   const editorRef = useRef<Editor>(null);
   const dispatch = useDispatch();
+  const { lectureInfo, modalRole } = useClassroomModal();
   const { onUploadImage } = useUploadImage();
   const { textContent } = useLectureInfo();
-
+  const currentValue =
+    modalRole === "edit"
+      ? lectureInfo?.lectureContent.textContent
+      : textContent;
   const toolbarItems = [
     ["heading", "bold", "italic", "strike"],
     ["image", "link"],
@@ -41,7 +46,7 @@ const NoteSction: React.FC = () => {
   return (
     <Editor
       ref={editorRef}
-      initialValue={textContent}
+      initialValue={currentValue}
       placeholder="내용을 입력해주세요."
       hideModeSwitch={true}
       usageStatistics={false}
