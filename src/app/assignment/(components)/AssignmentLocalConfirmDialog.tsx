@@ -1,4 +1,4 @@
-import { UseMutateFunction } from "@tanstack/react-query";
+import { Button, Text } from "sfac-designkit-react";
 
 type OwnProps = {
   onConfirm: () => void;
@@ -24,27 +24,28 @@ const AssignmentLocalConfirmDialog: React.FC<OwnProps> = ({
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        <h4 className="mb-[15px] text-[14px] font-[700] text-grayscale-80">
+        <Text
+          size="sm"
+          weight="bold"
+          className="text-grayscale-80 text-color-Grayscale-80 mb-[15px] block"
+        >
           {title}
-        </h4>
-        <p className="text-[12px] font-[500] text-grayscale-80 mb-[16px]">
+        </Text>
+        <Text
+          size="xs"
+          weight="semibold"
+          className="text-grayscale-80 text-color-Grayscale-80 mb-[16px] block"
+        >
           {content}
-        </p>
+        </Text>
         <div className="flex justify-end item-center gap-[8px]">
-          <button
-            className="w-[115px] h-[35px]  rounded-md bg-grayscale-5 text-grayscale-60"
-            type="button"
-            onClick={onCancel}
-          >
-            취소
-          </button>
-          <button
-            className="w-[115px] h-[35px] rounded-md bg-primary-80 text-white"
-            type="button"
+          <Button variant="secondary" text="취소" asChild onClick={onCancel} />
+          <Button
+            variant="primary"
+            text={confirmBtnMsg}
+            asChild
             onClick={onConfirm}
-          >
-            {confirmBtnMsg}
-          </button>
+          />
         </div>
       </div>
     </>

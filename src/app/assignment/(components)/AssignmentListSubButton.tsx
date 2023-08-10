@@ -1,5 +1,7 @@
 "use client";
 
+import "sfac-designkit-react/style.css";
+import { Button } from "sfac-designkit-react";
 import React, { useEffect, useState } from "react";
 import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssignment";
 import { useRouter } from "next/navigation";
@@ -9,7 +11,6 @@ interface Props {
   userId: string;
 }
 
-//추후 userinfo도 넣어야함
 const AssignmentListSubButton = ({ refId, userId }: Props) => {
   const submittionHooks = useGetSubmittedAssignments(refId, userId);
   const isLoading = submittionHooks.isLoading;
@@ -26,25 +27,27 @@ const AssignmentListSubButton = ({ refId, userId }: Props) => {
   return (
     <div>
       {isSubmitted ? (
-        <button
+        <Button
+          variant="secondary"
+          text="제출완료"
           onClick={() => {
-            router.push("/assignment/" + refId);
+            router.push(`/assignment/${refId}`);
           }}
           type="button"
-          className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-zinc-100 font-bold text-zinc-500	border-none"
-        >
-          제출완료
-        </button>
+          asChild
+          className="flex-shrink-0"
+        />
       ) : (
-        <button
+        <Button
+          variant="primary"
+          text="제출하기"
           onClick={() => {
-            router.push("/assignment/" + refId);
+            router.push(`/assignment/${refId}`);
           }}
           type="button"
-          className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80 font-bold text-slate-50 border-none"
-        >
-          제출하기
-        </button>
+          asChild
+          className="flex-shrink-0"
+        />
       )}
     </div>
   );
