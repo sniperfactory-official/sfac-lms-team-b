@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { Avatar } from "sfac-designkit-react";
 import { Post } from "@/types/firebase.types";
+import { Avatar } from "sfac-designkit-react";
 import timestampToDate from "@/utils/timestampToDate";
 
 interface PostCardProps {

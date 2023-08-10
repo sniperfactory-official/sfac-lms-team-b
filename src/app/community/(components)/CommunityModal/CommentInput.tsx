@@ -1,13 +1,12 @@
 import { Timestamp } from "firebase/firestore";
-import Image from "next/image";
 import useUpdateComment from "@/hooks/community/useUpdateComment";
 import useCreateComment from "@/hooks/community/useCreateComment";
 import { useForm } from "react-hook-form";
 import { Post } from "@/types/firebase.types";
 import { useEffect } from "react";
 import { DocumentData } from "@firebase/firestore";
-import useGetProfileImage from "@/hooks/mypage/useGetProfileImage";
 import { useAppSelector } from "@/redux/store";
+import { Avatar } from "sfac-designkit-react";
 
 interface FormValue {
   content: string;
@@ -48,14 +47,6 @@ export default function CommentInput({
     // nestedId &&
   }, [updateId, nestedId]);
 
-  // 프로필 이미지
-  const {
-    data: profileData,
-    isLoading: profileLoading,
-    isError: profileError,
-    error: profileFetchError,
-  } = useGetProfileImage(profileUrl);
-
   const createComment = (newComment: FormValue) => {
     if (createError) {
       console.error(createError);
@@ -66,7 +57,7 @@ export default function CommentInput({
         createMutate({
           post: {
             parentId: nestedId.parentId,
-            content: `@${nestedId.tagId} ${newComment.content}`,
+            content: `@${nestedId.tagId}| ${newComment.content}`,
             createdAt: now,
             userId: userData.userRef,
           },
@@ -108,19 +99,17 @@ export default function CommentInput({
   const contentValue = watch("content");
   const now = Timestamp.now();
 
-  if (!profileLoading) {
     return (
       <div className="flex items-center text-base border-solid border  border-gray-200 rounded-xl p-4">
         <div className=" w-full">
           <div className="flex items-center ">
-            <div className="w-[30px] h-[30px] relative flex-shrink-0 mr-2">
-              <Image
-                src={profileData ?? "/images/avatar.svg"}
-                alt="프로필"
-                layout="fill"
-                className=" rounded-[50%] object-cover object-center"
-              />
-            </div>
+            <Avatar
+              src={profileUrl ?? "/images/avatar.svg"}
+              alt="프로필"
+              size={34}
+              ring={false}
+              className="rounded-[50%] object-cover object-center h-[34px] mr-2"
+            />
             <div className="flex items-center flex-1">
               <span>{userData?.username}</span>
               <div className="bg-gray-400 w-1 h-1 rounded mx-2"></div>
@@ -182,5 +171,4 @@ export default function CommentInput({
         </div>
       </div>
     );
-  }
 }

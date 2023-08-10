@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import vector from "/public/images/vector.svg";
+import logoutimage from "/public/images/logout.svg";
 import pencil from "/public/images/pencil.svg";
 import { logoutUser, updateProfileImage } from "@/redux/userSlice";
 import { useAppSelector, useAppDispatch } from "@/redux/store";
@@ -63,7 +63,7 @@ export default function Profile() {
           ) : (
             <Avatar
               src={userProfile}
-              alt="스나이퍼 팩토리 로고"
+              alt="프로필 이미지"
               size={68}
               className=" rounded-[50%] object-cover object-center h-[68px]"
             />
@@ -103,7 +103,7 @@ export default function Profile() {
           onLogout();
         }}
       >
-        <Image src={vector} alt="로그아웃 버튼" className="mr-2 " />
+        <Image src={logoutimage} alt="로그아웃 버튼" className="mr-2 " />
         <span className="text-gray-400">로그아웃</span>
       </button>
     </div>
