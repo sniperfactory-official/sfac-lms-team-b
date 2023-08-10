@@ -52,7 +52,7 @@ export default function Category({
         myData.map(({ id, title, category, content }) => (
           <div
             key={id}
-            className="h-[73px] text-base border-solid border border-gray-200 rounded-[10px] px-[12px] py-[16px] my-3 cursor-pointer"
+            className="h-fit text-base border-solid border border-gray-200 rounded-[10px] px-[12px] py-[16px] my-3 cursor-pointer"
             onClick={() => {
               handleDetailModalClick && handleDetailModalClick(id);
             }}
@@ -61,7 +61,7 @@ export default function Category({
               <div className="align-middle px-[5px] leading-5 text-[10px] text-center bg-gray-200 rounded mr-[7px] mb-[4px]">
                 {category}
               </div>
-              <h4 className="text-sm">{title}</h4>
+              <h4 className="text-sm truncate w-32">{title}</h4>
             </div>
             <p className=" text-xs text-primary-30 truncate overflow-hidden ...">
               {content}
