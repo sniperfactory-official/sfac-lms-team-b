@@ -6,10 +6,13 @@ import useGetSelectedPost from "@/hooks/queries/useGetSelectedPost";
 import useGetPostImage from "@/hooks/community/useGetPostImage";
 import LoadingSpinner from "@/components/Loading/Loading";
 
-const CommentsDetailModal = ({ id }) => {
-  console.log("id", id);
-  const [imageIds, setImageIds] = useState<string[]>([]);
-  const [parentId, setParentId] = useState<string[]>([]);
+interface CommentsDetailModalProps {
+  id: string;
+}
+
+const CommentsDetailModal: React.FC<CommentsDetailModalProps> = ({ id }) => {
+  const [imageIds, setImageIds] = useState<string[]>([""]);
+  const [parentId, setParentId] = useState<string>("");
 
   const userId = useAppSelector(state => state.userInfo.id);
   // 댓글 정보
@@ -19,7 +22,6 @@ const CommentsDetailModal = ({ id }) => {
     isError: commentError,
     error: commentFetchError,
   } = useGetSelectedPost(id);
-  console.log("댓글정보", commentData);
 
   useEffect(() => {
     if (commentData?.parentId) {
@@ -27,15 +29,12 @@ const CommentsDetailModal = ({ id }) => {
     }
   }, [commentData]);
 
-  console.log("글id", parentId);
-
   const {
     data: postData,
     isLoading: postLoading,
     isError: postError,
     error: postFetchError,
   } = useGetSelectedPost(parentId);
-  console.log("글data", postData);
 
   useEffect(() => {
     if (postData?.postImages) {
@@ -62,7 +61,6 @@ const CommentsDetailModal = ({ id }) => {
     <div>
       <div className="z-50">
         <PostCard key={parentId} postData={postData} imageData={imageData} />
-
         <div key={id}>
           <CommentCard
             comment={commentData}
