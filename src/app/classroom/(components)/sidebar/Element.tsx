@@ -90,7 +90,7 @@ const Element = ({
           }
         />
       ) : type === "course" ? (
-        <div className="w-[15px] h-[15px] flex justify-center items-center">
+        <div className="w-[15px] h-[15px] flex justify-center items-center ml-[10px]">
           🎯
         </div>
       ) : (
