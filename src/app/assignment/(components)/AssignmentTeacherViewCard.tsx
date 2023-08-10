@@ -76,7 +76,7 @@ const AssignmentTeacherViewCard: React.FC<IAssignmentTeacherViewCardProps> = ({
                     </Text>
                   );
                 })}
-              {links.length > 0 &&
+              {links &&
                 links.map((item, index) => {
                   return (
                     <Text
