@@ -60,7 +60,7 @@ const CommentsDetailModal: React.FC<CommentsDetailModalProps> = ({
       setImageIds(postData.postImages);
     }
   }, [postData]);
-  console.log(commentData);
+
   // 글 이미지
   const {
     data: imageData,

@@ -21,36 +21,51 @@ const getAssignments = async (userId: string) => {
   const querySnapshot = await getDocs(attachmentQuery);
 
   let myAssignments: DocumentData[] = [];
+  const fetchPromises = [];
+
   for (const docData of querySnapshot.docs) {
     const assignmentDoc = docData.data();
-    let content = null;
-    let submittedData = null;
-    let AssignmentData = null;
 
     if (assignmentDoc.submittedAssignmentId instanceof DocumentReference) {
-      const lectureSnapshot = await getDoc(assignmentDoc.submittedAssignmentId);
-      if (lectureSnapshot.exists()) {
-        submittedData = lectureSnapshot.data();
-        if (submittedData.assignmentId instanceof DocumentReference) {
-          const lectureSnapshot = await getDoc(submittedData.assignmentId);
-          if (lectureSnapshot.exists()) {
-            AssignmentData = lectureSnapshot.data();
-          }
-        }
-      }
-      content = assignmentDoc.links;
+      fetchPromises.push(
+        (async () => {
+          const lectureSnapshot = await getDoc(
+            assignmentDoc.submittedAssignmentId,
+          );
+          let submittedData = null;
+          let AssignmentData = null;
 
-      myAssignments.push({
-        id: docData.id,
-        content: content,
-        createdAt: submittedData.createdAt,
-        submittedData,
-        AssignmentData,
-        ...assignmentDoc,
-      });
+          if (lectureSnapshot.exists()) {
+            submittedData = lectureSnapshot.data();
+
+            if (submittedData.assignmentId instanceof DocumentReference) {
+              const assignmentSnapshot = await getDoc(
+                submittedData.assignmentId,
+              );
+              if (assignmentSnapshot.exists()) {
+                AssignmentData = assignmentSnapshot.data();
+              }
+            }
+          }
+
+          myAssignments.push({
+            id: docData.id,
+            content: assignmentDoc?.links,
+            attachmentFiles: assignmentDoc?.attachmentFiles,
+            createdAt: submittedData?.createdAt,
+            submittedData,
+            AssignmentData,
+            ...assignmentDoc,
+          });
+        })(),
+      );
     }
   }
-  return myAssignments || [];
+
+  // Wait for all the fetch operations to complete
+  await Promise.all(fetchPromises);
+
+  return myAssignments;
 };
 
 export default function useGetAssignments(userId: string) {
