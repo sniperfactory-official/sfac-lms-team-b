@@ -29,6 +29,6 @@
       "@utils/*": ["./src/utils/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/assignment/(components)/AssignmentLeftNavContentCardtsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/classroom/[lectureId]/(components)/lectureRoom/.CommentsSection.tsx"],
   "exclude": ["node_modules"]
 }

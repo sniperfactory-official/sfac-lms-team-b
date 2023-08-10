@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import facebookLogo from "/public/images/facebookLogo.svg";
-import instagramLogo from "/public/images/instagramLogo.svg";
-import youtubeLogo from "/public/images/youtubeLogo.svg";
+import facebookLogo from "/public/images/facebook-logo.svg";
+import instagramLogo from "/public/images/instagram-logo.svg";
+import youtubeLogo from "/public/images/youtube-logo.svg";
 
 const contactInfo = [
   { info: "고유번호 : 324-82-00580 | 이사장 : 염민호 (와이엠에스닷코)" },
@@ -51,7 +51,7 @@ export default function Footer() {
       <div className="flex justify-between">
         {links.map((link, index) => (
           <div key={index}>
-            <Link href={link.href}>
+            <Link href={link.href} legacyBehavior>
               <a className="px-1 underline underline-offset-[3px]">
                 {link.text}
               </a>

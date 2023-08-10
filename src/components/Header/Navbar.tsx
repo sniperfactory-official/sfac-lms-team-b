@@ -13,6 +13,7 @@ export default function Navbar() {
   const router = useRouter();
   const userId = useAppSelector(state => state.userInfo.id);
   const user = useAppSelector(state => state.userInfo);
+
   const dispatch = useAppDispatch();
 
   const onLogout = () => {

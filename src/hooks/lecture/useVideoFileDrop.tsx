@@ -2,10 +2,16 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { FileRejection, useDropzone } from "react-dropzone";
-import { setErrorMessage } from "@/redux/slice/dropzoneFileSlice";
+import {
+  setErrorMessage,
+  setVideoFileName,
+  setVideoToDeleteOnEdit,
+} from "@/redux/slice/dropzoneFileSlice";
 import useUploadVideo from "./useUploadVideo";
 import useDeleteFile from "./useDeleteFile";
 import useLectureInfo from "./useLectureInfo";
+import useClassroomModal from "./useClassroomModal";
+import { setVideoLength, setVideoURL } from "@/redux/slice/lectureInfoSlice";
 
 const useVideoFileDrop = () => {
   const dispatch = useDispatch();
@@ -15,6 +21,7 @@ const useVideoFileDrop = () => {
   const { onUploadVideo } = useUploadVideo();
   const { onDeleteFile } = useDeleteFile();
   const { videoURL } = useLectureInfo();
+  const { lectureInfo, modalRole } = useClassroomModal();
 
   const onDrop = useCallback(
     (acceptedFiles: File[], fileRejections: FileRejection[]) => {
@@ -47,7 +54,18 @@ const useVideoFileDrop = () => {
   );
 
   const handleRemoveVideoFile = () => {
-    onDeleteFile(videoURL);
+    if (
+      modalRole === "edit" &&
+      lectureInfo?.lectureContent.videoUrl === videoURL
+    ) {
+      dispatch(setVideoToDeleteOnEdit(videoURL));
+      dispatch(setVideoURL(""));
+      dispatch(setVideoLength(0));
+      dispatch(setVideoFileName(""));
+      dispatch(setErrorMessage(""));
+    } else {
+      onDeleteFile(videoURL);
+    }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({

@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDeleteFeedback } from "@/hooks/mutation/useDeleteFeedback";
 import { useUpdateFeedback } from "@/hooks/mutation/useUpdateFeedback";
 import { useForm } from "react-hook-form";
+import { Button, Text, Avatar } from "sfac-designkit-react";
 import PageToast from "@/components/PageToast";
-import AssignmentProfileImage from "./AssignmentProfileImage";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 
 interface IUpdateFeedbackForm {
@@ -15,13 +15,14 @@ const AssignmentFeedbackContent = ({
   content,
   createdAt,
   updatedAt,
-  user: { username, role },
+  user: { username, role, profileImage },
   userId,
   submittedAssignmentId,
   loginUserId,
   updateDelete,
   setUpdateDelete,
 }: any) => {
+  const [feedbackAnimation, setFeedbackAnimation] = useState(true);
   const [updateMode, setUpdateMode] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [isAccept] = useState(true);
@@ -30,6 +31,7 @@ const AssignmentFeedbackContent = ({
     register,
     handleSubmit,
     formState: { isValid },
+    setFocus,
   } = useForm<IUpdateFeedbackForm>({ mode: "onChange" });
 
   const {
@@ -63,23 +65,41 @@ const AssignmentFeedbackContent = ({
     setUpdateDelete((prev: boolean) => !prev);
   };
 
+  useEffect(() => {
+    setFeedbackAnimation(prev => !prev);
+  }, []);
+
+  useEffect(() => {
+    setFocus("updateFeedback");
+  }, [setFocus, updateMode]);
+
   return (
     <>
-      <li className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px]">
+      <li
+        className={`${
+          feedbackAnimation
+            ? "transition-all duration-500 opacity-0"
+            : "rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[24px_24px_16px_24px] transition-all duration-500 opacity-1"
+        }`}
+      >
         <div className="flex justify-start items-start gap-[13px]">
           <div className="pt-[3px]">
-            <AssignmentProfileImage profileImage={"profileImage"} />
+            <Avatar
+              ringColor="ring-grayscale-10"
+              className="ring-1"
+              src={profileImage}
+            />
           </div>
           <div className="grow">
             <div className="flex justify-between items-center mb-[9px]">
-              <div>
-                <span className="font-[700] text-grayscale-100">
+              <div className="flex justify-start items-center">
+                <Text size="base" weight="bold" className=" text-grayscale-100">
                   {username}
-                </span>
-                <span className="text-grayscale-20 font-[400]">
-                  {" "}
-                  &middot; {role}
-                </span>
+                </Text>
+                <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full mx-[6px]"></span>
+                <Text size="base" weight="medium" className="text-grayscale-40">
+                  {role}
+                </Text>
               </div>
               {userId.id === loginUserId && !updateDelete ? (
                 <div>
@@ -119,25 +139,36 @@ const AssignmentFeedbackContent = ({
               </div>
               {updateMode ? (
                 <div className="flex justify-end item-center gap-[8px]">
-                  <button
-                    className="w-[115px] h-[35px]  rounded-md bg-grayscale-5 text-grayscale-60"
+                  <Button
+                    variant="secondary"
+                    asChild
+                    text="취소하기"
+                    textSize="base"
+                    textWeight="medium"
+                    // className="w-[115px] h-[35px]  rounded-md bg-grayscale-5 text-grayscale-60"
                     type="button"
                     onClick={handleUpdateDelete}
-                  >
-                    취소하기
-                  </button>
-                  <button
-                    className="w-[115px] h-[35px] rounded-md bg-primary-80 text-white disabled:bg-grayscale-10 disabled:text-grayscale-20"
+                  />
+                  <Button
+                    variant="primary"
+                    asChild
+                    text="수정하기"
+                    textSize="base"
+                    textWeight="medium"
                     type="submit"
                     disabled={!isValid}
-                  >
-                    수정하기
-                  </button>
+                  />
                 </div>
               ) : (
-                <p className="text-[12px] text-end text-grayscale-40 h-[35px]">
-                  {createdAt === updatedAt ? createdAt : updatedAt}
-                </p>
+                <div className="text-end">
+                  <Text
+                    size="xs"
+                    weight="medium"
+                    className=" text-grayscale-40"
+                  >
+                    {createdAt === updatedAt ? createdAt : updatedAt}
+                  </Text>
+                </div>
               )}
             </form>
           </div>

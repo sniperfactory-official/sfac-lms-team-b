@@ -34,6 +34,7 @@ const getSubmittedAssignments = async (
 
       const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
 
+      // if (submittedAssignmentsDocs.docs.length > 0) {
       const attachmentQuery = query(
         collection(db, "attachments"),
         where(

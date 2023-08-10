@@ -1,3 +1,4 @@
+import { LectureComment } from "@/types/firebase.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { db } from "@/utils/firebase";
 import {
@@ -5,14 +6,31 @@ import {
   doc,
   serverTimestamp,
   runTransaction,
+  Transaction,
 } from "firebase/firestore";
 
-const addCommentToDB = async (data: {
+interface CommentData {
   content: string;
   lectureId: string;
-  parentId: string;
+  parentId?: string;
   userId: string;
-}) => {
+}
+
+const increaseParentReplyCount = async (
+  transaction: Transaction,
+  parentCommentRef: any,
+) => {
+  const parentCommentSnapshot = await transaction.get(parentCommentRef);
+  if (!parentCommentSnapshot.exists) {
+    throw Error("Parent comment does not exist!");
+  }
+  const parentComment = parentCommentSnapshot.data() as LectureComment;
+  transaction.update(parentCommentRef, {
+    replyCount: parentComment.replyCount + 1,
+  });
+};
+
+const addCommentToDB = async (data: CommentData) => {
   const { content, lectureId, parentId, userId } = data;
 
   const userRef = doc(db, "users", userId);
@@ -20,14 +38,13 @@ const addCommentToDB = async (data: {
   const parentCommentRef = parentId
     ? doc(db, "lectureComments", parentId)
     : null;
-
   const commentRef = doc(collection(db, "lectureComments"));
 
   const commentDoc = {
     content,
     createdAt: serverTimestamp(),
     lectureId: lectureRef,
-    parentId,
+    parentId: parentId || null,
     replyCount: 0,
     updatedAt: serverTimestamp(),
     userId: userRef,
@@ -35,14 +52,7 @@ const addCommentToDB = async (data: {
 
   await runTransaction(db, async transaction => {
     if (parentId && parentCommentRef) {
-      const parentCommentSnapshot = await transaction.get(parentCommentRef);
-      if (!parentCommentSnapshot.exists()) {
-        throw Error("Parent comment does not exist!");
-      }
-      const parentComment = parentCommentSnapshot.data();
-      transaction.update(parentCommentRef, {
-        replyCount: parentComment.replyCount + 1,
-      });
+      await increaseParentReplyCount(transaction, parentCommentRef);
     }
 
     transaction.set(commentRef, commentDoc);

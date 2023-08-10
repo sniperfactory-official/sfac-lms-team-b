@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AssignmentProfileImage from "../(components)/AssignmentProfileImage";
 import { useGetAssignment } from "@/hooks/queries/useGetAssignment";
 import { useDeleteRegisteredAssignment } from "@/hooks/mutation/useDeleteRegisteredAssignment";
 import { useParams } from "next/navigation";
@@ -10,12 +9,12 @@ import LoadingSpinner from "@/components/Loading/Loading";
 import { User } from "@/types/firebase.types";
 import { Assignment } from "@/types/firebase.types";
 import Image from "next/image";
+import { Avatar, Text } from "sfac-designkit-react";
 
 import AssignmentGlobalConfirmDialog from "./AssignmentGlobalConfirmDialog";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentUpdate from "./AssignmentUpdate";
 import timestampToIntlDate from "@/utils/timestampToIntlDate";
-import emptyArrayCheck from "@/utils/emptyArrayCheck";
 import { useUpdateReadStudents } from "@/hooks/mutation/useUpdateReadStudents";
 import useGetStudents from "@/hooks/queries/useGetStudents";
 
@@ -77,6 +76,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
 
   const deleteAssignmentMutation = useDeleteRegisteredAssignment(
     assignmentId as string,
+    data?.images,
   );
 
   // 데이터가 배열인지 아닌지에 따라 처리 -> 타입스크립트 오류수정
@@ -92,14 +92,20 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
         <div className="px-[20px] py-[29px]">
           <div className="flex justify-between items-start">
             <div className="flex justify-start items-center gap-[16px] mb-[31px]">
-              <AssignmentProfileImage
-                profileImage={assignment.user?.profileImage}
+              <Avatar
+                src={assignment.user?.profileImage}
+                ringColor="ring-grayscale-10"
+                className="ring-1"
               />
               <div>
                 <div className="flex justify-start items-center gap-[9px]">
-                  <p className="text-[16px] font-[700] text-grayscale-100">
+                  <Text
+                    size="base"
+                    weight="bold"
+                    className="text-color-Grayscale-100 text-grayscale-100"
+                  >
                     {assignment.user?.username}
-                  </p>
+                  </Text>
                   {/* 강사만 확인 가능한 영역 */}
                   {user?.role === "관리자" ? (
                     <span className="border border-primary-90 rounded-[4px] text-primary-100 font-[500] text-[10px] px-[3.5px] py-[1px]">
@@ -110,15 +116,23 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
                   {/* END 강사만 확인 가능한 영역 */}
                 </div>
                 <div className="flex justify-start items-center gap-[7px]">
-                  <span className="text-grayscale-40 text-[16px] font-[400]">
+                  <Text
+                    size="base"
+                    weight="medium"
+                    className="text-color-Grayscale-40 text-grayscale-40"
+                  >
                     {assignment.user?.role}
-                  </span>
+                  </Text>
                   <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
-                  <span className="text-grayscale-40 text-[14px] font-[500]">
+                  <Text
+                    size="sm"
+                    weight="semibold"
+                    className="text-color-Grayscale-40 text-grayscale-40"
+                  >
                     {assignment.createdAt
                       ? timestampToIntlDate(assignment.createdAt, "/")
                       : null}
-                  </span>
+                  </Text>
                 </div>
               </div>
             </div>
@@ -165,24 +179,40 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
             <p className="inline-block rounded-[4px] bg-grayscale-5 text-grayscale-60 font-[400] text-[10px] mb-[8px] p-[4px_10px]">
               {assignment.level}
             </p>
-            <h3 className="text-grayscale-80 text-[18px] font-[700] mb-[7px]">
+            <Text
+              size="lg"
+              weight="bold"
+              className="block text-color-Grayscale-80 text-grayscale-80 mb-[10px] break-all"
+            >
               {assignment.title}
-            </h3>
-            <p className="text-grayscale-60 text-[14px] font-[400]">
+            </Text>
+            <Text
+              size="sm"
+              weight="medium"
+              className="block text-color-Grayscale-60 text-grayscale-60 mb-[16px] whitespace-pre-line break-all"
+            >
               {assignment.content}
-            </p>
+            </Text>
             <div className="flex justify-end items-center pt-[5px] gap-[7px]">
-              <span className="text-grayscale-60 text-[14px] font-[500]">
+              <Text
+                size="sm"
+                weight="medium"
+                className="text-color-Grayscale-60 text-grayscale-60"
+              >
                 마감일
-              </span>
-              <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full"></span>
-              <span className="text-grayscale-40 text-[14px] font-[500]">
+              </Text>
+              <span className="w-[5px] h-[5px] bg-grayscale-20 rounded-full" />
+              <Text
+                size="sm"
+                weight="semibold"
+                className="text-color-Grayscale-40 text-grayscale-40"
+              >
                 {assignment.endDate
                   ? timestampToIntlDate(assignment.endDate, "/")
                   : null}
-              </span>
+              </Text>
             </div>
-            {!emptyArrayCheck(assignment.images) ? (
+            {assignment.images.length > 0 ? (
               <div className="pt-[34px]">
                 {assignment.images.map((image, index) => {
                   return (
@@ -209,7 +239,7 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
         title="강의를 삭제하시겠습니까?"
         confirmBtnMsg="삭제"
         onConfirm={() => {
-          deleteAssignmentMutation.mutate(assignmentId as string);
+          deleteAssignmentMutation.mutate();
           setIsConfirmOpen(false);
           router.push("/assignment");
         }}

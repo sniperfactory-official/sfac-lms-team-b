@@ -19,9 +19,9 @@ const LectureTitle: React.FC = () => {
         name="lectureTitle"
         id="lectureTitle"
         placeholder="제목을 입력해주세요. (필수)"
-        className="text-grayscale-80 outline-none text-xl font-medium placeholder-grayscale-40"
-        value={lectureTitle}
+        className="text-grayscale-80 outline-none text-xl font-medium placeholder-grayscale-40 w-full"
         onChange={handleInputTitle}
+        value={lectureTitle}
       />
     </label>
   );

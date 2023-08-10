@@ -1,8 +1,9 @@
 import Image from "next/image";
 import { DocumentData } from "firebase/firestore";
-import React, { useState } from "react";
+import { VideoRefContext } from "@/app/classroom/(components)/contexts/VideoContext";
+import React, { useState, useContext } from "react";
 import { getTime } from "@/utils/getTime";
-import useAuth from "@/hooks/user/useAuth";
+import useUser from "@/hooks/user/useUser";
 import { useDeleteComment } from "@/hooks/mutation/useDeleteComment";
 import { useUpdateComment } from "@/hooks/mutation/useUpdateComment";
 import { useDisplayedComment } from "@/hooks/lecture/useDisplayedComment";
@@ -11,6 +12,7 @@ import EditDeleteButtons from "./EditDeleteButtons";
 import ReplyCount from "./ReplyCount";
 import EditComment from "./EditComment";
 import ReadComment from "./ReadComment";
+import { Text } from "sfac-designkit-react";
 
 interface CommentProps {
   comment: DocumentData;
@@ -31,12 +33,17 @@ const Comment: React.FC<CommentProps> = ({
   const { username, role, profileImage } = comment.user;
   const userId = comment.userId;
 
-  const user = useAuth();
+  const { user } = useUser();
+  const { videoRef } = useContext(VideoRefContext);
 
   const deleteMutation = useDeleteComment();
   const updateMutation = useUpdateComment();
 
-  const displayedComment = useDisplayedComment(showFullComment, content);
+  const displayedComment = useDisplayedComment(
+    showFullComment,
+    content,
+    videoRef,
+  );
 
   const { handleCommentClick, handleDeleteClick } = useHandleClicks(
     onCommentClick,
@@ -112,7 +119,9 @@ const Comment: React.FC<CommentProps> = ({
               </div>
             )}
             <div className="text-gray-400 space-x-2">
-              <span className="float-right text-xs">{time}</span>
+              <Text size="xs" weight="medium" className="float-right">
+                {time}
+              </Text>
             </div>
           </div>
         )}

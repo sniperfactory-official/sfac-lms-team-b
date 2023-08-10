@@ -4,22 +4,31 @@ import { useQuery } from "@tanstack/react-query";
 import { getDoc, doc } from "firebase/firestore";
 
 const fetchLectureInfo = async (docId: string) => {
-  const docRef = doc(db, "lectures", docId);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    const userSnap = await getDoc(docSnap.data().userId);
-    const user = userSnap.data() as User;
-    return { ...docSnap.data(), user } as Lecture;
+  const lectureRef = doc(db, "lectures", docId);
+  const lectureSnap = await getDoc(lectureRef);
+
+  if (!lectureSnap.exists()) {
+    throw new Error(`Lecture with ID ${docId} doesn't exist.`);
   }
-  return docSnap.data() as Lecture;
+
+  const lectureData = lectureSnap.data();
+
+  if (lectureData && "userId" in lectureData && lectureData.userId) {
+    const userSnap = await getDoc(lectureData.userId);
+    if (!userSnap.exists()) {
+      throw new Error(`User for lecture ID ${docId} doesn't exist.`);
+    }
+    const user = userSnap.data() as User;
+    return { id: docId, ...lectureData, user } as Lecture;
+  }
+
+  return { id: docId, ...lectureData } as Lecture;
 };
 
 const useGetLectureInfo = (docId: string) => {
-  return useQuery<Lecture>(
-    ["lecture", docId],
-    async () => await fetchLectureInfo(docId),
-    { refetchOnWindowFocus: false },
-  );
+  return useQuery<Lecture>(["lecture", docId], () => fetchLectureInfo(docId), {
+    refetchOnWindowFocus: false,
+  });
 };
 
 export default useGetLectureInfo;

@@ -27,19 +27,18 @@ async function getValidLectureId(
       comparator === "<" ? orderBy("order", "desc") : orderBy("order"),
       limit(1),
     );
+
     const snapshot = await getDocs(q);
 
-    if (snapshot.empty) break; // No more lectures in this direction
+    if (snapshot.empty) break;
 
-    const doc = snapshot.docs[0];
-    const data = doc.data();
+    const lectureData = snapshot.docs[0].data();
 
-    if (!data.isPrivate) {
-      lectureId = doc.id;
-      break;
+    if (!lectureData.isPrivate) {
+      lectureId = snapshot.docs[0].id;
+    } else {
+      order = lectureData.order;
     }
-
-    order = data.order;
   }
 
   return lectureId;
@@ -47,12 +46,19 @@ async function getValidLectureId(
 
 function useGetPreAndNextLectureInfo(lectureId: string) {
   return useQuery(["lectureNavigation", lectureId], async () => {
-    const lectureSnap = await getDoc(doc(db, "lectures", lectureId));
-    const data = lectureSnap.data() as { courseId: string; order: number };
-    const { courseId, order: currentOrder } = data;
+    const lectureDoc = await getDoc(doc(db, "lectures", lectureId));
 
-    const prevLectureId = await getValidLectureId(courseId, "<", currentOrder);
-    const nextLectureId = await getValidLectureId(courseId, ">", currentOrder);
+    if (!lectureDoc.exists) {
+      throw new Error("Lecture not found");
+    }
+
+    const { courseId, order } = lectureDoc.data() as {
+      courseId: string;
+      order: number;
+    };
+
+    const prevLectureId = await getValidLectureId(courseId, "<", order);
+    const nextLectureId = await getValidLectureId(courseId, ">", order);
 
     return { prevLectureId, nextLectureId };
   });

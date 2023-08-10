@@ -1,56 +1,59 @@
 "use client";
 
+import "sfac-designkit-react/style.css";
+import { Button, Text } from "sfac-designkit-react";
 import React from "react";
-import { useGetAssignment } from "@hooks/queries/useGetAssignment";
-import { Assignment } from "@/types/firebase.types";
-import AssignmentListSubButton from "./AssignmentListSubButton";
 import { useRouter } from "next/navigation";
+import { Assignment } from "@/types/firebase.types";
+import { useGetAssignment } from "@hooks/queries/useGetAssignment";
 import { User } from "@/types/firebase.types";
-
-interface AssignmentNumberAdded extends Assignment {
-  assignmentNumber: number;
-}
+import AssignmentListSubButton from "./AssignmentListSubButton";
 
 type Props = {
   userInfo: User;
   userId: string;
 };
 
-const AssignmentListContent = (prop: Props) => {
+const AssignmentListContent = (props: Props) => {
   const assignmentData = useGetAssignment("");
   const router = useRouter();
-  const userinfo = { ...prop.userInfo };
+  const userinfo = { ...props.userInfo };
   let htmlContent;
 
   if (assignmentData.isLoading === false) {
-    const assignmentInfo = assignmentData.data;
-    // map이 assignmentInfo의 property로 인식되어 경고문구가 뜸
-    htmlContent = assignmentInfo?.map((assign: AssignmentNumberAdded) => (
+    const assignmentInfo = assignmentData.data as Assignment[];
+    htmlContent = assignmentInfo?.map((assign: Assignment) => (
       <div
         key={assign.id}
-        className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 bg-grayscale-0 flex justify-between items-center"
+        className="w-full px-[24px] py-[16px] flex-shrink-0 rounded-[10px] mb-[20px] border border-grayscale-5 flex justify-between items-center gap-[15px]"
       >
-        <div className="flex w-[244px] flex-col items-start gap-[10px]">
-          <span className="p-[4px] px-[10px] rounded-[4px] bg-grayscale-5">
+        <div className="flex flex-col items-start gap-[10px]">
+          <span className="flex justify-center items-center py-[4px] px-[10px] rounded-[4px] bg-grayscale-5 text-[10px] text-grayscale-60">
             {assign.level}
           </span>
-          <span className="text-grayscale-80 font-bold text-[16px]">
-            {assign.title}
-          </span>
-        </div>
-        {userinfo?.role === "관리자" ? (
-          <button
-            type="button"
-            onClick={() => {
-              router.push("/assignment/" + assign.id);
-            }}
-            className="w-[157px] h-[35px] p-[9px] gap-[10px] flex justify-center items-center flex-shrink-0 rounded-[10px] bg-primary-80  text-slate-50 border-none"
+          <Text
+            size="base"
+            weight="bold"
+            className="text-grayscale-80 break-all"
           >
-            확인하기
-          </button>
-        ) : (
-          <AssignmentListSubButton refId={assign.id} userId={prop.userId} />
-        )}
+            {assign.title}
+          </Text>
+        </div>
+        <div className="shrink-0">
+          {userinfo?.role === "관리자" ? (
+            <Button
+              variant="primary"
+              text="확인하기"
+              asChild
+              type="button"
+              onClick={() => {
+                router.push(`/assignment/${assign.id}`);
+              }}
+            />
+          ) : (
+            <AssignmentListSubButton refId={assign.id} userId={props.userId} />
+          )}
+        </div>
       </div>
     ));
   }

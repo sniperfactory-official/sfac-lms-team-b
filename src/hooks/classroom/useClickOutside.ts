@@ -1,30 +1,30 @@
 import { RefObject, useEffect, useCallback } from "react";
+import useEditMode from "./useEditMode";
 
 const useClickOutside = (
   ref: RefObject<HTMLElement>,
-  callback: () => void,
-  when: boolean,
   setGetBackLectureOrderTrigger: React.Dispatch<React.SetStateAction<boolean>>,
   getBackLectureOrderTrigger: boolean,
 ): void => {
+  const { isEditMode, handleEditStatus } = useEditMode();
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
       if (ref.current && !ref.current.contains(event.target as Node)) {
         setGetBackLectureOrderTrigger(!getBackLectureOrderTrigger);
-        callback();
+        handleEditStatus();
       }
     },
-    [ref, callback],
+    [ref, handleEditStatus],
   );
 
   useEffect(() => {
-    if (when) {
+    if (isEditMode) {
       document.addEventListener("click", handleClickOutside);
       return () => {
         document.removeEventListener("click", handleClickOutside);
       };
     }
-  }, [when, handleClickOutside]);
+  }, [isEditMode, handleClickOutside]);
 };
 
 export default useClickOutside;

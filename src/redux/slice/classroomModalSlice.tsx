@@ -1,3 +1,4 @@
+import { ILecture } from "@/hooks/queries/useGetCourseList";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ModalState {
@@ -7,9 +8,10 @@ interface ModalState {
   videoFileModalOpen: boolean;
   commentModalOpen: boolean;
   replyCommentModalOpen: boolean;
-  lectureId: string | null;
+  lectureDeleteModalOpen: boolean;
   modalRole: string;
-  [key: string]: boolean | string | null;
+  lectureInfo: ILecture | null;
+  [key: string]: boolean | string | ILecture | null;
 }
 
 const initialState: ModalState = {
@@ -19,8 +21,9 @@ const initialState: ModalState = {
   videoFileModalOpen: false,
   commentModalOpen: false,
   replyCommentModalOpen: false,
-  lectureId: null,
+  lectureDeleteModalOpen: false,
   modalRole: "",
+  lectureInfo: null,
 };
 
 const classroomModalSlice = createSlice({
@@ -39,9 +42,13 @@ const classroomModalSlice = createSlice({
       state[modalName] = visible;
       state.modalRole = modalRole;
     },
+    setLecture: (state, action: PayloadAction<ILecture | null>) => {
+      state.lectureInfo = action.payload;
+    },
     closeModal: () => initialState,
   },
 });
 
-export const { setModalVisibility, closeModal } = classroomModalSlice.actions;
+export const { setModalVisibility, setLecture, closeModal } =
+  classroomModalSlice.actions;
 export default classroomModalSlice.reducer;

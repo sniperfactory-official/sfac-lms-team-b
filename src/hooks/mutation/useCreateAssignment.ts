@@ -9,10 +9,18 @@ import {
   orderBy,
   Timestamp,
   doc,
+  limit,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Assignment } from "@/types/firebase.types";
 import useAuth from "@/hooks/user/useAuth";
+
+interface AssignmentWithDates extends Assignment {
+  dates: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
+}
 
 // Firestore 데이터 추가
 const createAssignment = async (
@@ -20,28 +28,25 @@ const createAssignment = async (
   userId: DocumentReference,
 ): Promise<DocumentReference> => {
   try {
-    if (typeof assignmentValue.startDate === "string") {
-      assignmentValue.startDate = Timestamp.fromDate(
-        new Date(assignmentValue.startDate),
-      );
-    }
-    if (typeof assignmentValue.endDate === "string") {
-      assignmentValue.endDate = Timestamp.fromDate(
-        new Date(assignmentValue.endDate),
-      );
-    }
-
     const assignmentsQuery = query(
       collection(db, "assignments"),
       orderBy("order", "desc"),
+      limit(1),
     );
     const querySnapshot = await getDocs(assignmentsQuery);
-    const assignmentCount = querySnapshot.size;
+    // const assignmentCount = querySnapshot.size;
+    let assignmentOrder = 1; // 기본값
+
+    if (!querySnapshot.empty) {
+      // 마지막으로 생성된 데이터가 있다면 그 다음 순서값 설정
+      const lastAssignment = querySnapshot.docs[0].data();
+      assignmentOrder = lastAssignment.order + 1;
+    }
 
     const addAssignment = await addDoc(collection(db, "assignments"), {
       ...assignmentValue,
       createdAt: serverTimestamp(),
-      order: assignmentCount,
+      order: assignmentOrder,
       userId: userId,
     });
 
@@ -56,7 +61,7 @@ const useCreateAssignment = () => {
   const queryClient = useQueryClient();
   const user = useAuth();
   const { mutate, isLoading, error } = useMutation(
-    (assignmentValue: Assignment) => {
+    (assignmentValue: AssignmentWithDates) => {
       // useAuth를 통해 로그인된 사용자 정보 가져오기
 
       const userId = user ? user.uid : "";
@@ -64,7 +69,6 @@ const useCreateAssignment = () => {
       return createAssignment(assignmentValue, userDocRef); // userId를 createAssignment 함수로 전달
     },
 
-    // createAssignment,
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["getAssignment", ""]);

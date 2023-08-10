@@ -9,6 +9,7 @@ import DropzoneSection from "./DropzoneSection";
 import PageToast from "@/components/PageToast";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useVideoFileDrop from "@/hooks/lecture/useVideoFileDrop";
+import useFirebaseLectureSlice from "@/hooks/lecture/useFirebaseLectureSlice";
 import {
   setErrorMessage,
   setSuccessMessage,
@@ -16,6 +17,8 @@ import {
 
 const AddVideoFileModal: React.FC = () => {
   const dispatch = useDispatch();
+  useFirebaseLectureSlice();
+
   const videoFileName = useSelector(
     (state: RootState) => state.dropzoneFile.videoFileName,
   );
