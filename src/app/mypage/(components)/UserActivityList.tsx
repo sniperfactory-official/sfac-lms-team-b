@@ -207,7 +207,7 @@ export default function UserActivityList() {
             onCloseModal={() => {
               setIsPostDetailModalOpen(!isPostDetailModalOpen);
               setSelectedId("");
-            }}   
+            }}
             modalTitle="나의 게시글"
           >
             <PostDetailModal id={selectedId} />
@@ -221,7 +221,7 @@ export default function UserActivityList() {
             }}
             modalTitle="나의 댓글"
           >
-            <CommentsDetailModal id={selectedCommentId} comments={comments}/>
+            <CommentsDetailModal id={selectedCommentId} comments={comments} />
           </ModalWrapper>
         )}
       </div>

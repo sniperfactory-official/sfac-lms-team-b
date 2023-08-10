@@ -111,10 +111,6 @@ export default function CommunityModal() {
     return <LoadingSpinner />;
   }
 
-  if (postError || nestedError || userError || commentError || imageError) {
-    return <span>Error: {(postFetchError as Error).message}</span>;
-  }
-
   return (
     <div className="z-50">
       <PostCard

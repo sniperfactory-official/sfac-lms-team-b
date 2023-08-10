@@ -13,13 +13,13 @@ import { useQuery } from "@tanstack/react-query";
 
 const getAssignments = async (userId: string) => {
   const userRef = doc(db, "users", userId);
-  
+
   const attachmentQuery = query(
     collection(db, "attachments"),
     where("userId", "==", userRef),
   );
   const querySnapshot = await getDocs(attachmentQuery);
-  
+
   let myAssignments: DocumentData[] = [];
   const fetchPromises = [];
 
@@ -29,15 +29,19 @@ const getAssignments = async (userId: string) => {
     if (assignmentDoc.submittedAssignmentId instanceof DocumentReference) {
       fetchPromises.push(
         (async () => {
-          const lectureSnapshot = await getDoc(assignmentDoc.submittedAssignmentId);
+          const lectureSnapshot = await getDoc(
+            assignmentDoc.submittedAssignmentId,
+          );
           let submittedData = null;
           let AssignmentData = null;
 
           if (lectureSnapshot.exists()) {
             submittedData = lectureSnapshot.data();
-            
+
             if (submittedData.assignmentId instanceof DocumentReference) {
-              const assignmentSnapshot = await getDoc(submittedData.assignmentId);
+              const assignmentSnapshot = await getDoc(
+                submittedData.assignmentId,
+              );
               if (assignmentSnapshot.exists()) {
                 AssignmentData = assignmentSnapshot.data();
               }
@@ -53,14 +57,14 @@ const getAssignments = async (userId: string) => {
             AssignmentData,
             ...assignmentDoc,
           });
-        })()
+        })(),
       );
     }
   }
 
   // Wait for all the fetch operations to complete
   await Promise.all(fetchPromises);
-  
+
   return myAssignments;
 };
 
