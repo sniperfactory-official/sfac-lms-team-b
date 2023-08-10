@@ -2,7 +2,6 @@ import ContentCard from "./main/ContentCard";
 import { ICourseField, ILecture } from "@/hooks/queries/useGetCourseList";
 import useModalManage from "@/hooks/classroom/useModalManage";
 import CourseInfo from "./main/CourseInfo";
-import { IUser } from "../page";
 import EmptyContents from "@/components/EmptyContents";
 
 interface IProps {
@@ -13,7 +12,7 @@ const ClassContent = ({ currentCourse, role }: IProps) => {
   const { modal: SelectedModal, handleModalOpen } = useModalManage();
 
   return (
-    <div className="w-4/5 h-100 pt-[50px] ml-[50px]">
+    <div className="w-4/5 h-100 ml-[50px]">
       <CourseInfo
         currentCourse={currentCourse}
         handleModalOpen={handleModalOpen}

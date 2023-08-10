@@ -11,10 +11,10 @@ import { RootState } from "@/redux/store";
 const AssignmentDetailPage = () => {
   // FIXME: 임시 유저 정보 처리
   const userId = useSelector((state: RootState) => {
-    return state.userInfo;
+    return state.userInfo.id;
   });
 
-  const user = useUserInfo(userId.id) as User;
+  const user = useUserInfo(userId) as User;
 
   return (
     <div className="py-[36px] px-[20px]">

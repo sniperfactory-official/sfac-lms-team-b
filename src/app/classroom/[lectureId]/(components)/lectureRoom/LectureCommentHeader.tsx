@@ -20,6 +20,7 @@ const LectureCommentHeader: FC<LectureCommentHeaderProps> = ({
       <Button
         variant="primary"
         text="작성"
+        asChild
         className="p-2 h-11 w-28 text-white rounded-md bg-blue-600 hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"
         onClick={onButtonClick}
       />

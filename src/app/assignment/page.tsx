@@ -8,16 +8,15 @@ import { User } from "@/types/firebase.types";
 import AssignmentListContent from "./(components)/AssignmentListContent";
 
 const Assignment = () => {
-  const userId = useSelector((state: RootState) => {
+  const userInfo = useSelector((state: RootState) => {
     return state.userInfo;
   });
-
-  const user = useUserInfo(userId.id) as User;
-  const userInfo = { ...user };
+  const user = useUserInfo(userInfo.id) as User;
+  const userInfoCopied = { ...user };
 
   return (
     <div>
-      <AssignmentListContent userInfo={userInfo} userId={userId.id} />
+      <AssignmentListContent userInfo={userInfoCopied} userId={userInfo.id} />
     </div>
   );
 };

@@ -30,7 +30,7 @@ const Sidebar = forwardRef<HTMLDivElement, IProps>(
     return (
       <aside
         ref={sidebarRef}
-        className="w-1/5 h-100 flex items-center flex-col mr-[20px] pt-[50px]"
+        className="w-1/5 h-100 flex items-center flex-col mr-[20px]"
       >
         <CourseList
           courseList={courseList}

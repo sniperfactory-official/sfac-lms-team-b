@@ -1,14 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import React, { useState, useRef } from "react";
+import { useForm, SubmitHandler, useFormContext } from "react-hook-form";
+
 import Image from "next/image";
 import { Assignment } from "@/types/firebase.types";
+import { Timestamp } from "firebase/firestore";
 import PageToast from "@/components/PageToast";
-import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
+
 import useImageUpload from "@/hooks/mutation/useUpdateImage";
+import { useCreateAssignment } from "@/hooks/mutation/useCreateAssignment";
+
+import "sfac-designkit-react/style.css";
+import { DateSelector } from "sfac-designkit-react";
+import { Button } from "sfac-designkit-react";
+import { Text } from "sfac-designkit-react";
 
 interface AssignmentCreateProps {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface AssignmentWithDates extends Assignment {
+  dates: {
+    startDate: Date | null;
+    endDate: Date | null;
+  };
 }
 
 const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
@@ -18,30 +33,40 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
+  const [dates, setDates] = useState({
+    startDate: null as Date | null,
+    endDate: null as Date | null,
+  });
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Assignment>();
+  } = useForm<AssignmentWithDates>();
 
   const createAssignmentMutation = useCreateAssignment();
   const imageUploadMutation = useImageUpload();
 
-  const onSubmit: SubmitHandler<Assignment> = async assignmentData => {
-    // 이미지 파일들의 경로를 문자열 배열로 변환하여 data.images에 추가
+  const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
+    if (dates.startDate === null || dates.endDate === null) return onInValid();
+
     assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
     assignmentData.readStudents = [];
 
+    if (dates.startDate && typeof dates.startDate !== "string") {
+      assignmentData.startDate = Timestamp.fromDate(dates.startDate);
+    }
+    if (dates.endDate && typeof dates.endDate !== "string") {
+      assignmentData.endDate = Timestamp.fromDate(dates.endDate);
+    }
+
     try {
-      //이미지등록코드
       const uploadPromises = imageFiles.map(file =>
         imageUploadMutation.mutateAsync(file),
       );
       const uploadedUrls = await Promise.all(uploadPromises);
       assignmentData.images = uploadedUrls;
-      //이미지등록코드
 
       createAssignmentMutation.mutate(assignmentData);
 
@@ -52,11 +77,18 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         setIsOpen(false);
         reset();
         setImageFiles([]);
-      }, 1000); // 과제 등록이 성공하면 setTimeOut으로 모달창이 닫히게 구현했는데 맞는지 모르겠네욥
+      }, 1000);
     } catch (error) {
       setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
     }
+  };
+  const setChangeDate = (select: [Date | null, Date | null]) => {
+    const [start, end] = select;
+    setDates({
+      startDate: start || null,
+      endDate: end || null,
+    });
   };
 
   const MAX_FILE_SIZE_MB = 5;
@@ -71,13 +103,11 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         file => file.size > MAX_FILE_SIZE_MB * 1024 * 1024,
       );
       if (oversizedFiles.length > 0) {
-        console.log(oversizedFiles);
         setToastMsg(`파일 용량이 너무 큽니다. (최대 ${MAX_FILE_SIZE_MB}MB).`);
         setIsAccept(false);
         return;
       }
 
-      // 이미지 개수를 확인하여 5개 이상인 경우 토스트 메시지 표시
       if (imageFiles.length + fileList.length > MAX_IMAGES) {
         setToastMsg(`이미지는 최대 ${MAX_IMAGES}개까지 등록 가능합니다.`);
         setIsAccept(false);
@@ -98,37 +128,31 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
   };
 
   const handleFormValidation = () => {
-    if (
-      !errors.level ||
-      !errors.title ||
-      !errors.content ||
-      !errors.startDate ||
-      !errors.endDate
-    ) {
-      setToastMsg("필수 항목을 모두 입력해주세요.");
-      setIsAccept(false);
-      return;
-    } else {
-      handleSubmit(onSubmit);
-    }
+    handleSubmit(onSubmit);
+  };
+
+  const onInValid = () => {
+    setToastMsg("필수 항목을 모두 입력해주세요.");
+    setIsAccept(false);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit, onInValid)}>
       <div>
-        <label
-          htmlFor="level-select"
-          className="text-base font-medium mr-[20px]"
+        <Text
+          size="base"
+          weight="medium"
+          className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
         >
           과제 난이도
-        </label>
+        </Text>
         <select
           id="level-select"
           {...register("level", { required: true })}
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
-          defaultValue="난이도를 선택해주세요"
+          defaultValue=""
         >
-          <option className="text-grayscale-40" hidden>
+          <option value="" className="text-grayscale-40" disabled hidden>
             난이도를 선택해주세요
           </option>
           <option value="초">초</option>
@@ -136,9 +160,8 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           <option value="고">고</option>
         </select>
       </div>
-
       <input
-        className="w-full focus:outline-none text-xl text-grayscale-40 mb-[13px]"
+        className="w-full focus:outline-none text-lg text-grayscale-40 mb-[13px]"
         placeholder="제목을 입력해주세요"
         type="text"
         {...register("title", { required: true })}
@@ -206,36 +229,33 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         </div>
       </div>
 
-      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-evenly">
-        <div className="items-center">
-          <label
-            htmlFor="submit-period"
-            className="font-bold text-base mr-[12px]"
+      <div className="flex absolute w-full left-0 h-[50px] bottom-[33px] items-center justify-between px-[33px]">
+        <div className="flex justify-start items-center">
+          <Text
+            size="base"
+            weight="bold"
+            className="text-color-Grayscale-100 mr-[12px]"
           >
             제출 기간
-          </label>
-          <input
-            type="date"
-            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-            {...register("startDate", { required: true })}
-          />
-          <input
-            type="date"
-            className="appearance-none w-[224px] h-[33px] border border-grayscale-10 rounded-[10px]"
-            {...register("endDate", { required: true })}
+          </Text>
+          <DateSelector
+            selected={dates.startDate}
+            startDate={dates.startDate}
+            endDate={dates.endDate}
+            ChangeDate={setChangeDate}
           />
         </div>
         <div className="flex items-center">
-          <button
+          <Button
             type="submit"
-            className="w-[100px] h-[45px] bg-primary-80 right-0 font-bold text-white rounded-[10px]"
+            variant="primary"
+            text="업로드"
+            asChild
             onClick={handleFormValidation}
-          >
-            업로드
-          </button>
+          />
         </div>
 
-        <div className="absolute left-[33px] bottom-[33px]">
+        <div className="absolute left-[33px]">
           {toastMsg && (
             <PageToast
               toastMsg={toastMsg}
