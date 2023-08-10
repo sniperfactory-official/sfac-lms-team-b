@@ -182,14 +182,14 @@ const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
             <Text
               size="lg"
               weight="bold"
-              className="block text-color-Grayscale-80 text-grayscale-80 mb-[10px]"
+              className="block text-color-Grayscale-80 text-grayscale-80 mb-[10px] break-all"
             >
               {assignment.title}
             </Text>
             <Text
               size="sm"
               weight="medium"
-              className="block text-color-Grayscale-60 text-grayscale-60 mb-[16px] whitespace-pre-line"
+              className="block text-color-Grayscale-60 text-grayscale-60 mb-[16px] whitespace-pre-line break-all"
             >
               {assignment.content}
             </Text>
