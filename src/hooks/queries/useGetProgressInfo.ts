@@ -10,7 +10,6 @@ import {
   DocumentData,
 } from "firebase/firestore";
 const fetchUserLectures = async (userId: string, lectureId: string) => {
-  console.log(1);
   const userRef = doc(db, "users", userId);
   const lectureRef = doc(db, "lectures", lectureId);
 
