@@ -57,9 +57,6 @@ const getSubmittedAssignments = async (
       });
 
       return { ...submittedAssignments[0] };
-      // } else {
-      //   return "삭제완료";
-      // }
     }
   }
   // 관리자일때

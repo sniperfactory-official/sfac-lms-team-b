@@ -127,15 +127,15 @@ const AssignmentLeftNavCard = (props: Props) => {
           className={`list-none w-full p-[10px] mb-[5px] order-${index}`}
         >
           <Link className="break-all" href={`/assignment/${id}`}>
-            <span className={`${isFocused ? "text-[#2563eb]" : "text-black"}`}>
-              <Text
-                size="sm"
-                weight="medium"
-                className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
-              >
-                {title}
-              </Text>
-            </span>
+            <Text
+              size="sm"
+              weight="medium"
+              className={`text-color-Grayscale-100 ${
+                isFocused ? "text-primary-100" : "text-grayscale-100"
+              } mr-[20px]`}
+            >
+              {title}
+            </Text>
           </Link>
         </div>
       )}
