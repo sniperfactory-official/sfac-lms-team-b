@@ -12,16 +12,16 @@ import { resetInput } from "@/redux/slice/lectureInfoSlice";
 import { Button } from "sfac-designkit-react";
 
 interface IProps {
-  setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   lecture: ILecture;
   role: string;
 }
 
-const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
-  const { title, lectureType, startDate, endDate, lectureContent } = lecture;
-  const { lectureInfo } = useClassroomModal();
-  const router = useRouter();
+const ContentInfo = ({ lecture, role }: IProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { lectureInfo } = useClassroomModal();
+  const { title, lectureType, startDate, endDate, lectureContent } = lecture;
+
 
   const handleMovePage = () => {
     if (lecture.lectureType === "링크") {
@@ -29,8 +29,16 @@ const ContentInfo = ({ lecture, setDeleteModal, role }: IProps) => {
     }
     router.push(`/classroom/${lecture.lectureId}`);
   };
+
   const handleDeleteModal = () => {
-    setDeleteModal(true);
+    dispatch(setLecture(lecture));
+    dispatch(
+      setModalVisibility({
+        modalName: "lectureDeleteModalOpen",
+        visible: true,
+        modalRole: "delete",
+      }),
+    );
   };
 
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];

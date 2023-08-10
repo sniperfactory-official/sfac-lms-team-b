@@ -1,3 +1,4 @@
+import { Progress } from "@/types/firebase.types";
 import { db } from "@utils/firebase";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -8,7 +9,7 @@ import {
   doc,
   DocumentData,
 } from "firebase/firestore";
-const fetchUserLectures = async (userId: string) => {
+const fetchUserLectures = async (userId: string, lectureId: string) => {
   console.log(1);
   const userRef = doc(db, "users", userId);
   const lectureRef = doc(db, "lectures", lectureId);
@@ -35,10 +36,10 @@ const fetchUserLectures = async (userId: string) => {
   };
 };
 
-const useGetProgressInfo = (userId: string) => {
+const useGetProgressInfo = (userId: string, lectureId: string) => {
   return useQuery(
     ["userLectures", userId],
-    async () => await fetchUserLectures(userId),
+    async () => await fetchUserLectures(userId, lectureId),
     { refetchOnWindowFocus: false },
   );
 };

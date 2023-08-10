@@ -4,11 +4,7 @@ import { Editor } from "@toast-ui/react-editor";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import useUploadImage from "@/hooks/lecture/useUploadImage";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
-import {
-  clearError,
-  setNoteImages,
-  setTextContent,
-} from "@/redux/slice/lectureInfoSlice";
+import { setNoteImages, setTextContent } from "@/redux/slice/lectureInfoSlice";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
 type HookCallback = (url: string, text?: string) => void;
@@ -34,10 +30,6 @@ const NoteSction: React.FC = () => {
       ?.getInstance()
       .getMarkdown();
     dispatch(setTextContent(newContent));
-
-    if (textContent) {
-      dispatch(clearError());
-    }
   };
 
   const handleUploadImage = async (

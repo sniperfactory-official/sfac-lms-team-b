@@ -1,4 +1,5 @@
 import React from "react";
+import { Text } from "sfac-designkit-react";
 
 interface UserInfoProps {
   username: string | undefined;
@@ -15,15 +16,25 @@ const UserInfo: React.FC<UserInfoProps> = ({
 }) => {
   return isHeader ? (
     <div className="flex items-center ml-2">
-      <span className=" text-sm font-semibold text-blue-500 ">{username}</span>
-      <span className="text-sm ml-1 text-gray-500">&#183; {role}</span>
+      <Text size="sm" weight="semibold" className="text-blue-500">
+        {username}
+      </Text>
+      <Text size="xs" weight="medium" className="text-gray-500 ml-1">
+        &#183; {role}
+      </Text>
     </div>
   ) : (
     <div className="flex items-center mb-1">
-      <span className={isForm ? "" : "font-semibold "}>{username}</span>
-      <span className="text-sm ml-1 text-gray-500 font-light">
+      <Text
+        size="sm"
+        weight="medium"
+        className={isForm ? "" : "font-semibold "}
+      >
+        {username}
+      </Text>
+      <Text size="xs" weight="medium" className="text-gray-500 ml-1">
         &#183; {role}
-      </span>
+      </Text>
     </div>
   );
 };
