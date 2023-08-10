@@ -90,12 +90,16 @@ gif 삽입
  ┣ 📜package.json
 ```
 <br/>
-## DB 설계
+
+## 🗄️DB 설계
 - https://app.eraser.io/workspace/kGgQYva1zAO0XZUtDvDc
-  
-![image](https://github.com/nanhimang/udemy-nanhimang/assets/52587871/acdcbeea-c6c3-488e-b9cf-90751aa79b1b)
+
+<div align="center">
+<img width=700 src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/acdcbeea-c6c3-488e-b9cf-90751aa79b1b"/>
+</div>
 
 <br/>
+
 ## 📱 기능 상세
 ### 클래스룸 수강시스템 제작
 > 마스터가 클래스 콘텐츠(유뷰트, S3링크, 일반링크) 등을 업로드하고 수강생의 수강률 혹은 학습진행도를 기록하는 시스템 개발
@@ -150,13 +154,7 @@ gif 삽입
 </details>
 
 <br/>
-## Download and Installation
 
-```
-yarn run dev
-```
-
-<br/>
 
 # 4. 팀 소개
 
