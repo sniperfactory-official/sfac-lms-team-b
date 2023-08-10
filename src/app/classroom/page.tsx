@@ -25,15 +25,15 @@ export default function Classroom() {
     );
 
   return (
-      <div className="max-w-[1024px] mx-auto my-0">
-        <section className="flex mb-[20px]">
-          <Sidebar
-            courseList={courseList!}
-            setCurrentCourse={setCurrentCourse}
-            role={role}
-          />
-          <ClassContent currentCourse={currentCourse!} role={role} />
-        </section>
-      </div>
+    <div className="max-w-[1024px] mx-auto my-0">
+      <section className="flex mb-[20px]">
+        <Sidebar
+          courseList={courseList!}
+          setCurrentCourse={setCurrentCourse}
+          role={role}
+        />
+        <ClassContent currentCourse={currentCourse!} role={role} />
+      </section>
+    </div>
   );
 }
