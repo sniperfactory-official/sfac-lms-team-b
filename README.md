@@ -41,9 +41,82 @@
 
 ## 👀 미리 보기 
 
+<br/>
+강의실 페이지
+
+![강의 업로드](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/8ba89ed9-94ad-432b-af69-e666e58b767f)
+
+강의장 페이지
+![강의장](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/4a402c39-77f2-493c-a303-ef86f25aa372)
+
+과제 페이지
+![과제페이지](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/bae2a83b-e32c-424b-b6e7-615c833f48ec)
+
+커뮤니티 페이지
+![커뮤니티](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/e627d67c-80f9-4781-8844-b58648f6cdeb)
+
+
+<br/>
+
+## 📱 기능 상세
+### 클래스룸 수강시스템 제작
+> 마스터가 클래스 콘텐츠(유뷰트, S3링크, 일반링크) 등을 업로드하고 수강생의 수강률 혹은 학습진행도를 기록하는 시스템 개발
+
+<div align="center">
+<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/ccaac8d9-a495-48fe-aff1-482d433e8c76"/>
+<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/abba46b1-a006-4068-a91b-a563f0578dc6"/>
+</div>
+
+<!-- <details>
+<summary>
+<strong>상세내용</strong>
+<p align='left'>
+</p>
+</summary>
+</details> -->
+
+<br/>
+
+### 과제제출/평가시스템 제작
+> 멘토와 수강생의 과제공유 솔루션으로, 멘토의 과제 생성 기능과 <br/>수강생의 과제 제출 기능 구현을 통한 양방향 과제제출/평가시스템 개발
+> 
+<div align="center">
+<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/871f6149-98e8-4744-8912-461c0ae0cfe8"/>
+<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/cb42fe03-a41f-4936-afdd-19da6337abeb"/>
+</div>
+
+<!-- <details>
+<summary>
+<strong>상세내용</strong>
+<p align='left'>
+</p>
+</summary>
+</details> -->
+
+<br/>
+
+### 커뮤니티 시스템 제작
+> 멘토와 수강생들 사이 질문과 자유 대화, 답글 등이 가능한 원스크롤 피드 방식의 커뮤니티 시스템 개발
+
+<div align="center">
+<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/ea18f622-6d38-4e4d-a28a-62fa51838c97"/>
+<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/2ff14016-ec1c-4454-ad15-983600de3738"/>
+</div>
+
+<!-- <details>
+<summary>
+<strong>상세내용</strong>
+<p align='left'>
+</p>
+</summary>
+</details> -->
+
+<br/>
+
+
+
 <div align="left">
 
-gif 삽입
 
 </div>
 
@@ -98,67 +171,11 @@ gif 삽입
 <img width=700 src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/acdcbeea-c6c3-488e-b9cf-90751aa79b1b"/>
 </div>
 
-<br/>
-
-## 📱 기능 상세
-### 클래스룸 수강시스템 제작
-> 마스터가 클래스 콘텐츠(유뷰트, S3링크, 일반링크) 등을 업로드하고 수강생의 수강률 혹은 학습진행도를 기록하는 시스템 개발
-
-<div align="center">
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/ccaac8d9-a495-48fe-aff1-482d433e8c76"/>
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/abba46b1-a006-4068-a91b-a563f0578dc6"/>
-</div>
-
-<details>
-<summary>
-<strong>상세내용</strong>
-<p align='left'>
-</p>
-</summary>
-</details>
-
-<br/>
-
-### 과제제출/평가시스템 제작
-> 멘토와 수강생의 과제공유 솔루션으로, 멘토의 과제 생성 기능과 <br/>수강생의 과제 제출 기능 구현을 통한 양방향 과제제출/평가시스템 개발
-> 
-<div align="center">
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/871f6149-98e8-4744-8912-461c0ae0cfe8"/>
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/cb42fe03-a41f-4936-afdd-19da6337abeb"/>
-</div>
-
-<details>
-<summary>
-<strong>상세내용</strong>
-<p align='left'>
-</p>
-</summary>
-</details>
-
-<br/>
-
-### 커뮤니티 시스템 제작
-> 멘토와 수강생들 사이 질문과 자유 대화, 답글 등이 가능한 원스크롤 피드 방식의 커뮤니티 시스템 개발
-
-<div align="center">
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/ea18f622-6d38-4e4d-a28a-62fa51838c97"/>
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/2ff14016-ec1c-4454-ad15-983600de3738"/>
-</div>
-
-<details>
-<summary>
-<strong>상세내용</strong>
-<p align='left'>
-</p>
-</summary>
-</details>
-
-<br/>
 
 
 # 4. 팀 소개
 
-#### 🤐 강의실팀
+#### 🤐 커뮤니티팀
 
 <div align="center">
   
@@ -179,12 +196,14 @@ gif 삽입
 
 </div>
 
-#### 👨‍👩‍👧‍👦 커뮤니티팀
+#### 👨‍👩‍👧‍👦 강의실팀
 
 <div align="center">
 
-|[박정도](https://github.com/jeongdopark)|[이세영](https://github.com/sweeeeetpotato)|[이율](https://github.com/leeyulgok)|[장예림](https://velog.io/@bluebloody)|
+|[박정도](https://github.com/jeongdopark)|[이세영](https://github.com/sweeeeetpotato)|[이율곡](https://github.com/leeyulgok)|[장예림](https://velog.io/@bluebloody)|
 |:-:|:-:|:-:|:-:|
-|<img width=120 src="">|<img width=120 src="">|<img width=120 src="">|<img width=120 src="">|
+|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/b45e7d89-26f9-4796-9488-01aca681a24e">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/ab35412e-8c7f-4d36-b657-14c69aef40bd">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/266510c7-a991-491f-a060-a07fe2f8542c">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/266f4b13-e309-4c60-9452-356444943af1">|
 
 </div>
+
+
