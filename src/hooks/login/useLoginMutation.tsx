@@ -1,4 +1,4 @@
-import { useToast } from "./../../useToast";
+import { useToast } from "../useToast";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "@/utils/sign";
 import { useAppDispatch } from "@/redux/store";
