@@ -76,6 +76,7 @@ export default function UserActivityList() {
     id: assignment.id,
     title: assignment.AssignmentData?.title,
     content: assignment.content,
+    attachmentFiles: assignment.attachmentFiles,
     category: assignment.AssignmentData?.level,
     createdAt: assignment.AssignmentData?.createdAt,
   }));
@@ -95,6 +96,7 @@ export default function UserActivityList() {
   const filteredComments = myPostData
     ?.filter(el => el.parentId && el.parentData?.title)
     .map(comment => ({
+      parentId: comment.parentId,
       id: comment.id,
       title: comment.parentData.title,
       content: comment.content,
@@ -205,7 +207,8 @@ export default function UserActivityList() {
             onCloseModal={() => {
               setIsPostDetailModalOpen(!isPostDetailModalOpen);
               setSelectedId("");
-            }}
+            }}   
+            modalTitle="나의 게시글"
           >
             <PostDetailModal id={selectedId} />
           </ModalWrapper>
@@ -216,8 +219,9 @@ export default function UserActivityList() {
               setIsCommentsDetailModalOpen(!isCommentsDetailModalOpen);
               setSelectedCommentId("");
             }}
+            modalTitle="나의 댓글"
           >
-            <CommentsDetailModal id={selectedCommentId} />
+            <CommentsDetailModal id={selectedCommentId} comments={comments}/>
           </ModalWrapper>
         )}
       </div>
