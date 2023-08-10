@@ -34,12 +34,12 @@ const SectionButton = ({ type }: IProp) => {
       bg: "bg-primary-80",
       onClick: () => {
         console.log(newTitle);
-        if(newTitle !== '') updateSectionTitle({ docId, newTitle });
+        if (newTitle !== "") updateSectionTitle({ docId, newTitle });
         updateLectureOrder(
           {},
           {
             onSuccess: () => {
-              dispatch(setNewTitle(''));
+              dispatch(setNewTitle(""));
               dispatch(handleEditMode());
             },
           },

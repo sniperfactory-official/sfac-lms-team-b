@@ -57,15 +57,14 @@ export default function RequireAuth({
       }
     }
   }, [loading, authenticated, pathname]);
-  
-  const isTargetRoute = (pathname:string) => {
-    const targetRoutes = ["/classroom", "/community", "/mypage", "/assignment",];
+
+  const isTargetRoute = (pathname: string) => {
+    const targetRoutes = ["/classroom", "/community", "/mypage", "/assignment"];
     // pathname이 targetRoutes 중 하나와 일치하거나 /assignment/로 시작하면 true를 반환
     return (
       targetRoutes.includes(pathname) || pathname.startsWith("/assignment/")
     );
   };
-  
 
   // 로딩 상태면 Loading Spinner 사용
   if (loading) {
