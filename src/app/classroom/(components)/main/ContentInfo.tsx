@@ -9,22 +9,36 @@ import { useDispatch } from "react-redux";
 import { ILecture } from "@/hooks/queries/useGetCourseList";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import { resetInput } from "@/redux/slice/lectureInfoSlice";
+import { Button } from "sfac-designkit-react";
 
 interface IProps {
-  setDeleteModal: React.Dispatch<React.SetStateAction<boolean>>;
   lecture: ILecture;
+  role: string;
 }
 
-const ContentInfo = ({ lecture, setDeleteModal }: IProps) => {
-  const { title, lectureType, startDate, endDate, lectureContent } = lecture;
-  const { lectureInfo } = useClassroomModal();
-  const router = useRouter();
+const ContentInfo = ({ lecture, role }: IProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { lectureInfo } = useClassroomModal();
+  const { title, lectureType, startDate, endDate, lectureContent } = lecture;
+
+
   const handleMovePage = () => {
+    if (lecture.lectureType === "링크") {
+      return window.open(`${lecture.lectureContent.externalLink}`);
+    }
     router.push(`/classroom/${lecture.lectureId}`);
   };
+
   const handleDeleteModal = () => {
-    setDeleteModal(true);
+    dispatch(setLecture(lecture));
+    dispatch(
+      setModalVisibility({
+        modalName: "lectureDeleteModalOpen",
+        visible: true,
+        modalRole: "delete",
+      }),
+    );
   };
 
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
@@ -65,13 +79,17 @@ const ContentInfo = ({ lecture, setDeleteModal }: IProps) => {
   return (
     <div className="w-2/3 h-5/6 ml-20px flex flex-col">
       <div className="text-xs ml-auto flex items-center w-[60px] text-grayscale-100 justify-around text-[12px]">
-        <button className="text-xs" onClick={handleEditLectureModal}>
-          수정
-        </button>
-        <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
-        <button className="text-xs" onClick={() => handleDeleteModal()}>
-          삭제
-        </button>
+        {role === "관리자" && (
+          <>
+            <button className="text-xs" onClick={handleEditLectureModal}>
+              수정
+            </button>
+            <div className="w-[0.5px] h-3 border-[0.5px] border-black"></div>
+            <button className="text-xs" onClick={() => handleDeleteModal()}>
+              삭제
+            </button>
+          </>
+        )}
       </div>
       {lectureType === "비디오" && (
         <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">
@@ -88,12 +106,14 @@ const ContentInfo = ({ lecture, setDeleteModal }: IProps) => {
             {start}-{end}
           </div>
         </div>
-        <button
-          className="w-[140px] h-[35px] bg-grayscale-5 text-center leading-[35px] text-sm rounded-lg"
+        <Button
+          variant="ghost"
+          textSize="sm"
+          text={LECTURE_OBJ[lectureType].text + "보기"}
+          asChild
+          className="w-[140px] h-[35px] bg-grayscale-5 text-center leading-[35px]rounded-lg"
           onClick={() => handleMovePage()}
-        >
-          {LECTURE_OBJ[lectureType].text}보기
-        </button>
+        />
       </div>
     </div>
   );

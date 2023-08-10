@@ -1,4 +1,5 @@
-"use client";
+import { LectureCommentProvider } from "@/app/classroom/(components)/contexts/LectureCommentProvider";
+import { VideoRefProvider } from "@/app/classroom/(components)/contexts/VideoContextProvider";
 import Navbar from "@/components/Header/Navbar";
 import Tab from "@/components/Header/Tab";
 import Footer from "@/components/Footer/Footer";
@@ -6,7 +7,8 @@ import { auth } from "@/utils/firebase";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import LoadingSpinner from "../Loading/Loading";
-import { useAppSelector } from "@/redux/store";
+import { usePathname } from "next/navigation";
+
 export default function RequireAuth({
   children,
 }: {
@@ -41,12 +43,20 @@ export default function RequireAuth({
       router.push("/community");
     }
   }, [loading, authenticated]);
+  const pathname = usePathname();
+
+  const isTargetRoute = [
+    "/classroom",
+    "/community",
+    "/assignment",
+    "/mypage",
+  ].includes(pathname);
 
   // 로딩 상태면 Loading Spinner 사용
   if (loading) {
-    <LoadingSpinner />;
+    return <LoadingSpinner />; // <- 수정된 부분
   } else {
-    if (authenticated) {
+    if (authenticated && isTargetRoute) {
       return (
         <>
           <Navbar />
@@ -56,7 +66,11 @@ export default function RequireAuth({
         </>
       );
     } else {
-      return <>{children}</>;
+      return (
+        <LectureCommentProvider>
+          <VideoRefProvider>{children}</VideoRefProvider>
+        </LectureCommentProvider>
+      );
     }
   }
 }

@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setLectureTitle, clearError } from "@/redux/slice/lectureInfoSlice";
+import { setLectureTitle } from "@/redux/slice/lectureInfoSlice";
 import { RootState } from "@/redux/store";
-import { Textarea } from "sfac-designkit-react";
 
 const LectureTitle: React.FC = () => {
   const lectureTitle = useSelector(
@@ -11,10 +10,6 @@ const LectureTitle: React.FC = () => {
 
   const handleInputTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setLectureTitle(e.target.value));
-    console.log(e.target);
-    if (e.target.value.trim()) {
-      dispatch(clearError());
-    }
   };
 
   return (

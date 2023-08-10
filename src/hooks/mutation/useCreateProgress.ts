@@ -15,6 +15,7 @@ interface CreateProgressInput {
   lectureId: string;
   lectureType: "노트" | "비디오" | "링크" | undefined;
   playTimes?: playTime[];
+  onSuccess?: (progress: Progress) => void;
 }
 
 const createProgress = async (
@@ -22,10 +23,15 @@ const createProgress = async (
 ): Promise<Progress | null> => {
   const { userId, lectureId, lectureType } = input;
 
+  // 강의 타입이 "비디오"가 아니면 생성하지 않고 null 반환
+  if (lectureType !== "비디오") {
+    return null;
+  }
+
   try {
     const progressRef = collection(db, "progress");
 
-    let progressDoc: {
+    const progressDoc: {
       userId: DocumentReference;
       lectureId: DocumentReference;
       isCompleted: boolean;
@@ -33,12 +39,9 @@ const createProgress = async (
     } = {
       userId: doc(db, "users", userId),
       lectureId: doc(db, "lectures", lectureId),
-      isCompleted: lectureType === "노트",
+      isCompleted: false, // 비디오 타입이므로 항상 false로 설정
+      playTimes: [{ start: "", end: "" }],
     };
-
-    if (lectureType === "비디오") {
-      progressDoc.playTimes = [{ start: "", end: "" }];
-    }
 
     const newProgressRef = await addDoc(progressRef, progressDoc);
     const newProgressSnapshot = await getDoc(newProgressRef);
@@ -60,7 +63,9 @@ const createProgress = async (
   }
 };
 
-const useCreateProgress = () => {
+const useCreateProgress = (
+  onSuccessCallback?: (progress: Progress) => void,
+) => {
   const [isMutationSuccessful, setIsMutationSuccessful] = useState(false);
 
   const createProgressMutation = useMutation<
@@ -71,8 +76,11 @@ const useCreateProgress = () => {
     onError: error => {
       console.error("수강률 추가에 실패했습니다: ", error);
     },
-    onSuccess: () => {
+    onSuccess: data => {
       setIsMutationSuccessful(true);
+      if (data && onSuccessCallback) {
+        onSuccessCallback(data);
+      }
     },
   });
 
