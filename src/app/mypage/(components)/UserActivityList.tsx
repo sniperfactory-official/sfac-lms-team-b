@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Category from "./Category";
 import { useAppSelector } from "@/redux/store";
 import useGetMyPosts from "@/hooks/mypage/useGetMyPosts";
@@ -193,11 +193,12 @@ export default function UserActivityList() {
             width="748px"
             modalTitle="제출한 과제"
           >
+            filteredAssignments && (
             <AssignmentsDetailModal
               id={selectedId}
               filteredAssignments={filteredAssignments}
-              filteredComments={filteredComments}
             />
+            )
           </ModalWrapper>
         )}
         {isPostDetailModalOpen && (
