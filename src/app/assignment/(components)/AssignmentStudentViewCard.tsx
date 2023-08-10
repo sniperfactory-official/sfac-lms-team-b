@@ -7,6 +7,7 @@ import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
 import AssignmentFeedback from "./AssignmentFeedback";
 import { User, SubmittedAssignment } from "@/types/firebase.types";
 import { Avatar, Text, Button } from "sfac-designkit-react";
+import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
 
 interface OwnProps {
   user: User;

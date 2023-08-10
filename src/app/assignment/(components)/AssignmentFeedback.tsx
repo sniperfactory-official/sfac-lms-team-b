@@ -113,7 +113,6 @@ const AssignmentFeedback = ({
     if (loginUser?.role === "관리자" && isRead === false) {
       updateMutate({ isRead: true });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -298,8 +297,11 @@ const AssignmentFeedback = ({
         content="한번 삭제하시면 다시 복구가 불가능합니다."
         confirmBtnMsg="확인"
         onConfirm={() => {
-          deleteMutate(id);
-          setToastMsg("삭제가 완료되었습니다.");
+          deleteMutate(id, {
+            onSuccess: () => {
+              setToastMsg("삭제가 완료되었습니다.");
+            },
+          });
         }}
         isOpen={isConfirmOpen}
         onCancel={() => setIsConfirmOpen(prev => !prev)}
