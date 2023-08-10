@@ -158,23 +158,24 @@ gif 삽입
 
 # 4. 팀 소개
 
-#### 👨‍👩‍👧‍👦 강의실팀
+#### 🤐 강의실팀
 
 <div align="center">
-
-|[최관수](https://github.com/gonasooc)|[신유정](https://github.com/nanhimang)|[구윤희](https://github.com/Yuni0221)|[이재훈](https://github.com/Hun5LEE)|
+  
+|[이호빈](https://hobin49.tistory.com/)|[임지원](https://github.com/energy1-914)|[김진형](https://github.com/jinnkimm7)|[이경린](https://github.com/lgrin-byte)|
 |:-:|:-:|:-:|:-:|
-|<img width=120 src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F42cb7fa1-7be9-4a38-876e-fdd4cd5720d2%2FIMG_9898.jpg?table=block&id=8df211c4-3095-47dc-9ff5-c39a07d6c9ed&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2">|<img width=120 src="[https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6d820d11-8460-430f-a600-440b4ade23b9%2FKakaoTalk_Photo_2023-04-04-11-27-59.png?table=block&id=b18ceb0c-dcd2-4cec-923a-a8ff34748a8f&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F11c74ee4-0f69-4c79-a599-d9bfef5e8010%2FKakaoTalk_20230605_135355748.jpg?table=block&id=d76dfb3c-7c64-462e-ad00-5a5d6f36b82a&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2)https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F11c74ee4-0f69-4c79-a599-d9bfef5e8010%2FKakaoTalk_20230605_135355748.jpg?table=block&id=d76dfb3c-7c64-462e-ad00-5a5d6f36b82a&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2">|<img width=120 src="">|<img width=120 src="https://files.slack.com/files-tmb/T058WBG0GJ1-F05M0QH9BM4-e0c9cfc2b9/img_6985_720.jpg">|
+|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/95c943ce-da36-44e0-9f38-06d62cfdb4b5">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/0af966de-5896-4667-b3af-a1c2c4fa7c5b">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/e14e75fc-fe80-44cb-aa78-154bdf5aa079">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/3e8b8225-b576-4195-bd70-192c3dc34f0c">|
+
 
 </div>
 
-#### 👨‍👩‍👧‍👦 과제방팀
+#### 🐟 과제방팀
 
 <div align="center">
 
 |[최관수](https://github.com/gonasooc)|[신유정](https://github.com/nanhimang)|[구윤희](https://github.com/Yuni0221)|[이재훈](https://github.com/Hun5LEE)|
 |:-:|:-:|:-:|:-:|
-|<img width=120 src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F42cb7fa1-7be9-4a38-876e-fdd4cd5720d2%2FIMG_9898.jpg?table=block&id=8df211c4-3095-47dc-9ff5-c39a07d6c9ed&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2">|<img width=120 src="[https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6d820d11-8460-430f-a600-440b4ade23b9%2FKakaoTalk_Photo_2023-04-04-11-27-59.png?table=block&id=b18ceb0c-dcd2-4cec-923a-a8ff34748a8f&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F11c74ee4-0f69-4c79-a599-d9bfef5e8010%2FKakaoTalk_20230605_135355748.jpg?table=block&id=d76dfb3c-7c64-462e-ad00-5a5d6f36b82a&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2)https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F11c74ee4-0f69-4c79-a599-d9bfef5e8010%2FKakaoTalk_20230605_135355748.jpg?table=block&id=d76dfb3c-7c64-462e-ad00-5a5d6f36b82a&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2">|<img width=120 src="">|<img width=120 src="https://files.slack.com/files-tmb/T058WBG0GJ1-F05M0QH9BM4-e0c9cfc2b9/img_6985_720.jpg">|
+|<img width=120 src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F42cb7fa1-7be9-4a38-876e-fdd4cd5720d2%2FIMG_9898.jpg?table=block&id=8df211c4-3095-47dc-9ff5-c39a07d6c9ed&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/95ea877e-438d-4ca6-884e-89c3acc3da0d">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/6cc5a0d9-0b13-47e1-94b1-91bf50dcff5e">|<img width=120 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/7e0711a1-9823-494b-b825-ab82316c0c38">|
 
 </div>
 
@@ -182,8 +183,8 @@ gif 삽입
 
 <div align="center">
 
-|[최관수](https://github.com/gonasooc)|[신유정](https://github.com/nanhimang)|[구윤희](https://github.com/Yuni0221)|[이재훈](https://github.com/Hun5LEE)|
+|[박정도](https://github.com/jeongdopark)|[이세영](https://github.com/sweeeeetpotato)|[이율](https://github.com/leeyulgok)|[장예림](https://velog.io/@bluebloody)|
 |:-:|:-:|:-:|:-:|
-|<img width=120 src="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F42cb7fa1-7be9-4a38-876e-fdd4cd5720d2%2FIMG_9898.jpg?table=block&id=8df211c4-3095-47dc-9ff5-c39a07d6c9ed&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2">|<img width=120 src="[https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F6d820d11-8460-430f-a600-440b4ade23b9%2FKakaoTalk_Photo_2023-04-04-11-27-59.png?table=block&id=b18ceb0c-dcd2-4cec-923a-a8ff34748a8f&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2](https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F11c74ee4-0f69-4c79-a599-d9bfef5e8010%2FKakaoTalk_20230605_135355748.jpg?table=block&id=d76dfb3c-7c64-462e-ad00-5a5d6f36b82a&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2)https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F11c74ee4-0f69-4c79-a599-d9bfef5e8010%2FKakaoTalk_20230605_135355748.jpg?table=block&id=d76dfb3c-7c64-462e-ad00-5a5d6f36b82a&spaceId=f41e5f5b-100d-4dff-a83a-2cffb7fa7081&width=1720&userId=6c2c21ca-16da-431b-b8b8-51b261d55a98&cache=v2">|<img width=120 src="">|<img width=120 src="https://files.slack.com/files-tmb/T058WBG0GJ1-F05M0QH9BM4-e0c9cfc2b9/img_6985_720.jpg">|
+|<img width=120 src="">|<img width=120 src="">|<img width=120 src="">|<img width=120 src="">|
 
 </div>
