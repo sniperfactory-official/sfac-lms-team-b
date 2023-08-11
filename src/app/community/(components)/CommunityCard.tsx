@@ -10,7 +10,6 @@ import ModalWrapper from "@/components/ModalWrapper";
 import useDeletePost from "@/hooks/community/useDeletePost";
 import { choicePost } from "@redux/slice/postSlice";
 import { useAppDispatch } from "@redux/store";
-import useGetProfileImage from "@/hooks/mypage/useGetProfileImage";
 import deleteStorageImages from "@/utils/deleteStorageImages";
 import { Avatar } from "sfac-designkit-react";
 import timestampToDate from "@/utils/timestampToDate";
