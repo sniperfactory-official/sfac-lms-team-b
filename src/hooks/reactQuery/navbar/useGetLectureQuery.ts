@@ -13,6 +13,6 @@ const getLecture = async (docId: string) => {
   }
 };
 
-export default function fetchLectureInfo(docId: string) {
+export default function useFetchLectureInfo(docId: string) {
   return useQuery(["lectures", docId], async () => await getLecture(docId));
 }
