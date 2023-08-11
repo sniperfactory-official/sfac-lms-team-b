@@ -40,8 +40,6 @@
 
 ## 👀 미리 보기 
 
-<br/>
-
 #### 🏫 강의실/강의장 페이지
 
 <div align="center">
@@ -163,7 +161,7 @@
 <br/>
 
 ## 🗄️DB 설계
-- https://app.eraser.io/workspace/kGgQYva1zAO0XZUtDvDc
+> https://app.eraser.io/workspace/kGgQYva1zAO0XZUtDvDc
 
 <div align="center">
 <img width=700 src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/acdcbeea-c6c3-488e-b9cf-90751aa79b1b"/>
