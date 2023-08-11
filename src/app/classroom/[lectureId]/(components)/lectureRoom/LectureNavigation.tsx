@@ -38,6 +38,7 @@ const LectureNavigation: FC<LectureNavigationProps> = ({ lectureId }) => {
           name="SkipNext"
           altText="다음강의"
           buttonText="다음강의"
+          next="rotate-180"
         />
       ) : (
         <div />
