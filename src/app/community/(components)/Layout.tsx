@@ -4,9 +4,9 @@ import Inputbar from "./Inputbar";
 import ModalWrapper from "@/components/ModalWrapper";
 import PostForm from "./PostForm/PostForm";
 import CommunityList from "./CommunityList";
-import CommunityModal from "./CommunityModal";
+import CommunityModal from "./CommunityModal/CommunityModal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { notChoicePost } from "@redux/slice/postSlice"; // import the actions from your slice
+import { notChoicePost } from "@redux/slice/postSlice";
 import { useToast } from "@/hooks/useToast";
 import { Toast } from "sfac-designkit-react";
 
