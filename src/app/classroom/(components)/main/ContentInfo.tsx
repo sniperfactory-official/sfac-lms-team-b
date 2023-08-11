@@ -22,7 +22,6 @@ const ContentInfo = ({ lecture, role }: IProps) => {
   const { lectureInfo } = useClassroomModal();
   const { title, lectureType, startDate, endDate, lectureContent } = lecture;
 
-
   const handleMovePage = () => {
     if (lecture.lectureType === "링크") {
       return window.open(`${lecture.lectureContent.externalLink}`);
