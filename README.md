@@ -1,8 +1,8 @@
 <div align="center">
-  <img width=700 src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/34ca4ff1-2001-44f0-9d6b-f8f8886ceffd"/>
+  <img width=700 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/5b5df6d7-976c-4299-9ace-e9520072f6dd"/>
    <h3><a href="https://pitch.com/public/8db1b5fa-de04-41f6-91e5-ab3efd2134a9">스나이퍼팩토리 LMS 학습관리 시스템</a></h3> 
   <a href="https://www.figma.com/file/c8mYlxCSogvacib7lg3zW5/%EC%8A%A4%EB%82%98%EC%9D%B4%ED%8D%BC%ED%8C%A9%ED%86%A0%EB%A6%AC-LMS?type=design&node-id=0-1&mode=design&t=oAY8ofWmNpOXj9V1-0"><img src="https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=fff&style=flat"/></a>
-  <a href="https://www.npmjs.com/package/sfac-designkit-react"><img src="https://img.shields.io/badge/styled--components-DB7093?logo=styledcomponents&logoColor=fff&style=for-the-badge"/></a>
+  <a href="https://www.npmjs.com/package/sfac-designkit-react"><img src="https://img.shields.io/badge/styled--components-DB7093?logo=styledcomponents&logoColor=fff"/></a>
 </div>
 
 <br/>
@@ -69,8 +69,8 @@
 > 마스터가 클래스 콘텐츠(유뷰트, S3링크, 일반링크) 등을 업로드하고 수강생의 수강률 혹은 학습진행도를 기록하는 시스템 개발
 
 <div align="center">
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/ccaac8d9-a495-48fe-aff1-482d433e8c76"/>
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/abba46b1-a006-4068-a91b-a563f0578dc6"/>
+<img width=400, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/e2204551-2838-4c6e-9cc6-bcb5d03c607a"/>
+<img width=400, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/96a424cd-42cb-4496-ac1a-905e877a2eb4"/>
 </div>
 
 <!-- <details>
@@ -87,8 +87,8 @@
 > 멘토와 수강생의 과제공유 솔루션으로, 멘토의 과제 생성 기능과 <br/>수강생의 과제 제출 기능 구현을 통한 양방향 과제제출/평가시스템 개발
 > 
 <div align="center">
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/871f6149-98e8-4744-8912-461c0ae0cfe8"/>
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/cb42fe03-a41f-4936-afdd-19da6337abeb"/>
+<img width=400, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/33b2fd27-d334-4e68-888b-4603ba511fb8"/>
+<img width=400, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/0a8db8cf-81e5-4fa8-a542-ea4f2e3568ba"/>
 </div>
 
 <!-- <details>
@@ -105,8 +105,8 @@
 > 멘토와 수강생들 사이 질문과 자유 대화, 답글 등이 가능한 원스크롤 피드 방식의 커뮤니티 시스템 개발
 
 <div align="center">
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/ea18f622-6d38-4e4d-a28a-62fa51838c97"/>
-<img width=400, src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/2ff14016-ec1c-4454-ad15-983600de3738"/>
+<img width=400, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/f5589c8a-9ac1-4314-9c63-74f4202dfdc2"/>
+<img width=400, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/d892e360-2dac-4390-832a-a64a67d6c3b5"/>
 </div>
 
 <!-- <details>
@@ -164,7 +164,7 @@
 > https://app.eraser.io/workspace/kGgQYva1zAO0XZUtDvDc
 
 <div align="center">
-<img width=700 src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/acdcbeea-c6c3-488e-b9cf-90751aa79b1b"/>
+<img width=700 src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/52587871/0859f362-a0e4-4fdf-a988-c628d4d58df0"/>
 </div>
 
 
