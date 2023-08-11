@@ -1,9 +1,8 @@
 <div align="center">
   <img width=700 src="https://github.com/nanhimang/udemy-nanhimang/assets/52587871/34ca4ff1-2001-44f0-9d6b-f8f8886ceffd"/>
-  <h3 align='center'> 스나이퍼팩토리 LMS 학습관리 시스템 </h3>
-  
+   <h3><a href="https://pitch.com/public/8db1b5fa-de04-41f6-91e5-ab3efd2134a9">스나이퍼팩토리 LMS 학습관리 시스템</a></h3> 
   <a href="https://www.figma.com/file/c8mYlxCSogvacib7lg3zW5/%EC%8A%A4%EB%82%98%EC%9D%B4%ED%8D%BC%ED%8C%A9%ED%86%A0%EB%A6%AC-LMS?type=design&node-id=0-1&mode=design&t=oAY8ofWmNpOXj9V1-0"><img src="https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=fff&style=flat"/></a>
-  
+  <img src="https://img.shields.io/badge/styled--components-DB7093?logo=styledcomponents&logoColor=fff&style=for-the-badge?url=https://www.npmjs.com/package/sfac-designkit-react"/>
 </div>
 
 <br/>
@@ -20,7 +19,7 @@
 > 학습자의 학습진행도를 파악하는 웹 플랫폼
 
 멘토의 피드백과 수강생의 질문/커뮤니티 활동이 자유롭도록 기존의 다른 LMS 시스템에서
-과제/피드백 기능을 탑재하여 제작한 스나이퍼팩토리 전용 커스텀 LMS`(Learning Managment System)`입니다.
+과제/피드백 기능을 탑재하여 제작한 스나이퍼팩토리 전용 커스텀 LMS`Learning Managment System`입니다.
 이러한 IT 서비스 기반의 학습관리 시스템을 통해 멘토와 수강생 간의 양방향 소통을 추구하고자 합니다.
 
 <br/>
@@ -42,20 +41,29 @@
 ## 👀 미리 보기 
 
 <br/>
-강의실 페이지
 
-![강의 업로드](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/8ba89ed9-94ad-432b-af69-e666e58b767f)
+#### 🏫 강의실/강의장 페이지
 
-강의장 페이지
-![강의장](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/4a402c39-77f2-493c-a303-ef86f25aa372)
+<div align="center">
+<img width=500, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/8ba89ed9-94ad-432b-af69-e666e58b767f"/>
+<img width=500, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/4a402c39-77f2-493c-a303-ef86f25aa372"/>
+</div>
 
-과제 페이지
-![과제페이지](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/bae2a83b-e32c-424b-b6e7-615c833f48ec)
+<br/>
 
-커뮤니티 페이지
-![커뮤니티](https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/e627d67c-80f9-4781-8844-b58648f6cdeb)
+#### 🗂️ 과제 페이지
 
+<div align="center">
+<img width=700, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/bae2a83b-e32c-424b-b6e7-615c833f48ec"/>
+</div>
+<br/>
 
+#### 🤸‍♀️ 커뮤니티 페이지
+
+<div align="center">
+<img width=700, src="https://github.com/sniperfactory-official/sfac-lms-team-b/assets/72500346/e627d67c-80f9-4781-8844-b58648f6cdeb"/>
+</div>
+<br/>
 <br/>
 
 ## 📱 기능 상세
@@ -151,16 +159,6 @@
  ┃ ┣ 📂types
  ┃ ┣ 📂utils
  ┃ ┣ 📂__test__
- ┣ 📜.eslintignore
- ┣ 📜.eslintrc.json
- ┣ 📜.gitignore
- ┣ 📜.prettierignore
- ┣ 📜.prettierrc
- ┣ 📜jest.config.js
- ┣ 📜jest.setup.js
- ┣ 📜next-env.d.ts
- ┣ 📜next.config.js
- ┣ 📜package.json
 ```
 <br/>
 
