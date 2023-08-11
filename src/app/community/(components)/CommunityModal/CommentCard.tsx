@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import useDeleteComment from "@/hooks/community/useDeleteComment";
 import { getTime } from "@/utils/getTime";
 import CommunityCommentMention from "./CommunityCommentMention";

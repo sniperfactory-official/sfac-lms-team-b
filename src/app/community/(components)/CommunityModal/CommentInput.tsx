@@ -1,4 +1,5 @@
 import { Timestamp } from "firebase/firestore";
+import Image from "next/image";
 import useUpdateComment from "@/hooks/community/useUpdateComment";
 import useCreateComment from "@/hooks/community/useCreateComment";
 import { useForm } from "react-hook-form";
@@ -57,7 +58,7 @@ export default function CommentInput({
         createMutate({
           post: {
             parentId: nestedId.parentId,
-            content: `@${nestedId.tagId}| ${newComment.content}`,
+            content: `@${nestedId.tagId}|${newComment.content}`,
             createdAt: now,
             userId: userData.userRef,
           },
@@ -104,11 +105,11 @@ export default function CommentInput({
       <div className=" w-full">
         <div className="flex items-center ">
           <Avatar
-            src={profileUrl ?? "/images/avatar.svg"}
+            src={userData?.profileImage ?? "/images/avatar.svg"}
             alt="프로필"
-            size={34}
+            size={43}
             ring={false}
-            className="rounded-[50%] object-cover object-center h-[34px] mr-2"
+            className="rounded-[50%] object-cover object-center h-[43px] mr-2"
           />
           <div className="flex items-center flex-1">
             <span>{userData?.username}</span>
