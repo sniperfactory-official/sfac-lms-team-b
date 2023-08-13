@@ -2,12 +2,14 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface DropzoneFileState {
   videoFileName: string;
+  videoToDeleteOnEdit: string;
   errorMessage: string;
   successMessage: string;
 }
 
 const initialState: DropzoneFileState = {
   videoFileName: "",
+  videoToDeleteOnEdit: "",
   errorMessage: "",
   successMessage: "",
 };
@@ -18,6 +20,9 @@ const dropzoneFileSlice = createSlice({
   reducers: {
     setVideoFileName: (state, action: PayloadAction<string>) => {
       state.videoFileName = action.payload;
+    },
+    setVideoToDeleteOnEdit: (state, action: PayloadAction<string>) => {
+      state.videoToDeleteOnEdit = action.payload;
     },
     setErrorMessage: (state, action: PayloadAction<string>) => {
       state.errorMessage = action.payload;
@@ -31,6 +36,7 @@ const dropzoneFileSlice = createSlice({
 
 export const {
   setVideoFileName,
+  setVideoToDeleteOnEdit,
   setErrorMessage,
   setSuccessMessage,
   resetDropzone,

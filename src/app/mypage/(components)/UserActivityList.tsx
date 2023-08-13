@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Category from "./Category";
 import { useAppSelector } from "@/redux/store";
 import useGetMyPosts from "@/hooks/mypage/useGetMyPosts";
@@ -56,7 +56,6 @@ export default function UserActivityList() {
     isError: assignmentError,
     error: assignmentFetchError,
   } = useGetAssignments(userId);
-  // console.log("assignmentData::: ", assignmentData);
 
   const {
     data: myPostData,
@@ -77,10 +76,11 @@ export default function UserActivityList() {
     id: assignment.id,
     title: assignment.AssignmentData?.title,
     content: assignment.content,
+    attachmentFiles: assignment.attachmentFiles,
     category: assignment.AssignmentData?.level,
-    createdAt: assignment.createdAt,
+    createdAt: assignment.AssignmentData?.createdAt,
   }));
-  console.log(filteredAssignments);
+
   // 내가 쓴 글
   const filteredPosts = myPostData
     ?.filter(el => !el.parentId)
@@ -94,8 +94,9 @@ export default function UserActivityList() {
 
   // 내가 쓴 댓글
   const filteredComments = myPostData
-    ?.filter(el => el.parentId && el.parentData.title)
+    ?.filter(el => el.parentId && el.parentData?.title)
     .map(comment => ({
+      parentId: comment.parentId,
       id: comment.id,
       title: comment.parentData.title,
       content: comment.content,
@@ -104,20 +105,22 @@ export default function UserActivityList() {
     }));
 
   // 내가 쓴 강의 댓글
-  const filteredLectureComments = lectureCommentData?.map(comment => ({
-    id: comment.id,
-    title: comment.parentData.title,
-    content: comment.content,
-    category: "강의실",
-    createdAt: comment.createdAt,
-  }));
-  console.log(filteredLectureComments);
+  const filteredLectureComments = lectureCommentData
+    ?.filter(el => el.parentData)
+    .map(comment => ({
+      id: comment.id,
+      title: comment.parentData.title,
+      content: comment.content,
+      category: "강의실",
+      createdAt: comment.createdAt,
+    }));
+
   const comments = [
     ...(filteredComments || []),
     ...(filteredLectureComments || []),
-  ];
+  ].sort((a, b) => a.createdAt - b.createdAt);
 
-  if (lectureCommentLoading || myPostLoading) {
+  if (lectureCommentLoading || myPostLoading || assignmentLoading) {
     return <LoadingSpinner />;
   }
 
@@ -134,7 +137,6 @@ export default function UserActivityList() {
             onCloseModal={() =>
               setIsAssignmentsModalOpen(!isAssignmentsModalOpen)
             }
-            width="748px"
             modalTitle="제출한 과제"
           >
             <Category
@@ -142,6 +144,7 @@ export default function UserActivityList() {
               targetData={filteredAssignments}
               handleClick={handleAssignmentsModalClick}
               handleDetailModalClick={handleAssignmentsDetailModalClick}
+              width="w-full"
             />
           </ModalWrapper>
         )}
@@ -153,7 +156,6 @@ export default function UserActivityList() {
         {isPostModalOpen && (
           <ModalWrapper
             onCloseModal={() => setIsPostModalOpen(!isPostModalOpen)}
-            width="748px"
             modalTitle="나의 게시글"
           >
             <Category
@@ -161,6 +163,7 @@ export default function UserActivityList() {
               targetData={filteredPosts}
               handleClick={handlePostModalClick}
               handleDetailModalClick={handlePostDetailModalClick}
+              width="w-full"
             />
           </ModalWrapper>
         )}
@@ -172,7 +175,6 @@ export default function UserActivityList() {
         {isCommentsModalOpen && (
           <ModalWrapper
             onCloseModal={() => setIsCommentsModalOpen(!isCommentsModalOpen)}
-            width="748px"
             modalTitle="나의 댓글"
           >
             <Category
@@ -180,24 +182,24 @@ export default function UserActivityList() {
               targetData={comments}
               handleClick={handleCommentsModalClick}
               handleDetailModalClick={handleCommentsDetailModalClick}
+              width="w-full"
             />
           </ModalWrapper>
         )}
-
         {isAssignmentsDetailModalOpen && (
           <ModalWrapper
             onCloseModal={() => {
               setIsAssignmentsDetailModalOpen(!isAssignmentsDetailModalOpen);
               setSelectedId("");
             }}
-            width="748px"
             modalTitle="제출한 과제"
           >
-            <AssignmentsDetailModal
-              id={selectedId}
-              filteredAssignments={filteredAssignments}
-              filteredComments={filteredComments}
-            />
+            {filteredAssignments && (
+              <AssignmentsDetailModal
+                id={selectedId}
+                filteredAssignments={filteredAssignments}
+              />
+            )}
           </ModalWrapper>
         )}
         {isPostDetailModalOpen && (
@@ -206,7 +208,7 @@ export default function UserActivityList() {
               setIsPostDetailModalOpen(!isPostDetailModalOpen);
               setSelectedId("");
             }}
-            width="748px"
+            modalTitle="나의 게시글"
           >
             <PostDetailModal id={selectedId} />
           </ModalWrapper>
@@ -217,9 +219,9 @@ export default function UserActivityList() {
               setIsCommentsDetailModalOpen(!isCommentsDetailModalOpen);
               setSelectedCommentId("");
             }}
-            width="748px"
+            modalTitle="나의 댓글"
           >
-            <CommentsDetailModal id={selectedCommentId} />
+            <CommentsDetailModal id={selectedCommentId} comments={comments} />
           </ModalWrapper>
         )}
       </div>

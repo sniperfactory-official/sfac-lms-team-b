@@ -75,7 +75,7 @@ const Element = ({
 
   return (
     <div
-      className={`flex justify-center items-center w-[245px] h-[46px] ${
+      className={`flex justify-start items-center w-[245px] h-[46px] ${
         isSelected ? type_obj[type].bg : "bg-white"
       } rounded-lg ${type_obj[type].margin}`}
       onClick={clickFn}
@@ -90,7 +90,7 @@ const Element = ({
           }
         />
       ) : type === "course" ? (
-        <div className="w-[15px] h-[15px] flex justify-center items-center">
+        <div className="w-[15px] h-[15px] flex justify-center items-center ml-[10px]">
           🎯
         </div>
       ) : (

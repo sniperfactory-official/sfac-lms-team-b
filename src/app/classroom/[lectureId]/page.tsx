@@ -7,13 +7,18 @@ import LectureHeader from "@/app/classroom/[lectureId]/(components)/lectureRoom/
 import TypeOfLecture from "@/app/classroom/[lectureId]/(components)/lectureRoom/typesOf/TypeOfLecture";
 import LectureComment from "@/app/classroom/[lectureId]/(components)/lectureRoom/LectureComment";
 import LectureNavigation from "@/app/classroom/[lectureId]/(components)/lectureRoom/LectureNavigation";
+import LoadingSpinner from "@/components/Loading/Loading";
 
 const LectureHome = ({ params }: { params: { lectureId: string } }) => {
   const { lectureId } = params;
   const { data: lectureData, isFetching } = useGetLectureInfo(lectureId);
 
   if (isFetching) {
-    return <div>Loading...</div>;
+    return (
+      <div className="w-screen flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
   }
 
   return (

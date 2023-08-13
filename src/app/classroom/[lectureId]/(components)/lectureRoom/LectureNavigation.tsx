@@ -24,7 +24,7 @@ const LectureNavigation: FC<LectureNavigationProps> = ({ lectureId }) => {
       {prevLectureId ? (
         <NavigationButton
           lectureId={prevLectureId}
-          imageSrc="/images/backward-step.svg"
+          name="SkipNext"
           altText="이전강의"
           buttonText="이전강의"
         />
@@ -35,9 +35,10 @@ const LectureNavigation: FC<LectureNavigationProps> = ({ lectureId }) => {
       {nextLectureId ? (
         <NavigationButton
           lectureId={nextLectureId}
-          imageSrc="/images/forward-step.svg"
+          name="SkipNext"
           altText="다음강의"
           buttonText="다음강의"
+          next="rotate-180"
         />
       ) : (
         <div />

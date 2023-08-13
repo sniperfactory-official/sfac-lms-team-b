@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import useGetProgressInfoQuery from "@/hooks/queries/useGetProgressInfo";
+import useGetProgressQuery from '@/hooks/mypage/useGetProgressQuery';
 import { useAppSelector } from "@/redux/store";
 
 export default function Progress() {
@@ -12,7 +12,7 @@ export default function Progress() {
     isLoading: progressLoading,
     isError: progressError,
     error: progressFetchError,
-  } = useGetProgressInfoQuery(userId);
+  } = useGetProgressQuery(userId);
 
   let percentage = 0;
   if (progressData && progressData.completedLectures && progressData.total) {

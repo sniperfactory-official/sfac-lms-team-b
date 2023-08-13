@@ -97,7 +97,7 @@ const AssignmentLeftNavCard = (props: Props) => {
           key={id}
           className={`list-none w-full p-[10px] mb-[5px] order-${index} opacity-${opacity}`}
         >
-          <label className="hover:cursor-pointer break-all">
+          <label className="hover:cursor-pointer break-all flex justify-start items-center">
             <input
               type="checkbox"
               name={id}
@@ -107,8 +107,8 @@ const AssignmentLeftNavCard = (props: Props) => {
             <div className="inline-block border w-[15px] h-[15px] mr-[5px] border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:hidden"></div>
             <Image
               className="hidden peer-checked/inputBox:inline-block mr-[5px]"
-              width="20"
-              height="20"
+              width="15"
+              height="15"
               src="/images/icon_target.svg"
               alt=""
             />
@@ -127,15 +127,15 @@ const AssignmentLeftNavCard = (props: Props) => {
           className={`list-none w-full p-[10px] mb-[5px] order-${index}`}
         >
           <Link className="break-all" href={`/assignment/${id}`}>
-            <span className={`${isFocused ? "text-[#2563eb]" : "text-black"}`}>
-              <Text
-                size="sm"
-                weight="medium"
-                className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
-              >
-                {title}
-              </Text>
-            </span>
+            <Text
+              size="sm"
+              weight="medium"
+              className={`text-color-Grayscale-100 ${
+                isFocused ? "text-primary-100" : "text-grayscale-100"
+              } mr-[20px]`}
+            >
+              {title}
+            </Text>
           </Link>
         </div>
       )}

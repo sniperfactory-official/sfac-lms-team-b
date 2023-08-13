@@ -23,6 +23,9 @@ const useClassroomModal = () => {
   const replyCommentModalOpen = useSelector(
     (state: RootState) => state.classroomModal.replyCommentModalOpen,
   );
+  const lectureDeleteModalOpen = useSelector(
+    (state: RootState) => state.classroomModal.lectureDeleteModalOpen,
+  );
   const modalRole = useSelector(
     (state: RootState) => state.classroomModal.modalRole,
   );
@@ -54,6 +57,7 @@ const useClassroomModal = () => {
     videoFileModalOpen,
     commentModalOpen,
     replyCommentModalOpen,
+    lectureDeleteModalOpen,
     modalRole,
     lectureInfo,
     handleModalMove,

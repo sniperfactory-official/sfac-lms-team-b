@@ -1,19 +1,22 @@
 import React, { FC } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Icon } from "sfac-designkit-react";
 
 interface NavigationButtonProps {
   lectureId: string | null | undefined;
-  imageSrc: string;
+  name: string;
   altText: string;
   buttonText: string;
+  next?: string;
 }
 
 const NavigationButton: FC<NavigationButtonProps> = ({
   lectureId,
-  imageSrc,
+  name,
   altText,
   buttonText,
+  next,
 }) => {
   const router = useRouter();
 
@@ -23,12 +26,12 @@ const NavigationButton: FC<NavigationButtonProps> = ({
         onClick={() => lectureId && router.push(`/classroom/${lectureId}`)}
         className="flex items-center cursor-pointer"
       >
-        <Image
-          src={imageSrc}
+        <Icon
+          name="SkipNext"
           alt={altText}
           width={20}
           height={20}
-          className="cursor-pointer m-2"
+          className={`cursor-pointer m-2 ${next}`}
         />
         <span className="text-sm m-2 ">{buttonText}</span>
       </button>
