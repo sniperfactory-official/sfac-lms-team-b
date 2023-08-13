@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import useGetProgressQuery from '@/hooks/mypage/useGetProgressQuery';
+import useGetProgressQuery from "@/hooks/mypage/useGetProgressQuery";
 import { useAppSelector } from "@/redux/store";
 
 export default function Progress() {

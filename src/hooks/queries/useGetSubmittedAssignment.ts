@@ -57,41 +57,42 @@ const getSubmittedAssignments = async (
 
       return { ...submittedAssignments[0] };
     }
+  } else {
+    // 관리자일때
+    const submittedAssignmentsQuery = query(
+      collection(db, "submittedAssignments"),
+      where("assignmentId", "==", assignmentDoc.ref),
+    );
+    const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
+
+    const rawSubmittedAssignments = await Promise.all(
+      submittedAssignmentsDocs?.docs.map(async document => {
+        const attachmentQuery = query(
+          collection(db, "attachments"),
+          where("submittedAssignmentId", "==", document.ref),
+        );
+        const attachmentDocs = await getDocs(attachmentQuery);
+        const attachment = attachmentDocs.docs[0].data();
+
+        const userRef = doc(db, "users", document.data().userId.id);
+        const userDoc = await getDoc(userRef);
+
+        return {
+          id: document.id,
+          user: userDoc.data(),
+          attachment: attachment,
+          ...document.data(),
+        };
+      }),
+    );
+
+    const submittedAssignments = rawSubmittedAssignments.sort(
+      (a: DocumentData, b: DocumentData) =>
+        a.createdAt.seconds - b.createdAt.seconds,
+    );
+
+    return submittedAssignments;
   }
-  // 관리자일때
-  const submittedAssignmentsQuery = query(
-    collection(db, "submittedAssignments"),
-    where("assignmentId", "==", assignmentDoc.ref),
-  );
-  const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
-
-  const rawSubmittedAssignments = await Promise.all(
-    submittedAssignmentsDocs?.docs.map(async document => {
-      const attachmentQuery = query(
-        collection(db, "attachments"),
-        where("submittedAssignmentId", "==", document.ref),
-      );
-      const attachmentDocs = await getDocs(attachmentQuery);
-      const attachment = attachmentDocs.docs[0].data();
-
-      const userRef = doc(db, "users", document.data().userId.id);
-      const userDoc = await getDoc(userRef);
-
-      return {
-        id: document.id,
-        user: userDoc.data(),
-        attachment: attachment,
-        ...document.data(),
-      };
-    }),
-  );
-
-  const submittedAssignments = rawSubmittedAssignments.sort(
-    (a: DocumentData, b: DocumentData) =>
-      a.createdAt.seconds - b.createdAt.seconds,
-  );
-
-  return submittedAssignments;
 };
 
 const useGetSubmittedAssignments = (assignmentId: string, uid?: string) => {
