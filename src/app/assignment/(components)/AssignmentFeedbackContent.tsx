@@ -3,11 +3,26 @@ import { useDeleteFeedback } from "@/hooks/mutation/useDeleteFeedback";
 import { useUpdateFeedback } from "@/hooks/mutation/useUpdateFeedback";
 import { useForm } from "react-hook-form";
 import { Button, Text, Avatar } from "sfac-designkit-react";
+import { User } from "@/types/firebase.types";
+import { DocumentReference } from "firebase/firestore";
 import PageToast from "@/components/PageToast";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
 
 interface IUpdateFeedbackForm {
   updateFeedback: string;
+}
+
+interface IFeedbackContentProps {
+  id: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  user: User;
+  userId: DocumentReference;
+  submittedAssignmentId: string;
+  loginUserId: string;
+  updateDelete: boolean;
+  setUpdateDelete: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const AssignmentFeedbackContent = ({
@@ -21,7 +36,7 @@ const AssignmentFeedbackContent = ({
   loginUserId,
   updateDelete,
   setUpdateDelete,
-}: any) => {
+}: IFeedbackContentProps) => {
   const [feedbackAnimation, setFeedbackAnimation] = useState(true);
   const [updateMode, setUpdateMode] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -51,7 +66,7 @@ const AssignmentFeedbackContent = ({
       content: textValue.updateFeedback,
       updatedAt: new Date(),
     });
-    setUpdateMode((prev: any) => !prev);
+    setUpdateMode((prev: boolean) => !prev);
     setUpdateDelete((prev: boolean) => !prev);
     setToastMsg("수정이 완료되었습니다.");
   };
@@ -61,7 +76,7 @@ const AssignmentFeedbackContent = ({
   };
 
   const handleUpdateDelete = () => {
-    setUpdateMode((prev: any) => !prev);
+    setUpdateMode((prev: boolean) => !prev);
     setUpdateDelete((prev: boolean) => !prev);
   };
 

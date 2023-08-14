@@ -1,7 +1,10 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
+import {
+  ISubmittedAssignment,
+  useGetSubmittedAssignments,
+} from "@/hooks/queries/useGetSubmittedAssignment";
 import { IUserProps } from "./AssignmentTeacherViewCardWrapper";
 import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
 const AssignmentStudentViewCardWrapper = ({ user }: IUserProps) => {
@@ -19,7 +22,9 @@ const AssignmentStudentViewCardWrapper = ({ user }: IUserProps) => {
         <AssignmentStudentViewCard
           user={user}
           assignmentId={assignmentId as string}
-          submittedAssignment={submittedAssignment}
+          submittedAssignment={
+            submittedAssignment as ISubmittedAssignment | null
+          }
         />
       </div>
     </div>
