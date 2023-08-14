@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import RequireAuth from "@/components/RequireAuth/RequireAuth";
 import { PersistGate } from "redux-persist/integration/react";
+// import "sfac-designkit-react/style.css";
 
 const Provider = ({ children }: { children: ReactNode }) => {
   const [queryClient] = useState(new QueryClient());

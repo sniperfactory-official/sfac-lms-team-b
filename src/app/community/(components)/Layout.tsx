@@ -4,9 +4,11 @@ import Inputbar from "./Inputbar";
 import ModalWrapper from "@/components/ModalWrapper";
 import PostForm from "./PostForm/PostForm";
 import CommunityList from "./CommunityList";
-import CommunityModal from "./CommunityModal";
+import CommunityModal from "./CommunityModal/CommunityModal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { notChoicePost } from "@redux/slice/postSlice"; // import the actions from your slice
+import { notChoicePost } from "@redux/slice/postSlice";
+import { useToast } from "@/hooks/useToast";
+import { Toast } from "sfac-designkit-react";
 
 export default function Layout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,6 +44,8 @@ export default function Layout() {
     setIsModalOpen(!isModalOpen);
   };
 
+  const { toastProps, setToastProps } = useToast();
+
   return (
     <div className="w-full">
       <div className="flex  justify-center items-center ">
@@ -53,7 +57,11 @@ export default function Layout() {
           onCloseModal={onCloseForm}
           unmountCleanUp={cleanup}
         >
-          <PostForm onClose={onCloseForm} onCleanup={setCleanup} />
+          <PostForm
+            onClose={onCloseForm}
+            onCleanup={setCleanup}
+            onToast={setToastProps}
+          />
         </ModalWrapper>
       )}
       <Inputbar handleClick={handleInputbarClick} />
@@ -64,6 +72,11 @@ export default function Layout() {
         >
           <CommunityModal />
         </ModalWrapper>
+      )}
+      {toastProps && (
+        <div className="fixed bottom-[35%] right-[10%]">
+          <Toast {...toastProps} />
+        </div>
       )}
     </div>
   );

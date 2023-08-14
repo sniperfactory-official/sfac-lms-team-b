@@ -1,3 +1,5 @@
+import { Button } from "sfac-designkit-react";
+
 interface LectureDeleteModalProps {
   onCancel: () => void;
   onDelete: () => void;
@@ -12,18 +14,20 @@ const LectureDeleteModal: React.FunctionComponent<LectureDeleteModalProps> = ({
       <div className="relative w-[477px] bg-white px-[35px] py-[40px] flex flex-col gap-[16px] rounded-lg border border-gray-300 shadow-md p-4 justify-center items-center">
         <span className="font-bold text-[20px]">강의를 삭제하시겠습니까?</span>
         <div className="flex gap-[8px]">
-          <button
+          <Button
+            variant="secondary"
+            text="취소"
+            asChild
             onClick={onCancel}
-            className=" bg-grayscale-5 w-[115px] h-[35px] rounded-lg px-[18px] font-bold text-[14px] justify-center items-center"
-          >
-            취소
-          </button>
-          <button
+            className="w-[115px]"
+          />
+          <Button
+            variant="destructive"
+            text="삭제"
+            asChild
             onClick={onDelete}
-            className=" bg-red text-white font-bold text-[14px] w-[115px] h-[35px] rounded-lg px-[18px] justify-center items-center"
-          >
-            삭제
-          </button>
+            className="w-[115px]"
+          />
         </div>
       </div>
     </div>

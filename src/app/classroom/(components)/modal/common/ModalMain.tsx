@@ -1,22 +1,18 @@
-import React, { FormEvent, ReactNode } from "react";
+import React, { FormEvent, ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import LectureTitle from "./LectureTitle";
 import ModalFooter from "./ModalFooter";
-import PageToast from "@/components/PageToast";
 import { closeModal } from "@/redux/slice/classroomModalSlice";
 import { resetDropzone } from "@/redux/slice/dropzoneFileSlice";
 import { useCreateLecture } from "@/hooks/mutation/useCreateLecture";
 import { useUpdateLecture } from "@/hooks/mutation/useUpdateLecture";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
-import {
-  clearError,
-  resetInput,
-  setError,
-} from "@/redux/slice/lectureInfoSlice";
+import useDeleteFile from "@/hooks/lecture/useDeleteFile";
+import { resetInput, setError } from "@/redux/slice/lectureInfoSlice";
 import "sfac-designkit-react/style.css";
-import { Input, Toast } from "sfac-designkit-react";
+import { Toast } from "sfac-designkit-react";
 
 interface ModalMainProps {
   children: ReactNode;
@@ -27,8 +23,12 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
   const { lectureInfo, modalRole } = useClassroomModal();
   const CreateMutation = useCreateLecture();
   const UpdateMutation = useUpdateLecture();
+  const { onDeleteFile } = useDeleteFile();
   const lectureCount = useSelector(
     (state: RootState) => state.editCourse.lectureCount,
+  );
+  const videoToDeleteOnEdit = useSelector(
+    (state: RootState) => state.dropzoneFile.videoToDeleteOnEdit,
   );
   const errorMessage = useSelector(
     (state: RootState) => state.lectureInfo.errorMessage,
@@ -57,38 +57,35 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
     videoLength,
   };
 
+  const [showToast, setShowToast] = useState(false);
+
+  const showErrorMessageToast = (message: string) => {
+    setShowToast(true);
+    setTimeout(() => {
+      setShowToast(false);
+    }, 1500);
+    dispatch(setError(message));
+  };
+
+  const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
+  const isButtonDisabled =
+    !lectureTitle ||
+    (lectureType === "링크" && !externalLink) ||
+    (lectureType === "노트" && !textContent.trim()) ||
+    (lectureType === "비디오" && !videoURL.trim()) ||
+    !startDate ||
+    !endDate;
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!lectureTitle) {
-      dispatch(setError("강의 제목을 입력해주세요."));
-      return;
-    }
 
-    if (lectureType === "링크") {
-      const linkRegex = /^(https?:\/\/)?([a-z0-9\-]+\.)+[a-z]{2,}(\/.*)*$/i;
-      if (!externalLink || !externalLink.trim()) {
-        dispatch(setError("링크 강의가 존재하지 않습니다."));
-        return;
-      } else if (!linkRegex.test(externalLink)) {
-        dispatch(setError("올바른 URL 형식이 아닙니다."));
-        return;
-      } else {
-        dispatch(clearError());
-      }
-    }
-    if (lectureType === "노트" && !textContent.trim()) {
-      dispatch(setError("노트 강의가 존재하지 않습니다."));
+    if (lectureType === "링크" && !linkRegex.test(externalLink)) {
+      showErrorMessageToast("올바른 URL 형식이 아닙니다.");
       return;
     }
-    if (lectureType === "비디오" && !videoURL.trim()) {
-      dispatch(setError("비디오 강의가 존재하지 않습니다."));
+    if (isButtonDisabled) {
       return;
     }
-    if (!startDate || !endDate) {
-      dispatch(setError("수강 기간을 선택해주세요."));
-      return;
-    }
-
     if (user && lectureType && startDate && endDate) {
       CreateMutation.mutate({
         userId: user.uid,
@@ -120,23 +117,25 @@ const ModalMain: React.FC<ModalMainProps> = ({ children }) => {
         endDate,
         isPrivate: isLecturePrivate,
       });
+      videoToDeleteOnEdit && onDeleteFile(videoToDeleteOnEdit);
     }
     dispatch(closeModal());
     dispatch(resetInput());
     dispatch(resetDropzone());
   };
+
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <LectureTitle />
       {children}
-      <ModalFooter />
-      {errorMessage && (
-        <Toast
-          type="Error"
-          text={errorMessage}
-          className="mt-[100px] h-[45px]"
-        />
-      )}
+      <ModalFooter isButtonDisabled={isButtonDisabled} />
+      <div
+        className={`absolute bottom-[30px] opacity-0 transition-in-out transition-opacity duration-300 ${
+          showToast ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {showToast && <Toast type="Error" text={errorMessage} />}
+      </div>
     </form>
   );
 };

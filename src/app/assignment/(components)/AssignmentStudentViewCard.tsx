@@ -1,24 +1,25 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
+import { User } from "@/types/firebase.types";
+import { Avatar, Text, Button } from "sfac-designkit-react";
+import { ISubmittedAssignment } from "@/hooks/queries/useGetSubmittedAssignment";
 import AssignmentModal from "./AssignmentModal";
 import AssignmentSubmitWithLink from "./AssignmentSubmitWithLink";
 import AssignmentSubmitWithFile from "./AssignmentSubmitWithFile";
 import AssignmentFeedback from "./AssignmentFeedback";
-import { User, SubmittedAssignment } from "@/types/firebase.types";
-import { Avatar, Text, Button } from "sfac-designkit-react";
 
-interface OwnProps {
+interface IStudentViewCardProps {
   user: User;
   assignmentId: string;
-  submittedAssignment?: SubmittedAssignment;
+  submittedAssignment: ISubmittedAssignment | null;
 }
 
-const AssignmentStudentViewCard: React.FC<OwnProps> = ({
+const AssignmentStudentViewCard = ({
   user,
   assignmentId,
   submittedAssignment,
-}) => {
+}: IStudentViewCardProps) => {
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -95,13 +96,15 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
           setIsLinkOpen(false);
         }}
       >
-        <AssignmentSubmitWithLink
-          assignmentId={assignmentId}
-          userId={user.id}
-          onClose={() => {
-            setIsLinkOpen(false);
-          }}
-        />
+        {isLinkOpen ? (
+          <AssignmentSubmitWithLink
+            assignmentId={assignmentId}
+            userId={user.id}
+            onClose={() => {
+              setIsLinkOpen(false);
+            }}
+          />
+        ) : null}
       </AssignmentModal>
       {/* 과제: 파일 제출 */}
       <AssignmentModal
@@ -112,13 +115,15 @@ const AssignmentStudentViewCard: React.FC<OwnProps> = ({
           setIsFileOpen(false);
         }}
       >
-        <AssignmentSubmitWithFile
-          assignmentId={assignmentId}
-          userId={user.id}
-          onClose={() => {
-            setIsFileOpen(false);
-          }}
-        />
+        {isFileOpen ? (
+          <AssignmentSubmitWithFile
+            assignmentId={assignmentId}
+            userId={user.id}
+            onClose={() => {
+              setIsFileOpen(false);
+            }}
+          />
+        ) : null}
       </AssignmentModal>
 
       {/* 과제: 과제 상세 */}

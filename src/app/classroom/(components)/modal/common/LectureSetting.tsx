@@ -1,13 +1,9 @@
 import { useDispatch } from "react-redux";
 import { Timestamp } from "firebase/firestore";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { ko } from "date-fns/locale";
 import {
   setStartDate,
   setEndDate,
   setIsLecturePrivate,
-  clearError,
 } from "@/redux/slice/lectureInfoSlice";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import { DateSelector, Text } from "sfac-designkit-react";
