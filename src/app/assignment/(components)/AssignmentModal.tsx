@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { ReactNode } from "react";
-import { Text, Title } from "sfac-designkit-react";
+import { Title } from "sfac-designkit-react";
 
-type OwnProps = {
+type TAssignmentModalProps = {
   title: string;
   isOpen: boolean;
   isBottomButton: boolean;
@@ -10,13 +10,13 @@ type OwnProps = {
   children: ReactNode;
 };
 
-const AssignmentModal: React.FC<OwnProps> = ({
+const AssignmentModal = ({
   title,
   isOpen,
   isBottomButton,
   onClose,
   children,
-}) => {
+}: TAssignmentModalProps) => {
   return (
     <div
       className={`fixed w-screen h-screen z-50 left-0 top-0 flex justify-center items-center transition-opacity duration-300 ${

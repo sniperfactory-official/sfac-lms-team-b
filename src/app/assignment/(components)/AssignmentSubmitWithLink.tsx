@@ -4,17 +4,17 @@ import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import { Button } from "sfac-designkit-react";
 
-type OwnProps = {
+type TAssignmentSubmitWithLinkProps = {
   onClose: () => void;
   assignmentId: string;
   userId: string;
 };
 
-const AssignmentSubmitWithLink: React.FC<OwnProps> = ({
+const AssignmentSubmitWithLink = ({
   onClose,
   userId,
   assignmentId,
-}) => {
+}: TAssignmentSubmitWithLinkProps) => {
   const [inputValues, setInputValues] = useState<string[]>([""]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);

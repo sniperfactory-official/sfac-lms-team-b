@@ -7,17 +7,17 @@ import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
 import { Attachment } from "@/types/firebase.types";
 import { Button, Text, Icon } from "sfac-designkit-react";
 
-type OwnProps = {
+type TAssignmentSubmitWithFileProps = {
   onClose: () => void;
   assignmentId: string;
   userId: string;
 };
 
-const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
+const AssignmentSubmitWithFile = ({
   onClose,
   assignmentId,
   userId,
-}) => {
+}: TAssignmentSubmitWithFileProps) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
