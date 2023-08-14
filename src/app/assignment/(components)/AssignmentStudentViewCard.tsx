@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { User } from "@/types/firebase.types";
 import { Avatar, Text, Button } from "sfac-designkit-react";
 import { ISubmittedAssignment } from "@/hooks/queries/useGetSubmittedAssignment";
@@ -20,9 +20,22 @@ const AssignmentStudentViewCard = ({
   assignmentId,
   submittedAssignment,
 }: IStudentViewCardProps) => {
+  const [submittedAssignmentState, setSubmittedAssignment] = useState<
+    ISubmittedAssignment | null | undefined
+  >(undefined);
   const [isLinkOpen, setIsLinkOpen] = useState(false);
   const [isFileOpen, setIsFileOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
+
+  useEffect(() => {
+    if (submittedAssignment) {
+      let copySubmittedAssignment = { ...submittedAssignment };
+      setSubmittedAssignment(copySubmittedAssignment);
+    } else if (submittedAssignment === null) {
+      setSubmittedAssignment(undefined);
+      setIsDetailOpen(false);
+    }
+  }, [submittedAssignment]);
 
   return (
     <>
@@ -137,7 +150,7 @@ const AssignmentStudentViewCard = ({
       >
         {isDetailOpen ? (
           <AssignmentFeedback
-            submittedAssignment={submittedAssignment}
+            submittedAssignment={submittedAssignmentState}
             assignmentId={assignmentId}
             loginUser={user}
             setIsDetailOpen={setIsDetailOpen}

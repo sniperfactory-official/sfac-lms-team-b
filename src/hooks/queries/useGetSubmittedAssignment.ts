@@ -19,7 +19,7 @@ export interface ISubmittedAssignment extends SubmittedAssignment {
 const getSubmittedAssignments = async (
   assignmentId: string,
   uid?: string,
-): Promise<any> => {
+): Promise<ISubmittedAssignment | ISubmittedAssignment[] | null> => {
   const assignmentRef = doc(db, "assignments", assignmentId);
   const assignmentDoc = await getDoc(assignmentRef);
 
@@ -37,7 +37,7 @@ const getSubmittedAssignments = async (
       );
       const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
 
-      // if (submittedAssignmentsDocs.empty) return null;
+      if (submittedAssignmentsDocs.empty) return null;
 
       const attachmentQuery = query(
         collection(db, "attachments"),
@@ -69,7 +69,7 @@ const getSubmittedAssignments = async (
     );
     const submittedAssignmentsDocs = await getDocs(submittedAssignmentsQuery);
 
-    // if (submittedAssignmentsDocs.empty) return null;
+    if (submittedAssignmentsDocs.empty) return null;
 
     const rawSubmittedAssignments = await Promise.all(
       submittedAssignmentsDocs?.docs.map(async document => {
@@ -99,7 +99,7 @@ const getSubmittedAssignments = async (
 
     return submittedAssignments as ISubmittedAssignment[];
   }
-  // return null;
+  return null;
 };
 
 const useGetSubmittedAssignments = (assignmentId: string, uid?: string) => {
