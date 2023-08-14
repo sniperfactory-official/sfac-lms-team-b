@@ -87,13 +87,22 @@ const AssignmentSubmitWithFile = ({
       return;
     }
 
-    // 파일 업로드 진행
+    // 파일 담아두기
     if (acceptedFiles.length > 0) {
-      setSelectedFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
-      // handleUpload(selectedFiles);
+      // 파일명 변경하기
+      const newSelectedFiles: File[] = acceptedFiles.map(file => {
+        const uniqueFileName = generateUniqueFileName(file.name); // 유니크한 파일명 생성
+        return new File([file], uniqueFileName); // 새로운 파일명으로 파일 생성
+      });
+
+      setSelectedFiles(prevFiles => [...prevFiles, ...newSelectedFiles]);
+      // setSelectedFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
 
   const handleUpload = async () => {
     // 선택한 파일들의 업로드 수행
@@ -126,6 +135,16 @@ const AssignmentSubmitWithFile = ({
     setTimeout(() => {
       onClose();
     }, 2000);
+  };
+
+  const generateUniqueFileName = (originalFileName: string): string => {
+    // 랜덤 파일명 생성
+    const timestamp = new Date().getTime(); // 타임스탬프를 사용한 유니크한 값 생성
+    const uniqueString = Math.random().toString(36).substring(7); // 랜덤 문자열 생성
+    const fileExtension = originalFileName.split(".").pop(); // 파일 확장자 추출
+    const fileoriginalName = originalFileName.split(".").shift(); // 파일명 추출
+
+    return `${fileoriginalName}_${timestamp}_${uniqueString}.${fileExtension}`;
   };
 
   const handleRemoveFile = (file: File) => {
