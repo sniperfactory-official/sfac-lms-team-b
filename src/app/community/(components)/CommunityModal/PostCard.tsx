@@ -44,7 +44,9 @@ export default function PostCard({
       </div>
       <h2 className="text-base font-bold my-2 ">{postData?.title}</h2>
       <div>
-        <div className="mb-3 w-[710px]">{postData?.content}</div>
+        <div className="mb-3 w-full whitespace-pre-line">
+          {postData?.content}
+        </div>
         <div className="flex">
           {sortedImageData.map((img, idx) => (
             <button key={idx} value={img.name} onClick={handleModalOn}>
