@@ -4,8 +4,7 @@ import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
-import { Attachment } from "@/types/firebase.types";
-import { Button, Text, Icon } from "sfac-designkit-react";
+import { Button, Text } from "sfac-designkit-react";
 
 type TAssignmentSubmitWithFileProps = {
   onClose: () => void;
@@ -59,10 +58,6 @@ const AssignmentSubmitWithFile = ({
   // 컴포넌트의 불필요한 리렌더링을 방지 - 성능 최적화
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setIsDraggedOver(false); // onDrop(파일첨부) 발생하면 border-color 원래대로 변경
-    // 중복 파일 체크
-    const validFiles = acceptedFiles.filter(file =>
-      allowedFileTypes.includes(file.type),
-    );
 
     // 용량 제한 체크
     const oversizedFiles = acceptedFiles.filter(
@@ -127,22 +122,21 @@ const AssignmentSubmitWithFile = ({
       mutate(newAttachmentArray);
       setToastMsg("파일이 업로드되었습니다!");
       setIsAccept(true);
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     } catch (error) {
       setToastMsg("과제 제출에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
     }
-
-    setTimeout(() => {
-      onClose();
-    }, 2000);
   };
 
   const generateUniqueFileName = (originalFileName: string): string => {
     // 랜덤 파일명 생성
-    const timestamp = new Date().getTime(); // 타임스탬프를 사용한 유니크한 값 생성
+    const timestamp = new Date().getTime(); // 현 시각 기준 유니크한 값 생성
     const uniqueString = Math.random().toString(36).substring(7); // 랜덤 문자열 생성
     const fileExtension = originalFileName.split(".").pop(); // 파일 확장자 추출
-    const fileoriginalName = originalFileName.split(".").shift(); // 파일명 추출
+    const fileoriginalName = originalFileName.split(".").shift(); // 원래 파일명 추출
 
     return `${fileoriginalName}_${timestamp}_${uniqueString}.${fileExtension}`;
   };
@@ -254,10 +248,6 @@ const AssignmentSubmitWithFile = ({
       <div className="absolute left-0 bottom-0 w-full min-h-[97px] p-[20px_31px_42px]">
         <div className="flex justify-end items-center gap-[12px]">
           <Button variant="secondary" text="취소" asChild onClick={onClose} />
-
-          {/* <button className="border" type="button" onClick={onClose}>
-            취소
-          </button> */}
           <Button
             variant="primary"
             text="업로드"
