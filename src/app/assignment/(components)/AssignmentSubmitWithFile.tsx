@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
 import { Button, Text } from "sfac-designkit-react";
+import LoadingSpinner from "@/components/Loading/Loading";
 
 type TAssignmentSubmitWithFileProps = {
   onClose: () => void;
@@ -21,6 +22,7 @@ const AssignmentSubmitWithFile = ({
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
   const [isDraggedOver, setIsDraggedOver] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const { mutate, isLoading, error } = useSubmitAssignment(
     assignmentId,
     userId,
@@ -100,8 +102,9 @@ const AssignmentSubmitWithFile = ({
   // let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
 
   const handleUpload = async () => {
-    // 선택한 파일들의 업로드 수행
+    setIsUploading(true);
 
+    // 선택한 파일들의 업로드 수행
     let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
 
     try {
@@ -128,6 +131,8 @@ const AssignmentSubmitWithFile = ({
     } catch (error) {
       setToastMsg("과제 제출에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -268,6 +273,11 @@ const AssignmentSubmitWithFile = ({
           />
         )}
       </div>
+      {isUploading ? (
+        <div className="absolute left-0 top-0 w-full h-full">
+          <LoadingSpinner />
+        </div>
+      ) : null}
     </>
   );
 };
