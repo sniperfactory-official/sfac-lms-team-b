@@ -136,8 +136,8 @@ const AssignmentSubmitWithFile = ({
     const timestamp = new Date().getTime(); // 현 시각 기준 유니크한 값 생성
     const uniqueString = Math.random().toString(36).substring(7); // 랜덤 문자열 생성
     const fileExtension = originalFileName.split(".").pop(); // 파일 확장자 추출
-    const fileoriginalName = originalFileName.split(".").shift(); // 원래 파일명 추출
-
+    const lastDotIndex = originalFileName.lastIndexOf(".");
+    const fileoriginalName = originalFileName.substring(0, lastDotIndex); // 본래 파일명 추출
     return `${fileoriginalName}_${timestamp}_${uniqueString}.${fileExtension}`;
   };
 
@@ -164,7 +164,7 @@ const AssignmentSubmitWithFile = ({
               return (
                 <div
                   key={index}
-                  className="flex justify-between items-center mb-[20px]"
+                  className="flex justify-between items-center mb-[20px] gap-[5px]"
                 >
                   <div className="flex justify-start items-center gap-[13px]">
                     <div className="w-[36.5px] h-[43.5px]">
@@ -179,7 +179,7 @@ const AssignmentSubmitWithFile = ({
                     <Text
                       size="base"
                       weight="bold"
-                      className="text-primary-80 text-color-Primary-80"
+                      className="text-primary-80 text-color-Primary-80 break-all"
                     >
                       {file.name}
                     </Text>
@@ -187,7 +187,7 @@ const AssignmentSubmitWithFile = ({
                   <div>
                     <button
                       type="button"
-                      className="text-[12px] text-grayscale-100 font-[400]"
+                      className="text-[12px] text-grayscale-100 font-[400] w-[23px] shrink-0"
                       onClick={() => {
                         handleRemoveFile(file);
                       }}
