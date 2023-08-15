@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Toast } from "sfac-designkit-react";
 
-type OwnProps = {
+type tPageToastProps = {
   toastMsg: string; // 토스트메세지
   isAccept: boolean; // ui변경(green/red)
   onClose: () => void;
 };
 
-const PageToast: React.FC<OwnProps> = ({ toastMsg, isAccept, onClose }) => {
+const PageToast = ({ toastMsg, isAccept, onClose }: tPageToastProps) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -27,19 +27,13 @@ const PageToast: React.FC<OwnProps> = ({ toastMsg, isAccept, onClose }) => {
 
   return (
     <div>
-      {isAccept ? (
-        <Toast type="Success" text={toastMsg}></Toast>
-      ) : (
-        <Toast type="Error" text={toastMsg}></Toast>
-      )}
-      {/* 기존 작업본 */}
-      {/* <span
-        className={`border-2 transition-opacity duration-300 ${
-          visible ? "opacity-100" : "opacity-0 pointer-events-none"
-        } ${isAccept ? "border-green text-green" : "border-red text-red"}`}
+      <div
+        className={`relative transition-all duration-300 ${
+          visible ? "opacity-100 top-0" : "opacity-0 pointer-events-none top-2"
+        }`}
       >
-        {toastMsg}
-      </span> */}
+        <Toast type={isAccept ? "Success" : "Error"} text={toastMsg} />
+      </div>
     </div>
   );
 };
