@@ -121,7 +121,7 @@ export default function UserActivityList() {
   ].sort((a, b) => a.createdAt - b.createdAt);
 
   if (lectureCommentLoading || myPostLoading || assignmentLoading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner fullScreen={true} />;
   }
 
   return (

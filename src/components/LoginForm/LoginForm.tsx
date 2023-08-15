@@ -23,7 +23,7 @@ export default function LoginForm() {
   const passwordValue = watch("password");
   const { mutate, isLoading, toastProps } = useLoginMutation();
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner fullScreen={true} />;
 
   return (
     <form
