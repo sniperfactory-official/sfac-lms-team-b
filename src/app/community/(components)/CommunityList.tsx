@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import Image from "next/image";
 import CommunityCard from "./CommunityCard";
 import Aside from "./Aside/Aside";
 import useGetSelectedCategory from "@/hooks/queries/useGetSelectedCategory";
 import { Toast } from "sfac-designkit-react";
 import { useToast } from "@/hooks/useToast";
+import EmptyContents from "@/components/EmptyContents";
 
 const CommunityList = () => {
   const [activeCategory, setActiveCategory] = useState<string>("");
@@ -72,15 +72,7 @@ const CommunityList = () => {
               />
             ))
         ) : (
-          <div className="mx-[auto] my-[50px] flex-1">
-            <Image
-              src="/images/noPostingMessage.svg"
-              width={573}
-              height={199}
-              alt="게시글이 존재하지 않습니다."
-              priority
-            />
-          </div>
+          <EmptyContents emptyTxt="게시글이 존재하지 않습니다." />
         )}
         <div ref={loadMoreButtonRef} className="opacity-0">
           Load more
