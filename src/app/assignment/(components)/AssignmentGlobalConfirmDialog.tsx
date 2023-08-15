@@ -6,6 +6,7 @@ type tAssignmentGlobalConfirmDialogProps = {
   isOpen: boolean;
   title: string; // 모달 타이틀
   confirmBtnMsg: string; // 컨펌 확인 버튼 글자
+  confirmFormId?: string; // 컨펌 확인 버튼에 form id 필요 시 작성
 };
 
 const AssignmentGlobalConfirmDialog = ({
@@ -14,6 +15,7 @@ const AssignmentGlobalConfirmDialog = ({
   isOpen,
   title,
   confirmBtnMsg,
+  confirmFormId,
 }: tAssignmentGlobalConfirmDialogProps) => {
   return (
     <>
@@ -45,11 +47,13 @@ const AssignmentGlobalConfirmDialog = ({
                 onClick={onCancel}
               />
               <Button
+                type="submit"
                 className="min-w-[115px]"
                 variant="destructive"
                 text={confirmBtnMsg}
                 asChild
                 onClick={onConfirm}
+                form={confirmFormId}
               />
             </div>
           </div>

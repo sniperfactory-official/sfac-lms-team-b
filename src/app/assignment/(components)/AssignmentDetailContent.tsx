@@ -234,7 +234,7 @@ const AssignmentDetailContent = ({ user }: IUserProps) => {
         </div>
       ) : null}
 
-      {/* 글로벌 컨펌 모달  */}
+      {/* 글로벌 컨펌 다이얼로그  */}
       <AssignmentGlobalConfirmDialog
         title="강의를 삭제하시겠습니까?"
         confirmBtnMsg="삭제"
