@@ -18,11 +18,11 @@ import timestampToIntlDate from "@/utils/timestampToIntlDate";
 import { useUpdateReadStudents } from "@/hooks/mutation/useUpdateReadStudents";
 import useGetStudents from "@/hooks/queries/useGetStudents";
 
-interface OwnProps {
+interface IUserProps {
   user: User;
 }
 
-const AssignmentDetailContent: React.FC<OwnProps> = ({ user }) => {
+const AssignmentDetailContent = ({ user }: IUserProps) => {
   const router = useRouter();
 
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);

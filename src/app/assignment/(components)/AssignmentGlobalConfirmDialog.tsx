@@ -1,6 +1,6 @@
 import { Button, Title } from "sfac-designkit-react";
 
-type OwnProps = {
+type tAssignmentGlobalConfirmDialogProps = {
   onConfirm: () => void;
   onCancel: () => void;
   isOpen: boolean;
@@ -8,13 +8,13 @@ type OwnProps = {
   confirmBtnMsg: string; // 컨펌 확인 버튼 글자
 };
 
-const AssignmentGlobalConfirmDialog: React.FC<OwnProps> = ({
+const AssignmentGlobalConfirmDialog = ({
   onConfirm,
   onCancel,
   isOpen,
   title,
   confirmBtnMsg,
-}) => {
+}: tAssignmentGlobalConfirmDialogProps) => {
   return (
     <>
       <div
