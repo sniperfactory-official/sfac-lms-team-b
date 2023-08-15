@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { Toast } from "sfac-designkit-react";
 
-type OwnProps = {
+type tGlobalToastProps = {
   toastMsg: string; // 토스트메세지
   onClose: () => void;
 };
 
-const GlobalToast: React.FC<OwnProps> = ({ toastMsg, onClose }) => {
+const GlobalToast = ({ toastMsg, onClose }: tGlobalToastProps) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -24,15 +25,12 @@ const GlobalToast: React.FC<OwnProps> = ({ toastMsg, onClose }) => {
   }, [onClose]);
 
   return (
-    <div>
-      {/* FIXME: 임시 element: 추후 디자인시스템 완료 시 element 및 style 교체 */}
-      <span
-        className={`z-50 fixed right-0 bottom-0 border-2 border-black transition-opacity duration-300 ${
-          visible ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
-      >
-        {toastMsg}
-      </span>
+    <div
+      className={`w-10 h-10 bg-black z-50 fixed right-0 bottom-0 transition-all duration-300 ${
+        visible ? "opacity-100 top-0" : "opacity-0 pointer-events-none top-2"
+      }`}
+    >
+      <Toast type="Simple" text={toastMsg} />
     </div>
   );
 };

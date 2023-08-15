@@ -80,7 +80,7 @@ const AssignmentDetailContent = ({ user }: IUserProps) => {
   );
 
   // 데이터가 배열인지 아닌지에 따라 처리 -> 타입스크립트 오류수정
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <LoadingSpinner fullScreen={true} />;
   if (!data) {
     return null;
   }
@@ -234,7 +234,7 @@ const AssignmentDetailContent = ({ user }: IUserProps) => {
         </div>
       ) : null}
 
-      {/* 글로벌 컨펌 모달  */}
+      {/* 글로벌 컨펌 다이얼로그  */}
       <AssignmentGlobalConfirmDialog
         title="강의를 삭제하시겠습니까?"
         confirmBtnMsg="삭제"

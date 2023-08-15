@@ -1,8 +1,8 @@
-import PageToast from "@/components/PageToast";
 import { useState } from "react";
-import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import { Button } from "sfac-designkit-react";
+import Image from "next/image";
+import PageToast from "@/components/PageToast";
 
 type TAssignmentSubmitWithLinkProps = {
   onClose: () => void;
@@ -16,7 +16,7 @@ const AssignmentSubmitWithLink = ({
   assignmentId,
 }: TAssignmentSubmitWithLinkProps) => {
   const [inputValues, setInputValues] = useState<string[]>([""]);
-  const [toastMsg, setToastMsg] = useState<string>("");
+  const [pageToastMsg, setPageToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
 
   const { mutate, isLoading, error } = useSubmitAssignment(
@@ -58,9 +58,8 @@ const AssignmentSubmitWithLink = ({
   const handleSubmit = () => {
     for (let value of inputValues) {
       if (isValidUrl(value) || value === "") {
-        // console.log(value);
       } else {
-        setToastMsg("유효한 URL이 아닙니다. 다시 시도해주세요.");
+        setPageToastMsg("유효한 URL이 아닙니다. 다시 시도해주세요.");
         setIsAccept(false);
         return;
       }
@@ -69,20 +68,20 @@ const AssignmentSubmitWithLink = ({
     let filterValue: string[] = inputValues.filter(url => url !== "");
     if (filterValue.length > 0) {
       // 여기서 firebase 처리
-      mutate(filterValue); // FIXME: ts error 수정 필요
-      setToastMsg("링크가 업로드되었습니다!");
+      mutate(filterValue);
+      setPageToastMsg("링크가 업로드되었습니다!");
       setIsAccept(true);
       setTimeout(() => {
         onClose();
       }, 2000);
     } else {
-      setToastMsg("1개 이상의 URL을 입력해주세요.");
+      setPageToastMsg("1개 이상의 URL을 입력해주세요.");
       setIsAccept(false);
     }
   };
 
   const closeToast = () => {
-    setToastMsg("");
+    setPageToastMsg("");
   };
 
   return (
@@ -154,9 +153,9 @@ const AssignmentSubmitWithLink = ({
         </div>
       </div>
       <div className="absolute left-[33px] bottom-[33px]">
-        {toastMsg && (
+        {pageToastMsg && (
           <PageToast
-            toastMsg={toastMsg}
+            toastMsg={pageToastMsg}
             isAccept={isAccept}
             onClose={closeToast}
           />

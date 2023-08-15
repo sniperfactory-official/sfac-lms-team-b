@@ -44,7 +44,7 @@ const AssignmentTeacherViewCard = ({
               className="ring-1"
             />
             <div className="w-full">
-              <div className="-w-full mb-[5px] flex justify-start items-center gap-[6px]">
+              <div className="w-full mb-[5px] flex justify-start items-center gap-[6px]">
                 <Text
                   size="base"
                   weight="bold"

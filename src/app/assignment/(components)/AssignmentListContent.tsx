@@ -17,7 +17,7 @@ const AssignmentListContent = ({ user }: IListContentProps) => {
   return (
     <>
       {isLoading ? (
-        <LoadingSpinner />
+        <LoadingSpinner fullScreen={true} />
       ) : (
         assignments?.map((assignment: Assignment) => {
           return (
