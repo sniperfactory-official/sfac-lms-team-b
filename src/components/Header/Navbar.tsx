@@ -90,14 +90,12 @@ export default function Navbar() {
               </div>
               <div className="flex w-1/4 justify-end">
                 <Link href={"/mypage/"} className="flex items-center">
-                  <button className="mr-1">마이페이지</button>
+                  <button className="after:content-['|'] after:text-grayscale-30 after:ml-[6px] after:mr-[6px]">
+                    마이페이지
+                  </button>
                 </Link>
                 <div className="flex relative">
-                  <span className="text-gray-300 text-xl absolute right-[60px] top-[2.9px]">
-                    |
-                  </span>
                   <button
-                    className="ml-3"
                     onClick={() => {
                       onLogout();
                     }}

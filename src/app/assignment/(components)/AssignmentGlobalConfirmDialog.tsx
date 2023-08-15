@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Button, Title } from "sfac-designkit-react";
 
 type tAssignmentGlobalConfirmDialogProps = {
@@ -17,6 +18,12 @@ const AssignmentGlobalConfirmDialog = ({
   confirmBtnMsg,
   confirmFormId,
 }: tAssignmentGlobalConfirmDialogProps) => {
+  useEffect(() => {
+    isOpen
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "visible");
+  }, [isOpen]);
+
   return (
     <>
       <div
