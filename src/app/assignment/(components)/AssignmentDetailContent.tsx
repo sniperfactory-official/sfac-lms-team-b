@@ -30,31 +30,51 @@ const AssignmentDetailContent = ({ user }: IUserProps) => {
   const { assignmentId } = useParams();
   const { data, isLoading, error } = useGetAssignment(assignmentId as string);
   const updateReadStudents = useUpdateReadStudents(assignmentId as string);
-  const [totalStudentList, setTotalStudentList] = useState<User[]>([]);
   const [readPercentage, setReadPercentage] = useState<number>();
   const currentReadStudents = data?.readStudents;
 
-  const fetchStudentsData = async () => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const studentData = await useGetStudents();
-    setTotalStudentList(studentData);
-  };
-
   useEffect(() => {
-    fetchStudentsData();
+    const fetchDataAndCalculate = async () => {
+      try {
+        const studentData = await fetchStudentsData();
 
-    if (user.role === "수강생" && currentReadStudents) {
-      if (!currentReadStudents?.includes(user.id)) {
-        changeReadStudents();
+        if (user.role === "수강생" && currentReadStudents) {
+          // readStudents에 본인의 userId가 없는 경우에만 실행
+          if (!currentReadStudents?.includes(user.id)) {
+            changeReadStudents();
+          }
+        }
+
+        if (studentData && currentReadStudents) {
+          const percentage = calculateReadPercentage(studentData as User[]);
+          setReadPercentage(percentage);
+        }
+      } catch (error) {
+        console.error("Error fetching student data:", error);
       }
-    }
+    };
 
-    if (totalStudentList && currentReadStudents) {
-      const percentage = calculateReadPercentage();
-      setReadPercentage(percentage);
-    }
+    fetchDataAndCalculate();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, currentReadStudents]);
+
+  const fetchStudentsData = async () => {
+    try {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const studentData = await useGetStudents();
+      return studentData;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const calculateReadPercentage = (totalStudentList: User[]) => {
+    const totalStudentCount = totalStudentList.length;
+    const currentReadStudentsCount = currentReadStudents.length;
+    const percentage = (currentReadStudentsCount / totalStudentCount) * 100;
+    const roundedPercentage = Math.round(percentage); /// 소수점 반올림
+    return roundedPercentage;
+  };
 
   const changeReadStudents = () => {
     // fs readStudent 업데이트
@@ -64,14 +84,6 @@ const AssignmentDetailContent = ({ user }: IUserProps) => {
       );
       updateReadStudents.mutate(updatedReadStudents);
     }
-  };
-
-  const calculateReadPercentage = () => {
-    const totalStudentCount = totalStudentList.length;
-    const currentReadStudentsCount = currentReadStudents.length;
-    const percentage = (currentReadStudentsCount / totalStudentCount) * 100;
-    const roundedPercentage = Math.round(percentage); // 소수점 반올림
-    return roundedPercentage;
   };
 
   const deleteAssignmentMutation = useDeleteRegisteredAssignment(
