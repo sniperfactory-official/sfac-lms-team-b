@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
@@ -8,14 +8,13 @@ import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmitte
 import { Feedback, User } from "@/types/firebase.types";
 import { useForm } from "react-hook-form";
 import { getTime } from "@/utils/getTime";
-import { Avatar, Button, Card, Text } from "sfac-designkit-react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { Avatar, Button, Text } from "sfac-designkit-react";
+import { DocumentReference } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
 import AssignmentLocalConfirmDialog from "./AssignmentLocalConfirmDialog";
-import PageToast from "@/components/PageToast";
+import LoadingSpinner from "@/components/Loading/Loading";
 
 interface IAssignmentFeedbackProps {
   submittedAssignment: any;
@@ -28,11 +27,19 @@ interface IFeedbackForm {
   feedback: string;
 }
 
+interface IFeedback {
+  id: string;
+  user?: User;
+  userId: DocumentReference;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 const AssignmentFeedback = ({
   submittedAssignment,
   assignmentId,
   loginUser,
-  setIsDetailOpen,
 }: IAssignmentFeedbackProps) => {
   const {
     id,
@@ -41,8 +48,6 @@ const AssignmentFeedback = ({
     createdAt,
     isRead,
   } = submittedAssignment;
-  const [toastMsg, setToastMsg] = useState("");
-  const [isAccept] = useState(true);
   const [updateDelete, setUpdateDelete] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const createdDate = getTime(createdAt.toDate());
@@ -92,10 +97,6 @@ const AssignmentFeedback = ({
     setIsConfirmOpen(prev => !prev);
   };
 
-  const onClose = () => {
-    setToastMsg("");
-  };
-
   // 스크롤 최하단으로 최신피드백 보여주기
   useEffect(() => {
     const element = scrollRef.current;
@@ -113,25 +114,8 @@ const AssignmentFeedback = ({
     if (loginUser?.role === "관리자" && isRead === false) {
       updateMutate({ isRead: true });
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (!toastMsg) return;
-    const dialogTimer = setTimeout(() => {
-      setIsConfirmOpen(prev => !prev);
-    }, 350);
-    const modalTimer = setTimeout(() => {
-      setIsDetailOpen!((prev: boolean) => !prev);
-      window.location.reload();
-    }, 3000);
-
-    return () => {
-      clearTimeout(dialogTimer);
-      clearTimeout(modalTimer);
-    };
-  }, [setIsDetailOpen, toastMsg]);
 
   return (
     <div>
@@ -183,15 +167,14 @@ const AssignmentFeedback = ({
                           className="w-full h-full"
                         />
                       </div>
-
                       <Text
                         size="base"
                         weight="bold"
                         className=" text-primary-80 "
                       >
-                        <Link href={url} download>
+                        <a href={url} download>
                           {name}
-                        </Link>
+                        </a>
                       </Text>
                     </div>
                   </li>
@@ -217,31 +200,34 @@ const AssignmentFeedback = ({
           </Text>
         </div>
       </div>
-
       {/* feedback */}
       <ul
         ref={scrollRef}
         className="space-y-[13px] mb-[18px] h-[290px] overflow-y-scroll scroll-smooth"
       >
-        {getLoading
-          ? "Loading..."
-          : feedbacks?.map((feedback: Feedback) => {
-              return (
-                <AssignmentFeedbackContent
-                  key={feedback.id}
-                  id={feedback.id}
-                  content={feedback.content}
-                  createdAt={feedback.createdAt}
-                  updatedAt={feedback.updatedAt}
-                  user={feedback.user}
-                  userId={feedback.userId}
-                  submittedAssignmentId={id}
-                  loginUserId={loginUser.id}
-                  updateDelete={updateDelete}
-                  setUpdateDelete={setUpdateDelete}
-                />
-              );
-            })}
+        {getLoading ? (
+          <LoadingSpinner />
+        ) : (
+          feedbacks?.map((feedback: IFeedback) => {
+            console.log(feedback.createdAt);
+
+            return (
+              <AssignmentFeedbackContent
+                key={feedback.id}
+                id={feedback.id}
+                content={feedback.content}
+                createdAt={feedback.createdAt}
+                updatedAt={feedback.updatedAt}
+                user={feedback.user!}
+                userId={feedback.userId}
+                submittedAssignmentId={id}
+                loginUserId={loginUser.id}
+                updateDelete={updateDelete}
+                setUpdateDelete={setUpdateDelete}
+              />
+            );
+          })
+        )}
       </ul>
       {/* feedback_upload */}
       <div className="rounded-[10px] border border-grayscale-10 bg-grayscale-0 p-[12px_20px]">
@@ -284,23 +270,11 @@ const AssignmentFeedback = ({
           </div>
         </div>
       </div>
-      {toastMsg ? (
-        <div className="absolute left-12 bottom-16">
-          <PageToast
-            toastMsg={toastMsg}
-            isAccept={isAccept}
-            onClose={onClose}
-          />
-        </div>
-      ) : null}
       <AssignmentLocalConfirmDialog
         title="삭제하시겠습니까?"
         content="한번 삭제하시면 다시 복구가 불가능합니다."
         confirmBtnMsg="확인"
-        onConfirm={() => {
-          deleteMutate(id);
-          setToastMsg("삭제가 완료되었습니다.");
-        }}
+        onConfirm={() => deleteMutate(id)}
         isOpen={isConfirmOpen}
         onCancel={() => setIsConfirmOpen(prev => !prev)}
       />

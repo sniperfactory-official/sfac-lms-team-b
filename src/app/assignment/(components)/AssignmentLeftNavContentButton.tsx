@@ -7,7 +7,7 @@ import Image from "next/image";
 import { User } from "@/types/firebase.types";
 import AssignmentCreate from "./AssignmentCreate";
 import AssignmentModal from "./AssignmentModal";
-import AssignmentGlobalConfirmPopup from "./AssignmentGlobalConfirmPopup";
+import AssignmentGlobalConfirmDialog from "./AssignmentGlobalConfirmDialog";
 
 interface Props {
   userInfo: User;
@@ -113,38 +113,22 @@ const AssignmentLeftNavButton = (props: Props) => {
                     setIsConfirmed(true);
                   }}
                 ></Button>
-                <AssignmentGlobalConfirmPopup
-                  isOpen={isConfirmed}
+                {/* 글로벌 컨펌 다이얼로그  */}
+                <AssignmentGlobalConfirmDialog
                   title="강의를 삭제하시겠습니까?"
+                  confirmBtnMsg="삭제"
+                  onConfirm={() => {
+                    setTimeout(() => {
+                      setIsConfirmed(false);
+                      setIsActivated(false);
+                    }, 1000);
+                  }}
+                  isOpen={isConfirmed}
                   onCancel={() => {
                     setIsConfirmed(false);
                   }}
-                >
-                  <Button
-                    variant="secondary"
-                    text="취소"
-                    asChild
-                    className="w-[115px]"
-                    onClick={() => {
-                      setIsConfirmed(false);
-                    }}
-                  />
-                  <Button
-                    asChild
-                    variant="destructive"
-                    text="삭제"
-                    className="w-[115px]"
-                    type="submit"
-                    onClick={() => {
-                      setTimeout(() => {
-                        setIsConfirmed(false);
-                        setIsActivated(false);
-                      }, 1000);
-                    }}
-                    form="assign"
-                    name="assign"
-                  />
-                </AssignmentGlobalConfirmPopup>
+                  confirmFormId="assign"
+                />
               </div>
 
               <p className="w-full py-[11px] rounded-[10px] mt-[36px] bg-primary-5 text-center">

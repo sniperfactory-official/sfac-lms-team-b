@@ -34,7 +34,7 @@ async function getValidLectureId(
 
     const lectureData = snapshot.docs[0].data();
 
-    if (!lectureData.isPrivate) {
+    if (!lectureData.isPrivate && lectureData.lectureType !== "링크") {
       lectureId = snapshot.docs[0].id;
     } else {
       order = lectureData.order;

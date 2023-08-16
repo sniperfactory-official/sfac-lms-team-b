@@ -2,7 +2,7 @@ import Image from "next/image";
 import thumnail from "../../../../../public/images/thumnail.png";
 const ContentImg = ({ isPrivate }: { isPrivate: boolean }) => {
   return (
-    <div className="w-1/3 h-5/6 rounded-lg mr-[25px] relative justify-center items-center flex">
+    <div className="w-[220px] h-5/6 rounded-lg mr-[25px] relative justify-center items-center flex">
       <Image
         src={thumnail}
         alt="thumnail"

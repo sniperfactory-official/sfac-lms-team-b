@@ -8,6 +8,7 @@ interface NavigationButtonProps {
   name: string;
   altText: string;
   buttonText: string;
+  next?: string;
 }
 
 const NavigationButton: FC<NavigationButtonProps> = ({
@@ -15,6 +16,7 @@ const NavigationButton: FC<NavigationButtonProps> = ({
   name,
   altText,
   buttonText,
+  next,
 }) => {
   const router = useRouter();
 
@@ -29,7 +31,7 @@ const NavigationButton: FC<NavigationButtonProps> = ({
           alt={altText}
           width={20}
           height={20}
-          className="cursor-pointer m-2"
+          className={`cursor-pointer m-2 ${next}`}
         />
         <span className="text-sm m-2 ">{buttonText}</span>
       </button>

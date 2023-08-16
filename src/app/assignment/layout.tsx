@@ -13,7 +13,7 @@ const layout = ({ children }: Props) => {
           <div className="w-1/5 h-100 flex items-center justify-start flex-col ml-[20px]">
             <AssignmentLeftNav />
           </div>
-          <div className="w-4/5 h-100 ml-[50px]">{children}</div>
+          <div className="w-4/5 ml-[50px]">{children}</div>
         </div>
       </div>
     </div>

@@ -10,10 +10,16 @@ import ModalWrapper from "@/components/ModalWrapper";
 import useDeletePost from "@/hooks/community/useDeletePost";
 import { choicePost } from "@redux/slice/postSlice";
 import { useAppDispatch } from "@redux/store";
-import useGetProfileImage from "@/hooks/mypage/useGetProfileImage";
 import deleteStorageImages from "@/utils/deleteStorageImages";
+import { Avatar } from "sfac-designkit-react";
+import timestampToDate from "@/utils/timestampToDate";
+import { ToastProps } from "sfac-designkit-react/dist/Toast";
 
-const CommunityCard: React.FC<Post> = ({
+interface CommunityCardProps extends Post {
+  onToast: (toastProps: ToastProps) => void;
+}
+
+const CommunityCard: React.FC<CommunityCardProps> = ({
   user,
   userId,
   id,
@@ -24,6 +30,7 @@ const CommunityCard: React.FC<Post> = ({
   thumbnailImages,
   tags,
   createdAt,
+  onToast,
 }) => {
   const currentUserId = auth.currentUser?.uid;
   const isAuthor = userId.id === currentUserId;
@@ -36,12 +43,6 @@ const CommunityCard: React.FC<Post> = ({
   // 썸네일 이미지 url fetching
   const { data: thumbnailImageUrl } = useFetchThumbnail(thumbnailImages);
   // 프로필 이미지
-  const {
-    data: profileData,
-    isLoading: profileLoading,
-    isError: profileError,
-    error: profileFetchError,
-  } = useGetProfileImage(user?.profileImage);
 
   // 댓글의 개수
   const { data: commentCount } = useCommentCount(id);
@@ -60,8 +61,15 @@ const CommunityCard: React.FC<Post> = ({
 
     // 함수 호출해서 이미지 삭제
     deleteStorageImages(pathsToDelete);
-
-    deleteMutation.mutate(id);
+    deleteMutation.mutate(id, {
+      onSuccess: () => {
+        onToast({
+          type: "Success",
+          text: "게시물이 삭제되었습니다!",
+          textSize: "base",
+        });
+      },
+    });
     setIsDeleteModalOpen(false);
   };
 
@@ -74,14 +82,13 @@ const CommunityCard: React.FC<Post> = ({
     <div className="flex flex-col h-[240px] rounded-[4px] border-[1px] border-grayscale-5 p-[20px] mb-[10px] z-1">
       <div className="w-full flex justify-between items-center mb-[10px]">
         <div className="flex justify-between items-center">
-          <div className="relative w-[34px] h-[34px] flex-shrink-0 mr-2 ">
-            <Image
-              src={profileData ?? "/images/avatar.svg"}
-              alt="프로필 이미지"
-              layout="fill"
-              className="rounded-[50%] object-cover object-center"
-            />
-          </div>
+          <Avatar
+            src={user?.profileImage ?? "/images/avatar.svg"}
+            alt="프로필"
+            size={34}
+            ring={false}
+            className="rounded-[50%] object-cover object-center h-[34px] mr-2"
+          />
           <span className="text-xs text-primary-80 font-bold">
             {category === "익명피드백" ? "익명" : user?.username}
           </span>
@@ -89,14 +96,7 @@ const CommunityCard: React.FC<Post> = ({
             • {user?.role} •
           </span>
           <span className="text-xs text-grayscale-60 font-medium">
-            {createdAt?.toDate().getFullYear()}/
-            {createdAt?.toDate().getMonth() + 1 < 10
-              ? "0" + (createdAt?.toDate().getMonth() + 1)
-              : createdAt?.toDate().getMonth() + 1}
-            /
-            {createdAt?.toDate().getDate() < 10
-              ? "0" + createdAt?.toDate().getDate()
-              : createdAt?.toDate().getDate()}
+            {timestampToDate(createdAt).replaceAll(".", "/")}
           </span>
         </div>
         {isAuthor && (
@@ -139,7 +139,7 @@ const CommunityCard: React.FC<Post> = ({
         <div className="mb-[10px] flex w-full h-[135px]">
           <div className="flex flex-col items-start w-full">
             <h3 className="text-base font-bold mb-[10px]">{title}</h3>
-            <p className="text-sm font-normal text-grayscale-60 mb-[10px] text-left line-clamp-3">
+            <p className="text-sm font-normal text-grayscale-60 mb-[10px] text-left line-clamp-3 whitespace-pre-line">
               {content}
             </p>
             <div>
@@ -162,9 +162,10 @@ const CommunityCard: React.FC<Post> = ({
             <div className="relative w-[119px] h-[119px] flex-shrink-0">
               <Image
                 src={thumbnailImageUrl}
-                layout="fill"
                 alt="썸네일"
-                className="rounded-[10px] object-cover object-center"
+                width={100}
+                height={100}
+                className="rounded-[10px] object-cover object-center w-[120px] h-[120px]"
                 priority
               />
               {postImages.length > 1 && (

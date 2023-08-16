@@ -1,37 +1,41 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import EmptyContents from "@/components/EmptyContents";
-import AssignmentTeacherViewCard from "../(components)/AssignmentTeacherViewCard";
 import { useParams } from "next/navigation";
 import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
+import { User } from "@/types/firebase.types";
+import { ISubmittedAssignment } from "@/hooks/queries/useGetSubmittedAssignment";
+import EmptyContents from "@/components/EmptyContents";
+import AssignmentTeacherViewCard from "../(components)/AssignmentTeacherViewCard";
 
-const AssignmentTeacherViewCardWrapper = ({ user }: any) => {
-  const [submittedData, setSubmittedData] = useState<any[]>([]);
+export interface IUserProps {
+  user: User;
+}
+
+const AssignmentTeacherViewCardWrapper = ({ user }: IUserProps) => {
   const { assignmentId } = useParams();
-  const { data, isLoading, error } = useGetSubmittedAssignments(
-    assignmentId as string,
-  );
-
-  useEffect(() => {
-    setSubmittedData(data);
-  }, [data]);
+  const {
+    data: submittedAssignments,
+    isLoading,
+    error,
+  } = useGetSubmittedAssignments(assignmentId as string);
 
   return (
     <div>
       {isLoading ? null : (
         <div>
-          {submittedData?.length > 0 ? (
-            submittedData?.map(submittedItem => {
-              return (
-                <AssignmentTeacherViewCard
-                  key={submittedItem.id}
-                  submittedItem={submittedItem}
-                  assignmentId={assignmentId as string}
-                  user={user}
-                />
-              );
-            })
+          {Array.isArray(submittedAssignments) ? (
+            submittedAssignments?.map(
+              (submittedAssignment: ISubmittedAssignment) => {
+                return (
+                  <AssignmentTeacherViewCard
+                    key={submittedAssignment.id}
+                    submittedAssignment={submittedAssignment}
+                    assignmentId={assignmentId as string}
+                    user={user}
+                  />
+                );
+              },
+            )
           ) : (
             <EmptyContents emptyTxt="제출된 과제가 없습니다" />
           )}

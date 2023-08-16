@@ -61,6 +61,12 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
       assignmentData.endDate = Timestamp.fromDate(dates.endDate);
     }
 
+    if (dates.startDate < new Date()) {
+      setToastMsg("시작 날짜는 오늘 이후여야 합니다.");
+      setIsAccept(false);
+      return;
+    }
+
     try {
       const uploadPromises = imageFiles.map(file =>
         imageUploadMutation.mutateAsync(file),
@@ -77,6 +83,10 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         setIsOpen(false);
         reset();
         setImageFiles([]);
+        setDates({
+          startDate: null,
+          endDate: null,
+        });
       }, 1000);
     } catch (error) {
       setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
@@ -150,9 +160,14 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           id="level-select"
           {...register("level", { required: true })}
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
-          defaultValue=""
+          defaultValue="placeholder"
         >
-          <option value="" className="text-grayscale-40" disabled hidden>
+          <option
+            value="placeholder"
+            className="text-grayscale-40"
+            disabled
+            hidden
+          >
             난이도를 선택해주세요
           </option>
           <option value="초">초</option>

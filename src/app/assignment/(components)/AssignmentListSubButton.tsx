@@ -1,37 +1,36 @@
 "use client";
 
-import "sfac-designkit-react/style.css";
 import { Button } from "sfac-designkit-react";
-import React, { useEffect, useState } from "react";
 import { useGetSubmittedAssignments } from "@hooks/queries/useGetSubmittedAssignment";
 import { useRouter } from "next/navigation";
+import LoadingSpinner from "@/components/Loading/Loading";
 
-interface Props {
-  refId: string;
+interface IListSubButtonProps {
+  assignmentId: string;
   userId: string;
 }
 
-const AssignmentListSubButton = ({ refId, userId }: Props) => {
-  const submittionHooks = useGetSubmittedAssignments(refId, userId);
-  const isLoading = submittionHooks.isLoading;
+const AssignmentListSubButton = ({
+  assignmentId,
+  userId,
+}: IListSubButtonProps) => {
   const router = useRouter();
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  useEffect(() => {
-    if (!isLoading) {
-      const issubmitted = submittionHooks.data !== undefined;
-      setIsSubmitted(issubmitted);
-    }
-  }, [isLoading, submittionHooks.data]);
+  const {
+    data: submittedAssignment,
+    isLoading,
+    error,
+  } = useGetSubmittedAssignments(assignmentId, userId);
 
   return (
     <div>
-      {isSubmitted ? (
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : submittedAssignment ? (
         <Button
           variant="secondary"
           text="제출완료"
           onClick={() => {
-            router.push(`/assignment/${refId}`);
+            router.push(`/assignment/${assignmentId}`);
           }}
           type="button"
           asChild
@@ -42,7 +41,7 @@ const AssignmentListSubButton = ({ refId, userId }: Props) => {
           variant="primary"
           text="제출하기"
           onClick={() => {
-            router.push(`/assignment/${refId}`);
+            router.push(`/assignment/${assignmentId}`);
           }}
           type="button"
           asChild

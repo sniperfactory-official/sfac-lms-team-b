@@ -32,7 +32,7 @@ const ContentCard = ({
 
   return (
     <>
-      <div className="w-[775px] h-[200px] border rounded-lg p-[10px] flex flex-row items-center mb-[15px]">
+      <div className="h-[200px] border rounded-lg p-[10px] flex flex-row items-center mb-[15px]">
         <ContentImg isPrivate={lecture.isPrivate} />
         <ContentInfo lecture={lecture} role={role} />
       </div>

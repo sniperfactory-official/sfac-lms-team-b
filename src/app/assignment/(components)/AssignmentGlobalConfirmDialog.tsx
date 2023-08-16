@@ -1,20 +1,29 @@
+import { useEffect } from "react";
 import { Button, Title } from "sfac-designkit-react";
 
-type OwnProps = {
+type tAssignmentGlobalConfirmDialogProps = {
   onConfirm: () => void;
   onCancel: () => void;
   isOpen: boolean;
   title: string; // 모달 타이틀
   confirmBtnMsg: string; // 컨펌 확인 버튼 글자
+  confirmFormId?: string; // 컨펌 확인 버튼에 form id 필요 시 작성
 };
 
-const AssignmentGlobalConfirmDialog: React.FC<OwnProps> = ({
+const AssignmentGlobalConfirmDialog = ({
   onConfirm,
   onCancel,
   isOpen,
   title,
   confirmBtnMsg,
-}) => {
+  confirmFormId,
+}: tAssignmentGlobalConfirmDialogProps) => {
+  useEffect(() => {
+    isOpen
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "visible");
+  }, [isOpen]);
+
   return (
     <>
       <div
@@ -45,11 +54,13 @@ const AssignmentGlobalConfirmDialog: React.FC<OwnProps> = ({
                 onClick={onCancel}
               />
               <Button
+                type="submit"
                 className="min-w-[115px]"
                 variant="destructive"
                 text={confirmBtnMsg}
                 asChild
                 onClick={onConfirm}
+                form={confirmFormId}
               />
             </div>
           </div>

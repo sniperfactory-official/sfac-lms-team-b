@@ -25,8 +25,8 @@ export default function Classroom() {
     );
 
   return (
-    <div className="w-screen flex justify-center">
-      <section className="w-4/5 flex mb-[20px]">
+    <div className="max-w-[1024px] mx-auto my-0">
+      <section className="flex mb-[20px]">
         <Sidebar
           courseList={courseList!}
           setCurrentCourse={setCurrentCourse}
