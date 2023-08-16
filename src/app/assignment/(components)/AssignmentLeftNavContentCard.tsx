@@ -105,30 +105,32 @@ const AssignmentLeftNavCard = (props: Props) => {
                 id={id}
                 value={index}
                 className="hidden peer/inputBox group-hover:cursor-pointer"
-                />
-              <label htmlFor={id} className="group-hover:cursor-pointer inline-block border w-[15px] h-[15px] bg-cover border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:bg-[url('/images/icon_target.svg')] peer-checked/inputBox:border-none"></label>
+              />
+              <label
+                htmlFor={id}
+                className="group-hover:cursor-pointer inline-block border w-[15px] h-[15px] bg-cover border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:bg-[url('/images/icon_target.svg')] peer-checked/inputBox:border-none"
+              ></label>
             </div>
-              <label htmlFor={id} className="group-hover:cursor-pointer">
-                <Text
-                  size="sm"
-                  weight="medium"
-                  className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
-                >    
-                  {title}
-                </Text>
-              </label>
+            <label htmlFor={id} className="group-hover:cursor-pointer">
+              <Text
+                size="sm"
+                weight="medium"
+                className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
+              >
+                {title}
+              </Text>
+            </label>
           </div>
         </div>
       ) : (
-        
         <Link className="break-all" href={`/assignment/${id}`}>
-        <div
-          key={id}
-          className={`list-none w-full truncate ... h-[37px] mb-[5px] order-${index} rounded-[10px] hover:bg-[#f5f8ff]  ${
-            isFocused ? "bg-[#f5f8ff]" : "bg-white"
-          }       `}
-        >
-          <div className=" inline-block mr-[5px] w-[15px] h-[15px]"></div>
+          <div
+            key={id}
+            className={`list-none w-full truncate ... h-[37px] mb-[5px] order-${index} rounded-[10px] hover:bg-[#f5f8ff]  ${
+              isFocused ? "bg-[#f5f8ff]" : "bg-white"
+            }       `}
+          >
+            <div className=" inline-block mr-[5px] w-[15px] h-[15px]"></div>
             <Text
               size="sm"
               weight="medium"
@@ -136,8 +138,8 @@ const AssignmentLeftNavCard = (props: Props) => {
             >
               {title}
             </Text>
-        </div>
-      </Link>
+          </div>
+        </Link>
       )}
     </div>
   );
