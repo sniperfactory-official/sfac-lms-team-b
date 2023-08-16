@@ -97,47 +97,47 @@ const AssignmentLeftNavCard = (props: Props) => {
           key={id}
           className={`list-none w-full p-[10px] mb-[5px] order-${index} opacity-${opacity}`}
         >
-          <label className="hover:cursor-pointer break-all">
-            <input
-              type="checkbox"
-              name={id}
-              value={index}
-              className="hidden peer/inputBox"
-            />
-            <div className="inline-block border w-[15px] h-[15px] mr-[5px] border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:hidden"></div>
-            <Image
-              className="hidden peer-checked/inputBox:inline-block mr-[5px]"
-              width="20"
-              height="20"
-              src="/images/icon_target.svg"
-              alt=""
-            />
+          <div className="group break-all flex justify-start items-center">
+            <div className=" flex items-center group-hover:cursor-pointer mr-[5px] w-[15px] h-[15px]">
+              <input
+                type="checkbox"
+                name={id}
+                id={id}
+                value={index}
+                className="hidden peer/inputBox group-hover:cursor-pointer"
+                />
+              <label htmlFor={id} className="group-hover:cursor-pointer inline-block border w-[15px] h-[15px] bg-cover border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:bg-[url('/images/icon_target.svg')] peer-checked/inputBox:border-none"></label>
+            </div>
+              <label htmlFor={id} className="group-hover:cursor-pointer">
+                <Text
+                  size="sm"
+                  weight="medium"
+                  className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
+                >    
+                  {title}
+                </Text>
+              </label>
+          </div>
+        </div>
+      ) : (
+        
+        <Link className="break-all" href={`/assignment/${id}`}>
+        <div
+          key={id}
+          className={`list-none w-full truncate ... h-[37px] mb-[5px] order-${index} rounded-[10px] hover:bg-[#f5f8ff]  ${
+            isFocused ? "bg-[#f5f8ff]" : "bg-white"
+          }       `}
+        >
+          <div className=" inline-block mr-[5px] w-[15px] h-[15px]"></div>
             <Text
               size="sm"
               weight="medium"
-              className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
+              className={`text-color-Grayscale-100 leading-[37px] text-grayscale-100 mr-[20px]`}
             >
               {title}
             </Text>
-          </label>
         </div>
-      ) : (
-        <div
-          key={id}
-          className={`list-none w-full p-[10px] mb-[5px] order-${index}`}
-        >
-          <Link className="break-all" href={`/assignment/${id}`}>
-            <span className={`${isFocused ? "text-[#2563eb]" : "text-black"}`}>
-              <Text
-                size="sm"
-                weight="medium"
-                className="text-color-Grayscale-100 text-grayscale-100 mr-[20px]"
-              >
-                {title}
-              </Text>
-            </span>
-          </Link>
-        </div>
+      </Link>
       )}
     </div>
   );

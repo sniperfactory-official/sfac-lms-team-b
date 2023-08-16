@@ -122,7 +122,7 @@ const AssignmentLeftNavContent = (props: Props) => {
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
-        <form
+        <form className="max-h-[412px] overflow-y-scroll"
           onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
             deleteAssignmentElems(event);
           }}
