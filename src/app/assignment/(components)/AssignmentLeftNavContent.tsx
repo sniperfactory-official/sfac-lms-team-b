@@ -30,12 +30,13 @@ const AssignmentLeftNavContent = (props: Props) => {
   const [htmlContent, setHtmlcontent] = useState<AssignmentExtracted[]>();
   const [htmlContentAligned, setHcAligned] = useState<AssignmentExtracted[]>();
   const editingCount = useRef(0);
+  const navContentRef = useRef<any>();
 
   const fetchAssignmentData = (assignQueriesdata: Assignment[]) => {
     let htmlcontent = [];
     const assignFetched = assignQueriesdata;
     let len = assignFetched?.length;
-
+    
     for (let i = 0; i < len; i++) {
       const assignCopied = assignFetched[i];
       let assignExtracted = {
@@ -53,7 +54,15 @@ const AssignmentLeftNavContent = (props: Props) => {
     const assignSorted = htmlContent?.sort(
       (a: AssignmentExtracted, b: AssignmentExtracted) => a.index - b.index,
     );
-    setHcAligned(assignSorted);
+    setHcAligned((prev:any) =>{
+      if (prev){
+        const updatedCount = assignSorted.length - prev.length
+        if (prev.length!==assignSorted.length){
+            navContentRef.current.scrollTop = navContentRef.current.scrollHeight + updatedCount*40
+          }
+        }
+        return(assignSorted)}
+        );
   };
 
   useEffect(() => {
@@ -122,32 +131,36 @@ const AssignmentLeftNavContent = (props: Props) => {
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
-        <form
+        <div
+          ref={navContentRef}
           className="max-h-[412px] overflow-y-scroll"
-          onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
-            deleteAssignmentElems(event);
-          }}
-          id="assign"
-          name="assign"
         >
-          {isLoading
-            ? ""
-            : htmlContentAligned?.map(
-                (assignExtracted: AssignmentExtracted) => {
-                  return (
-                    <AssignmentLeftNavCard
-                      key={uuidv4()}
-                      index={assignExtracted.index}
-                      order={assignExtracted.order}
-                      id={assignExtracted.id}
-                      title={assignExtracted.title}
-                      movecard={moveCard}
-                      isEditting={isEditting}
-                    />
-                  );
-                },
-              )}
-        </form>
+          <form
+            onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+              deleteAssignmentElems(event);
+            }}
+            id="assign"
+            name="assign"
+          >
+            {isLoading
+              ? ""
+              : htmlContentAligned?.map(
+                  (assignExtracted: AssignmentExtracted) => {
+                    return (
+                      <AssignmentLeftNavCard
+                        key={uuidv4()}
+                        index={assignExtracted.index}
+                        order={assignExtracted.order}
+                        id={assignExtracted.id}
+                        title={assignExtracted.title}
+                        movecard={moveCard}
+                        isEditting={isEditting}
+                      />
+                    );
+                  },
+                )}
+          </form>
+        </div>
       </DndProvider>
       <AssignmentLeftNavButton
         modeChanger={StartEditting}

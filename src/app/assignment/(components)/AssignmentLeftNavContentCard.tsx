@@ -3,8 +3,7 @@
 import { useRef } from "react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { XYCoord, useDrag, useDrop } from "react-dnd";
 import { AssignmentExtracted } from "./AssignmentLeftNavContent";
 import { Text } from "sfac-designkit-react";
@@ -19,6 +18,7 @@ const AssignmentLeftNavCard = (props: Props) => {
   const { id, title, movecard, index, isEditting } = props;
   const [isFocused, setIsFocused] = useState(false);
   const pathname = usePathname();
+  const router = useRouter()
   const [isHoverred, setIsHoverred] = useState(false);
 
   useEffect(() => {
@@ -87,18 +87,27 @@ const AssignmentLeftNavCard = (props: Props) => {
   } else if (isDragging === false || isHoverred === false) {
     opacity = 100;
   }
-  drag(drop(ref));
+
+  const editMode = {
+    ref : isEditting ? drag(drop(ref)) : undefined,
+    label : 'inline-block',
+    bg : '#f5f8ff'
+  }
+  const onClickByMode = ()=>{
+    if (!isEditting){
+      router.push(`/assignment/${id}`)
+    }
+  }
 
   return (
     <div>
-      {isEditting ? (
         <div
           ref={ref}
           key={id}
-          className={`list-none w-full p-[10px] mb-[5px] order-${index} opacity-${opacity}`}
+          className={`flex items-center w-full group break-all truncate ... h-[37px] mb-[5px] order-${index} rounded-[5px] hover:bg-[${isEditting?"white":editMode.bg}] ${isFocused ? "bg-[#f5f8ff]" : "bg-white"}`}
+          onClick={()=>onClickByMode()}
         >
-          <div className="group break-all flex justify-start items-center">
-            <div className=" flex items-center group-hover:cursor-pointer mr-[5px] w-[15px] h-[15px]">
+            <div className="flex items-center group-hover:cursor-pointer ml-[19px] mr-[5px] w-[15px] h-[15px]">
               <input
                 type="checkbox"
                 name={id}
@@ -108,10 +117,10 @@ const AssignmentLeftNavCard = (props: Props) => {
               />
               <label
                 htmlFor={id}
-                className="group-hover:cursor-pointer inline-block border w-[15px] h-[15px] bg-cover border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:bg-[url('/images/icon_target.svg')] peer-checked/inputBox:border-none"
+                className={`${isEditting ? editMode.label : "hidden"} group-hover:cursor-pointer border w-[15px] h-[15px] bg-cover border-[#B2CDFF] rounded-[5px] peer-checked/inputBox:bg-[url('/images/icon_target.svg')] peer-checked/inputBox:border-none`}
               ></label>
             </div>
-            <label htmlFor={id} className="group-hover:cursor-pointer">
+            <label htmlFor={id} className="h-full w-full flex items-center group-hover:cursor-pointer">
               <Text
                 size="sm"
                 weight="medium"
@@ -122,26 +131,6 @@ const AssignmentLeftNavCard = (props: Props) => {
             </label>
           </div>
         </div>
-      ) : (
-        <Link className="break-all" href={`/assignment/${id}`}>
-          <div
-            key={id}
-            className={`list-none w-full truncate ... h-[37px] mb-[5px] order-${index} rounded-[10px] hover:bg-[#f5f8ff]  ${
-              isFocused ? "bg-[#f5f8ff]" : "bg-white"
-            }       `}
-          >
-            <div className=" inline-block mr-[5px] w-[15px] h-[15px]"></div>
-            <Text
-              size="sm"
-              weight="medium"
-              className={`text-color-Grayscale-100 leading-[37px] text-grayscale-100 mr-[20px]`}
-            >
-              {title}
-            </Text>
-          </div>
-        </Link>
-      )}
-    </div>
   );
 };
 
