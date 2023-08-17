@@ -36,7 +36,7 @@ const AssignmentLeftNavContent = (props: Props) => {
     let htmlcontent = [];
     const assignFetched = assignQueriesdata;
     let len = assignFetched?.length;
-    
+
     for (let i = 0; i < len; i++) {
       const assignCopied = assignFetched[i];
       let assignExtracted = {
@@ -54,15 +54,16 @@ const AssignmentLeftNavContent = (props: Props) => {
     const assignSorted = htmlContent?.sort(
       (a: AssignmentExtracted, b: AssignmentExtracted) => a.index - b.index,
     );
-    setHcAligned((prev:any) =>{
-      if (prev){
-        const updatedCount = assignSorted.length - prev.length
-        if (prev.length!==assignSorted.length){
-            navContentRef.current.scrollTop = navContentRef.current.scrollHeight + updatedCount*40
-          }
+    setHcAligned((prev: any) => {
+      if (prev) {
+        const updatedCount = assignSorted.length - prev.length;
+        if (prev.length !== assignSorted.length) {
+          navContentRef.current.scrollTop =
+            navContentRef.current.scrollHeight + updatedCount * 40;
         }
-        return(assignSorted)}
-        );
+      }
+      return assignSorted;
+    });
   };
 
   useEffect(() => {
@@ -131,10 +132,7 @@ const AssignmentLeftNavContent = (props: Props) => {
   return (
     <div>
       <DndProvider backend={HTML5Backend}>
-        <div
-          ref={navContentRef}
-          className="max-h-[412px] overflow-y-scroll"
-        >
+        <div ref={navContentRef} className="max-h-[412px] overflow-y-scroll">
           <form
             onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
               deleteAssignmentElems(event);

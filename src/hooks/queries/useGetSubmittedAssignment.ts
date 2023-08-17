@@ -59,7 +59,6 @@ const getSubmittedAssignments = async (
         };
       });
 
-
       return { ...submittedAssignments[0] } as ISubmittedAssignment;
     }
   } else {
