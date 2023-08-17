@@ -17,9 +17,9 @@ const AssignmentLeftNav = () => {
   const userInfoCopied = { ...user };
 
   return (
-    <div className="w-full min-w-[245px] flex-col items-center justify-start">
+    <div className="w-full min-w-[225px] flex-col items-center justify-start">
       <Link href="/assignment">
-        <div className="flex justify-start items-center px-[20px] py-[13px] rounded-[10px] bg-[#f5f8ff] ">
+        <div className="flex justify-start items-center px-[20px] py-[13px] rounded-[10px] bg-[#f5f8ff] mb-[10px]">
           <Image
             className="inline align-middle mr-[10px]"
             src="/images/icon_target.svg"
