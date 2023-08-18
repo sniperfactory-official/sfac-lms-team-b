@@ -1,22 +1,17 @@
 "use client";
 
-import React from "react";
 import { useSelector } from "react-redux";
-import useUserInfo from "@/hooks/user/useUserInfo";
 import { RootState } from "@/redux/store";
 import { User } from "@/types/firebase.types";
+import { NextPage } from "next";
 import AssignmentListContent from "./(components)/AssignmentListContent";
 
-const Assignment = () => {
-  const userInfo = useSelector((state: RootState) => {
-    return state.userInfo;
-  });
-  const user = useUserInfo(userInfo.id) as User;
-  const userInfoCopied = { ...user };
+const Assignment: NextPage = () => {
+  const user = useSelector((state: RootState): User => state.userInfo);
 
   return (
     <div>
-      <AssignmentListContent userInfo={userInfoCopied} userId={userInfo.id} />
+      <AssignmentListContent user={user} />
     </div>
   );
 };

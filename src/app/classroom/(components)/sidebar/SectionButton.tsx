@@ -1,4 +1,3 @@
-
 import useDeleteCourse from "@/hooks/mutation/useDeleteCourse";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
@@ -37,7 +36,7 @@ const SectionButton = ({ type }: IProp) => {
         console.log(newTitle);
         if (newTitle !== "") updateSectionTitle({ docId, newTitle });
         updateLectureOrder(
-          {currentLectures},
+          { currentLectures },
           {
             onSuccess: () => {
               dispatch(setNewTitle(""));

@@ -1,20 +1,16 @@
 "use client";
 
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 import type { User } from "@/types/firebase.types";
+import { NextPage } from "next";
 import AssignmentDetailContent from "../(components)/AssignmentDetailContent";
 import AssignmentTeacherViewCardWrapper from "../(components)/AssignmentTeacherViewCardWrapper";
 import AssignmentStudentViewCardWrapper from "../(components)/AssignmentStudentViewCardWrapper";
-import { useSelector } from "react-redux";
-import useUserInfo from "@/hooks/user/useUserInfo";
-import { RootState } from "@/redux/store";
 
-const AssignmentDetailPage = () => {
+const AssignmentDetailPage: NextPage = () => {
   // FIXME: 임시 유저 정보 처리
-  const userId = useSelector((state: RootState) => {
-    return state.userInfo.id;
-  });
-
-  const user = useUserInfo(userId) as User;
+  const user = useSelector((state: RootState): User => state.userInfo);
 
   return (
     <div className="py-[36px] px-[20px]">

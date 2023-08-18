@@ -36,8 +36,13 @@ const getAssignments = async (userId: string) => {
           let AssignmentData = null;
 
           if (lectureSnapshot.exists()) {
-            submittedData = lectureSnapshot.exists() ? (lectureSnapshot.data() as DocumentData) : null;
-            if (submittedData && submittedData.assignmentId instanceof DocumentReference) {
+            submittedData = lectureSnapshot.exists()
+              ? (lectureSnapshot.data() as DocumentData)
+              : null;
+            if (
+              submittedData &&
+              submittedData.assignmentId instanceof DocumentReference
+            ) {
               const assignmentSnapshot = await getDoc(
                 submittedData.assignmentId,
               );

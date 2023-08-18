@@ -4,15 +4,39 @@ import {
   getDoc,
   getDocs,
   DocumentData,
+  DocumentReference,
   Timestamp,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { getTime } from "@/utils/getTime";
 
-const getFeedbacks = async (submittedAssignmentId: string): Promise<any> => {
+interface IUser {
+  id: string;
+  role: "수강생" | "관리자";
+  email: string;
+  username: string;
+  profileImage: string;
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+}
+
+export interface IFeedback {
+  id: string;
+  user: IUser;
+  userId: DocumentReference;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const getFeedbacks = async (
+  submittedAssignmentId: string,
+): Promise<IFeedback[] | null> => {
   const feedbacksDocs = await getDocs(
     collection(db, "submittedAssignments", submittedAssignmentId, "feedbacks"),
   );
+
+  if (feedbacksDocs.empty) return null;
 
   const sortFeedbacks = feedbacksDocs?.docs.sort(
     (a: DocumentData, b: DocumentData) =>
@@ -42,7 +66,7 @@ const getFeedbacks = async (submittedAssignmentId: string): Promise<any> => {
     }),
   );
 
-  return feedbacks;
+  return feedbacks as IFeedback[];
 };
 
 const useGetFeedbacks = (submittedAssignmentId: string) => {
