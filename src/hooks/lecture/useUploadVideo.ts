@@ -25,7 +25,14 @@ const useUploadVideo = () => {
     const videoElement: HTMLVideoElement = document.createElement("video");
     videoElement.src = url;
     videoElement.onloadedmetadata = () => {
-      dispatch(setVideoLength(videoElement.duration));
+      const minutes = Math.floor(videoElement.duration / 60);
+      const remainingSeconds = Math.floor(videoElement.duration % 60).toFixed(
+        0,
+      );
+      const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
+        remainingSeconds,
+      ).padStart(2, "0")}`;
+      dispatch(setVideoLength(formattedTime));
     };
   };
 
