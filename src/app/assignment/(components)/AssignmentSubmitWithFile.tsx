@@ -44,6 +44,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       setIsDraggedOver(false);
     }
   };
+  console.log("33");
 
   const allowedFileTypes = [
     // 허용되는 확장자

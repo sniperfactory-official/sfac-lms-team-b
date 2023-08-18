@@ -5,11 +5,10 @@ import { useGetFeedbacks } from "@/hooks/queries/useGetFeedbacks";
 import { useCreateFeedback } from "@/hooks/mutation/useCreateFeedback";
 import { useUpdateSubmittedAssignment } from "@/hooks/mutation/useUpdateSubmittedAssignment";
 import { useDeleteSubmittedAssignment } from "@/hooks/mutation/useDeleteSubmittedAssignment";
-import { Feedback, User } from "@/types/firebase.types";
+import { User } from "@/types/firebase.types";
 import { useForm } from "react-hook-form";
 import { getTime } from "@/utils/getTime";
 import { Avatar, Button, Text } from "sfac-designkit-react";
-import { DocumentReference } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import AssignmentFeedbackContent from "./AssignmentFeedbackContent";
@@ -25,15 +24,6 @@ interface IAssignmentFeedbackProps {
 
 interface IFeedbackForm {
   feedback: string;
-}
-
-interface IFeedback {
-  id: string;
-  user?: User;
-  userId: DocumentReference;
-  content: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 const AssignmentFeedback = ({
@@ -138,9 +128,7 @@ const AssignmentFeedback = ({
               </Text>
             </div>
             {loginUser.role === "수강생" &&
-            !feedbacks?.find(
-              (feedback: Feedback) => feedback?.user?.role === "관리자",
-            ) &&
+            !feedbacks?.find(feedback => feedback?.user?.role === "관리자") &&
             !isConfirmOpen ? (
               <button
                 onClick={handleDeleteSubmittedAssignment}
@@ -208,9 +196,7 @@ const AssignmentFeedback = ({
         {getLoading ? (
           <LoadingSpinner />
         ) : (
-          feedbacks?.map((feedback: IFeedback) => {
-            console.log(feedback.createdAt);
-
+          feedbacks?.map(feedback => {
             return (
               <AssignmentFeedbackContent
                 key={feedback.id}
@@ -218,7 +204,7 @@ const AssignmentFeedback = ({
                 content={feedback.content}
                 createdAt={feedback.createdAt}
                 updatedAt={feedback.updatedAt}
-                user={feedback.user!}
+                user={feedback.user}
                 userId={feedback.userId}
                 submittedAssignmentId={id}
                 loginUserId={loginUser.id}
