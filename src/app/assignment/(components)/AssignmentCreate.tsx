@@ -54,6 +54,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
     if (dates.startDate === null || dates.endDate === null) return onInValid();
 
     assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
+
     assignmentData.readStudents = [];
 
     if (dates.startDate && typeof dates.startDate !== "string") {
@@ -70,9 +71,18 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
     }
 
     try {
-      const uploadPromises = imageFiles.map(file =>
-        imageUploadMutation.mutateAsync(file),
-      );
+      const uploadPromises = imageFiles.map(file => {
+        const timestamp = new Date().getTime(); // 현 시각 기준 유니크한 값 생성
+        const uniqueString = Math.random().toString(36).substring(7); // 랜덤 문자열 생성
+        const fileExtension = file.name.split(".").pop(); // 파일 확장자 추출
+        const lastDotIndex = file.name.lastIndexOf(".");
+        const fileoriginalName = file.name.substring(0, lastDotIndex); // 본래 파일명 추출
+        const newFileName = `${fileoriginalName}_${timestamp}_${uniqueString}.${fileExtension}`;
+        const uniqueFileName = newFileName; // 유니크한 파일명 생성
+        const mutateFile = new File([file], uniqueFileName); // 새로운 파일명으로 파일 생성
+
+        return imageUploadMutation.mutateAsync(mutateFile);
+      });
       const uploadedUrls = await Promise.all(uploadPromises);
       assignmentData.images = uploadedUrls;
 
@@ -115,6 +125,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
+
     if (files) {
       const fileList = Array.from(files);
 
@@ -132,6 +143,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         setIsAccept(false);
         return;
       }
+
       setImageFiles(prevFiles => [...prevFiles, ...fileList]);
     }
   };
