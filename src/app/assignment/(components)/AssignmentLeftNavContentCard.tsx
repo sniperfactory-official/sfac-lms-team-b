@@ -38,7 +38,7 @@ const AssignmentLeftNavCard = (props: Props) => {
     }),
   }));
 
-  const [{isHoverred}, drop] = useDrop(() => ({
+  const [{ isHoverred }, drop] = useDrop(() => ({
     accept: "card",
     hover(item: AssignmentExtracted, monitor) {
       if (!ref.current) {
@@ -62,35 +62,37 @@ const AssignmentLeftNavCard = (props: Props) => {
 
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
-      }   
+      }
       movecard(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
-    collect(monitor){
-      return {isHoverred:monitor.isOver({shallow:true})}
-    }
+    collect(monitor) {
+      return { isHoverred: monitor.isOver({ shallow: true }) };
+    },
   }));
 
-  const opacity = isHoverred ? 20 : 100
-  console.log(opacity)
+  const opacity = isHoverred ? 20 : 100;
+  console.log(opacity);
 
   const editMode = {
     ref: isEditting ? drag(drop(ref)) : undefined,
     label: "inline-block",
-    bg : "[#f5f8ff]"
+    bg: "[#f5f8ff]",
   };
   const onClickByMode = () => {
     if (!isEditting) {
       router.push(`/assignment/${id}`);
     }
   };
-  
+
   return (
     <div>
       <div
         ref={ref}
         key={id}
-        className={`flex items-center w-full group break-all truncate ... h-[37px] mb-[5px] order-${index} rounded-[5px] opacity-${isDragging?0:opacity} ${isFocused ? "bg-[#f5f8ff]" : "bg-white"} 
+        className={`flex items-center w-full group break-all truncate ... h-[37px] mb-[5px] order-${index} rounded-[5px] opacity-${
+          isDragging ? 0 : opacity
+        } ${isFocused ? "bg-[#f5f8ff]" : "bg-white"} 
         ${isEditting ? "" : `hover:bg-${editMode.bg}`}`}
         onClick={() => onClickByMode()}
       >
