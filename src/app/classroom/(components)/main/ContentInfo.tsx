@@ -1,5 +1,4 @@
 import timestampToDate from "@/utils/timestampToDate";
-import { convertSecondsToMinute } from "@/utils/convertSecondsToMinute";
 import {
   setLecture,
   setModalVisibility,
@@ -41,7 +40,7 @@ const ContentInfo = ({ lecture, role }: IProps) => {
   };
 
   const [start, end] = [timestampToDate(startDate), timestampToDate(endDate)];
-  const videoLength = convertSecondsToMinute(lectureContent.videoLength!);
+  const videoLength = lectureContent.videoLength;
 
   const LECTURE_OBJ = {
     노트: {
@@ -92,7 +91,7 @@ const ContentInfo = ({ lecture, role }: IProps) => {
       </div>
       {lectureType === "비디오" && (
         <div className="bg-grayscale-5 rounded w-[40px] h-[20px] text-xs text-center leading-[20px] mb-[10px] text-grayscale-60">
-          {LECTURE_OBJ[lectureType].time}분
+          {LECTURE_OBJ[lectureType].time}
         </div>
       )}
       <div className="font-bold mb-[10px]">
