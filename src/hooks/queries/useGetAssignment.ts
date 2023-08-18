@@ -5,25 +5,26 @@ import {
   getDocs,
   doc,
   getDoc,
+  DocumentReference,
+  Timestamp,
 } from "firebase/firestore";
 import { db } from "@utils/firebase";
-import { Assignment, User } from "@/types/firebase.types";
+import { User } from "@/types/firebase.types";
 
-// Firestore 데이터 return
 const getAssignments = async (assignmentId?: string): Promise<any> => {
   if (assignmentId) {
     const assignmentRef = doc(db, "assignments", assignmentId);
-    // const assignment = (await getDoc(assignmentRef)).data() as Assignment;
-    // return assignment;
 
     const docSnap = await getDoc(assignmentRef);
     if (docSnap.exists()) {
-      const assignmentData = docSnap.data() as Assignment;
+      const assignmentData = docSnap.data();
       const userSnap = await getDoc(doc(db, assignmentData.userId.path)); // userId의 path로 해당 user 문서 가져오기
-      const user = userSnap.data() as User;
-      return { ...docSnap.data(), user } as Assignment; // user정보 포함해서 return
+      const user = userSnap.data();
+
+      return { ...docSnap.data(), user }; // user정보 포함해서 return
     }
-    return docSnap.data() as Assignment;
+
+    return docSnap.data();
   }
   const assignmentsDocs = await getDocs(collection(db, "assignments"));
 
@@ -41,7 +42,7 @@ const getAssignments = async (assignmentId?: string): Promise<any> => {
 
 // getAssignments를 React Query로 상태관리.
 const useGetAssignment = (assignmentId?: string) => {
-  const { data, isLoading, error } = useQuery<any>(
+  const { data, isLoading, error } = useQuery(
     ["getAssignment", assignmentId || ""],
     () => getAssignments(assignmentId),
     {
