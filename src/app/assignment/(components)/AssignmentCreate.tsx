@@ -13,6 +13,7 @@ import "sfac-designkit-react/style.css";
 import { DateSelector } from "sfac-designkit-react";
 import { Button } from "sfac-designkit-react";
 import { Text } from "sfac-designkit-react";
+import { useRouter } from "next/navigation";
 
 interface AssignmentCreateProps {
   isOpen: boolean;
@@ -47,11 +48,13 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
 
   const createAssignmentMutation = useCreateAssignment();
   const imageUploadMutation = useImageUpload();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
     if (dates.startDate === null || dates.endDate === null) return onInValid();
 
     assignmentData.images = imageFiles.map(file => URL.createObjectURL(file));
+
     assignmentData.readStudents = [];
 
     if (dates.startDate && typeof dates.startDate !== "string") {
@@ -61,14 +64,34 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
       assignmentData.endDate = Timestamp.fromDate(dates.endDate);
     }
 
+    if (dates.startDate < new Date()) {
+      setToastMsg("시작 날짜는 오늘 이후여야 합니다.");
+      setIsAccept(false);
+      return;
+    }
+
     try {
-      const uploadPromises = imageFiles.map(file =>
-        imageUploadMutation.mutateAsync(file),
-      );
+      const uploadPromises = imageFiles.map(file => {
+        const timestamp = new Date().getTime(); // 현 시각 기준 유니크한 값 생성
+        const uniqueString = Math.random().toString(36).substring(7); // 랜덤 문자열 생성
+        const fileExtension = file.name.split(".").pop(); // 파일 확장자 추출
+        const lastDotIndex = file.name.lastIndexOf(".");
+        const fileoriginalName = file.name.substring(0, lastDotIndex); // 본래 파일명 추출
+        const newFileName = `${fileoriginalName}_${timestamp}_${uniqueString}.${fileExtension}`;
+        const uniqueFileName = newFileName; // 유니크한 파일명 생성
+        const mutateFile = new File([file], uniqueFileName); // 새로운 파일명으로 파일 생성
+
+        return imageUploadMutation.mutateAsync(mutateFile);
+      });
       const uploadedUrls = await Promise.all(uploadPromises);
       assignmentData.images = uploadedUrls;
 
-      createAssignmentMutation.mutate(assignmentData);
+      let assignmentId: string;
+      createAssignmentMutation.mutate(assignmentData, {
+        onSuccess: data => {
+          assignmentId = data.id;
+        },
+      });
 
       setToastMsg("과제가 성공적으로 등록되었습니다.");
       setIsAccept(true);
@@ -77,6 +100,12 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         setIsOpen(false);
         reset();
         setImageFiles([]);
+        setDates({
+          startDate: null,
+          endDate: null,
+        });
+
+        router.push(`/assignment/${assignmentId}`); // 생성 후 상세 페이지로 이동
       }, 1000);
     } catch (error) {
       setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
@@ -96,6 +125,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
+
     if (files) {
       const fileList = Array.from(files);
 
@@ -113,6 +143,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
         setIsAccept(false);
         return;
       }
+
       setImageFiles(prevFiles => [...prevFiles, ...fileList]);
     }
   };
@@ -150,9 +181,14 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           id="level-select"
           {...register("level", { required: true })}
           className="w-[245px] h-[40px] bg-white border rounded-xl text-grayscale-40 mb-[17px] pl-2"
-          defaultValue=""
+          defaultValue="placeholder"
         >
-          <option value="" className="text-grayscale-40" disabled hidden>
+          <option
+            value="placeholder"
+            className="text-grayscale-40"
+            disabled
+            hidden
+          >
             난이도를 선택해주세요
           </option>
           <option value="초">초</option>

@@ -65,7 +65,8 @@ export default function Profile() {
               src={userProfile}
               alt="프로필 이미지"
               size={68}
-              className=" rounded-[50%] object-cover object-center h-[68px]"
+              ringColor="ring-grayscale-10"
+              className="rounded-[50%] object-cover object-center h-[68px] ring-1"
             />
           )}
           <button className="absolute bottom-[0px] right-[0px]">

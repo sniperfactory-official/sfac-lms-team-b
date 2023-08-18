@@ -4,24 +4,25 @@ import { useDropzone } from "react-dropzone";
 import Image from "next/image";
 import { useSubmitAssignment } from "@/hooks/mutation/useSubmitAssignment";
 import useFilesUpload from "@/hooks/mutation/useUpdateFiles";
-import { Attachment } from "@/types/firebase.types";
-import { Button, Text, Icon } from "sfac-designkit-react";
+import { Button, Text } from "sfac-designkit-react";
+import LoadingSpinner from "@/components/Loading/Loading";
 
-type OwnProps = {
+type TAssignmentSubmitWithFileProps = {
   onClose: () => void;
   assignmentId: string;
   userId: string;
 };
 
-const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
+const AssignmentSubmitWithFile = ({
   onClose,
   assignmentId,
   userId,
-}) => {
+}: TAssignmentSubmitWithFileProps) => {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [toastMsg, setToastMsg] = useState<string>("");
   const [isAccept, setIsAccept] = useState<boolean>(false);
   const [isDraggedOver, setIsDraggedOver] = useState<boolean>(false);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const { mutate, isLoading, error } = useSubmitAssignment(
     assignmentId,
     userId,
@@ -60,10 +61,6 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
   // 컴포넌트의 불필요한 리렌더링을 방지 - 성능 최적화
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setIsDraggedOver(false); // onDrop(파일첨부) 발생하면 border-color 원래대로 변경
-    // 중복 파일 체크
-    const validFiles = acceptedFiles.filter(file =>
-      allowedFileTypes.includes(file.type),
-    );
 
     // 용량 제한 체크
     const oversizedFiles = acceptedFiles.filter(
@@ -88,17 +85,27 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       return;
     }
 
-    // 파일 업로드 진행
+    // 파일 담아두기
     if (acceptedFiles.length > 0) {
-      setSelectedFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
-      // handleUpload(selectedFiles);
+      // 파일명 변경하기
+      const newSelectedFiles: File[] = acceptedFiles.map(file => {
+        const uniqueFileName = generateUniqueFileName(file.name); // 유니크한 파일명 생성
+        return new File([file], uniqueFileName); // 새로운 파일명으로 파일 생성
+      });
+
+      setSelectedFiles(prevFiles => [...prevFiles, ...newSelectedFiles]);
+      // setSelectedFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleUpload = async () => {
-    // 선택한 파일들의 업로드 수행
+  // let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
 
+  const handleUpload = async () => {
+    setIsUploading(true);
+
+    // 선택한 파일들의 업로드 수행
     let newFiles = selectedFiles.map(file => URL.createObjectURL(file));
 
     try {
@@ -119,14 +126,25 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       mutate(newAttachmentArray);
       setToastMsg("파일이 업로드되었습니다!");
       setIsAccept(true);
+      setTimeout(() => {
+        onClose();
+      }, 2000);
     } catch (error) {
       setToastMsg("과제 제출에 실패했습니다. 다시 시도해주세요.");
       setIsAccept(false);
+    } finally {
+      setIsUploading(false);
     }
+  };
 
-    setTimeout(() => {
-      onClose();
-    }, 2000);
+  const generateUniqueFileName = (originalFileName: string): string => {
+    // 랜덤 파일명 생성
+    const timestamp = new Date().getTime(); // 현 시각 기준 유니크한 값 생성
+    const uniqueString = Math.random().toString(36).substring(7); // 랜덤 문자열 생성
+    const fileExtension = originalFileName.split(".").pop(); // 파일 확장자 추출
+    const lastDotIndex = originalFileName.lastIndexOf(".");
+    const fileoriginalName = originalFileName.substring(0, lastDotIndex); // 본래 파일명 추출
+    return `${fileoriginalName}_${timestamp}_${uniqueString}.${fileExtension}`;
   };
 
   const handleRemoveFile = (file: File) => {
@@ -152,7 +170,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
               return (
                 <div
                   key={index}
-                  className="flex justify-between items-center mb-[20px]"
+                  className="flex justify-between items-center mb-[20px] gap-[5px]"
                 >
                   <div className="flex justify-start items-center gap-[13px]">
                     <div className="w-[36.5px] h-[43.5px]">
@@ -167,7 +185,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
                     <Text
                       size="base"
                       weight="bold"
-                      className="text-primary-80 text-color-Primary-80"
+                      className="text-primary-80 text-color-Primary-80 break-all"
                     >
                       {file.name}
                     </Text>
@@ -175,7 +193,7 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
                   <div>
                     <button
                       type="button"
-                      className="text-[12px] text-grayscale-100 font-[400]"
+                      className="text-[12px] text-grayscale-100 font-[400] w-[23px] shrink-0"
                       onClick={() => {
                         handleRemoveFile(file);
                       }}
@@ -236,10 +254,6 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
       <div className="absolute left-0 bottom-0 w-full min-h-[97px] p-[20px_31px_42px]">
         <div className="flex justify-end items-center gap-[12px]">
           <Button variant="secondary" text="취소" asChild onClick={onClose} />
-
-          {/* <button className="border" type="button" onClick={onClose}>
-            취소
-          </button> */}
           <Button
             variant="primary"
             text="업로드"
@@ -260,6 +274,11 @@ const AssignmentSubmitWithFile: React.FC<OwnProps> = ({
           />
         )}
       </div>
+      {isUploading ? (
+        <div className="absolute left-0 top-0 w-full h-full">
+          <LoadingSpinner />
+        </div>
+      ) : null}
     </>
   );
 };

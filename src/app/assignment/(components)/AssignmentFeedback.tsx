@@ -160,9 +160,9 @@ const AssignmentFeedback = ({
                         weight="bold"
                         className=" text-primary-80 "
                       >
-                        <Link href={url} download>
+                        <a href={url} download>
                           {name}
-                        </Link>
+                        </a>
                       </Text>
                     </div>
                   </li>

@@ -9,7 +9,6 @@ import AssignmentTeacherViewCardWrapper from "../(components)/AssignmentTeacherV
 import AssignmentStudentViewCardWrapper from "../(components)/AssignmentStudentViewCardWrapper";
 
 const AssignmentDetailPage: NextPage = () => {
-  // FIXME: 임시 유저 정보 처리
   const user = useSelector((state: RootState): User => state.userInfo);
 
   return (

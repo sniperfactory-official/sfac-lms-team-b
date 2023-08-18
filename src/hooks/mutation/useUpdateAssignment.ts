@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateDoc, doc, serverTimestamp, Timestamp } from "firebase/firestore";
+import { updateDoc, doc, serverTimestamp } from "firebase/firestore";
 import { db } from "@utils/firebase";
 import { Assignment } from "@/types/firebase.types";
 

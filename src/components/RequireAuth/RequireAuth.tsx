@@ -68,7 +68,7 @@ export default function RequireAuth({
 
   // 로딩 상태면 Loading Spinner 사용
   if (loading) {
-    return <LoadingSpinner />;
+    return <LoadingSpinner fullScreen={true} />;
   }
   if (showLoginForm) {
     return (
