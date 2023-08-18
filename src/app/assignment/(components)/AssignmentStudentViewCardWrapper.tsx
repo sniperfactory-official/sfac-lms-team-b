@@ -10,11 +10,10 @@ import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
 const AssignmentStudentViewCardWrapper = ({ user }: IUserProps) => {
   const { assignmentId } = useParams();
 
-  const {
-    data: submittedAssignment,
-    isLoading,
-    error,
-  } = useGetSubmittedAssignments(assignmentId as string, user.id);
+  const { data: submittedAssignment, isLoading } = useGetSubmittedAssignments(
+    assignmentId as string,
+    user.id,
+  );
 
   return (
     <div>
