@@ -7,7 +7,7 @@ import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 import useLectureInfo from "@/hooks/lecture/useLectureInfo";
 import useFirebaseLectureSlice from "@/hooks/lecture/useFirebaseLectureSlice";
 
-const AddLinkModal: React.FC = () => {
+const LinkModal: React.FC = () => {
   const dispatch = useDispatch();
   const { modalRole, handleModalMove } = useClassroomModal();
   const { externalLink } = useLectureInfo();
@@ -51,4 +51,4 @@ const AddLinkModal: React.FC = () => {
   );
 };
 
-export default AddLinkModal;
+export default LinkModal;

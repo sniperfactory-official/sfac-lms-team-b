@@ -1,11 +1,10 @@
 // hooks/useModalManager.tsx
-import { ReactElement, FC } from "react";
 import { useDispatch } from "react-redux";
 import { setModalVisibility } from "@/redux/slice/classroomModalSlice";
 import MakeLectureModal from "@/app/classroom/(components)/modal/createLecture/MakeLectureModal";
-import AddNoteModal from "@/app/classroom/(components)/modal/createLecture/AddNoteModal";
-import AddLinkModal from "@/app/classroom/(components)/modal/createLecture/AddLinkModal";
-import AddVideoFileModal from "@/app/classroom/(components)/modal/createLecture/AddVideoFileModal";
+import NoteModal from "@/app/classroom/(components)/modal/createLecture/NoteModal";
+import LinkModal from "@/app/classroom/(components)/modal/createLecture/LinkModal";
+import VideoFileModal from "@/app/classroom/(components)/modal/createLecture/VideoFileModal";
 import useClassroomModal from "@/hooks/lecture/useClassroomModal";
 
 const useModalManage = () => {
@@ -22,12 +21,7 @@ const useModalManage = () => {
     linkModalOpen,
     videoFileModalOpen,
   ];
-  const MODAL = [
-    MakeLectureModal,
-    AddNoteModal,
-    AddLinkModal,
-    AddVideoFileModal,
-  ];
+  const MODAL = [MakeLectureModal, NoteModal, LinkModal, VideoFileModal];
   const handleModalOpen = () => {
     dispatch(
       setModalVisibility({
