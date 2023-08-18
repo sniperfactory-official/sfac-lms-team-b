@@ -13,6 +13,7 @@ import "sfac-designkit-react/style.css";
 import { DateSelector } from "sfac-designkit-react";
 import { Button } from "sfac-designkit-react";
 import { Text } from "sfac-designkit-react";
+import { useRouter } from "next/navigation";
 
 interface AssignmentCreateProps {
   isOpen: boolean;
@@ -47,6 +48,7 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
 
   const createAssignmentMutation = useCreateAssignment();
   const imageUploadMutation = useImageUpload();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<AssignmentWithDates> = async assignmentData => {
     if (dates.startDate === null || dates.endDate === null) return onInValid();
@@ -74,7 +76,12 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
       const uploadedUrls = await Promise.all(uploadPromises);
       assignmentData.images = uploadedUrls;
 
-      createAssignmentMutation.mutate(assignmentData);
+      let assignmentId: string;
+      createAssignmentMutation.mutate(assignmentData, {
+        onSuccess: data => {
+          assignmentId = data.id;
+        },
+      });
 
       setToastMsg("과제가 성공적으로 등록되었습니다.");
       setIsAccept(true);
@@ -87,6 +94,8 @@ const AssignmentCreate: React.FC<AssignmentCreateProps> = ({
           startDate: null,
           endDate: null,
         });
+
+        router.push(`/assignment/${assignmentId}`); // 생성 후 상세 페이지로 이동
       }, 1000);
     } catch (error) {
       setToastMsg("과제 등록에 실패했습니다. 다시 시도해주세요.");
