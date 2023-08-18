@@ -15,7 +15,7 @@ import {
   setSuccessMessage,
 } from "@/redux/slice/dropzoneFileSlice";
 
-const AddVideoFileModal: React.FC = () => {
+const VideoFileModal: React.FC = () => {
   const dispatch = useDispatch();
   useFirebaseLectureSlice();
 
@@ -110,4 +110,4 @@ const AddVideoFileModal: React.FC = () => {
   );
 };
 
-export default AddVideoFileModal;
+export default VideoFileModal;

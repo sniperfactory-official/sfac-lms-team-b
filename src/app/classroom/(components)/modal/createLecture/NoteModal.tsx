@@ -10,7 +10,7 @@ const NoSsrEditor = dynamic(() => import("./NoteSection"), {
   loading: () => <div>Loading...</div>,
 });
 
-const AddNoteModal: React.FC = () => {
+const NoteModal: React.FC = () => {
   const { modalRole, handleModalMove } = useClassroomModal();
   useFirebaseLectureSlice();
   const MODAL_ROLE_OBJ: { [key: string]: string } = {
@@ -40,4 +40,4 @@ const AddNoteModal: React.FC = () => {
   );
 };
 
-export default AddNoteModal;
+export default NoteModal;
