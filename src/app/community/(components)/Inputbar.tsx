@@ -35,7 +35,7 @@ export default function Inputbar({
     };
   }, []);
 
-  return isVisible ? (
+  return (
     <div
       className={`
         flex justify-center items-center w-[775px] mt-[500px] pl-[10px] py-[10px] shadow-[1px_1px_10px_0_rgba(144,144,144,0.2)] rounded-[37px]
@@ -45,7 +45,7 @@ export default function Inputbar({
         ${
           isVisible
             ? "transform translateY(0) opacity-100"
-            : "transform translateY(100%) opacity-0"
+            : "transform translateY(100%) opacity-0 pointer-events-none"
         }
       `}
       onClick={handleClick}
@@ -65,5 +65,5 @@ export default function Inputbar({
         <Image src={submitButton} alt="submitButton" />
       </div>
     </div>
-  ) : null;
+  );
 }
