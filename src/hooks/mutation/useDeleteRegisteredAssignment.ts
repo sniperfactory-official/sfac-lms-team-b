@@ -10,6 +10,11 @@ import {
 import { db, storage } from "@utils/firebase";
 import { deleteObject, ref } from "firebase/storage";
 
+interface IFile {
+  url: string;
+  name: string;
+}
+
 const deleteRegisteredAssignment = async (
   assignmentId: string,
   imageValue: string[],
@@ -66,7 +71,7 @@ const deleteRegisteredAssignment = async (
 
         if (attachmentDocs.data().links.includes("")) {
           await Promise.all(
-            attachmentDocs.data().attachmentFiles.map(async (file: any) => {
+            attachmentDocs.data().attachmentFiles.map(async (file: IFile) => {
               const storageRef = ref(storage, `attachments/${file.name}`);
               await deleteObject(storageRef);
             }),
@@ -78,6 +83,7 @@ const deleteRegisteredAssignment = async (
     );
   } catch (err) {
     console.log(err);
+    alert("관리자에게 문의하세요.");
     throw err;
   }
 };

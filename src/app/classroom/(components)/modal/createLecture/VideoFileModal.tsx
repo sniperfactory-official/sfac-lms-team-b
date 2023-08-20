@@ -15,7 +15,7 @@ import {
   setSuccessMessage,
 } from "@/redux/slice/dropzoneFileSlice";
 
-const AddVideoFileModal: React.FC = () => {
+const VideoFileModal: React.FC = () => {
   const dispatch = useDispatch();
   useFirebaseLectureSlice();
 
@@ -89,21 +89,25 @@ const AddVideoFileModal: React.FC = () => {
       </ModalMain>
 
       {errorMessage && (
-        <PageToast
-          toastMsg={errorMessage}
-          isAccept={false}
-          onClose={() => dispatch(setErrorMessage(""))}
-        />
+        <div className="absolute bottom-[25px] left-[25px]">
+          <PageToast
+            toastMsg={errorMessage}
+            isAccept={false}
+            onClose={() => dispatch(setErrorMessage(""))}
+          />
+        </div>
       )}
       {successMessage && (
-        <PageToast
-          toastMsg={successMessage}
-          isAccept={true}
-          onClose={() => dispatch(setSuccessMessage(""))}
-        />
+        <div className="absolute bottom-[25px] left-[25px]">
+          <PageToast
+            toastMsg={successMessage}
+            isAccept={true}
+            onClose={() => dispatch(setSuccessMessage(""))}
+          />
+        </div>
       )}
     </Layout>
   );
 };
 
-export default AddVideoFileModal;
+export default VideoFileModal;

@@ -18,10 +18,10 @@ const updateLectureOrder = async ({
   }
 };
 
-const useUpdateLectureOrder = (currentLectures: ILecture[]) => {
+const useUpdateLectureOrder = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(() => updateLectureOrder({ currentLectures }), {
+  return useMutation(updateLectureOrder, {
     onSuccess: () => {
       queryClient.invalidateQueries([QUERY_KEY.COURSE]);
     },

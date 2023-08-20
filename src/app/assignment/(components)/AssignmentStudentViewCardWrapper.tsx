@@ -1,21 +1,16 @@
 "use client";
 
-import { FC } from "react";
-import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
-import { User } from "@/types/firebase.types";
 import { useParams } from "next/navigation";
-import { useGetSubmittedAssignments } from "@/hooks/queries/useGetSubmittedAssignment";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-
-interface OwnProps {
-  user: User;
-}
-
-const AssignmentTeacherViewCardWrapper: FC<OwnProps> = ({ user }) => {
+import {
+  ISubmittedAssignment,
+  useGetSubmittedAssignments,
+} from "@/hooks/queries/useGetSubmittedAssignment";
+import { IUserProps } from "./AssignmentTeacherViewCardWrapper";
+import AssignmentStudentViewCard from "./AssignmentStudentViewCard";
+const AssignmentStudentViewCardWrapper = ({ user }: IUserProps) => {
   const { assignmentId } = useParams();
 
-  const { data, isLoading, error } = useGetSubmittedAssignments(
+  const { data: submittedAssignment, isLoading } = useGetSubmittedAssignments(
     assignmentId as string,
     user.id,
   );
@@ -26,11 +21,13 @@ const AssignmentTeacherViewCardWrapper: FC<OwnProps> = ({ user }) => {
         <AssignmentStudentViewCard
           user={user}
           assignmentId={assignmentId as string}
-          submittedAssignment={data}
+          submittedAssignment={
+            submittedAssignment as ISubmittedAssignment | null
+          }
         />
       </div>
     </div>
   );
 };
 
-export default AssignmentTeacherViewCardWrapper;
+export default AssignmentStudentViewCardWrapper;
