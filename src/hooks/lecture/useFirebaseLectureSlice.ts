@@ -38,7 +38,7 @@ const useFirebaseLectureSlice = () => {
           .split("?")[0]
           .split("/");
         const filePath = decodeURIComponent(urlParts[urlParts.length - 1]);
-        const fileName = filePath.split("/")[2];
+        const fileName = filePath.split("/")[3];
         dispatch(setVideoFileName(fileName));
         dispatch(
           setErrorMessage(

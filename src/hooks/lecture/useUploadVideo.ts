@@ -12,6 +12,7 @@ import {
   setSuccessMessage,
   setVideoFileName,
 } from "@/redux/slice/dropzoneFileSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const useUploadVideo = () => {
   const dispatch = useDispatch();
@@ -35,11 +36,13 @@ const useUploadVideo = () => {
       dispatch(setVideoLength(formattedTime));
     };
   };
-
   const onUploadVideo = (uploadFile: File) => {
     try {
       const storageRef = ref(storage);
-      const fileRef = ref(storageRef, `lectures/videos/${uploadFile.name}`);
+      const fileRef = ref(
+        storageRef,
+        `lectures/videos/${uuidv4()}/${uploadFile.name}`,
+      );
       const uploadTask = uploadBytesResumable(fileRef, uploadFile);
 
       uploadTask.on(
