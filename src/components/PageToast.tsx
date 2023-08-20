@@ -13,11 +13,11 @@ const PageToast = ({ toastMsg, isAccept, onClose }: tPageToastProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setVisible(false);
-    }, 3000);
+    }, 1500);
 
     const closeTimer = setTimeout(() => {
       onClose();
-    }, 3300); // 하단 duration에 맞게 조정
+    }, 1800); // 하단 duration에 맞게 조정
 
     return () => {
       clearTimeout(timer);
@@ -26,14 +26,16 @@ const PageToast = ({ toastMsg, isAccept, onClose }: tPageToastProps) => {
   }, [onClose]);
 
   return (
-    <div>
-      <div
-        className={`relative transition-all duration-300 ${
-          visible ? "opacity-100 top-0" : "opacity-0 pointer-events-none top-2"
-        }`}
-      >
-        <Toast type={isAccept ? "Success" : "Error"} text={toastMsg} />
-      </div>
+    <div
+      className={`relative transition-all duration-300 ${
+        visible ? "opacity-100 top-0" : "opacity-0 pointer-events-none top-2"
+      }`}
+    >
+      <Toast
+        className="w-auto inline-block min-w-[360px]"
+        type={isAccept ? "Success" : "Error"}
+        text={toastMsg}
+      />
     </div>
   );
 };
