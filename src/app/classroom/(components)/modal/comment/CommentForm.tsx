@@ -71,9 +71,12 @@ const CommentForm: FC<CommentFormProps> = ({
               />
               <div className="flex justify-end space-x-4 mt-2">
                 <Button
+                  variant="primary"
                   text="업로드"
                   type="submit"
                   disabled={!comment}
+                  textSize="sm"
+                  asChild
                   className={`p-1 w-28 h-8 text-sm rounded-lg ${
                     comment
                       ? "bg-blue-500 text-white hover:bg-white hover:border hover:border-blue-600 hover:text-blue-600"

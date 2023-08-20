@@ -2,15 +2,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PURGE } from "redux-persist";
 import { User } from "@/types/firebase.types";
+import { Timestamp } from "firebase/firestore";
+
+const currentTimestamp = Timestamp.now();
 
 const initialState: User = {
   id: "",
   email: "",
   username: "",
-  role: "미정",
+  role: "관리자",
   profileImage: "",
-  createdAt: null,
-  updatedAt: null,
+  createdAt: currentTimestamp,
+  updatedAt: currentTimestamp,
 };
 
 const userSlice = createSlice({

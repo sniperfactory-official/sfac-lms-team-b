@@ -65,9 +65,9 @@ const deleteCourses = async ({
     // 각 courseId에 대해 deleteDoc 작업을 수행하고, 결과 Promise들을 배열로 만듭니다.
     const deletePromises = deleteIdArray.map(({ id, type }) => {
       if (type === "course") {
-        deleteDoc(doc(db, "courses", id));
+        return deleteDoc(doc(db, "courses", id));
       } else if (type === "lecture") {
-        deleteDoc(doc(db, "lectures", id));
+        return deleteDoc(doc(db, "lectures", id));
       }
     });
 

@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { SyntheticEvent } from "react";
-interface OwnProps {
+interface IAssignmentProfileImageProps {
   profileImage: string | undefined;
 }
 
-const AssignmentProfileImage: React.FC<OwnProps> = profileImage => {
+const AssignmentProfileImage = (profileImage: IAssignmentProfileImageProps) => {
   const defaultImagePath = "/images/avatar.svg";
 
   const handleError = (event: SyntheticEvent<HTMLImageElement, Event>) => {

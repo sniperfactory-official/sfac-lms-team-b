@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { handleEditMode } from "@/redux/slice/editCourseIdSlice";
 import useUpdateLectureOrder from "@/hooks/mutation/useUpdateLectureOrder";
 import useUpdateSectionTitle from "@/hooks/mutation/useUpdateSectionTitle";
+import { setNewTitle } from "@/redux/slice/editCourseIdSlice";
 
 interface IProp {
   type: "set" | "remove";
@@ -22,7 +23,7 @@ const SectionButton = ({ type }: IProp) => {
   const newTitle = useSelector((state: RootState) => state.editCourse.newTitle);
 
   const { mutate: deleteCourse } = useDeleteCourse();
-  const { mutate: updateLectureOrder } = useUpdateLectureOrder(currentLectures);
+  const { mutate: updateLectureOrder } = useUpdateLectureOrder();
   const { mutate: updateSectionTitle } = useUpdateSectionTitle();
   const deleteIdArray = useSelector(
     (state: RootState) => state.editCourse.deleteIdArray,
@@ -32,11 +33,13 @@ const SectionButton = ({ type }: IProp) => {
       text: "적용",
       bg: "bg-primary-80",
       onClick: () => {
-        updateSectionTitle({ docId, newTitle });
+        console.log(newTitle);
+        if (newTitle !== "") updateSectionTitle({ docId, newTitle });
         updateLectureOrder(
-          {},
+          { currentLectures },
           {
             onSuccess: () => {
+              dispatch(setNewTitle(""));
               dispatch(handleEditMode());
             },
           },

@@ -1,4 +1,3 @@
-import { Assignment } from "./../../../types/firebase.types";
 import {
   DocumentData,
   collection,
@@ -9,7 +8,6 @@ import {
   getDoc,
   DocumentReference,
 } from "@firebase/firestore";
-
 import { db } from "@/utils/firebase";
 import { useQuery } from "@tanstack/react-query";
 
@@ -20,47 +18,57 @@ const getAssignments = async (userId: string) => {
     collection(db, "attachments"),
     where("userId", "==", userRef),
   );
-
   const querySnapshot = await getDocs(attachmentQuery);
-  console.log("querySnapshot", querySnapshot);
 
   let myAssignments: DocumentData[] = [];
+  const fetchPromises = [];
+
   for (const docData of querySnapshot.docs) {
     const assignmentDoc = docData.data();
-    let content = null;
-    let submittedData = null;
-    let AssignmentData = null;
 
     if (assignmentDoc.submittedAssignmentId instanceof DocumentReference) {
-      const lectureSnapshot = await getDoc(assignmentDoc.submittedAssignmentId);
-      if (lectureSnapshot.exists()) {
-        // const userRef = doc(db, "submittedAssignments", assignmentData.submittedAssignmentId);
+      fetchPromises.push(
+        (async () => {
+          const lectureSnapshot = await getDoc(
+            assignmentDoc.submittedAssignmentId,
+          );
+          let submittedData: DocumentData | null = null;
+          let AssignmentData = null;
 
-        submittedData = lectureSnapshot.data();
-
-        if (submittedData.assignmentId instanceof DocumentReference) {
-          const lectureSnapshot = await getDoc(submittedData.assignmentId);
           if (lectureSnapshot.exists()) {
-            AssignmentData = lectureSnapshot.data();
+            submittedData = lectureSnapshot.exists()
+              ? (lectureSnapshot.data() as DocumentData)
+              : null;
+            if (
+              submittedData &&
+              submittedData.assignmentId instanceof DocumentReference
+            ) {
+              const assignmentSnapshot = await getDoc(
+                submittedData.assignmentId,
+              );
+              if (assignmentSnapshot.exists()) {
+                AssignmentData = assignmentSnapshot.data();
+              }
+            }
           }
-        }
-      }
-      if (assignmentDoc.attachmentFiles[0].url !== "") {
-        content = `첨부파일${assignmentDoc.attachmentFiles.length}`;
-      } else {
-        content = assignmentDoc.links[0];
-      }
 
-      myAssignments.push({
-        id: docData.id,
-        content: content,
-        createdAt: submittedData.createdAt,
-        submittedData,
-        AssignmentData,
-        ...assignmentDoc,
-      });
+          myAssignments.push({
+            id: docData.id,
+            content: assignmentDoc?.links,
+            attachmentFiles: assignmentDoc?.attachmentFiles,
+            createdAt: submittedData?.createdAt,
+            submittedData,
+            AssignmentData,
+            ...assignmentDoc,
+          });
+        })(),
+      );
     }
   }
+
+  // Wait for all the fetch operations to complete
+  await Promise.all(fetchPromises);
+
   return myAssignments;
 };
 
@@ -68,5 +76,8 @@ export default function useGetAssignments(userId: string) {
   return useQuery(
     ["assignment", userId],
     async () => await getAssignments(userId),
+    {
+      retry: 1,
+    },
   );
 }
