@@ -1,23 +1,50 @@
-import { ReactNode } from "react";
+import useClassroomModal from "@/hooks/lecture/useClassroomModal";
+import Image from "next/image";
 
-interface ModalHeaderProps {
-  children?: ReactNode;
-  currentModalName: string;
+enum ModalNames {
+  linkModalOpen = "링크 만들기",
+  noteModalOpen = "노트 만들기",
+  videoFileModalOpen = "영상 강의 만들기",
 }
 
-const ModalHeader: React.FC<ModalHeaderProps> = ({
-  children,
+const BreadcrumbItem: React.FC<{ label: string }> = ({ label }) => (
+  <>
+    <Image
+      src={"/images/arrow-right.svg"}
+      alt={"다음 페이지로 이동"}
+      width={0}
+      height={0}
+      className="w-[7px] h-[11px]"
+    />
+    <span>{label}</span>
+  </>
+);
+
+const ModalHeader: React.FC<{ currentModalName?: keyof typeof ModalNames }> = ({
   currentModalName,
 }) => {
+  const { modalRole, handleModalMove } = useClassroomModal();
+
   return (
-    <div className="flex gap-[10px] text-xl font-bold text-grayscale-100">
-      {children}
-      {children ? (
-        <span className="relative pl-[17px] before:absolute before:top-[9px] before:left-0 before:w-[7px] before:h-[11px] before:bg-[url('/images/arrow-right.svg')] before:bg-no-repeat before:bg-contain">
-          {currentModalName}
-        </span>
-      ) : (
-        <span>{currentModalName}</span>
+    <div className="flex items-center gap-[10px] text-xl font-bold text-grayscale-100">
+      {modalRole === "create" && !currentModalName && <span>강의 만들기</span>}
+      {modalRole === "create" && currentModalName && (
+        <>
+          <button
+            onClick={() =>
+              handleModalMove("lectureTypeModalOpen", currentModalName)
+            }
+          >
+            강의 만들기
+          </button>
+          <BreadcrumbItem label={ModalNames[currentModalName]} />
+        </>
+      )}
+      {modalRole === "edit" && (
+        <>
+          <span>강의 수정</span>
+          <BreadcrumbItem label="수정하기" />
+        </>
       )}
     </div>
   );

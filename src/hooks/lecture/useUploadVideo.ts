@@ -12,6 +12,7 @@ import {
   setSuccessMessage,
   setVideoFileName,
 } from "@/redux/slice/dropzoneFileSlice";
+import { v4 as uuidv4 } from "uuid";
 
 const useUploadVideo = () => {
   const dispatch = useDispatch();
@@ -25,14 +26,23 @@ const useUploadVideo = () => {
     const videoElement: HTMLVideoElement = document.createElement("video");
     videoElement.src = url;
     videoElement.onloadedmetadata = () => {
-      dispatch(setVideoLength(videoElement.duration));
+      const minutes = Math.floor(videoElement.duration / 60);
+      const remainingSeconds = Math.floor(videoElement.duration % 60).toFixed(
+        0,
+      );
+      const formattedTime = `${String(minutes).padStart(2, "0")}:${String(
+        remainingSeconds,
+      ).padStart(2, "0")}`;
+      dispatch(setVideoLength(formattedTime));
     };
   };
-
   const onUploadVideo = (uploadFile: File) => {
     try {
       const storageRef = ref(storage);
-      const fileRef = ref(storageRef, `lectures/videos/${uploadFile.name}`);
+      const fileRef = ref(
+        storageRef,
+        `lectures/videos/${uuidv4()}/${uploadFile.name}`,
+      );
       const uploadTask = uploadBytesResumable(fileRef, uploadFile);
 
       uploadTask.on(

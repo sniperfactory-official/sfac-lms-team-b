@@ -9,7 +9,7 @@ import "@toast-ui/editor/dist/toastui-editor.css";
 
 type HookCallback = (url: string, text?: string) => void;
 
-const NoteSction: React.FC = () => {
+const NoteSection: React.FC = () => {
   const editorRef = useRef<Editor>(null);
   const dispatch = useDispatch();
   const { lectureInfo, modalRole } = useClassroomModal();
@@ -61,4 +61,4 @@ const NoteSction: React.FC = () => {
   );
 };
 
-export default NoteSction;
+export default NoteSection;

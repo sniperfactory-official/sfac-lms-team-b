@@ -15,7 +15,7 @@ import {
   setSuccessMessage,
 } from "@/redux/slice/dropzoneFileSlice";
 
-const AddVideoFileModal: React.FC = () => {
+const VideoFileModal: React.FC = () => {
   const dispatch = useDispatch();
   useFirebaseLectureSlice();
 
@@ -28,12 +28,7 @@ const AddVideoFileModal: React.FC = () => {
   const successMessage = useSelector(
     (state: RootState) => state.dropzoneFile.successMessage,
   );
-  const { modalRole, handleModalMove } = useClassroomModal();
   const { handleRemoveVideoFile } = useVideoFileDrop();
-  const MODAL_ROLE_OBJ: { [key: string]: string } = {
-    create: "영상 강의 만들기",
-    edit: "수정하기",
-  };
 
   useEffect(() => {
     if (videoFileName) {
@@ -48,19 +43,7 @@ const AddVideoFileModal: React.FC = () => {
 
   return (
     <Layout>
-      <ModalHeader currentModalName={MODAL_ROLE_OBJ[modalRole]}>
-        {modalRole === "create" ? (
-          <button
-            onClick={() =>
-              handleModalMove("lectureTypeModalOpen", "videoFileModalOpen")
-            }
-          >
-            강의 만들기
-          </button>
-        ) : (
-          <span>강의 수정</span>
-        )}
-      </ModalHeader>
+      <ModalHeader currentModalName="videoFileModalOpen" />
       <ModalMain>
         <div className="flex flex-col gap-5 h-72">
           {videoFileName && (
@@ -89,21 +72,25 @@ const AddVideoFileModal: React.FC = () => {
       </ModalMain>
 
       {errorMessage && (
-        <PageToast
-          toastMsg={errorMessage}
-          isAccept={false}
-          onClose={() => dispatch(setErrorMessage(""))}
-        />
+        <div className="absolute bottom-[25px] left-[25px]">
+          <PageToast
+            toastMsg={errorMessage}
+            isAccept={false}
+            onClose={() => dispatch(setErrorMessage(""))}
+          />
+        </div>
       )}
       {successMessage && (
-        <PageToast
-          toastMsg={successMessage}
-          isAccept={true}
-          onClose={() => dispatch(setSuccessMessage(""))}
-        />
+        <div className="absolute bottom-[25px] left-[25px]">
+          <PageToast
+            toastMsg={successMessage}
+            isAccept={true}
+            onClose={() => dispatch(setSuccessMessage(""))}
+          />
+        </div>
       )}
     </Layout>
   );
 };
 
-export default AddVideoFileModal;
+export default VideoFileModal;
