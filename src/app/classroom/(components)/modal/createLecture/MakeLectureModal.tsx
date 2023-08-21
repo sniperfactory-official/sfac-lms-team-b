@@ -35,7 +35,7 @@ const MakeLectureModal: React.FC = () => {
   return (
     <Layout>
       <div className="flex flex-col gap-[26px]">
-        <ModalHeader currentModalName={"강의 만들기"} />
+        <ModalHeader />
         <div className="flex justify-between">
           <div
             className={`flex flex-col items-center justify-center 1013
