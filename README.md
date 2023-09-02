@@ -4,6 +4,21 @@
   <a href="https://www.figma.com/file/c8mYlxCSogvacib7lg3zW5/%EC%8A%A4%EB%82%98%EC%9D%B4%ED%8D%BC%ED%8C%A9%ED%86%A0%EB%A6%AC-LMS?type=design&node-id=0-1&mode=design&t=oAY8ofWmNpOXj9V1-0"><img src="https://img.shields.io/badge/Figma-F24E1E?logo=figma&logoColor=fff&style=flat"/></a>
   <a href="https://www.npmjs.com/package/sfac-designkit-react"><img src="https://img.shields.io/badge/styled--components-DB7093?logo=styledcomponents&logoColor=fff"/></a>
 </div>
+ <br/>
+
+  [🚀 배포 URL 바로가기](https://sfac-lms-team-b.vercel.app/)
+
+  <br/>
+
+  **이메일 로그인 테스트 계정**
+
+  |     | 관리자        | 수강생         |
+  | --- | ------------- | -------------- |
+  | ID  | test@test.com | test@naver.com |
+  | PW  | test1234      | 123123         |
+
+  <br/>
+  <br/>
 
 <br/>
 
