@@ -16,7 +16,7 @@ const Layout: React.FC<ModalProps> = ({ children }) => {
 
   return (
     <div
-      className="fixed top-0 left-0 w-screen h-screen bg-black/30 flex flex-col justify-center items-center"
+      className="fixed top-0 left-0 w-screen h-screen bg-black/30 flex flex-col justify-center items-center z-[9999]"
       onClick={() => {
         modalRole === "edit" && dispatch(resetDropzone());
         dispatch(closeModal());
